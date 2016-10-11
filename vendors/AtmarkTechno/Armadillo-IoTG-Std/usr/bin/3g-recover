@@ -1,0 +1,69 @@
+#!/bin/sh
+
+LABEL_START="start"
+LABEL_STOP="stop"
+DAEMON=/usr/bin/3g-recover-daemon
+NAME=$(basename $DAEMON)
+PIDFILE=/var/run/$NAME.pid
+
+usage() {
+	echo "usage: $0 ${LABEL_START}|${LABEL_STOP}"
+	exit 1
+}
+
+check_exists() {
+	ps | grep $1 | grep -q -v grep
+}
+
+check_3g_monitor_running() {
+	ps aux | grep 'ifplugd -i umts0' | grep -q -v grep
+}
+
+check_old_settings() {
+	grep -q -e 'post-up 3g-monitor start' -e 'pre-down 3g-monitor stop' $1
+}
+
+check_ap_setting() {
+	grep -q '3g-set-ap' $1
+}
+
+check_sim() {
+	3g-phone-num > /dev/null 2>&1
+}
+
+if [ $# -ne 1 ]; then
+	usage
+fi
+
+MODE=${1}
+
+case "$MODE" in
+	${LABEL_START} )
+		if check_exists $NAME; then
+			logger -s -p 'user.warning' -t 3g-recover "$NAME is already running"
+			exit 1
+		fi
+		if check_old_settings /etc/config/interfaces; then
+			logger -s -p 'user.warning' -t 3g-recover 'Please delete 3g-monitor settings in /etc/config/interfaces'
+			exit 1
+		fi
+		if check_3g_monitor_running; then
+			logger -s -p 'user.warning' -t 3g-recover "3g-monitor is already running. $NAME can not be run when 3g-monitor is running."
+			exit 1
+		fi
+		if ! check_ap_setting /etc/config/interfaces; then
+			logger -s -p 'user.warning' -t 3g-recover 'Please set 3g-set-ap setting in /etc/config/interfaces'
+			exit 1
+		fi
+		if ! check_sim; then
+			logger -s -p 'user.warning' -t 3g-recover 'SIM card not detected'
+			exit 1
+		fi
+		start-stop-daemon --start --quiet --oknodo --make-pidfile --background --pidfile "$PIDFILE" --exec $DAEMON
+	;;
+	${LABEL_STOP} )
+		start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE
+	;;
+	* )
+		usage ;;
+esac

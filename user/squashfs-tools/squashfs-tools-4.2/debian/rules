@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+# Workaround for older kernels not supporting Thumb2 (LP: #494667).
+ifeq ($(DEB_BUILD_ARCH_CPU),arm)
+	export CFLAGS += -marm
+endif
+
+%:
+	dh ${@} --sourcedirectory=squashfs-tools
+
+override_dh_auto_build:
+	LZO_SUPPORT=1 XZ_SUPPORT=1 dh_auto_build
+
+override_dh_auto_install:
+	dh_auto_install -- INSTALL_DIR=$(CURDIR)/debian/squashfs-tools/usr/bin
+
+override_dh_builddeb:
+	dh_builddeb -- -Zxz -z9
+
+override_dh_strip:
+	dh_strip --dbg-package=squashfs-tools-dbg

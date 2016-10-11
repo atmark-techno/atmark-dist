@@ -1,0 +1,16 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Loading /etc/config: "
+flatfsd -r > /dev/null 2>&1
+check_status
+
+mkdir -p /tmp/config >/dev/null 2>&1
+cp -a /etc/default/* /etc/default/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /etc/config/* /etc/config/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /tmp/config/* /tmp/config/.[A-z]* /etc/config >/dev/null 2>&1
+rm -rf /tmp/config
+

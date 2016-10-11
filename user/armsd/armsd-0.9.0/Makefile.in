@@ -1,0 +1,56 @@
+DESTDIR=
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+sbindir=@sbindir@
+datadir=@datadir@
+sysconfdir=@sysconfdir@
+localstatedir=@localstatedir@
+
+cachedir=${localstatedir}/armsd
+exampledir=${datadir}/armsd
+
+CFLAGS=		-O2 -Wall -Werror @DEFS@ @CPPFLAGS@ @CFLAGS@
+CFLAGS+=	-Wno-format-security
+CFLAGS_COV=	$(CFLAGS) -fprofile-arcs -ftest-coverage
+LDFLAGS=	-lexpat -lssl -lcrypto @LDFLAGS@ @LIBS@
+SRCS=		armsd.c compat.c @SYSSRC@
+OBJS=		armsd.o compat.o @SYSOBJ@
+
+TESTBIN=	runtest
+
+all: armsd
+
+armsd.o: armsd.c armsd.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+@SYSOBJ@: @SYSSRC@ armsd.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+armsd: $(OBJS)
+	$(CC) -o armsd $(OBJS) $(LDFLAGS)
+
+install:
+	install -d $(DESTDIR)${sbindir}
+	install -c -s armsd $(DESTDIR)${sbindir}
+	install -d $(DESTDIR)${sysconfdir}/armsd
+	install -d $(DESTDIR)${sysconfdir}/armsd/scripts
+	install -c -m 644 armsd.conf $(DESTDIR)${sysconfdir}/armsd/armsd.conf
+	install -d $(DESTDIR)${cachedir}
+	install -d $(DESTDIR)${exampledir}
+	install -c examples/* $(DESTDIR)${exampledir}
+
+clean:
+	-rm -f armsd $(TESTBIN) *.o coverage.xml *.gcda *.gcno *.lcov
+	-rm -rf lcov
+
+t test::
+	$(CC) $(CFLAGS) -DTEST -o $(TESTBIN) $(SRCS) $(LDFLAGS) -lcheck
+	./$(TESTBIN)
+
+coverage::
+	$(CC) $(CFLAGS_COV) -DTEST -o $(TESTBIN) $(SRCS) $(LDFLAGS) -lcheck
+	-./$(TESTBIN)
+	gcovr -e '.*/test/' -e '/usr/include' -x -b -o coverage.xml
+	lcov -c -d . -o armsd-all.lcov
+	lcov -e armsd-all.lcov '*/armsd.c' -o armsd.lcov
+	genhtml -o lcov armsd.lcov

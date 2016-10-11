@@ -1,0 +1,79 @@
+#!/usr/bin/env expect
+
+source /usr/share/3g/3g-function.exp
+log_user 0
+
+global module_type_mc8090
+global module_type_hl8548
+
+if { $argc < 6 } {
+	puts "usage: $argv0 \[pid\] \[apn\] \[user\] \[passwd\] \[auth_type\] \[pdp_type\]"
+	exit 1
+}
+
+set pid [lindex $argv 0]
+set apn [lindex $argv 1]
+set user [lindex $argv 2]
+set passwd [lindex $argv 3]
+set auth_type [lindex $argv 4]
+set pdp_type [lindex $argv 5]
+
+serial_connect 30
+busy_wait 30
+
+set module_type [get_module_type]
+
+if {$module_type == $module_type_mc8090} {
+	puts "set RAT"
+	send_command "AT!SELRAT=01"
+	check_status 2
+	puts "success"
+
+	puts "set SELMODE"
+	send_command "AT!SELMODE=02"
+	check_status 2
+	puts "success"
+
+	puts "set APN"
+	set command "AT+CGDCONT=$pid,\"$pdp_type\",\"$apn\""
+	send_command "$command"
+	check_status 3
+	puts "success"
+
+	puts "set user/passwd"
+	set command "AT\$QCPDPP=$pid,$auth_type,\"$passwd\",\"$user\""
+	send_command "$command"
+	check_status 3
+	puts "success"
+} elseif {$module_type == $module_type_hl8548} {
+	if {$pdp_type == "PPP"} {
+		puts "HL8548 is not support PPP"
+		exit 1
+	}
+	puts "set RAT"
+	send_command "AT+KSRAT=2"
+	check_status 10
+	puts "success"
+
+	puts "set APN"
+	set command "AT+CGDCONT=$pid,\"$pdp_type\",\"$apn\""
+	send_command "$command"
+	check_status 3
+	puts "success"
+
+	puts "set user/passwd"
+	set command "AT+WPPP=$auth_type,$pid,\"$user\",\"$passwd\""
+	send_command "$command"
+	check_status 3
+	puts "success"
+
+	puts "set DNS"
+	set command "AT+XDNS=1,1"
+	send_command "$command"
+	check_status 3
+	puts "success"
+
+	sleep 2
+}
+
+exit 0

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+create_config_tmp(){
+	cp "$CONFIG_CONFIG" "$CONFIG_CONFIG_TMP"
+}
+
+if [ ! -e "$CONFIG_CONFIG_TMP" ]; then
+	# not same file
+	create_config_tmp
+	echo "n"
+else
+	cmp "$CONFIG_CONFIG" "$CONFIG_CONFIG_TMP" > /dev/null 2>&1
+	if [ "$?" = "0" ]; then
+		# same file
+		echo "y"
+	else
+		# not same file
+		create_config_tmp
+		echo "n"
+	fi
+fi
+
+exit 0

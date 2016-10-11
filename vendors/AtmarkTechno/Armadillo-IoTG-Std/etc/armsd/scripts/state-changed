@@ -1,0 +1,33 @@
+#!/bin/sh
+
+old=$1
+new=$2
+
+LED_DEV=/sys/class/leds/led3
+
+echo "state changed: $old => $new"
+
+blink_led()
+{
+	cur=$(cat $LED_DEV/trigger)
+	if [ x"$cur" != x"timer" ]; then
+		echo timer > $LED_DEV/trigger
+		echo 500 > $LED_DEV/delay_on
+		echo 500 > $LED_DEV/delay_off
+	fi
+}
+
+stop_blink_led()
+{
+	echo default-on > $LED_DEV/trigger
+	echo 1 > $LED_DEV/brightness
+}
+
+case $new in
+    PUSH_WAIT)
+	stop_blink_led
+        ;;
+    *)
+	blink_led
+        ;;
+esac

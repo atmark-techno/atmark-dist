@@ -1,0 +1,13 @@
+01-example-shebang.dpatch
+02-example-cryptdir.dpatch
+03-spawn.dpatch
+04-64bit.dpatch
+05-makefile-soname.dpatch
+06-pkgindex.dpatch
+07-file-handle.dpatch
+08-tcl-stubs.dpatch
+09-unsafe-traps.dpatch
+10-manpage.dpatch
+11-ttyname.dpatch
+12-fdout.dpatch
+13-implicit-defs.dpatch

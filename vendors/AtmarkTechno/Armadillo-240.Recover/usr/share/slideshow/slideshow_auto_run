@@ -1,0 +1,49 @@
+#!/bin/sh
+. /etc/config/slideshow.conf
+
+log()
+{
+    logger -p user.$1 -t "slideshow[$$]" -- "$2"
+}
+
+test -r /etc/config/slideshow.conf || { log err "slideshow: /etc/slideshow.conf not exist"; exit 1; }
+test -x /lib/udev/vol_id || { log err "cannnot execute /lib/udev/vol_id"; exit 1; }
+
+if [ "$1" = start ]; then
+    if mkdir $LOCKDIR; then
+	echo $DEVPATH > $LOCKDIR/$LOCKFILE
+    else
+	exit
+    fi
+
+    ledctrl --red=blinkon
+
+    if sh /usr/share/slideshow/mount_usbdev; then
+	slideshow $WORKDIR $USBDIR/images 2> $LOGDIR/$LOGFILE &
+    else
+	ledctrl --red=blinkoff
+	ledctrl --red=on
+	exit
+    fi
+
+    mount -t tmpfs -o size=14m /dev/shm $WORKDIR
+
+    ledctrl --red=blinkoff
+
+elif [ "$1" = stop ]; then
+
+    test -r $LOCKDIR/$LOCKFILE || { exit 1; }
+
+    if [ `cat $LOCKDIR/$LOCKFILE` != $DEVPATH ]; then
+	exit
+    fi
+
+    ledctrl --red=blinkon
+    killall slideshow
+    log info "executing command: umount $USBDIR"
+    umount -l $USBDIR
+    umount -l $WORKDIR
+    ledctrl --red=blinkoff
+
+    rm -rf $LOCKDIR
+fi

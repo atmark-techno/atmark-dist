@@ -1,0 +1,12 @@
+Strip all the IP options from a packet.
+
+(Please note: This target requires kernel support that
+might not be available in official Linux kernel sources or
+Debian's packaged Linux kernel sources.
+And if support for this target is available for the 
+specific Linux kernel source version, that support might 
+not be enabled in the current Linux kernel binary.)
+
+The target doesn't take any option, and therefore is extremly easy to use :
+
+# iptables -t mangle -A PREROUTING -j IPV4OPTSSTRIP

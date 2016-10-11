@@ -1,0 +1,50 @@
+#!/bin/sh
+
+NEEDPOLL=128
+CONNECTED=129
+DISCONNECTED=130
+
+action=$1
+type=$2
+ifindex=$3
+ppp_id=$4
+ppp_pass=$5
+mobile_telno=$6
+mobile_cid=$7
+mobile_apn=$8
+mobile_pdp=$9
+
+echo line script invoked: $0 $*
+
+echo type=$type
+echo action=$action
+echo ifindex=$ifindex
+if [ "$type" = "pppoe" ] || [ "$type" = "mobile" ] || [ "$type" = "pppoe6" ]; then
+    echo ppp_id=$ppp_id
+    echo ppp_pass=$ppp_pass
+fi
+if [ "$type" = "mobile" ]; then
+    echo mobile_telno=$mobile_telno
+    echo mobile_cid=$mobile_cid
+    echo mobile_apn=$mobile_apn
+    echo mobile_pdp=$mobile_pdp
+fi
+
+case $action in
+"connect")
+    echo line connected
+    exit $CONNECTED
+    ;;
+"disconnect")
+    echo line disconnected
+    exit $DISCONNECTED
+    ;;
+"status")
+    echo line connected
+    exit $CONNECTED
+    ;;
+*)
+    echo unknown action
+    exit 1
+    ;;
+esac

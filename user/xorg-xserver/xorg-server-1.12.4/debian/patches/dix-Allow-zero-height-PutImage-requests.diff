@@ -1,0 +1,31 @@
+From f39ac527baab8a38d023e3a8416757ccfcead42a Mon Sep 17 00:00:00 2001
+From: Keith Packard <keithp@keithp.com>
+Date: Sat, 3 Jan 2015 08:46:45 -0800
+Subject: [PATCH] dix: Allow zero-height PutImage requests
+
+The length checking code validates PutImage height and byte width by
+making sure that byte-width >= INT32_MAX / height. If height is zero,
+this generates a divide by zero exception. Allow zero height requests
+explicitly, bypassing the INT32_MAX check.
+
+Signed-off-by: Keith Packard <keithp@keithp.com>
+Reviewed-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+(cherry picked from commit dc777c346d5d452a53b13b917c45f6a1bad2f20b)
+Signed-off-by: Julien Cristau <jcristau@debian.org>
+---
+ dix/dispatch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: xorg-server/dix/dispatch.c
+===================================================================
+--- xorg-server.orig/dix/dispatch.c
++++ xorg-server/dix/dispatch.c
+@@ -1952,7 +1952,7 @@ ProcPutImage(ClientPtr client)
+     tmpImage = (char *) &stuff[1];
+     lengthProto = length;
+ 
+-    if (lengthProto >= (INT32_MAX / stuff->height))
++    if (stuff->height != 0 && lengthProto >= (INT32_MAX / stuff->height))
+         return BadLength;
+ 
+     if ((bytes_to_int32(lengthProto * stuff->height) +

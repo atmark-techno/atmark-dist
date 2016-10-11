@@ -1,0 +1,5 @@
+#
+# Vendor specific
+#
+
+source ../vendors/AtmarkTechno/SUZAKU-V.Common/Config.in

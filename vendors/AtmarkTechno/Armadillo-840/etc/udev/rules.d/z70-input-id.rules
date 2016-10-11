@@ -1,0 +1,6 @@
+SUBSYSTEM!="input", GOTO="input-id_end"
+
+KERNEL=="event*", \
+	RUN+="/etc/config/gen-input-run-data.sh %E{ACTION} %E{DEVPATH}"
+
+LABEL="input-id_end"

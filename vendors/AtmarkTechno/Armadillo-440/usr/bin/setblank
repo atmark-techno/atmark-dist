@@ -1,0 +1,49 @@
+#!/bin/sh
+
+PROG=$0
+
+usage(){
+	echo "Usage: $PROG [0-60] (virtual consoles only)"
+	echo ""
+	echo "Sets the interval of inactivity, in  minutes,  after  which  the"
+	echo "screen  will  be automatically blanked (using APM if available)."
+	echo "Without an argument, defaults to 0 (disable console blanking)."
+	echo ""
+}
+
+usage_out(){
+	usage
+	exit 1
+}
+
+error_out(){
+	echo "$PROG: $1"
+	exit 1
+}
+
+check_command(){
+	if [ ! -f "$1" ]; then
+		error_out "not find '$1' command."
+	fi
+}
+
+check_command /usr/bin/printf
+check_command /bin/sed
+
+if [ $# -eq 0 ]; then
+	blank=0
+else
+	if [ ! "`echo $1 | sed -e \"s/[0-9]//g\"`" = "" ]; then
+        	usage_out
+	fi
+	num=`echo 0$1 | sed -e "s/^0*0//"`
+	blank=`printf "%d" $num 2>/dev/null`
+
+	if [ $blank -gt 60 ]; then
+        	usage_out
+	fi
+fi
+
+printf "\033[9;$blank]"
+
+exit 0

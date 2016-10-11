@@ -1,0 +1,6 @@
+#!/bin/sh
+
+logger -p user.info "voltage state critical."
+logger -p user.info "shutdown the system."
+
+halt

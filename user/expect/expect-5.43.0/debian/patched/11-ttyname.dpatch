@@ -1,0 +1,4 @@
+patching file pty_termios.c
+Hunk #1 succeeded at 368 (offset 2 lines).
+Hunk #2 succeeded at 464 (offset 2 lines).
+Hunk #3 succeeded at 485 (offset 2 lines).

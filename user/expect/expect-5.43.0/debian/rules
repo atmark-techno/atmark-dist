@@ -1,0 +1,110 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpatch/dpatch.make
+
+DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+CFLAGS = -Wall -g -D_BSD_SOURCE
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+clean: unpatch
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	[ ! -f Makefile ] || $(MAKE) distclean
+
+	rm -f config.guess config.sub
+	rm -f *.a *.o
+	rm -rf shared
+
+	dh_clean
+
+config.status: configure patch
+	dh_testdir
+
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+	autoconf2.13
+	patch -Np1 -i debian/patches/static-names.diff
+
+	CFLAGS="$(CFLAGS) -ansi -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=/usr/share/man --includedir=/usr/include/tcl8.4 --with-tcl=/usr/lib/tcl8.4 --with-tk=/usr/lib/tk8.4 --with-tclinclude=/usr/include/tcl8.4/tcl-private --with-tkinclude=/usr/include/tcl8.4/tk-private --enable-shared --enable-threads
+
+build: build-stamp
+build-stamp: config.status
+	dh_testdir
+
+	$(MAKE) SONAME=libexpect.so.5.43.0
+	$(MAKE) test
+
+	touch build-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/tmp install
+
+	# Renaming expect scripts
+	set -e; for SCRIPT in debian/tmp/usr/bin/*; \
+	do \
+		if [ "`basename $$SCRIPT`" != "expect" ] && [ "`basename $$SCRIPT`" != "expectk" ]; \
+		then \
+			mv $$SCRIPT `dirname $$SCRIPT`/expect_`basename $$SCRIPT`; \
+		fi; \
+	done
+
+	set -e; for MANPAGE in debian/tmp/usr/share/man/man1/*; \
+	do \
+		if [ "`basename $$MANPAGE`" != "expect.1" ] && [ "`basename $$MANPAGE`" != "expectk.1" ]; \
+		then \
+			mv $$MANPAGE `dirname $$MANPAGE`/expect_`basename $$MANPAGE`; \
+		fi; \
+	done
+
+	# Fixing library name
+	mv debian/tmp/usr/lib/libexpect5.43.so debian/tmp/usr/lib/libexpect.so.5.43.0
+	ln -s libexpect.so.5.43.0 debian/tmp/usr/lib/libexpect.so.5.43
+	ln -s libexpect.so.5.43.0 debian/tmp/usr/lib/libexpect.so.5
+	ln -s libexpect.so.5.43.0 debian/tmp/usr/lib/libexpect.so
+
+	mv debian/tmp/usr/lib/libexpect5.43.a debian/tmp/usr/lib/libexpect.a
+
+	# Fixing permissions
+	chmod 0644 debian/tmp/usr/lib/expect*/pkgIndex.tcl
+
+binary: binary-arch
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs HISTORY
+	dh_installdocs
+	dh_installexamples
+	dh_install --fail-missing --sourcedir=debian/tmp
+	dh_lintian
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep:
+
+.PHONY: clean build install binary binary-arch binary-indep

@@ -1,0 +1,102 @@
+.TH "update_usbdb" "8" "0.4.8" "Shuu Yamaguchi" "USB Utilities"
+.SH "NAME"
+.LP 
+update_usbdb \- Command to update the data usbmgr uses
+.SH "SYNTAX"
+.LP 
+update_usbdb [\-dfhs] \fIfile\fP
+.SH "DESCRIPTION"
+.LP 
+The command \fBupdate_usbdb\fP creates the configuration data
+(a directory hierarchy under \fB/etc/usbmgr/{vendor,class}\fP)
+from the given configuration file (usually
+\fB/etc/usbmgr/usbmgr.conf\fP).
+.LP 
+The directory hierarchy is as follows:
+.TP 
+\fBvendor[/vendor\-ID[/product\-ID]/module]\fR
+Module(s) to be loaded while plugging an USB device of the
+matching vendor.
+.TP 
+\fBclass[/class\-ID[/subclass\-ID[/protocol\-ID]]/module]\fR
+Module(s) to be loaded while plugging an USB device of the
+matching class.
+.TP 
+\fBvendor[/vendor\-ID[/product\-ID]/script]\fR
+Script to be executed while (un)plugging an USB device of the
+matching vendor.
+.TP 
+\fBclass[/class\-ID[/subclass\-ID[/protocol\-ID]]/script]\fR
+Script to be executed while (un)plugging an USB device of the
+matching class.
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-d\fR
+Debug mode.
+.TP 
+\fB\-f\fR
+Force update even if it seems to not be needed.
+.TP 
+\fB\-h\fR
+Prints help \fBto the syslog\fP, then exit.
+.TP 
+\fB\-s\fR
+Don't open syslog at startup.
+.SH "FILES"
+.LP 
+\fI/etc/usbmgr/usbmgr.conf\fP
+.LP 
+\fI/etc/usbmgr/preload.conf\fP
+.LP 
+\fI/etc/usbmgr/class\fP
+.LP 
+\fI/etc/usbmgr/vendor\fP
+.SH "ENVIRONMENT VARIABLES"
+.LP 
+In the scripts, the following environment variables are set:
+.TP 
+\fBACTION\fR
+You can use this environment variable to know if modules are
+loaded or unloaded. \fBadd\fP means that modules are loaded,
+and \fBremove\fP means that modules are unloaded.
+.TP 
+\fBDEVICE\fR
+Points to the (un)loaded module's \fB/proc\fP file.
+.SH "EXAMPLES"
+.LP 
+To run this program the standard way type:
+.LP 
+update_usbdb /etc/usbmgr/usbmgr.conf
+.LP 
+The directory hierarchies \fB/etc/usbmgr/class\fP and
+\fB/etc/usbmgr/vendor\fP will be created.
+.LP 
+A sample load/unload script:
+.LP 
+.nf 
+#!/bin/sh
+
+case $ACTION in
+add)
+        echo start > /tmp/log
+        chmod 666 $DEVICE
+        ;;
+remove)
+        echo stop > /tmp/log
+        chmod 644 $DEVICE
+        ;;
+esac
+.fi 
+.SH "AUTHORS"
+.LP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.LP 
+This manual page was written by Esteban Manchado Velázquez
+<zoso@debian.org>, for the Debian GNU/Linux system (but may be
+used by others).
+.SH "SEE ALSO"
+.LP 
+.BR usbmgr (8),
+.BR dump_usbdev (8),
+.BR usbmgr.conf (5)

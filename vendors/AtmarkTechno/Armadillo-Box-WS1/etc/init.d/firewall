@@ -1,0 +1,88 @@
+#!/bin/sh
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+. /etc/init.d/functions
+
+. /etc/firewall.conf
+
+echo -n "Starting basic firewall: "
+
+# set up spoofing protection
+for f in /proc/sys/net/ipv4/conf/*/rp_filter
+do
+  echo 1 > $f
+done
+
+# log impossible addresses
+for f in /proc/sys/net/ipv4/conf/*/log_martians
+do
+  echo 1 > $f
+done
+
+# ignore echo broadcasts
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+# default setting: deny everything
+iptables -F INPUT
+iptables -P INPUT DROP
+iptables -F OUTPUT
+iptables -P OUTPUT DROP
+
+# allow all non-external interfaces for everything
+iptables -A INPUT  ! -i $EXT -j ACCEPT
+iptables -A OUTPUT ! -o $EXT -j ACCEPT
+
+# external interface
+
+  # icmp incoming
+  iptables -A INPUT -i $EXT -p icmp -j ACCEPT
+
+  # tcp incoming
+  if [ "$ALLOW_HTTP" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport http     -j ACCEPT
+  fi
+  if [ "$ALLOW_TELNET" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport telnet   -j ACCEPT
+  fi
+  if [ "$ALLOW_FTP" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport ftp      -j ACCEPT
+  fi
+  if [ "$ALLOW_SNMP" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport snmp     -j ACCEPT
+  fi
+  if [ "$ALLOW_SSH" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport ssh      -j ACCEPT
+  fi
+  if [ "$ALLOW_SERI2ETH" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport 21347    -j ACCEPT
+  fi
+
+  iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport ftp-data   -j ACCEPT
+  iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport auth       -j REJECT
+  iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport 6000:6010  -j DROP
+  iptables -A INPUT -i $EXT -p tcp -d 0/0 --dport 1024:65535 -j ACCEPT
+
+  # udp incoming
+  if [ "$ALLOW_NTP" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p udp -d 0/0 --dport ntp      -j ACCEPT
+  fi
+  if [ "$ALLOW_SNMP" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p udp -d 0/0 --dport snmp     -j ACCEPT
+  fi
+  if [ "$ALLOW_SNMPTRAP" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p udp -d 0/0 --dport snmptrap -j ACCEPT
+  fi
+  if [ "$ALLOW_SSH" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p udp -d 0/0 --dport ssh      -j ACCEPT
+  fi
+  if [ "$ALLOW_DISCOVER" = "yes" ]; then
+    iptables -A INPUT -i $EXT -p udp -d 0/0 --dport 22222    -j ACCEPT
+  fi
+
+  iptables -A INPUT -i $EXT -p udp -d 0/0 --dport 1024:65535 -j ACCEPT
+
+  # all protocols outgoing
+  iptables -A OUTPUT -o $EXT -j ACCEPT
+
+check_status

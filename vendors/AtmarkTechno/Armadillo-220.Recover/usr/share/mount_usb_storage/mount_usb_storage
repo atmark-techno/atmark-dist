@@ -1,0 +1,71 @@
+#!/bin/sh
+
+FILESYSTEMS="ext3 ext2 vfat"
+VFAT_MOUNTOPTION="codepage=932,iocharset=euc-jp,fmask=111"
+USBDIR="/home/www-data/storage"
+
+log()
+{
+    logger -p user.$1 -t "mount_usb_storage[$$]" -- "$2"
+}
+
+in_list()
+{
+    for v in $2; do
+		test "$1" != "$v" || return 0
+    done
+
+    return 1
+}
+
+exit_script()
+{
+    ledctrl --red=blinkoff
+    ledctrl --red=on
+    exit
+}
+
+test -x /lib/udev/vol_id || { log err "cannnot execute /lib/udev/vol_id"; exit 1; }
+
+if [ "$1" = add ]; then
+    ledctrl --red=blinkon
+
+    read_success=no
+    for t in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19; do
+		if dd if=$DEVNAME of=/dev/null bs=512 count=1; then
+			read_success=yes
+			break
+		fi
+		log debug "Failed to read from $DEVNAME $t times"
+		sleep 1
+    done
+    if [ "$read_success" != yes ]; then
+		log err "cannot read from $DEVNAME"
+		exit_script
+    fi
+
+    fstype=`/lib/udev/vol_id -t $DEVNAME`
+    log debug "$DEVNAME contains filesystem type $fstype"
+
+    if in_list "$fstype" "$FILESYSTEMS"; then
+		options="-o ro"
+		if [ $fstype = vfat ]; then
+			options="$options,$VFAT_MOUNTOPTION"
+		fi
+
+		log info "executing command: mount -t$fstype $options $DEVNAME $USBDIR"
+		mount -t $fstype $options $DEVNAME $USBDIR
+    else
+		log debug "$DEVNAME does not contain a supported filesystem"
+		exit_script
+	fi
+
+    ledctrl --red=blinkoff
+elif [ "$1" = remove ]; then
+    ledctrl --red=blinkon
+
+    log info "executing command: umount $USBDIR"
+    umount -l $USBDIR
+
+    ledctrl --red=blinkoff
+fi

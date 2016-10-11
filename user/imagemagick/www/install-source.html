@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../www/magick.css");
+  //--></style>
+  <title>ImageMagick: Install from Source</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="install, from, source, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../index.html"><img id="titlebar-west" src="../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="1717064420"><img id="titlebar-west" src="../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img src="../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img id="titlebar-east" src="../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../index.html">About ImageMagick</a>
+      <a href="../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/install-source.html">Install from Source</a>
+      <a href="../www/binary-releases.html">Binary Releases</a>
+      <a href="../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../www/sponsors.html">Sponsors</a>
+  <a href="http://larscapes.com/" class="sponsor" target="sponsor">Larscapes</a><!-- 20050808 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[<a href="#unix">Install from Unix Source</a> | <a href="#windows">Install from Windows Source</a>]</p>
+
+<p>Chances are, ImageMagick is already installed on your computer.  Type</p>
+
+<pre class="text">
+  convert -version
+</pre>
+
+<p>If the <a href="../www/convert.html">convert</a> program executes and identifies itself as ImageMagick, you may not need to install ImageMagick from source unless you want to add support for additional image formats or upgrade to a newer version.  You also have the option of installing a pre-compiled <a href="../www/binary-releases.html">binary release</a>.  However, if you still want to install from source, choose a platform, <a href="#Unix">Unix</a> or <a href="#Windows">Windows</a>.  Before installing from source, you may want to review recent <a href="../www/changelog.html">changes</a> to the ImageMagick distribution.</p> 
+
+<div style="margin: auto;">
+  <h2><a name="unix"></a>Install from Unix Source</h2>
+</div>
+
+<p>ImageMagick builds on a variety of Unix and Unix-like operating systems including Linux, Solaris, FreeBSD, Mac OS X, and others.  A compiler is required and fortunately almost all modern Unix systems have one.  Download <a href="ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick.tar.gz">ImageMagick.tar.gz</a> from <a href="ftp://ftp.imagemagick.org/pub/ImageMagick" target="1464207608">ftp.imagemagick.org</a> or its <a href="../www/download.html">mirrors</a> and unpack it with this command:</p>
+
+<pre class="text">
+  gunzip -c ImageMagick.tar.gz | tar xvf -
+</pre>
+
+<p>Next configure and compile ImageMagick:</p>
+
+<pre class="text">
+  cd ImageMagick-6.?.?
+  ./configure
+  make
+</pre>
+
+<p>If ImageMagick configured and compiled without complaint, you are ready to install it on your system.  Administrator privileges are required to install.  To install, type</p>
+
+<pre class="text">
+  make install
+</pre>
+
+<p>Finally, verify the ImageMagick install worked properly, type</p>
+
+<pre class="text">
+  /usr/local/bin/convert logo: logo.gif
+</pre>
+
+<p>Congratulations, you have a working ImageMagick distribution and you are ready to use ImageMagick to <a href="http://www.cit.gu.edu.au/~anthony/graphics/imagick6" target="1248884089">convert, compose, or edit</a> your images or perhaps you'll want to use one of the <a href="../www/api.html">Application Program Interfaces</a> for C, C++, Perl, and others.</p>
+
+<p>The above instructions will satisfy a great number of ImageMagick users, but we suspect a few will have additional questions or problems to consider.  For example, what does one do if ImageMagick fails to configure or compile?  Or what if you don't have administrator privileges and what if you don't want to install ImageMagick in the default <kbd>/../usr/local</kbd> folder?  You will find the answer to these questions, and more, in <a href="../www/advanced-unix-installation.html">Advanced Unix Source Installation</a>.</p>
+
+<div style="margin: auto;">
+  <h2><a name="windows"></a>Install from Windows Source</h2>
+</div>
+
+<p>Building ImageMagick source for Windows requires a modern version of Microsoft Visual Studio IDE.  Users have reported success with the Borland C++ compiler as well.  If you don't have a compiler you can still install a self-installing <a href="../www/binary-releases.html">binary release</a>.</p>
+
+<p>Download <a href="ftp://ftp.imagemagick.org/pub/ImageMagick/windows/ImageMagick-windows.zip">ImageMagick-windows.zip</a> from <a href="ftp://ftp.imagemagick.org/pub/ImageMagick/windows" target="1685504676">ftp.imagemagick.org</a> or its <a href="../www/download.html">mirrors</a>.  You can unpack the distribution with <a href="http://www.winzip.com" target="508354176">WinZip</a> or type the following from any MS-DOS Command Prompt window:</p>
+
+<pre class="text">
+  unzip ImageMagick-windows.zip
+</pre>
+
+<p>Next, launch your Visual Studio IDE and choose <kbd>Open->Project</kbd>.  Select the configure workspace from the <kbd>ImageMagick-6.?.?/VisualMagick/configure</kbd> folder and press Open.  Choose <kbd>Build->Build Solution</kbd>
+to compile the program and on completion run the program.</p>
+
+<center><img src="../images/configure.jpg" alt="[configure]" border="0" /></center>
+
+<p>Press <kbd>Next</kbd> and click on the multi-threaded static build.  If you are using the Visual Studio 6.0 IDE, make sure no check is next to the <em>Generate Visual Studio 7</em> format option.  Now press, on <kbd>Next</kbd> twice and finally <kbd>Finish</kbd>.  The configuration utility just created a workspace required to build ImageMagick from source.  Choose <kbd>Open->Project</kbd> and select the VisualStaticMT workspace from the <kbd>ImageMagick-6.?.?/VisualMagick/</kbd>  folder.  Finally, choose <kbd>Build->Build Solution</kbd> to compile and build the ImageMagick distribution.</p>
+
+<p>To verify ImageMagick is working properly, launch a MS-DOS Command Prompt window and type</p>
+
+<pre class="text">
+  cd ImageMagick-6.?.?/VisualMagick/bin
+  convert logo: image.jpg
+</pre>
+
+<p>Congratulations, you have a working ImageMagick distribution under Windows and you are ready to use ImageMagick to <a href="http://www.cit.gu.edu.au/~anthony/graphics/imagick6" target="1703190461">convert, compose, or edit</a> your images or perhaps you'll want to use one of the <a href="../www/api.html">Application Program Interfaces</a> for C, C++, Perl, and others.</p>
+
+<p>The above instructions will satisfy a great number of ImageMagick users, but we suspect a few will have additional questions or problems to consider.  For example, what does one do if ImageMagick fails to configure or compile?  Or what if you want to install ImageMagick in a place other than the <kbd>ImageMagick-6.?.?/VisualMagick/bin</kbd> folder?  You will find the answer to these questions, and more, in <a href="../www/advanced-windows-installation.html">Advanced Windows Source Installation</a>.</p>
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="1928743029">Discourse Server</a> |
+    <a href="../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="182325624">Image Gallery</a> |
+    <a href="http://studio.webbyland.com/MagickStudio/scripts/MagickStudio.cgi" target="1483257328">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

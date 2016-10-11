@@ -1,0 +1,52 @@
+check_status()
+{
+  local status=$?
+  /bin/echo -en "\\033[65G"
+  if [ $status = 0 ]
+  then
+    /bin/echo -en "\\033[1;32m"
+    /bin/echo -n "done"
+  else
+    /bin/echo -en "\\033[1;31m"
+    /bin/echo -n "failed"
+  fi
+  /bin/echo -e "\\033[0;39m"
+}
+
+ledctrl()
+{
+  LEDS_SYSFS="/sys/class/leds"
+
+  if [ $# -ne 2 ]; then
+    return 1
+  fi
+
+  LED=$1
+  COMMAND=$2
+
+  for i in `ls ${LEDS_SYSFS}`
+  do
+    if [ "${i}" = "${LED}" ]; then
+      case "${COMMAND}" in
+      "on")
+          echo none > ${LEDS_SYSFS}/${LED}/trigger
+          echo 1 > ${LEDS_SYSFS}/${LED}/brightness
+          ;;
+      "off" | "blink_off")
+          echo none > ${LEDS_SYSFS}/${LED}/trigger
+          echo 0 > ${LEDS_SYSFS}/${LED}/brightness
+          ;;
+      "blink_on")
+          echo timer > ${LEDS_SYSFS}/${LED}/trigger
+          echo 500 > ${LEDS_SYSFS}/${LED}/delay_on
+          echo 500 > ${LEDS_SYSFS}/${LED}/delay_off
+          ;;
+      "*")
+          return 1;;
+      esac
+      return 0
+    fi
+  done
+
+  return 1
+}

@@ -1,0 +1,19 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 05-makefile-soname.dpatch by Mike Markley <mike@markley.org>
+##
+## DP: Adds '-soname' to the Makefile.
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/Makefile.in expect-5.43.0/Makefile.in
+--- expect-5.43.0.orig/Makefile.in	2004-05-07 18:10:30.000000000 +0000
++++ expect-5.43.0/Makefile.in	2006-07-10 16:57:18.000000000 +0000
+@@ -413,7 +413,7 @@
+ expect-shared-lib-file :: $(EXP_SHARED_LIB_FILE)
+ $(EXP_SHARED_LIB_FILE): $(OFILES)
+ 	-rm -f $(EXP_SHARED_LIB_FILE)
+-	@TCL_SHLIB_LD@ -o $(EXP_SHARED_LIB_FILE) $(SHARED_OFILES) @EXP_LD_SEARCH_FLAGS@ @EXP_SHLIB_LD_LIBS@
++	@TCL_SHLIB_LD@ -o $(EXP_SHARED_LIB_FILE) $(SHARED_OFILES) @EXP_LD_SEARCH_FLAGS@ @EXP_SHLIB_LD_LIBS@ -Wl,-soname,$(SONAME)
+ 
+ .PHONY: install-info install info
+ install-info:

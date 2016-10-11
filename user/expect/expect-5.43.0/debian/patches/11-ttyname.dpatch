@@ -1,0 +1,47 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 11-ttyname.dpatch by Ian Jackson <iwj@ubuntu.com>
+##
+## DP: Check before call ttyname, so don't coredump in chroots without /proc.
+## DP: (Closes: #440804).
+
+@DPATCH@
+
+diff -Naurp expect-5.43.orig/pty_termios.c expect-5.43/pty_termios.c
+--- expect-5.43.orig/pty_termios.c	2004-05-07 16:46:03.000000000 +0000
++++ expect-5.43/pty_termios.c	2007-09-04 13:44:20.000000000 +0000
+@@ -366,6 +366,17 @@ exp_init_pty()
+ #define W_OK 02
+ #endif
+ 
++static int ttyname_checked(int fd) {
++	const char *result;
++	result= ttyname(fd);
++	if (!result) {
++		perror("expect: pty_termios: system configuration problem:"
++		       " ttyname() failed");
++		exit(-1);
++	}
++	return result;
++}
++
+ int
+ exp_getptymaster()
+ {
+@@ -451,7 +462,7 @@ exp_getptymaster()
+ 	master = open("/dev/ptc",O_RDWR);
+ 	if (master >= 0) {
+ 		/* never fails */
+-		slave_name = ttyname(master);
++		slave_name = ttyname_checked(master);
+ 	}
+ 	exp_pty_slave_name = slave_name;
+ 	return(master);
+@@ -472,7 +483,7 @@ exp_getptymaster()
+ 		close(slave);
+ 		return -1;
+ 	}
+-	strcpy(slave_name, ttyname(slave));
++	strcpy(slave_name, ttyname_checked(slave));
+ 	exp_pty_slave_name = slave_name;
+ 	close(slave);
+ 	return master;

@@ -1,0 +1,6 @@
+::sysinit:/etc/init.d/rc
+
+::respawn:/sbin/getty -L 115200 ttySC2 vt102
+
+::shutdown:/etc/init.d/reboot
+::ctrlaltdel:/sbin/reboot

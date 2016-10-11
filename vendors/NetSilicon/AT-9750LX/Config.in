@@ -1,0 +1,13 @@
+#
+# Vendor specific
+#
+
+choice  'generate file-system option' 	"Auto CONFIG_VENDOR_GENFS_AUTO \
+					 Manual CONFIG_VENDOR_GENFS_MANUAL
+					" Auto
+if [ "$CONFIG_VENDOR_GENFS_MANUAL" = "y" ]; then
+	int '    Size of the image in blocks' CONFIG_VENDOR_GENFS_BLOCKS 6592
+	int '    Maximum number of inodes' CONFIG_VENDOR_GENFS_INODES 1024
+fi
+
+

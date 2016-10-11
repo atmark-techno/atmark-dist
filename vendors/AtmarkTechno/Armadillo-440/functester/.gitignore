@@ -1,0 +1,4 @@
+functester
+!usr/share/functester
+*.o
+*~

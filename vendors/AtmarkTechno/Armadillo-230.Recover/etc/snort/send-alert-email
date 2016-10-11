@@ -1,0 +1,20 @@
+
+. /etc/config/at-admin-packetscan
+
+if [ $PACKETSCAN_ON != 1 ]; then
+  exit 0
+fi
+
+SUBJECT='Packet scan alert report'
+SNORT_LOG=/var/log/snort/alert
+MESSAGE_INTRO_PATH=/etc/snort/alert-email-intro
+SRC_HOST=`hostname`
+
+LOG_CONTENTS=`cat $SNORT_LOG`
+if [ "$LOG_CONTENTS" = "" ]; then
+  exit 0
+fi
+
+cat $MESSAGE_INTRO_PATH $SNORT_LOG  | /bin/mail -S $ALERT_SMTP_HOST -H $SRC_HOST -s "${SUBJECT}" $ALERT_RECIPIENT
+echo -n '' > $SNORT_LOG
+

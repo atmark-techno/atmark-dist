@@ -1,0 +1,270 @@
+.EXPORT_ALL_VARIABLES:
+############################################################################
+#
+#  A Generic Microblaze config.arch that can be included by other platforms
+#  to reduce the number of places that need to be edited when something
+#  common changes.  If you include this file you may provide:
+#
+#  CPUFLAGS            - cpu specific flags to pass to the compiler
+#  VENDOR_CFLAGS       - vendor specific flags to pass to the compiler
+#  DISABLE_XIP         - set this to 1 to disable XIP code
+#  DISABLE_SHARED_LIBS - set this to 1 to disable shared libraries
+#  DISABLE_MOVE_RODATA - set this to 1 to disable moving rodata to text
+#  LOPT                - library optimisation flags
+#  UOPT                - user optimisation flags
+#
+#  Note:  Many of these are still unsupported on Microblaze!
+#
+#  John Williams    <jwilliams@itee.uq.edu.au>
+#  	based upon m68k version by 
+#  David McCullough <davidm@snapgear.com>
+#
+############################################################################
+#
+# Generic settings
+#
+
+ifndef CONSOLE_BAUD_RATE
+CONSOLE_BAUD_RATE = 9600
+endif
+
+ifeq ($(ROOTDIR)/modules,$(wildcard $(ROOTDIR)/modules))
+EXTRA_MODULE_DIRS = $(ROOTDIR)/modules
+endif
+
+ifndef VERSIONPKG
+#define VERSIONPKG 1.0.0
+endif
+
+ifndef VERSIONSTR
+VERSIONSTR = $(CONFIG_VENDOR)/$(CONFIG_PRODUCT) Version $(VERSIONPKG)
+endif
+
+############################################################################
+#
+# The makefiles need to know how to do things in different contexts
+# To save some pain we put it all here
+#
+# First settings we always want for all builds
+#
+
+# ARCH = kernel,  TARGET_ARCH = uClibc
+
+MACHINE       = microblaze
+ARCH          = microblaze
+CROSS_COMPILE = mb-
+CROSS         = $(CROSS_COMPILE)
+
+CC        = $(CROSS_COMPILE)gcc $(CPUFLAGS)
+AS        = $(CROSS_COMPILE)as $(CPUFLAGS)
+CXX       = $(CROSS_COMPILE)g++ $(CPUFLAGS)
+AR        = $(CROSS_COMPILE)ar
+LD        = $(CROSS_COMPILE)ld
+OBJCOPY   = $(CROSS_COMPILE)objcopy
+RANLIB    = $(CROSS_COMPILE)ranlib
+ELF2FLT   = mb-elf2flt
+STRIPTOOL = $(CROSS_COMPILE)strip
+STRIP     = $(STRIPTOOL)
+
+UCLINUX_BUILD_SET = 0					# have we set a special config below
+
+# Pull in common definitions
+include $(ROOTDIR)/vendors/config/common/config.arch
+
+ifndef DISABLE_SHARED_LIBS
+  ifeq ($(CONFIG_BINFMT_SHARED_FLAT),y)
+	BUILD_SHARED = 1
+  endif
+endif
+
+# work out which gcc version we are using
+GCC_VER = $(shell $(CC) -v 2>&1|grep version|cut -d " " -f 3)
+
+# split into major and minor numbers
+GCC_MAJOR = $(shell echo $(GCC_VER) | cut -d '.' -f 1)
+GCC_MINOR = $(shell echo $(GCC_VER) | cut -d '.' -f 2)
+
+# Use the various processor config options to determine special
+# compiler flags
+# this is common to both apps and libs
+
+# old style CONFIG defines...
+ifdef CONFIG_MICROBLAZE_HARD_MULT
+	HAS_HARD_MULT := y
+endif
+
+ifdef CONFIG_MICROBLAZE_HARD_DIV
+	HAS_HARD_DIV := y
+endif
+
+ifdef CONFIG_MICROBLAZE_HARD_BARREL
+	HAS_HARD_BARREL := y
+endif
+
+# and the new style
+# Is the HW multiply instruction available?
+# check if C_FAMILY contains spartan3, virtex2 or virtex4
+ifneq (,$(findstring virtex2,$(CONFIG_XILINX_MICROBLAZE0_FAMILY)))
+	HAS_HARD_MULT := y
+endif
+ifneq (,$(findstring virtex4,$(CONFIG_XILINX_MICROBLAZE0_FAMILY)))
+	HAS_HARD_MULT := y
+endif
+ifneq (,$(findstring spartan3,$(CONFIG_XILINX_MICROBLAZE0_FAMILY)))
+	HAS_HARD_MULT := y
+endif
+
+ifeq ($(CONFIG_XILINX_MICROBLAZE0_USE_BARREL),1)
+	HAS_HARD_BARREL := y
+endif
+
+ifeq ($(CONFIG_XILINX_MICROBLAZE0_USE_DIV),1)
+	HAS_HARD_DIV := y
+endif
+
+# Take the HAS_HARD_{BARREL|MUL|DIV} vars and convert into CFLAGS etc
+ARCH_CPUFLAGS :=
+
+ifeq ($(HAS_HARD_MULT),y)
+	ARCH_CPUFLAGS += -mno-xl-soft-mul
+	LIBC_SUFFIX := _hard
+else
+	ARCH_CPUFLAGS += -mxl-soft-mul
+	LIBC_SUFFIX := _soft
+endif
+
+ifeq ($(HAS_HARD_BARREL),y)
+	ARCH_CPUFLAGS += -mxl-barrel-shift
+	LIBC_SUFFIX := $(LIBC_SUFFIX)_shift
+endif
+
+ifeq ($(HAS_HARD_DIV),y)
+	ARCH_CPUFLAGS += -mno-xl-soft-div
+else
+	ARCH_CPUFLAGS += -mxl-soft-div
+endif
+
+############################################################################
+#
+# General purpose lib building rules,  uClibc.config uses these when
+# possible
+#
+
+ifdef UCLINUX_BUILD_LIB
+
+	# find where $(CROSS)gcc is living
+	GCCDIR = $(shell $(CC) -v 2>&1|grep specs|sed -e 's/.* \(.*\)specs/\1\./')
+
+  ifdef CONFIG_LIB_DEBUG
+	CFLAGS  :=  $(if $(LOPT),$(LOPT),-O1) -g
+  else
+	CFLAGS  :=  $(if $(LOPT),$(LOPT),-O2) -g -fomit-frame-pointer
+  endif
+	CFLAGS  += -Wall
+	#CFLAGS  += $(CPUFLAGS)
+	CFLAGS  += $(VENDOR_CFLAGS)
+	CFLAGS  += $(ARCH_CPUFLAGS)
+	CFLAGS  += -fno-builtin
+	CFLAGS  += -DEMBED
+
+  ifdef BUILD_SHARED
+	CFLAGS  += -mid-shared-library
+  else
+	ifndef DISABLE_XIP
+	  CFLAGS  += -msep-data
+	endif
+  endif
+
+	CFLAGS += -nostdinc -I$(ROOTDIR)/include -I$(ROOTDIR)/include/include
+	# don't want all the CFLAGS for uClibc/Config
+	ARCH_CFLAGS = $(CFLAGS)
+	CFLAGS  += -Dlinux -D__linux__ -D__uClinux__ -Dunix
+	CXXFLAGS = $(CFALGS) $(INCCXX) -fno-exceptions
+	LDFLAGS  = $(CFLAGS) -Wl,-elf2flt
+	# CFLAGS += -I$(GCCDIR)/include
+
+  ifndef DISABLE_MOVE_RODATA
+  	LDFLAGS += -Wl,-move-rodata
+  endif
+
+	UCLINUX_BUILD_SET=1
+endif
+
+############################################################################
+#
+# Settings for building user apps
+#
+
+ifdef UCLINUX_BUILD_USER
+
+	# find where $(CROSS)gcc is living
+	GCC_DIR = $(shell $(CC) -v 2>&1|grep specs|sed -e 's/.* \(.*\)specs/\1\./')
+
+	# find the compiler's libc.a  Note that for microblaze there are four 
+	# different versions, depending on the combination of hardware barrel
+	# shift and multiplier.  Config options are used top pick out the right one
+
+	GCC_LIB = $(GCC_DIR)/libgcc.a $(GCC_DIR)/../../../../microblaze/lib/libc$(LIBC_SUFFIX).a 
+
+	# for earlier compilers we must explicitly link against libgcc
+	# and xilinx's libc.a
+	ifeq ($(GCC_MAJOR),2)
+		GCC_LIB = $(GCC_DIR)/libgcc.a $(GCC_DIR)/../../../../microblaze/lib/libc.a
+	SLIBC        += $(GCC_LIB)
+	endif
+
+  ifdef BUILD_SHARED
+	LIBC          = -Wl,-R,$(ROOTDIR)/lib/libc.gdb $(SLIBC)
+  endif
+
+	LDPATH = -L$(ROOTDIR)/lib
+
+  ifdef CONFIG_USER_DEBUG
+	CFLAGS  :=  $(if $(UOPT),$(UOPT),-O1) -g
+  else
+	CFLAGS  :=  $(if $(UOPT),$(UOPT),-Os) -g -fomit-frame-pointer
+  endif
+
+	#CFLAGS += $(CPUFLAGS)
+	CFLAGS += -fno-common -Wall
+	CFLAGS += $(VENDOR_CFLAGS)
+	CFLAGS += $(ARCH_CPUFLAGS)
+	CFLAGS  += -Dlinux -D__linux__ -Dunix -D__uClinux__ -DEMBED
+	CFLAGS  += -nostdinc -I$(ROOTDIR)/include -I$(ROOTDIR)/include/include
+	CFLAGS  += -fno-builtin
+
+	CXXFLAGS = $(CFLAGS) $(INCCXX) -fno-exceptions
+
+	LDFLAGS = $(CFLAGS) -Wl,-elf2flt
+
+  ifneq ($(LIBCDIR),libc)
+	LDFLAGS += -nostartfiles $(ROOTDIR)/lib/crt0.o
+  endif
+
+	LDFLAGS +=$(LDPATH)
+
+	LDLIBS         = $(LIBC)
+	LDLIBS_static  = $(SLIBC)
+	CXXLIBS        = $(LIBSTDCPP) $(LIBIBERTY) $(LIBC) $(LIBGCC)
+
+  ifndef FLTFLAGS
+	FLTFLAGS :=
+  endif
+	export FLTFLAGS
+
+
+	# for anyone still using it
+	CONVERT = /bin/true
+
+	UCLINUX_BUILD_SET=1
+endif
+
+############################################################################
+#
+# fall through,  do other config options perhaps
+#
+
+ifeq ($(UCLINUX_BUILD_SET),1)
+endif
+
+############################################################################

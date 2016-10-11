@@ -1,0 +1,11 @@
+#!/bin/sh
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+export PATH
+
+LOCAL_SCRIPT=/etc/config/rc.local
+
+if [ -x ${LOCAL_SCRIPT} ]; then
+	echo "Running local start script (${LOCAL_SCRIPT})."
+	${LOCAL_SCRIPT}
+fi

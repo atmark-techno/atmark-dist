@@ -1,0 +1,101 @@
+#!/bin/sh
+
+PING_DEST_IP=$1
+PING_COUNT=$2
+RECONNECT_INTERVAL_SEC=$3
+DELAY_AFTER_RESET=$4
+
+check_ip() {
+	echo $1 | grep -q '[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+'
+}
+
+reset_3g() {
+	logger -t 3g-recover-daemon 'reset'
+
+	echo ${RESET_ASSERT} > /sys/class/gpio/RESET_N_3G/value
+	while [ -c /dev/ttyATCMD ]; do
+		sleep 1
+	done
+
+	usleep 40000	# 3g_mod_rst_hold_time
+	echo ${RESET_NEGATE} > /sys/class/gpio/RESET_N_3G/value
+	while [ ! -c /dev/ttyATCMD ]; do
+		sleep 1
+	done
+}
+
+IS_MC8090=unchecked
+check_mc8090() {
+	if [ "${IS_MC8090}" = 'unchecked' ]; then
+		lsusb | grep -q '1199:68a3'
+		IS_MC8090=$?
+	fi
+	return ${IS_MC8090}
+}
+
+IS_HL8548=unchecked
+check_hl8548() {
+	if [ "${IS_HL8548}" = 'unchecked' ]; then
+		lsusb | grep -q '1519:0302'
+		IS_HL8548=$?
+	fi
+	return ${IS_HL8548}
+}
+
+reconnect_3g() {
+	ifdown umts0 | logger -t 3g-recover-daemon
+	if ! check_mc8090; then
+		reset_3g | logger -t 3g-recover-daemon
+	fi
+	sleep ${DELAY_AFTER_RESET}
+	ifup umts0 | logger -t 3g-recover-daemon
+}
+
+is_connect() {
+	src_ip=$(ifconfig umts0 | grep 'inet addr:' | cut -d':' -f2 | cut -d' ' -f1)
+	logger -t 3g-recover-daemon "src_ip=${src_ip}"
+	if [ -n "${src_ip}" ]; then
+		ping -c ${PING_COUNT} ${PING_DEST_IP} > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			logger -t 3g-recover-daemon "ping success"
+			return 0
+		else
+			logger -t 3g-recover-daemon "ping fail"
+		fi
+	fi
+	logger -t 3g-recover-daemon "is_disconnect fail"
+	return 1
+}
+
+load_settings() {
+	. /etc/3g-recover.conf
+	if [ -f /etc/config/3g-recover.conf ]; then
+		. /etc/config/3g-recover.conf
+	fi
+}
+
+if check_mc8090; then
+	RESET_ASSERT=0
+	RESET_NEGATE=1
+elif check_hl8548; then
+	RESET_ASSERT=1
+	RESET_NEGATE=0
+fi
+
+load_settings
+while ! check_ip $PING_DEST_IP; do
+	logger -t 3g-recover 'Please set IP address (PING_DEST_IP) in /etc/3g-recover.conf or /etc/config/3g-recover.conf'
+	reconnect_3g
+	sleep ${RECONNECT_INTERVAL_SEC}
+	load_settings
+done
+
+while true; do
+	if is_connect; then
+		logger -t 3g-recover-daemon 'connected'
+		sleep ${RECONNECT_INTERVAL_SEC}
+	else
+		logger -t 3g-recover-daemon 'disconnected'
+		reconnect_3g
+	fi
+done

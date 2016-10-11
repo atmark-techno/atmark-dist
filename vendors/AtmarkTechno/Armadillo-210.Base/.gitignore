@@ -1,0 +1,4 @@
+config.linux-2.6.x
+etc/DISTNAME
+etc/IMAGEVERSION
+!etc/init.d

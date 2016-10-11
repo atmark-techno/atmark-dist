@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. /usr/share/3g/3g-common.sh
+
+restore_stty_setting_handler
+flock $SERIAL_3G_LOCK expect /usr/share/3g/3g-disconnect.exp $PID_3G

@@ -1,0 +1,29 @@
+.TH VIO_TYPE 8 "November 2005" "" "Linux Administrator's Manual"
+.SH NAME
+vio_type \- udev callout to identify type of VIO device
+.SH SYNOPSIS
+.BI vio_type
+[\fI--export\fP] \fIdevpath\fP
+.SH DESCRIPTION
+.B vio_type
+is normally called from a udev rule to identify the type of a VIO
+device.  Udev can use this information to assign appropriate permissions to
+the device or load an appropriate module.
+.SH USAGE
+.B vio_type
+takes a path under /sys, if not given it uses the value of the
+.I DEVPATH
+environment variable instead.  It then prints the information chosen by the
+options.
+.SH OPTIONS
+The following command-line switches are supported to specify what
+vio_type should print:
+.TP
+.BI --export
+print device type as VIO_TYPE environment variable for use with an
+IMPORT{program} rule.
+.RE
+.SH SEE ALSO
+.BR udev (8)
+.SH AUTHORS
+Scott James Remnant <scott@ubuntu.com>

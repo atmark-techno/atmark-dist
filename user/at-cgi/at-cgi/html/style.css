@@ -1,0 +1,391 @@
+/**
+ * This file is part of at-cgi
+ */
+
+body
+{
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	font-family: Arial, sans-serif;
+	line-height: 1.1em;
+	text-align: left;
+	color: #000000;
+	background: #ffffff;
+}
+
+p
+{
+	margin: 0 0 0 0;
+	padding: 0 0 6px 0;
+	font-size: 12px;
+}
+
+a
+{
+	text-decoration: none;
+	color:#306799;
+}
+
+a:hover
+{
+	color:#5D94C7;
+}
+
+ul
+{
+	font-size: 12px;
+	margin: 0 0 0 20px;
+	padding: 0 0 5px 0;
+}
+
+hr
+{
+	height: 1px;
+	background-color: #999999;
+	border: none;
+	margin: 6px 0 14px 0;
+}
+
+h2
+{
+	font-size: 18px;
+	padding: 0 0 0 0;
+	margin: 0 0 10px 0px;
+}
+
+h2.overview
+{
+	font-size: 26px;
+	text-align: center;
+	padding: 0 0 0 0;
+	color: #999999;
+	margin: 20px 0 0px 10px;
+}
+
+h3
+{
+	font-size: 16px;
+	color: #999999;
+	margin: 0 0 5px 0px;
+}
+
+h4
+{
+	font-size: 13px;
+	margin: 0 0 2px 0px;
+}
+
+pre
+{
+	font-size: 11px;
+	line-height: 1.2em;
+}
+
+pre.auto
+{
+	width: 650px;
+	background-color: #eeeeee;
+	padding: 10px 10px 10px 10px;
+	font-size: 11px;
+	overflow: scroll;
+	overflow-y:hidden
+}
+
+.title_img
+{
+	margin: 13px 10px 1px 25px;
+}
+
+.footer
+{
+	text-align: center;
+  	padding: 70px 0px 10px 0px;
+	font-size: 11px;
+	color: #999999;
+	line-height: 1.2em;
+}
+
+.footer a
+{
+	color: #999999;
+}
+
+p.center
+{
+	text-align: center;
+}
+
+div.error
+{
+	width: 400px;
+	padding: 10px 10px 10px 10px;
+	border: 1px solid #999999;
+	text-align: center;
+	margin: 0 auto 0 auto;
+}
+
+#main_menu
+{
+	background-color: #111111;
+	margin: 0 auto 15px auto;
+	background: url(/images/menu_center.jpg) repeat-x
+}
+
+#main_menu td
+{
+	padding: 20px 10px 20px 10px;
+}
+
+#main_menu td.left
+{
+	background: url(/images/menu_left.jpg) no-repeat
+}
+
+#main_menu td.right
+{
+	background: url(/images/menu_right.jpg) no-repeat right top
+}
+
+#main_menu a
+{
+	font-size: 13px;
+	color: #dddddd;
+}
+
+#main_menu a:hover
+{
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#main_menu td.selected a
+{
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.sub_menu
+{
+	background-color: #dddddd;
+	margin: 0 auto 20px auto;
+	background: url(/images/sub_menu_center.jpg) repeat-x
+}
+
+.sub_menu td
+{
+	padding: 10px 5px 10px 5px;
+}
+
+.sub_menu td.left
+{
+	background: url(/images/sub_menu_left.jpg) no-repeat
+}
+
+.sub_menu td.right
+{
+	background: url(/images/sub_menu_right.jpg) no-repeat right top
+}
+
+.sub_menu a
+{
+	font-size: 12px;
+	color: #444444;
+	text-decoration: none;
+}
+
+.sub_menu a:hover
+{
+	color: #000000;
+}
+
+.sub_menu a.selected
+{
+	color: #000000;
+	font-weight: bold;
+}
+
+.sub_menu td.right_border
+{
+	/* border-right: 1px solid #999999; */
+}
+
+.contents_frame
+{
+	margin: 0 10px 0 10px;
+}
+
+p.small, span.small
+{
+	font-size: 11px;
+	color: #666666;
+}
+
+.h_gap_small
+{
+	height: 10px;
+}
+
+.h_gap_med
+{
+	height: 20px;
+}
+
+.h_gap_big
+{
+	height: 40px;
+}
+
+.h_gap_verybig
+{
+	height: 40px;
+}
+
+.top_info_message
+{
+	position: relative;
+}
+
+.top_info_message div
+{
+	position: absolute; left: 230px; top: -15px;
+	text-align: right;
+	width: 430px;
+}
+
+span.message
+{
+	background-color: #cccccc;
+	font-size: 11px;
+	padding: 4px 12px 4px 12px;
+	line-height: 2.2em;
+
+}
+
+.inline_error
+{
+	color: #cc0000;
+}
+
+.overview_frame
+{
+
+}
+
+.standard_function_box
+{
+	border: 1px solid #999999;
+	padding: 13px 10px 5px 10px;
+	margin: 15px 0px 5px 0px;
+}
+
+.system_box
+{
+	padding: 13px 10px 5px 10px;
+	margin: 15px 0px 5px 0px;
+	background-color: #777777;
+	color: #ffffff;
+}
+
+.system_box h4
+{
+	color: #dddddd;
+	margin: 0 0 13px 0;
+}
+
+.system_box p
+{
+	font-size: 12px;
+}
+
+.update_title
+{
+	font-size: 24px;
+	line-height: 1.5em;
+}
+
+.details
+{
+	font-size: 12px;
+	margin: 0 0 10px;
+}
+
+.details .new td
+{
+	padding: 5px 10px 0 0;
+}
+
+.details .left
+{
+	text-align: right;
+	font-weight: bold;
+	width: 25%;
+	padding: 0px 10px 0 0;
+}
+
+.details .new td
+{
+	padding: 5px 10px 0 0;
+}
+
+.left_sub
+{
+	font-size: 12px;
+	text-align: right;
+	width: 16%;
+	padding: 0 10px 0 0;
+}
+
+.passwd_details
+{
+	font-size: 12px;
+}
+
+.passwd_details .left
+{
+	text-align: right;
+	padding: 0 5px 0 0;
+}
+
+#countdown
+{
+	font-size: 30px;
+	color: #999999;
+}
+
+.big_message
+{
+	font-size: 18px;
+	margin: 50px 30px 50px 30px;
+}
+
+table.small_out
+{
+	font-size: 11px;
+	font-family: monospace;
+	line-height: 1.1em;
+}
+
+.top_system_message
+{
+	padding: 10px 20px 0 20px;
+	font-size: 11px;
+	color: #999999;
+}
+
+.big_link
+{
+	font-size: 15px;
+	font-weight: bold;
+}
+
+table.firewall_services
+{
+	font-size: 12px;
+	margin: 0 0 5px 30px;
+}
+
+div.firewall_services
+{
+	font-size: 12px;
+	margin: 0 0 0 30px;
+}

@@ -1,0 +1,58 @@
+#! /usr/bin/make -f
+
+export DH_OPTIONS
+
+tmp := $(CURDIR)/debian/pcmciautils
+tmp_udeb := $(CURDIR)/debian/pcmciautils-udeb
+
+build:
+	dh_testdir
+	$(MAKE) UDEV=true V=true
+
+clean:
+	dh_testdir
+	$(MAKE) clean UDEV=true V=true
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	$(MAKE) install UDEV=true DESTDIR=$(tmp) V=true \
+		pcmciaconfdir=\$${prefix}/usr/lib/pcmciautils
+	mv $(tmp)/etc/udev/rules.d/60-pcmcia.rules $(tmp)/etc/udev/pcmcia.rules
+	mv $(tmp)/sbin/pcmcia-* $(tmp)/lib/udev/
+
+	$(MAKE) install-tools install-udev install-config \
+		install-socket-tools UDEV=true DESTDIR=$(tmp_udeb) V=true
+	mv $(tmp_udeb)/etc/udev/rules.d/60-pcmcia.rules \
+		$(tmp_udeb)/etc/udev/rules.d/85-pcmcia.rules
+	mv $(tmp_udeb)/sbin/pcmcia-* $(tmp_udeb)/lib/udev/
+
+binary-arch: DH_OPTIONS=-a
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs
+	dh_installinit -ppcmciautils -r --no-start -- \
+		start 40 S .
+	cp -a $(tmp)/etc/init.d/pcmciautils $(tmp_udeb)/etc/init.d/pcmciautils
+	# install /etc/default file as well
+	dh_installinit -ppcmciautils-udeb --name=pcmciautils
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep:
+
+binary: binary-arch binary-indep
+
+.PHONY: build clean install binary-arch binary-indep binary

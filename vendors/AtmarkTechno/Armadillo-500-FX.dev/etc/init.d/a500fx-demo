@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting a500fx-demo: "
+
+DISPLAY=:0 /usr/bin/a500fx-demo >/dev/null 2>&1 &
+
+check_status

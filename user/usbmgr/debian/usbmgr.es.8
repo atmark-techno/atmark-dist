@@ -1,0 +1,73 @@
+.TH "usbmgr" "8" "0.4.8" "Shuu Yamaguchi" "Herramientas USB"
+.SH NOMBRE
+.LP 
+usbmgr \- Demonio para carga/descarga de módulos USB
+.SH "SINOPSIS"
+.LP 
+\fBusbmgr\fR [\-Vdnph] [\-D \fIn\fP] [\-c \fIfichero\fP] [\-t \fItiempo\fP]
+.SH "DESCRIPCIÓN"
+.LP 
+El demonio \fBusbmgr\fR se encarga de cargar y descargar los módulos USB 
+del núcleo cuando sea necesario.
+.LP 
+Cuando los dispositivos USB se conectan o desconectan al concentrador USB, 
+usbmgr trabaja de la siguiente manera, de acuerdo a la configuración:
+.TP 
+a)
+Carga y descarga módulos del núcleo Linux.
+.TP 
+b)
+Ejecuta ficheros para configurar los dispositivos USB.
+.SH "OPCIONES"
+.LP 
+.TP 
+\fB\-V\fR
+Imprime la versión y finaliza.
+.TP 
+\fB\-d\fR
+Modo depuración. Implica \fB\-n\fR.
+.TP 
+\fB\-n\fR
+Modo de ejecución no-demonio.
+.TP 
+\fB\-p\fR
+No crea fichero PID.
+.TP 
+\fB\-h\fR
+Imprime uso y finaliza.
+.TP 
+\fB\-b\fR
+Sin pitido.
+.TP 
+\fB\-D\fR \fIn\fP
+Activa modo depuración, donde \fIn\fP es el nivel de depuración.
+.TP 
+\fB\-c\fR \fIfichero\fP
+Especifica un fichero de configuración alternativo.
+.TP 
+\fB\-t\fR \fItiempo\fP
+Especifica el tiempo de sondeo en microsegundos.
+.SH "FICHEROS"
+.LP 
+\fI/etc/usbmgr/usbmgr.conf\fP 
+.br 
+\fI/etc/usbmgr/network\fP 
+.br 
+\fI/etc/usbmgr/preload.conf\fP 
+.br 
+.SH "VARIABLES DE ENTORNO"
+.LP 
+Ninguna.
+.SH "AUTOR"
+.LP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.LP 
+Esta página de manual ha sido escrita por Esteban Manchado Velázquez <zoso@debian.org>, para el sistema Debian GNU/Linux (pero podría ser usada por otros).
+.SH "TRADUCTOR"
+.LP
+Traducción de Rudy Godoy <rudy@kernel\-panik.org>.
+.SH "VÉASE TAMBIÉN"
+.LP 
+.BR dump_usbdev (8),
+.BR update_usbdb (8),
+.BR usbmgr.conf (5)

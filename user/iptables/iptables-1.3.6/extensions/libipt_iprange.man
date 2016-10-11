@@ -1,0 +1,15 @@
+This matches on a given arbitrary range of IPv4 addresses
+
+(Please note: This match requires kernel support that
+might not be available in official Linux kernel sources or
+Debian's packaged Linux kernel sources.
+And if support for this match is available for the 
+specific Linux kernel source version, that support might 
+not be enabled in the current Linux kernel binary.)
+
+.TP
+.BI "[!]" "--src-range " "ip-ip"
+Match source IP in the specified range.
+.TP
+.BI "[!]" "--dst-range " "ip-ip"
+Match destination IP in the specified range.

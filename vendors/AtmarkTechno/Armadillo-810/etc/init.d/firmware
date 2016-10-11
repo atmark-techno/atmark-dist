@@ -1,0 +1,24 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+SRC_DIR="/opt/firmware/acm"
+DST_DIR="/lib/firmware"
+DEC_FILE_PTN="acm-decoder-*.fw"
+ENC_FILE_PTN="acm-encoder-*.fw"
+
+mkdir -p ${DST_DIR}
+
+echo -n "Creating decoder firmware symlink: "
+if [ -n "`ls ${SRC_DIR}/${DEC_FILE_PTN}`" ]; then
+    ln -sf ${SRC_DIR}/${DEC_FILE_PTN} ${DST_DIR}/acm-decoder.fw
+fi
+check_status
+
+echo -n "Creating encoder firmware symlink: "
+if [ -n "`ls ${SRC_DIR}/${ENC_FILE_PTN}`" ]; then
+    ln -sf ${SRC_DIR}/${ENC_FILE_PTN} ${DST_DIR}/acm-encoder.fw
+fi
+check_status

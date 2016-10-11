@@ -1,0 +1,139 @@
+1.0.0
+ - added for new devices format
+ - added for new modutils which is used on Kernel 2.5 and later.
+
+0.4.8
+ - fixed parsing a device which has 2 or more Interfaces and Endpoints
+ - added debug messages
+
+0.4.7 [deleted]
+
+0.4.6
+ - fixed ignoring with multiple endpoints
+ - added configure script
+ - added SuSE RC file
+
+0.4.5
+ - fixed calling mount infinitly when kernel does not have usbdevfs
+
+0.4.4
+ - added waiting for flushing /proc
+ - made code smart
+ - added executing script with environment value
+ - updated README
+
+0.4.3
+ - changed how to look at devices file
+ - added refreshing allocated memory
+ - made code smart
+
+0.4.2
+ - added p option not to create pid file
+ - added h option to print usage
+ - wrote README/README.eucJP in more detail
+ - added checking and installing for SuSE
+ - added beep
+ - added no beep option
+ - added no beep token in configuration file
+ - clean up
+
+0.4.1
+ - fixed to produce many children
+ - modules in preload.conf isn't unload
+ - fixed matching when bulk_msg is timeout
+
+0.4.0
+ - changed the parsing file from /proc/bus/usb/nnn to /proc/bus/usb/devices
+ - needless signals are not sended
+ - usbmgr.conf was updated
+
+0.3.6
+ - it don't say error,if preload file doesn't exist
+ - fixed if preload file size is 0
+ - fixed some host controllers are not written on host file.
+ - usbmgr.conf was updated 
+ - included network script
+
+0.3.5
+ - update_usbdb forks modprobe with options -s
+ - generalize RC-script
+ - usbmgr.conf was updated
+
+0.3.4
+ - usbmgr looks default files for class
+ - update_usbdb make default files if "subclass" or "protocol" isn't written in    class configuration
+
+0.3.3
+ - cleaned up
+ - added -f , -d and -s option to update_usbdb
+ - update_usbdb is killed on doing 10 seconds over
+ - change sleep to poll
+
+0.3.2
+ - fixed that a script argument is not run
+ - update_usbdb ran higher speed
+ - usbmgr.conf was updated
+
+0.3.1
+ - usbmgr is splited usbmgr into usbmgr daemon and update_usbdb
+ - cleaned up source codes.
+
+0.3.0
+ - Memory image has several structures, but now it has only one structure.
+ - Configuration was saved under /etc/usbmgr
+ - modified/removed/added many functions
+
+0.2.1
+ - When received SIGTERM, umount /proc/bus/usb.
+
+0.2.0
+ - fixed index of name array which is an argumen for free()
+ - run script with "start" when a device connect, and run script "stop" when
+   a device disconnect
+
+0.1.6
+ - Changed configuration directory '/etc/usb' to '/etc/usbmgr'.
+ - When received SIGHUP, deleted device , config , modlink and module images.
+	(#001)
+
+0.1.5
+ - 0 value matches any values in configuration
+ - When unconnecting USB devices, required modules without busy status are
+   unloaded.(#001)
+ - When errors are found in configuration, usbmgr exit.
+
+0.1.4
+ - Because of recognizing mice for X, added code to preload modules on starting.
+   (#011)
+ - Made RC script "usbmgr" and Added it to install target. 
+   (#012)
+ - If configuration files exist, they are moved filename.old.
+ - Added use_mouse target in Makefile.
+
+0.1.3
+ - Deleted real mod_link layer between usbdevice and module
+	,and linked usbdevice to mod_link of config layer.
+ - Added code to load multiple modules at one time(#010).
+ - Added code for dump_dev to find config data automatically.
+ - Added code for dump_dev to deal with multiple arguments.
+ - Added code for dump_dev to imagine the full path of struct 
+ 	usb_device_descriptor file.
+
+0.1.2
+ - Changed LINK_NODE macro to function link_node which link to struct link.
+ - Made config_id structure which has "class","subclass","protocol",
+ 	"vendor","protocol" and "type".
+ - Made id member in config and moved "class",... from struct config 
+ 	to struct config_id.
+ - Multiple USB Bus was observed(#004)
+ - Made desc2conf which traslate struct usb_device_descriptor to 
+ 	struct config
+ - Added option -c which is specified configuration file.
+ - Added "script" member to struct config. The string following "script"
+ 	is file name , and is executed after modules were loaded. 
+
+0.1.1
+ - Added code to allow 0 as configuration ID.(#009)
+ - Added code to reload configuration file when HUP signal is received.(#008)
+ - Added code to create pid file which includes pid number.(#005)
+ - Added code to output messages using syslog(#007)

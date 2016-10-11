@@ -1,0 +1,9 @@
+# /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+
+auto lo usb0
+iface lo inet loopback
+iface eth0 inet dhcp
+iface usb0 inet manual
+      up ifconfig usb0 up
+      post-up zcip usb0 /etc/zcip.script > /dev/null
+      down ifconfig usb0 down

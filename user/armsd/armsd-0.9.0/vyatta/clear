@@ -1,0 +1,10 @@
+#!/bin/sh
+
+id=$1
+in=$2
+out=$3
+
+echo clear script invoked: $0 $*
+
+echo "clear script: module-id=$id" >$out
+date >>$out

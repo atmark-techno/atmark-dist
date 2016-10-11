@@ -1,0 +1,10 @@
+stamp-*
+
+dix-config.h
+do-not-use-config.h
+kdrive-config.h
+xgl-config.h
+xkb-config.h
+xorg-config.h
+xorg-server.h
+xwin-config.h

@@ -1,0 +1,1 @@
+KERNEL=="awlan*", SUBSYSTEM=="net", ACTION=="add", RUN+="/etc/config/awl13-firmware-load.sh %k"

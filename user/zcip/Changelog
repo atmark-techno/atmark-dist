@@ -1,0 +1,70 @@
+release 4, 10 October 2002
+	
+	Patch from David Brownell: Detects and warns about the Linux
+	kernel configuration problem. Also nice documentation
+	fixes. Thanks! 
+
+	Patch from Michael Schmidt: Add an option to use a real random
+	seed for the address seed, instead of the MAC address. Thanks!
+		
+	Fixed "aquired" and "implemeted" typos in zcip.c
+
+	Minor updates to TODO and README.
+
+	Update to the -07 version of the draft spec.
+
+	Added patches (not applied) to the tarball for NetBSD. Thanks to
+	Brendan Burns for this. Added README references.
+
+	Fixed version number in zcip (caught by Dave Brownell).
+
+	
+release 3, April 10 2002
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+    More patches from Brad Hards:
+
+	Got rid of all global per-interface variables, put them in
+	a struct.  Cleaner, & prepares for supporting multiple interfaces.
+
+	Delete temporary files when making clean.
+
+    There's now a zcip mailing list, see the README for more info.
+
+
+
+
+release 2, March 13 2002
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Added a Copyright notice and credits/contact information.
+
+    Applied a patch from Brad Hards (thanks!):
+
+        Got rid of the global if_name from zcip.c, make it an argument
+        instead.
+
+        Added a man page.
+
+        Added a --version command-line option.
+
+        Use getopts.
+
+        Better README.
+
+        More stuff to do.
+
+    Fixed a typo in the make-arp usage info.
+
+
+
+
+release 1, January 22 2002
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Implements the algoritm described by revision 4 of the IETF Draft
+    "Dynamic Configuration of IPv4 Link-Local Addresses".
+
+    No known bugs.
+
+

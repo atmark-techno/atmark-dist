@@ -1,0 +1,150 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 08-tcl-stubs.dpatch by David Engel <david@debian.org>
+##
+## DP: Uses tcl stubs if available.
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/configure.in expect-5.43.0/configure.in
+--- expect-5.43.0.orig/configure.in	2005-02-08 01:45:06.000000000 +0000
++++ expect-5.43.0/configure.in	2006-07-10 17:12:39.000000000 +0000
+@@ -319,6 +319,18 @@
+   AC_MSG_RESULT(unshared)
+ fi
+ 
++# now see if we can/should use Tcl stubs
++AC_MSG_CHECKING([whether to use Tcl stubs])
++AC_ARG_ENABLE(stubs,
++	[  --enable-stubs     use Tcl stubs, if available],
++	[enable_stubs=$enableval], [enable_stubs=no])
++if test "$enable_shared" = "yes" && test "$enable_stubs" = "yes" && test "x${TCL_SUPPORTS_STUBS}" = "x1"; then
++  AC_MSG_RESULT(yes)
++  EXP_CFLAGS="$EXP_CFLAGS -DUSE_TCL_STUBS"
++else
++  AC_MSG_RESULT(no)
++fi
++
+ #
+ # Now that we've found the Tcl sources, configure the debugger
+ # this is a little tricky because it has its own configure script
+@@ -1174,7 +1186,11 @@
+ else
+ 	# seems a little strange to build in Tcl's build-lib, but
+ 	# that's what Tk does.
+-	EXP_SHLIB_LD_LIBS="$TCL_BUILD_LIB_SPEC $TCL_DL_LIBS $LIBS -lc"
++	if test "$enable_stubs" = "yes"; then
++	  EXP_SHLIB_LD_LIBS="$TCL_BUILD_STUB_LIB_SPEC $TCL_DL_LIBS $LIBS $LIBS -lc"
++	else
++	  EXP_SHLIB_LD_LIBS="$TCL_BUILD_LIB_SPEC $TCL_DL_LIBS $LIBS -lc"
++	fi
+ fi
+ 
+ #--------------------------------------------------------------------
+diff -Naur expect-5.43.0.orig/exp_command.c expect-5.43.0/exp_command.c
+--- expect-5.43.0.orig/exp_command.c	2004-08-20 17:18:01.000000000 +0000
++++ expect-5.43.0/exp_command.c	2006-07-10 17:12:39.000000000 +0000
+@@ -123,6 +123,10 @@
+ static Tcl_HashTable slaveNames;
+ #endif /* HAVE_PTYTRAP */
+ 
++/* These save the original functions so they can be used later. */
++Tcl_CmdInfo exp_close_info;
++Tcl_CmdInfo exp_return_info;
++
+ typedef struct ThreadSpecificData {
+     /*
+      * List of all exp channels currently open.  This is per thread and is
+@@ -2311,12 +2315,9 @@
+ 	/* Historical note: we used "close"  long before there was a */
+ 	/* Tcl builtin by the same name. */
+ 
+-	Tcl_CmdInfo info;
+ 	Tcl_ResetResult(interp);
+-	if (0 == Tcl_GetCommandInfo(interp,"close",&info)) {
+-	    info.clientData = 0;
+-	}
+-	return(Tcl_CloseObjCmd(info.clientData,interp,objc_orig,objv_orig));
++	    
++	return(exp_close_info.objProc(exp_close_info.objClientData,interp,objc_orig,objv_orig));
+     }
+ 
+     if (chanName) {
+@@ -2961,7 +2962,7 @@
+     /* if successful (i.e., TCL_RETURN is returned) */
+     /* modify the result, so that we will handle it specially */
+ 
+-    int result = Tcl_ReturnObjCmd(clientData,interp,objc,objv);
++    int result = exp_return_info.objProc(exp_return_info.objClientData,interp,objc,objv);
+     if (result == TCL_RETURN)
+         result = EXP_TCL_RETURN;
+     return result;
+diff -Naur expect-5.43.0.orig/exp_command.h expect-5.43.0/exp_command.h
+--- expect-5.43.0.orig/exp_command.h	2004-07-30 15:35:28.000000000 +0000
++++ expect-5.43.0/exp_command.h	2006-07-10 17:12:39.000000000 +0000
+@@ -34,6 +34,9 @@
+ EXTERN int exp_default_rm_nulls;
+ EXTERN int exp_default_close_on_eof;
+ 
++EXTERN Tcl_CmdInfo exp_close_info;
++EXTERN Tcl_CmdInfo exp_return_info;
++
+ EXTERN int		exp_one_arg_braced _ANSI_ARGS_((Tcl_Obj *));
+ EXTERN int		exp_eval_with_one_arg _ANSI_ARGS_((ClientData,
+ 				Tcl_Interp *, struct Tcl_Obj * CONST objv[]));
+diff -Naur expect-5.43.0.orig/exp_main_exp.c expect-5.43.0/exp_main_exp.c
+--- expect-5.43.0.orig/exp_main_exp.c	2002-04-16 20:47:46.000000000 +0000
++++ expect-5.43.0/exp_main_exp.c	2006-07-10 17:12:39.000000000 +0000
+@@ -7,6 +7,9 @@
+ would appreciate credit if this program or parts of it are used.
+ */
+ 
++/* Don't use stubs since we are in the main application. */
++#undef USE_TCL_STUBS
++
+ #include "expect_cf.h"
+ #include <stdio.h>
+ #include "tcl.h"
+diff -Naur expect-5.43.0.orig/exp_main_sub.c expect-5.43.0/exp_main_sub.c
+--- expect-5.43.0.orig/exp_main_sub.c	2004-07-02 01:00:06.000000000 +0000
++++ expect-5.43.0/exp_main_sub.c	2006-07-10 17:12:39.000000000 +0000
+@@ -486,6 +486,7 @@
+ 	char *dot = strchr(TCL_VERSION,'.');
+ 	int tcl_minor = atoi(dot+1);
+ 
++#ifndef USE_TCL_STUBS
+ 	if (tcl_major < NEED_TCL_MAJOR || 
+ 	    (tcl_major == NEED_TCL_MAJOR && tcl_minor < NEED_TCL_MINOR)) {
+ 	    sprintf(interp->result,
+@@ -499,6 +500,19 @@
+     if (Tcl_PkgRequire(interp, "Tcl", TCL_VERSION, 0) == NULL) {
+       return TCL_ERROR;
+     }
++#else
++    if (Tcl_InitStubs(interp, "8.1", 0) == NULL) {
++      return TCL_ERROR;
++    }
++#endif
++
++    if (Tcl_GetCommandInfo(interp, "close", &exp_close_info) == 0) {
++      return TCL_ERROR;
++    }
++    if (Tcl_GetCommandInfo(interp, "return", &exp_return_info) == 0) {
++      return TCL_ERROR;
++    }
++ 
+     if (Tcl_PkgProvide(interp, "Expect", EXP_VERSION) != TCL_OK) {
+       return TCL_ERROR;
+     }
+diff -Naur expect-5.43.0.orig/exp_main_tk.c expect-5.43.0/exp_main_tk.c
+--- expect-5.43.0.orig/exp_main_tk.c	2003-07-31 18:27:20.000000000 +0000
++++ expect-5.43.0/exp_main_tk.c	2006-07-10 17:12:39.000000000 +0000
+@@ -32,6 +32,9 @@
+ static char sccsid[] = "@(#) tkAppInit.c 1.19 95/12/23 17:09:24";
+ #endif /* not lint */
+ 
++/* Don't use stubs since we are in the main application. */
++#undef USE_TCL_STUBS
++
+ #include <ctype.h>
+ 
+ #include "tk.h"

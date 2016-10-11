@@ -1,0 +1,16 @@
+Source: zcip
+Section: net
+Priority: optional
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Build-Depends: libnet0-dev, libpcap0.8-dev
+Standards-Version: 3.6.2
+
+Package: zcip
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: gets an IP addr by partially implementing IETF zeroconf protocols
+ zcip obtains an IP address without requiring manual assignment or a
+ DHCP server. It uses the ad-hoc link-local IPv4 auto-configuration
+ trick.
+ .
+ Homepage: http://zeroconf.sourceforge.net/

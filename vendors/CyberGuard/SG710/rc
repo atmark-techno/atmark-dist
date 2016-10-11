@@ -1,0 +1,49 @@
+echo "/etc/rc processing ..."
+echo "Starting watchdog ..."
+watchdog /dev/watchdog
+hostname SG710 
+# echo "Making Filesystems ..."
+# /dev/ram0 is the root filesystem for recovery images
+echo "Mounting Filesystems ..."
+mount -t proc proc /proc
+echo 3 > /proc/cpu/alignment
+mount -t devpts devpts /dev/pts
+mount -t tmpfs -o size=33m tmpfs /var
+if ! mount -t ext3 /dev/flash/config /etc/config
+then
+	mke2fs -j /dev/flash/config
+	if ! mount -t ext3 /dev/flash/config /etc/config
+	then
+		/bin/expand /etc/ramfs.img /dev/ram2
+		mount -t ext2 /dev/ram2 /etc/config
+	fi
+fi
+mkdir /var/tmp
+mkdir /var/log
+mkdir /var/run
+mkdir /var/lock
+mkdir /var/empty
+[ -d /etc/config/persistent ] || mkdir /etc/config/persistent
+echo "Processing Config Filesystem ..."
+/bin/flatfsd -r
+migrate_config
+cp /etc/config/resolv.user /etc/config/resolv.conf
+echo "Setting system clock ..."
+hwclock --hctosys --utc
+logd boot
+echo "Loading network drivers."
+insmod crc32
+insmod mii
+insmod 8139cp
+ip link set eth0 name tmp
+ip link set eth1 name eth0
+ip link set tmp name eth1
+insmod ixp400
+insmod ixp425_eth
+insmod e1000
+setmac -n 4
+insmod ipsec
+echo "Loading crypto drivers."
+insmod safenet
+insmod safenet_sg
+echo "/etc/rc complete."

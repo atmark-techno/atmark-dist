@@ -1,0 +1,1 @@
+KERNEL=="wlan*", SUBSYSTEM=="net", ACTION=="add", RUN+="/etc/config/aerial-firmware-load.sh %k"

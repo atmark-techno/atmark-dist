@@ -1,0 +1,1131 @@
+This is libc.info, produced by makeinfo version 4.3 from libc.texinfo.
+
+INFO-DIR-SECTION GNU libraries
+START-INFO-DIR-ENTRY
+* Libc: (libc).                 C library.
+END-INFO-DIR-ENTRY
+
+   This file documents the GNU C library.
+
+   This is Edition 0.10, last updated 2001-07-06, of `The GNU C Library
+Reference Manual', for Version 2.2.x.
+
+   Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2001, 2002
+Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "Free Software Needs Free Documentation" and
+"GNU Lesser General Public License", the Front-Cover texts being (a)
+(see below), and with the Back-Cover Texts being (b) (see below).  A
+copy of the license is included in the section entitled "GNU Free
+Documentation License".
+
+   (a) The FSF's Front-Cover Text is:
+
+   A GNU Manual
+
+   (b) The FSF's Back-Cover Text is:
+
+   You have freedom to copy and modify this GNU Manual, like GNU
+software.  Copies published by the Free Software Foundation raise
+funds for GNU development.
+
+
+File: libc.info,  Node: Copying and Concatenation,  Next: String/Array Comparison,  Prev: String Length,  Up: String and Array Utilities
+
+Copying and Concatenation
+=========================
+
+   You can use the functions described in this section to copy the
+contents of strings and arrays, or to append the contents of one string
+to another.  The `str' and `mem' functions are declared in the header
+file `string.h' while the `wstr' and `wmem' functions are declared in
+the file `wchar.h'.
+
+   A helpful way to remember the ordering of the arguments to the
+functions in this section is that it corresponds to an assignment
+expression, with the destination array specified to the left of the
+source array.  All of these functions return the address of the
+destination array.
+
+   Most of these functions do not work properly if the source and
+destination arrays overlap.  For example, if the beginning of the
+destination array overlaps the end of the source array, the original
+contents of that part of the source array may get overwritten before it
+is copied.  Even worse, in the case of the string functions, the null
+character marking the end of the string may be lost, and the copy
+function might get stuck in a loop trashing all the memory allocated to
+your program.
+
+   All functions that have problems copying between overlapping arrays
+are explicitly identified in this manual.  In addition to functions in
+this section, there are a few others like `sprintf' (*note Formatted
+Output Functions::) and `scanf' (*note Formatted Input Functions::).
+
+ - Function: void * memcpy (void *restrict TO, const void *restrict
+          FROM, size_t SIZE)
+     The `memcpy' function copies SIZE bytes from the object beginning
+     at FROM into the object beginning at TO.  The behavior of this
+     function is undefined if the two arrays TO and FROM overlap; use
+     `memmove' instead if overlapping is possible.
+
+     The value returned by `memcpy' is the value of TO.
+
+     Here is an example of how you might use `memcpy' to copy the
+     contents of an array:
+
+          struct foo *oldarray, *newarray;
+          int arraysize;
+          ...
+          memcpy (new, old, arraysize * sizeof (struct foo));
+
+ - Function: wchar_t * wmemcpy (wchar_t *restrict WTO, const wchar_t
+          *restruct WFROM, size_t SIZE)
+     The `wmemcpy' function copies SIZE wide characters from the object
+     beginning at WFROM into the object beginning at WTO.  The behavior
+     of this function is undefined if the two arrays WTO and WFROM
+     overlap; use `wmemmove' instead if overlapping is possible.
+
+     The following is a possible implementation of `wmemcpy' but there
+     are more optimizations possible.
+
+          wchar_t *
+          wmemcpy (wchar_t *restrict wto, const wchar_t *restrict wfrom,
+                   size_t size)
+          {
+            return (wchar_t *) memcpy (wto, wfrom, size * sizeof (wchar_t));
+          }
+
+     The value returned by `wmemcpy' is the value of WTO.
+
+     This function was introduced in Amendment 1 to ISO C90.
+
+ - Function: void * mempcpy (void *restrict TO, const void *restrict
+          FROM, size_t SIZE)
+     The `mempcpy' function is nearly identical to the `memcpy'
+     function.  It copies SIZE bytes from the object beginning at
+     `from' into the object pointed to by TO.  But instead of returning
+     the value of TO it returns a pointer to the byte following the
+     last written byte in the object beginning at TO.  I.e., the value
+     is `((void *) ((char *) TO + SIZE))'.
+
+     This function is useful in situations where a number of objects
+     shall be copied to consecutive memory positions.
+
+          void *
+          combine (void *o1, size_t s1, void *o2, size_t s2)
+          {
+            void *result = malloc (s1 + s2);
+            if (result != NULL)
+              mempcpy (mempcpy (result, o1, s1), o2, s2);
+            return result;
+          }
+
+     This function is a GNU extension.
+
+ - Function: wchar_t * wmempcpy (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM, size_t SIZE)
+     The `wmempcpy' function is nearly identical to the `wmemcpy'
+     function.  It copies SIZE wide characters from the object
+     beginning at `wfrom' into the object pointed to by WTO.  But
+     instead of returning the value of WTO it returns a pointer to the
+     wide character following the last written wide character in the
+     object beginning at WTO.  I.e., the value is `WTO + SIZE'.
+
+     This function is useful in situations where a number of objects
+     shall be copied to consecutive memory positions.
+
+     The following is a possible implementation of `wmemcpy' but there
+     are more optimizations possible.
+
+          wchar_t *
+          wmempcpy (wchar_t *restrict wto, const wchar_t *restrict wfrom,
+                    size_t size)
+          {
+            return (wchar_t *) mempcpy (wto, wfrom, size * sizeof (wchar_t));
+          }
+
+     This function is a GNU extension.
+
+ - Function: void * memmove (void *TO, const void *FROM, size_t SIZE)
+     `memmove' copies the SIZE bytes at FROM into the SIZE bytes at TO,
+     even if those two blocks of space overlap.  In the case of
+     overlap, `memmove' is careful to copy the original values of the
+     bytes in the block at FROM, including those bytes which also
+     belong to the block at TO.
+
+     The value returned by `memmove' is the value of TO.
+
+ - Function: wchar_t * wmemmove (wchar *WTO, const wchar_t *WFROM,
+          size_t SIZE)
+     `wmemmove' copies the SIZE wide characters at WFROM into the SIZE
+     wide characters at WTO, even if those two blocks of space overlap.
+     In the case of overlap, `memmove' is careful to copy the original
+     values of the wide characters in the block at WFROM, including
+     those wide characters which also belong to the block at WTO.
+
+     The following is a possible implementation of `wmemcpy' but there
+     are more optimizations possible.
+
+          wchar_t *
+          wmempcpy (wchar_t *restrict wto, const wchar_t *restrict wfrom,
+                    size_t size)
+          {
+            return (wchar_t *) mempcpy (wto, wfrom, size * sizeof (wchar_t));
+          }
+
+     The value returned by `wmemmove' is the value of WTO.
+
+     This function is a GNU extension.
+
+ - Function: void * memccpy (void *restrict TO, const void *restrict
+          FROM, int C, size_t SIZE)
+     This function copies no more than SIZE bytes from FROM to TO,
+     stopping if a byte matching C is found.  The return value is a
+     pointer into TO one byte past where C was copied, or a null
+     pointer if no byte matching C appeared in the first SIZE bytes of
+     FROM.
+
+ - Function: void * memset (void *BLOCK, int C, size_t SIZE)
+     This function copies the value of C (converted to an `unsigned
+     char') into each of the first SIZE bytes of the object beginning
+     at BLOCK.  It returns the value of BLOCK.
+
+ - Function: wchar_t * wmemset (wchar_t *BLOCK, wchar_t WC, size_t SIZE)
+     This function copies the value of WC into each of the first SIZE
+     wide characters of the object beginning at BLOCK.  It returns the
+     value of BLOCK.
+
+ - Function: char * strcpy (char *restrict TO, const char *restrict
+          FROM)
+     This copies characters from the string FROM (up to and including
+     the terminating null character) into the string TO.  Like
+     `memcpy', this function has undefined results if the strings
+     overlap.  The return value is the value of TO.
+
+ - Function: wchar_t * wcscpy (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM)
+     This copies wide characters from the string WFROM (up to and
+     including the terminating null wide character) into the string
+     WTO.  Like `wmemcpy', this function has undefined results if the
+     strings overlap.  The return value is the value of WTO.
+
+ - Function: char * strncpy (char *restrict TO, const char *restrict
+          FROM, size_t SIZE)
+     This function is similar to `strcpy' but always copies exactly
+     SIZE characters into TO.
+
+     If the length of FROM is more than SIZE, then `strncpy' copies
+     just the first SIZE characters.  Note that in this case there is
+     no null terminator written into TO.
+
+     If the length of FROM is less than SIZE, then `strncpy' copies all
+     of FROM, followed by enough null characters to add up to SIZE
+     characters in all.  This behavior is rarely useful, but it is
+     specified by the ISO C standard.
+
+     The behavior of `strncpy' is undefined if the strings overlap.
+
+     Using `strncpy' as opposed to `strcpy' is a way to avoid bugs
+     relating to writing past the end of the allocated space for TO.
+     However, it can also make your program much slower in one common
+     case: copying a string which is probably small into a potentially
+     large buffer.  In this case, SIZE may be large, and when it is,
+     `strncpy' will waste a considerable amount of time copying null
+     characters.
+
+ - Function: wchar_t * wcsncpy (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM, size_t SIZE)
+     This function is similar to `wcscpy' but always copies exactly
+     SIZE wide characters into WTO.
+
+     If the length of WFROM is more than SIZE, then `wcsncpy' copies
+     just the first SIZE wide characters.  Note that in this case there
+     is no null terminator written into WTO.
+
+     If the length of WFROM is less than SIZE, then `wcsncpy' copies
+     all of WFROM, followed by enough null wide characters to add up to
+     SIZE wide characters in all.  This behavior is rarely useful, but
+     it is specified by the ISO C standard.
+
+     The behavior of `wcsncpy' is undefined if the strings overlap.
+
+     Using `wcsncpy' as opposed to `wcscpy' is a way to avoid bugs
+     relating to writing past the end of the allocated space for WTO.
+     However, it can also make your program much slower in one common
+     case: copying a string which is probably small into a potentially
+     large buffer.  In this case, SIZE may be large, and when it is,
+     `wcsncpy' will waste a considerable amount of time copying null
+     wide characters.
+
+ - Function: char * strdup (const char *S)
+     This function copies the null-terminated string S into a newly
+     allocated string.  The string is allocated using `malloc'; see
+     *Note Unconstrained Allocation::.  If `malloc' cannot allocate
+     space for the new string, `strdup' returns a null pointer.
+     Otherwise it returns a pointer to the new string.
+
+ - Function: wchar_t * wcsdup (const wchar_t *WS)
+     This function copies the null-terminated wide character string WS
+     into a newly allocated string.  The string is allocated using
+     `malloc'; see *Note Unconstrained Allocation::.  If `malloc'
+     cannot allocate space for the new string, `wcsdup' returns a null
+     pointer.  Otherwise it returns a pointer to the new wide character
+     string.
+
+     This function is a GNU extension.
+
+ - Function: char * strndup (const char *S, size_t SIZE)
+     This function is similar to `strdup' but always copies at most
+     SIZE characters into the newly allocated string.
+
+     If the length of S is more than SIZE, then `strndup' copies just
+     the first SIZE characters and adds a closing null terminator.
+     Otherwise all characters are copied and the string is terminated.
+
+     This function is different to `strncpy' in that it always
+     terminates the destination string.
+
+     `strndup' is a GNU extension.
+
+ - Function: char * stpcpy (char *restrict TO, const char *restrict
+          FROM)
+     This function is like `strcpy', except that it returns a pointer to
+     the end of the string TO (that is, the address of the terminating
+     null character `to + strlen (from)') rather than the beginning.
+
+     For example, this program uses `stpcpy' to concatenate `foo' and
+     `bar' to produce `foobar', which it then prints.
+
+          #include <string.h>
+          #include <stdio.h>
+          
+          int
+          main (void)
+          {
+            char buffer[10];
+            char *to = buffer;
+            to = stpcpy (to, "foo");
+            to = stpcpy (to, "bar");
+            puts (buffer);
+            return 0;
+          }
+
+     This function is not part of the ISO or POSIX standards, and is not
+     customary on Unix systems, but we did not invent it either.
+     Perhaps it comes from MS-DOG.
+
+     Its behavior is undefined if the strings overlap.  The function is
+     declared in `string.h'.
+
+ - Function: wchar_t * wcpcpy (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM)
+     This function is like `wcscpy', except that it returns a pointer to
+     the end of the string WTO (that is, the address of the terminating
+     null character `wto + strlen (wfrom)') rather than the beginning.
+
+     This function is not part of ISO or POSIX but was found useful
+     while developing the GNU C Library itself.
+
+     The behavior of `wcpcpy' is undefined if the strings overlap.
+
+     `wcpcpy' is a GNU extension and is declared in `wchar.h'.
+
+ - Function: char * stpncpy (char *restrict TO, const char *restrict
+          FROM, size_t SIZE)
+     This function is similar to `stpcpy' but copies always exactly
+     SIZE characters into TO.
+
+     If the length of FROM is more then SIZE, then `stpncpy' copies
+     just the first SIZE characters and returns a pointer to the
+     character directly following the one which was copied last.  Note
+     that in this case there is no null terminator written into TO.
+
+     If the length of FROM is less than SIZE, then `stpncpy' copies all
+     of FROM, followed by enough null characters to add up to SIZE
+     characters in all.  This behavior is rarely useful, but it is
+     implemented to be useful in contexts where this behavior of the
+     `strncpy' is used.  `stpncpy' returns a pointer to the _first_
+     written null character.
+
+     This function is not part of ISO or POSIX but was found useful
+     while developing the GNU C Library itself.
+
+     Its behavior is undefined if the strings overlap.  The function is
+     declared in `string.h'.
+
+ - Function: wchar_t * wcpncpy (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM, size_t SIZE)
+     This function is similar to `wcpcpy' but copies always exactly
+     WSIZE characters into WTO.
+
+     If the length of WFROM is more then SIZE, then `wcpncpy' copies
+     just the first SIZE wide characters and returns a pointer to the
+     wide character directly following the one which was copied last.
+     Note that in this case there is no null terminator written into
+     WTO.
+
+     If the length of WFROM is less than SIZE, then `wcpncpy' copies
+     all of WFROM, followed by enough null characters to add up to SIZE
+     characters in all.  This behavior is rarely useful, but it is
+     implemented to be useful in contexts where this behavior of the
+     `wcsncpy' is used.  `wcpncpy' returns a pointer to the _first_
+     written null character.
+
+     This function is not part of ISO or POSIX but was found useful
+     while developing the GNU C Library itself.
+
+     Its behavior is undefined if the strings overlap.
+
+     `wcpncpy' is a GNU extension and is declared in `wchar.h'.
+
+ - Macro: char * strdupa (const char *S)
+     This macro is similar to `strdup' but allocates the new string
+     using `alloca' instead of `malloc' (*note Variable Size
+     Automatic::).  This means of course the returned string has the
+     same limitations as any block of memory allocated using `alloca'.
+
+     For obvious reasons `strdupa' is implemented only as a macro; you
+     cannot get the address of this function.  Despite this limitation
+     it is a useful function.  The following code shows a situation
+     where using `malloc' would be a lot more expensive.
+
+          #include <paths.h>
+          #include <string.h>
+          #include <stdio.h>
+          
+          const char path[] = _PATH_STDPATH;
+          
+          int
+          main (void)
+          {
+            char *wr_path = strdupa (path);
+            char *cp = strtok (wr_path, ":");
+          
+            while (cp != NULL)
+              {
+                puts (cp);
+                cp = strtok (NULL, ":");
+              }
+            return 0;
+          }
+
+     Please note that calling `strtok' using PATH directly is invalid.
+     It is also not allowed to call `strdupa' in the argument list of
+     `strtok' since `strdupa' uses `alloca' (*note Variable Size
+     Automatic::) can interfere with the parameter passing.
+
+     This function is only available if GNU CC is used.
+
+ - Macro: char * strndupa (const char *S, size_t SIZE)
+     This function is similar to `strndup' but like `strdupa' it
+     allocates the new string using `alloca' *note Variable Size
+     Automatic::.  The same advantages and limitations of `strdupa' are
+     valid for `strndupa', too.
+
+     This function is implemented only as a macro, just like `strdupa'.
+     Just as `strdupa' this macro also must not be used inside the
+     parameter list in a function call.
+
+     `strndupa' is only available if GNU CC is used.
+
+ - Function: char * strcat (char *restrict TO, const char *restrict
+          FROM)
+     The `strcat' function is similar to `strcpy', except that the
+     characters from FROM are concatenated or appended to the end of
+     TO, instead of overwriting it.  That is, the first character from
+     FROM overwrites the null character marking the end of TO.
+
+     An equivalent definition for `strcat' would be:
+
+          char *
+          strcat (char *restrict to, const char *restrict from)
+          {
+            strcpy (to + strlen (to), from);
+            return to;
+          }
+
+     This function has undefined results if the strings overlap.
+
+ - Function: wchar_t * wcscat (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM)
+     The `wcscat' function is similar to `wcscpy', except that the
+     characters from WFROM are concatenated or appended to the end of
+     WTO, instead of overwriting it.  That is, the first character from
+     WFROM overwrites the null character marking the end of WTO.
+
+     An equivalent definition for `wcscat' would be:
+
+          wchar_t *
+          wcscat (wchar_t *wto, const wchar_t *wfrom)
+          {
+            wcscpy (wto + wcslen (wto), wfrom);
+            return wto;
+          }
+
+     This function has undefined results if the strings overlap.
+
+   Programmers using the `strcat' or `wcscat' function (or the
+following `strncat' or `wcsncar' functions for that matter) can easily
+be recognized as lazy and reckless.  In almost all situations the
+lengths of the participating strings are known (it better should be
+since how can one otherwise ensure the allocated size of the buffer is
+sufficient?)  Or at least, one could know them if one keeps track of the
+results of the various function calls.  But then it is very inefficient
+to use `strcat'/`wcscat'.  A lot of time is wasted finding the end of
+the destination string so that the actual copying can start.  This is a
+common example:
+
+     /* This function concatenates arbitrarily many strings.  The last
+        parameter must be `NULL'.  */
+     char *
+     concat (const char *str, ...)
+     {
+       va_list ap, ap2;
+       size_t total = 1;
+       const char *s;
+       char *result;
+     
+       va_start (ap, str);
+       /* Actually `va_copy', but this is the name more gcc versions
+          understand.  */
+       __va_copy (ap2, ap);
+     
+       /* Determine how much space we need.  */
+       for (s = str; s != NULL; s = va_arg (ap, const char *))
+         total += strlen (s);
+     
+       va_end (ap);
+     
+       result = (char *) malloc (total);
+       if (result != NULL)
+         {
+           result[0] = '\0';
+     
+           /* Copy the strings.  */
+           for (s = str; s != NULL; s = va_arg (ap2, const char *))
+             strcat (result, s);
+         }
+     
+       va_end (ap2);
+     
+       return result;
+     }
+
+   This looks quite simple, especially the second loop where the strings
+are actually copied.  But these innocent lines hide a major performance
+penalty.  Just imagine that ten strings of 100 bytes each have to be
+concatenated.  For the second string we search the already stored 100
+bytes for the end of the string so that we can append the next string.
+For all strings in total the comparisons necessary to find the end of
+the intermediate results sums up to 5500!  If we combine the copying
+with the search for the allocation we can write this function more
+efficient:
+
+     char *
+     concat (const char *str, ...)
+     {
+       va_list ap;
+       size_t allocated = 100;
+       char *result = (char *) malloc (allocated);
+       char *wp;
+     
+       if (allocated != NULL)
+         {
+           char *newp;
+     
+           va_start (ap, atr);
+     
+           wp = result;
+           for (s = str; s != NULL; s = va_arg (ap, const char *))
+             {
+               size_t len = strlen (s);
+     
+               /* Resize the allocated memory if necessary.  */
+               if (wp + len + 1 > result + allocated)
+                 {
+                   allocated = (allocated + len) * 2;
+                   newp = (char *) realloc (result, allocated);
+                   if (newp == NULL)
+                     {
+                       free (result);
+                       return NULL;
+                     }
+                   wp = newp + (wp - result);
+                   result = newp;
+                 }
+     
+               wp = mempcpy (wp, s, len);
+             }
+     
+           /* Terminate the result string.  */
+           *wp++ = '\0';
+     
+           /* Resize memory to the optimal size.  */
+           newp = realloc (result, wp - result);
+           if (newp != NULL)
+             result = newp;
+     
+           va_end (ap);
+         }
+     
+       return result;
+     }
+
+   With a bit more knowledge about the input strings one could fine-tune
+the memory allocation.  The difference we are pointing to here is that
+we don't use `strcat' anymore.  We always keep track of the length of
+the current intermediate result so we can safe us the search for the
+end of the string and use `mempcpy'.  Please note that we also don't
+use `stpcpy' which might seem more natural since we handle with
+strings.  But this is not necessary since we already know the length of
+the string and therefore can use the faster memory copying function.
+The example would work for wide characters the same way.
+
+   Whenever a programmer feels the need to use `strcat' she or he
+should think twice and look through the program whether the code cannot
+be rewritten to take advantage of already calculated results.  Again: it
+is almost always unnecessary to use `strcat'.
+
+ - Function: char * strncat (char *restrict TO, const char *restrict
+          FROM, size_t SIZE)
+     This function is like `strcat' except that not more than SIZE
+     characters from FROM are appended to the end of TO.  A single null
+     character is also always appended to TO, so the total allocated
+     size of TO must be at least `SIZE + 1' bytes longer than its
+     initial length.
+
+     The `strncat' function could be implemented like this:
+
+          char *
+          strncat (char *to, const char *from, size_t size)
+          {
+            to[strlen (to) + size] = '\0';
+            strncpy (to + strlen (to), from, size);
+            return to;
+          }
+
+     The behavior of `strncat' is undefined if the strings overlap.
+
+ - Function: wchar_t * wcsncat (wchar_t *restrict WTO, const wchar_t
+          *restrict WFROM, size_t SIZE)
+     This function is like `wcscat' except that not more than SIZE
+     characters from FROM are appended to the end of TO.  A single null
+     character is also always appended to TO, so the total allocated
+     size of TO must be at least `SIZE + 1' bytes longer than its
+     initial length.
+
+     The `wcsncat' function could be implemented like this:
+
+          wchar_t *
+          wcsncat (wchar_t *restrict wto, const wchar_t *restrict wfrom,
+                   size_t size)
+          {
+            wto[wcslen (to) + size] = L'\0';
+            wcsncpy (wto + wcslen (wto), wfrom, size);
+            return wto;
+          }
+
+     The behavior of `wcsncat' is undefined if the strings overlap.
+
+   Here is an example showing the use of `strncpy' and `strncat' (the
+wide character version is equivalent).  Notice how, in the call to
+`strncat', the SIZE parameter is computed to avoid overflowing the
+character array `buffer'.
+
+     #include <string.h>
+     #include <stdio.h>
+     
+     #define SIZE 10
+     
+     static char buffer[SIZE];
+     
+     main ()
+     {
+       strncpy (buffer, "hello", SIZE);
+       puts (buffer);
+       strncat (buffer, ", world", SIZE - strlen (buffer) - 1);
+       puts (buffer);
+     }
+
+The output produced by this program looks like:
+
+     hello
+     hello, wo
+
+ - Function: void bcopy (const void *FROM, void *TO, size_t SIZE)
+     This is a partially obsolete alternative for `memmove', derived
+     from BSD.  Note that it is not quite equivalent to `memmove',
+     because the arguments are not in the same order and there is no
+     return value.
+
+ - Function: void bzero (void *BLOCK, size_t SIZE)
+     This is a partially obsolete alternative for `memset', derived from
+     BSD.  Note that it is not as general as `memset', because the only
+     value it can store is zero.
+
+
+File: libc.info,  Node: String/Array Comparison,  Next: Collation Functions,  Prev: Copying and Concatenation,  Up: String and Array Utilities
+
+String/Array Comparison
+=======================
+
+   You can use the functions in this section to perform comparisons on
+the contents of strings and arrays.  As well as checking for equality,
+these functions can also be used as the ordering functions for sorting
+operations.  *Note Searching and Sorting::, for an example of this.
+
+   Unlike most comparison operations in C, the string comparison
+functions return a nonzero value if the strings are _not_ equivalent
+rather than if they are.  The sign of the value indicates the relative
+ordering of the first characters in the strings that are not
+equivalent:  a negative value indicates that the first string is "less"
+than the second, while a positive value indicates that the first string
+is "greater".
+
+   The most common use of these functions is to check only for equality.
+This is canonically done with an expression like `! strcmp (s1, s2)'.
+
+   All of these functions are declared in the header file `string.h'.
+
+ - Function: int memcmp (const void *A1, const void *A2, size_t SIZE)
+     The function `memcmp' compares the SIZE bytes of memory beginning
+     at A1 against the SIZE bytes of memory beginning at A2.  The value
+     returned has the same sign as the difference between the first
+     differing pair of bytes (interpreted as `unsigned char' objects,
+     then promoted to `int').
+
+     If the contents of the two blocks are equal, `memcmp' returns `0'.
+
+ - Function: int wmemcmp (const wchar_t *A1, const wchar_t *A2, size_t
+          SIZE)
+     The function `wmemcmp' compares the SIZE wide characters beginning
+     at A1 against the SIZE wide characters beginning at A2.  The value
+     returned is smaller than or larger than zero depending on whether
+     the first differing wide character is A1 is smaller or larger than
+     the corresponding character in A2.
+
+     If the contents of the two blocks are equal, `wmemcmp' returns `0'.
+
+   On arbitrary arrays, the `memcmp' function is mostly useful for
+testing equality.  It usually isn't meaningful to do byte-wise ordering
+comparisons on arrays of things other than bytes.  For example, a
+byte-wise comparison on the bytes that make up floating-point numbers
+isn't likely to tell you anything about the relationship between the
+values of the floating-point numbers.
+
+   `wmemcmp' is really only useful to compare arrays of type `wchar_t'
+since the function looks at `sizeof (wchar_t)' bytes at a time and this
+number of bytes is system dependent.
+
+   You should also be careful about using `memcmp' to compare objects
+that can contain "holes", such as the padding inserted into structure
+objects to enforce alignment requirements, extra space at the end of
+unions, and extra characters at the ends of strings whose length is less
+than their allocated size.  The contents of these "holes" are
+indeterminate and may cause strange behavior when performing byte-wise
+comparisons.  For more predictable results, perform an explicit
+component-wise comparison.
+
+   For example, given a structure type definition like:
+
+     struct foo
+       {
+         unsigned char tag;
+         union
+           {
+             double f;
+             long i;
+             char *p;
+           } value;
+       };
+
+you are better off writing a specialized comparison function to compare
+`struct foo' objects instead of comparing them with `memcmp'.
+
+ - Function: int strcmp (const char *S1, const char *S2)
+     The `strcmp' function compares the string S1 against S2, returning
+     a value that has the same sign as the difference between the first
+     differing pair of characters (interpreted as `unsigned char'
+     objects, then promoted to `int').
+
+     If the two strings are equal, `strcmp' returns `0'.
+
+     A consequence of the ordering used by `strcmp' is that if S1 is an
+     initial substring of S2, then S1 is considered to be "less than"
+     S2.
+
+     `strcmp' does not take sorting conventions of the language the
+     strings are written in into account.  To get that one has to use
+     `strcoll'.
+
+ - Function: int wcscmp (const wchar_t *WS1, const wchar_t *WS2)
+     The `wcscmp' function compares the wide character string WS1
+     against WS2.  The value returned is smaller than or larger than
+     zero depending on whether the first differing wide character is
+     WS1 is smaller or larger than the corresponding character in WS2.
+
+     If the two strings are equal, `wcscmp' returns `0'.
+
+     A consequence of the ordering used by `wcscmp' is that if WS1 is
+     an initial substring of WS2, then WS1 is considered to be "less
+     than" WS2.
+
+     `wcscmp' does not take sorting conventions of the language the
+     strings are written in into account.  To get that one has to use
+     `wcscoll'.
+
+ - Function: int strcasecmp (const char *S1, const char *S2)
+     This function is like `strcmp', except that differences in case are
+     ignored.  How uppercase and lowercase characters are related is
+     determined by the currently selected locale.  In the standard `"C"'
+     locale the characters A" and a" do not match but in a locale which
+     regards these characters as parts of the alphabet they do match.
+
+     `strcasecmp' is derived from BSD.
+
+ - Function: int wcscasecmp (const wchar_t *WS1, const wchar_T *WS2)
+     This function is like `wcscmp', except that differences in case are
+     ignored.  How uppercase and lowercase characters are related is
+     determined by the currently selected locale.  In the standard `"C"'
+     locale the characters A" and a" do not match but in a locale which
+     regards these characters as parts of the alphabet they do match.
+
+     `wcscasecmp' is a GNU extension.
+
+ - Function: int strncmp (const char *S1, const char *S2, size_t SIZE)
+     This function is the similar to `strcmp', except that no more than
+     SIZE wide characters are compared.  In other words, if the two
+     strings are the same in their first SIZE wide characters, the
+     return value is zero.
+
+ - Function: int wcsncmp (const wchar_t *WS1, const wchar_t *WS2,
+          size_t SIZE)
+     This function is the similar to `wcscmp', except that no more than
+     SIZE wide characters are compared.  In other words, if the two
+     strings are the same in their first SIZE wide characters, the
+     return value is zero.
+
+ - Function: int strncasecmp (const char *S1, const char *S2, size_t N)
+     This function is like `strncmp', except that differences in case
+     are ignored.  Like `strcasecmp', it is locale dependent how
+     uppercase and lowercase characters are related.
+
+     `strncasecmp' is a GNU extension.
+
+ - Function: int wcsncasecmp (const wchar_t *WS1, const wchar_t *S2,
+          size_t N)
+     This function is like `wcsncmp', except that differences in case
+     are ignored.  Like `wcscasecmp', it is locale dependent how
+     uppercase and lowercase characters are related.
+
+     `wcsncasecmp' is a GNU extension.
+
+   Here are some examples showing the use of `strcmp' and `strncmp'
+(equivalent examples can be constructed for the wide character
+functions).  These examples assume the use of the ASCII character set.
+(If some other character set--say, EBCDIC--is used instead, then the
+glyphs are associated with different numeric codes, and the return
+values and ordering may differ.)
+
+     strcmp ("hello", "hello")
+         => 0    /* These two strings are the same. */
+     strcmp ("hello", "Hello")
+         => 32   /* Comparisons are case-sensitive. */
+     strcmp ("hello", "world")
+         => -15  /* The character `'h'' comes before `'w''. */
+     strcmp ("hello", "hello, world")
+         => -44  /* Comparing a null character against a comma. */
+     strncmp ("hello", "hello, world", 5)
+         => 0    /* The initial 5 characters are the same. */
+     strncmp ("hello, world", "hello, stupid world!!!", 5)
+         => 0    /* The initial 5 characters are the same. */
+
+ - Function: int strverscmp (const char *S1, const char *S2)
+     The `strverscmp' function compares the string S1 against S2,
+     considering them as holding indices/version numbers.  Return value
+     follows the same conventions as found in the `strverscmp'
+     function.  In fact, if S1 and S2 contain no digits, `strverscmp'
+     behaves like `strcmp'.
+
+     Basically, we compare strings normally (character by character),
+     until we find a digit in each string - then we enter a special
+     comparison mode, where each sequence of digits is taken as a
+     whole.  If we reach the end of these two parts without noticing a
+     difference, we return to the standard comparison mode.  There are
+     two types of numeric parts: "integral" and "fractional" (those
+     begin with a '0'). The types of the numeric parts affect the way
+     we sort them:
+
+        * integral/integral: we compare values as you would expect.
+
+        * fractional/integral: the fractional part is less than the
+          integral one.  Again, no surprise.
+
+        * fractional/fractional: the things become a bit more complex.
+          If the common prefix contains only leading zeroes, the
+          longest part is less than the other one; else the comparison
+          behaves normally.
+
+          strverscmp ("no digit", "no digit")
+              => 0    /* same behavior as strcmp. */
+          strverscmp ("item#99", "item#100")
+              => <0   /* same prefix, but 99 < 100. */
+          strverscmp ("alpha1", "alpha001")
+              => >0   /* fractional part inferior to integral one. */
+          strverscmp ("part1_f012", "part1_f01")
+              => >0   /* two fractional parts. */
+          strverscmp ("foo.009", "foo.0")
+              => <0   /* idem, but with leading zeroes only. */
+
+     This function is especially useful when dealing with filename
+     sorting, because filenames frequently hold indices/version numbers.
+
+     `strverscmp' is a GNU extension.
+
+ - Function: int bcmp (const void *A1, const void *A2, size_t SIZE)
+     This is an obsolete alias for `memcmp', derived from BSD.
+
+
+File: libc.info,  Node: Collation Functions,  Next: Search Functions,  Prev: String/Array Comparison,  Up: String and Array Utilities
+
+Collation Functions
+===================
+
+   In some locales, the conventions for lexicographic ordering differ
+from the strict numeric ordering of character codes.  For example, in
+Spanish most glyphs with diacritical marks such as accents are not
+considered distinct letters for the purposes of collation.  On the
+other hand, the two-character sequence `ll' is treated as a single
+letter that is collated immediately after `l'.
+
+   You can use the functions `strcoll' and `strxfrm' (declared in the
+headers file `string.h') and `wcscoll' and `wcsxfrm' (declared in the
+headers file `wchar') to compare strings using a collation ordering
+appropriate for the current locale.  The locale used by these functions
+in particular can be specified by setting the locale for the
+`LC_COLLATE' category; see *Note Locales::.
+
+   In the standard C locale, the collation sequence for `strcoll' is
+the same as that for `strcmp'.  Similarly, `wcscoll' and `wcscmp' are
+the same in this situation.
+
+   Effectively, the way these functions work is by applying a mapping to
+transform the characters in a string to a byte sequence that represents
+the string's position in the collating sequence of the current locale.
+Comparing two such byte sequences in a simple fashion is equivalent to
+comparing the strings with the locale's collating sequence.
+
+   The functions `strcoll' and `wcscoll' perform this translation
+implicitly, in order to do one comparison.  By contrast, `strxfrm' and
+`wcsxfrm' perform the mapping explicitly.  If you are making multiple
+comparisons using the same string or set of strings, it is likely to be
+more efficient to use `strxfrm' or `wcsxfrm' to transform all the
+strings just once, and subsequently compare the transformed strings
+with `strcmp' or `wcscmp'.
+
+ - Function: int strcoll (const char *S1, const char *S2)
+     The `strcoll' function is similar to `strcmp' but uses the
+     collating sequence of the current locale for collation (the
+     `LC_COLLATE' locale).
+
+ - Function: int wcscoll (const wchar_t *WS1, const wchar_t *WS2)
+     The `wcscoll' function is similar to `wcscmp' but uses the
+     collating sequence of the current locale for collation (the
+     `LC_COLLATE' locale).
+
+   Here is an example of sorting an array of strings, using `strcoll'
+to compare them.  The actual sort algorithm is not written here; it
+comes from `qsort' (*note Array Sort Function::).  The job of the code
+shown here is to say how to compare the strings while sorting them.
+(Later on in this section, we will show a way to do this more
+efficiently using `strxfrm'.)
+
+     /* This is the comparison function used with `qsort'. */
+     
+     int
+     compare_elements (char **p1, char **p2)
+     {
+       return strcoll (*p1, *p2);
+     }
+     
+     /* This is the entry point--the function to sort
+        strings using the locale's collating sequence. */
+     
+     void
+     sort_strings (char **array, int nstrings)
+     {
+       /* Sort `temp_array' by comparing the strings. */
+       qsort (array, nstrings,
+              sizeof (char *), compare_elements);
+     }
+
+ - Function: size_t strxfrm (char *restrict TO, const char *restrict
+          FROM, size_t SIZE)
+     The function `strxfrm' transforms the string FROM using the
+     collation transformation determined by the locale currently
+     selected for collation, and stores the transformed string in the
+     array TO.  Up to SIZE characters (including a terminating null
+     character) are stored.
+
+     The behavior is undefined if the strings TO and FROM overlap; see
+     *Note Copying and Concatenation::.
+
+     The return value is the length of the entire transformed string.
+     This value is not affected by the value of SIZE, but if it is
+     greater or equal than SIZE, it means that the transformed string
+     did not entirely fit in the array TO.  In this case, only as much
+     of the string as actually fits was stored.  To get the whole
+     transformed string, call `strxfrm' again with a bigger output
+     array.
+
+     The transformed string may be longer than the original string, and
+     it may also be shorter.
+
+     If SIZE is zero, no characters are stored in TO.  In this case,
+     `strxfrm' simply returns the number of characters that would be
+     the length of the transformed string.  This is useful for
+     determining what size the allocated array should be.  It does not
+     matter what TO is if SIZE is zero; TO may even be a null pointer.
+
+ - Function: size_t wcsxfrm (wchar_t *restrict WTO, const wchar_t
+          *WFROM, size_t SIZE)
+     The function `wcsxfrm' transforms wide character string WFROM
+     using the collation transformation determined by the locale
+     currently selected for collation, and stores the transformed
+     string in the array WTO.  Up to SIZE wide characters (including a
+     terminating null character) are stored.
+
+     The behavior is undefined if the strings WTO and WFROM overlap;
+     see *Note Copying and Concatenation::.
+
+     The return value is the length of the entire transformed wide
+     character string.  This value is not affected by the value of
+     SIZE, but if it is greater or equal than SIZE, it means that the
+     transformed wide character string did not entirely fit in the
+     array WTO.  In this case, only as much of the wide character
+     string as actually fits was stored.  To get the whole transformed
+     wide character string, call `wcsxfrm' again with a bigger output
+     array.
+
+     The transformed wide character string may be longer than the
+     original wide character string, and it may also be shorter.
+
+     If SIZE is zero, no characters are stored in TO.  In this case,
+     `wcsxfrm' simply returns the number of wide characters that would
+     be the length of the transformed wide character string.  This is
+     useful for determining what size the allocated array should be
+     (remember to multiply with `sizeof (wchar_t)').  It does not
+     matter what WTO is if SIZE is zero; WTO may even be a null pointer.
+
+   Here is an example of how you can use `strxfrm' when you plan to do
+many comparisons.  It does the same thing as the previous example, but
+much faster, because it has to transform each string only once, no
+matter how many times it is compared with other strings.  Even the time
+needed to allocate and free storage is much less than the time we save,
+when there are many strings.
+
+     struct sorter { char *input; char *transformed; };
+     
+     /* This is the comparison function used with `qsort'
+        to sort an array of `struct sorter'. */
+     
+     int
+     compare_elements (struct sorter *p1, struct sorter *p2)
+     {
+       return strcmp (p1->transformed, p2->transformed);
+     }
+     
+     /* This is the entry point--the function to sort
+        strings using the locale's collating sequence. */
+     
+     void
+     sort_strings_fast (char **array, int nstrings)
+     {
+       struct sorter temp_array[nstrings];
+       int i;
+     
+       /* Set up `temp_array'.  Each element contains
+          one input string and its transformed string. */
+       for (i = 0; i < nstrings; i++)
+         {
+           size_t length = strlen (array[i]) * 2;
+           char *transformed;
+           size_t transformed_length;
+     
+           temp_array[i].input = array[i];
+     
+           /* First try a buffer perhaps big enough.  */
+           transformed = (char *) xmalloc (length);
+     
+           /* Transform `array[i]'.  */
+           transformed_length = strxfrm (transformed, array[i], length);
+     
+           /* If the buffer was not large enough, resize it
+              and try again.  */
+           if (transformed_length >= length)
+             {
+               /* Allocate the needed space. +1 for terminating
+                  `NUL' character.  */
+               transformed = (char *) xrealloc (transformed,
+                                                transformed_length + 1);
+     
+               /* The return value is not interesting because we know
+                  how long the transformed string is.  */
+               (void) strxfrm (transformed, array[i],
+                               transformed_length + 1);
+             }
+     
+           temp_array[i].transformed = transformed;
+         }
+     
+       /* Sort `temp_array' by comparing transformed strings. */
+       qsort (temp_array, sizeof (struct sorter),
+              nstrings, compare_elements);
+     
+       /* Put the elements back in the permanent array
+          in their sorted order. */
+       for (i = 0; i < nstrings; i++)
+         array[i] = temp_array[i].input;
+     
+       /* Free the strings we allocated. */
+       for (i = 0; i < nstrings; i++)
+         free (temp_array[i].transformed);
+     }
+
+   The interesting part of this code for the wide character version
+would look like this:
+
+     void
+     sort_strings_fast (wchar_t **array, int nstrings)
+     {
+       ...
+           /* Transform `array[i]'.  */
+           transformed_length = wcsxfrm (transformed, array[i], length);
+     
+           /* If the buffer was not large enough, resize it
+              and try again.  */
+           if (transformed_length >= length)
+             {
+               /* Allocate the needed space. +1 for terminating
+                  `NUL' character.  */
+               transformed = (wchar_t *) xrealloc (transformed,
+                                                   (transformed_length + 1)
+                                                   * sizeof (wchar_t));
+     
+               /* The return value is not interesting because we know
+                  how long the transformed string is.  */
+               (void) wcsxfrm (transformed, array[i],
+                               transformed_length + 1);
+             }
+       ...
+
+Note the additional multiplication with `sizeof (wchar_t)' in the
+`realloc' call.
+
+   *Compatibility Note:* The string collation functions are a new
+feature of ISO C90.  Older C dialects have no equivalent feature.  The
+wide character versions were introduced in Amendment 1 to ISO C90.
+

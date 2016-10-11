@@ -1,0 +1,9 @@
+bool 'Takao Fonts' CONFIG_FONTS_TAKAO
+if [ "$CONFIG_FONTS_TAKAO" = "y" ]; then
+	bool '  TakaoGothic' CONFIG_FONTS_TAKAO_GOTHIC
+	bool '  TakaoPGothic' CONFIG_FONTS_TAKAO_PGOTHIC
+	bool '  TakaoExGothic' CONFIG_FONTS_TAKAO_EXGOTHIC
+	bool '  TakaoMincho' CONFIG_FONTS_TAKAO_MINCHO
+	bool '  TakaoPMincho' CONFIG_FONTS_TAKAO_PMINCHO
+	bool '  TakaoExMincho' CONFIG_FONTS_TAKAO_EXMINCHO
+fi

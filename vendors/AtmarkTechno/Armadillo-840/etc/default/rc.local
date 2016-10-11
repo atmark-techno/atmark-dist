@@ -1,0 +1,41 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+# First read /etc/profile
+test -f /etc/profile && . /etc/profile
+
+#
+# Starting a default application
+#
+START_PHOTOVIEWER_WITH_QMLSCENE=y
+if [ "${START_PHOTOVIEWER_WITH_QMLSCENE}" = "y" ]; then
+	echo -n "Starting photoviewer: "
+	qmlscene /usr/share/qt5/photoviewer/photoviewer.qml >/dev/null 2>&1 &
+	check_status
+fi
+
+#
+# for AV Codec Midleware
+#   - load firmware
+#
+ACM_CODEC=decoder
+ACM_CODEC_SYSFS=/sys/devices/platform/acm.0/codec
+if [ -e $ACM_CODEC_SYSFS ]; then
+	if [ "${ACM_CODEC}" = "encoder" -o "${ACM_CODEC}" = "decoder" ]; then
+		echo -n "load ${ACM_CODEC} firmware: "
+		echo "${ACM_CODEC}" > $ACM_CODEC_SYSFS
+		for i in 1 2 3 4 5; do
+			sleep 1
+			grep "\[${ACM_CODEC}\]" $ACM_CODEC_SYSFS > /dev/null
+			if [ $? -eq 0 ]; then
+				break
+			else
+				false
+			fi
+		done
+		check_status
+	fi
+fi

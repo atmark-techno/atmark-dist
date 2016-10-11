@@ -1,0 +1,31 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 04-64bit.dpatch by John R.Daily <jdaily@progeny.com>
+##
+## DP: Fixes problems on 64bit platforms (Closes: #126091).
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/exp_main_tk.c expect-5.43.0/exp_main_tk.c
+--- expect-5.43.0.orig/exp_main_tk.c	2003-07-31 18:27:20.000000000 +0000
++++ expect-5.43.0/exp_main_tk.c	2006-07-10 15:26:17.000000000 +0000
+@@ -33,6 +33,7 @@
+ #endif /* not lint */
+ 
+ #include <ctype.h>
++#include <string.h>  /* strrchr(3) */
+ 
+ #include "tk.h"
+ 
+diff -Naur expect-5.43.0.orig/pty_termios.c expect-5.43.0/pty_termios.c
+--- expect-5.43.0.orig/pty_termios.c	2004-05-07 16:46:03.000000000 +0000
++++ expect-5.43.0/pty_termios.c	2006-07-10 15:26:17.000000000 +0000
+@@ -14,7 +14,9 @@
+ #define SIGCHLD SIGCLD
+ #endif
+ 
++#include "expect.h"
+ #include "expect_cf.h"
++#include "exp_int.h"  /* expErrnoMsg() prototype */
+ 
+ /*
+    The following functions are linked from the Tcl library.  They

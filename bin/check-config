@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Checks config/Configure.help against */config.in to verify that:
+# 1. There are no duplicates in config/Configure.help
+# 2. There are no entries in config/Configure.help which are not in */config.in
+# 3. There are no entries in config/*.in which are not in */Configure.help
+
+TMPHELP=/tmp/check-help.$$
+TMPIN=/tmp/check-in.$$
+
+grep "^CONFIG_" config/Configure.help |  \
+	grep -v CONFIG_DEFAULTS_ | \
+	sort >$TMPHELP
+
+egrep '(bool|string|tristate|choice|int).*CONFIG_' */config.in | \
+	sed -e 's/^.*[ 	]\(CONFIG_[A-Z0-9_]*\).*$/\1/' | \
+	sort | uniq >$TMPIN
+
+# 1. Check for dups
+dups=`uniq -d $TMPHELP`
+if [ "$dups" != "" ]; then
+	echo "Found duplicates in config/Configure.help:"
+	uniq -d $TMPHELP
+	echo
+fi
+
+# 2. Check for extra entries in Configure.help
+echo "The following entries in Configure.help do not exist in */config.in"
+comm -2 -3 $TMPHELP $TMPIN
+echo
+
+# 3. Check for missing entries in Configure.help
+echo "The following entries in */config.in have no docs in config/Configure.help"
+comm -2 -3 $TMPIN $TMPHELP
+
+rm -f $TMPHELP $TMPIN

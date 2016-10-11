@@ -1,0 +1,13 @@
+SetEnv ARMSD_TEST 17
+ServerRoot "/tmp/arms-apache"
+DocumentRoot "/tmp/arms-apache/htdocs"
+Listen 8080
+ErrorLog "logs/error_log"
+DefaultType text/plain
+AddHandler cgi-script .cgi
+
+<Directory />
+    Options All
+    Order deny,allow
+    Allow from all
+</Directory>

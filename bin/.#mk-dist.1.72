@@ -1,0 +1,460 @@
+#
+#	Build a uClinux/distribution source package from new-wave tree.
+#
+#	(C) Copyright 1999-2004, Greg Ungerer <gerg@snapgear.com>
+#
+#	Build a complete source package for general public release.
+#	No proprietary apps or encryption code is included unless
+#	asked for below.
+#
+
+NAME=uClinux-dist-test
+SOURCE=${1:-new-wave.dist}
+PKGDIR=images
+
+#
+#	If we keep crypto, bootloaders or prop assume we are a snapgear dist.
+#
+#	KEEP_CRYPTO=true
+#	KEEP_LZS=true
+#	KEEP_BOOT=true
+#	KEEP_IXP_MODULES=true
+#	KEEP_PROP=true
+#
+[ "$KEEP_CRYPTO" = "true" -o "$KEEP_BOOT" = "true" -o "$KEEP_IXP_MODULES" = "true" -o "$KEEP_PROP" = "true" ] && NAME=snapgear
+[ "$KEEP_CRYPTO" = "true" -o "$KEEP_IXP_MODULES" = "true" ] && KEEP_MODULE_CONFIGS=true
+
+
+DATE=`date +%Y%m%d`
+PACKAGE=${NAME}-${DATE}
+
+DIRS="README SOURCE COPYING Documentation Makefile config linux-2.0.x linux-2.4.x linux-2.6.x freeswan lib uClibc glibc user include images tools vendors bin .config config.arch"
+
+[ "$KEEP_PROP" = "true" ] && DIRS="$DIRS prop"
+
+CURPWD=`pwd`
+SRCDIR=${CURPWD}/${SOURCE}
+DSTDIR=${CURPWD}/${NAME}
+SLASHPKGDIR=${CURPWD}/${PKGDIR}/.
+
+
+#
+#	Check if target directory exists, bail if it does.
+#
+if [ -d "${DSTDIR}" ]
+then
+	echo "ERROR: directory ${DSTDIR} exists, stopping now!"
+	exit 1
+fi
+
+
+#
+#	Remove any old current images hanging around...
+#
+[ -d ${SLASHPKGDIR} ] || mkdir -p ${SLASHPKGDIR}
+rm -f ${SLASHPKGDIR}/${PACKAGE}*
+
+
+#
+#	Start creating new directory
+#
+echo "Creating ${DSTDIR} directory..."
+mkdir ${DSTDIR}
+cd ${SRCDIR}
+echo "Copying ${SRCDIR} to ${DSTDIR}..."
+find ${DIRS} -print | grep -v CVS | cpio -pd ${DSTDIR}
+
+if [ "$KEEP_IXP_MODULES" = "true" ]; then
+	echo "Copying modules/ixp425..."
+	mkdir -p ${DSTDIR}/modules
+	find modules/ixp425 -print | grep -v CVS | cpio -pd ${DSTDIR}
+	find ${DSTDIR}/modules/ixp425 -name "*.o" | grep -v dsr.o | xargs rm -f
+fi
+
+#
+#       Remove all binaries, top level clean...
+#
+echo "Removing objects from ${DSTDIR}..."
+cd ${DSTDIR}
+rm -f lib/glibc
+ln -s ${DSTDIR}/glibc lib/glibc
+make dep 2>&1 | cat > /tmp/dep
+make clean 2>&1 | cat > /tmp/clean
+make -C linux-2.0.x distclean 2> /dev/null > /dev/null
+make -C linux-2.4.x distclean 2> /dev/null > /dev/null
+make -C linux-2.6.x distclean 2> /dev/null > /dev/null
+make -C config/scripts clean 2> /dev/null > /dev/null
+make -C config/scripts/lxdialog clean 2> /dev/null > /dev/null
+cd ..
+
+
+#
+#	Remove propritary peices.
+#
+echo "Cleaning out non GPL drivers..."
+cd ${SRCDIR}
+sed -e "s/^tristate 'AD1845 sound system support' CONFIG_AD1845//g"	\
+	-e "s/^	bool 'FLASH key driver' CONFIG_KEY//g"			\
+	-e "s/bool 'Gilbarco\/NAP board support' CONFIG_GILBARCONAP//g"	\
+	linux-2.0.x/arch/m68knommu/config.in 				\
+	> ${DSTDIR}/linux-2.0.x/arch/m68knommu/config.in
+sed -e "s/bool 'Gilbarco\/NAP board support' CONFIG_GILBARCONAP//g"	\
+	linux-2.4.x/arch/m68knommu/config.in 				\
+	> ${DSTDIR}/linux-2.4.x/arch/m68knommu/config.in
+rm -f ${DSTDIR}/linux-2.0.x/drivers/char/ad1845.c
+rm -f ${DSTDIR}/linux-2.4.x/drivers/char/ad1845.c
+rm -f ${DSTDIR}/linux-2.0.x/drivers/char/key.c
+rm -rf ${DSTDIR}/linux-2.0.x/arch/m68knommu/platform/5272/NAP
+rm -rf ${DSTDIR}/linux-2.4.x/arch/m68knommu/platform/5272/NAP
+
+
+echo "Cleaning out non GPL applications..."
+sed -e "s/^.*CONFIG_USER_MARADNS_MARADNS$//"			\
+	-e "s/^.*CONFIG_USER_MARADNS_ZONESERVER$//"		\
+	-e "s/^.*CONFIG_USER_PPPD_WITH_RADIUS$//"		\
+	-e "s/^.*CONFIG_USER_PPPD_WITH_TACACS$//"		\
+	-e "s/^.*CONFIG_USER_NETFLASH_CRYPTO$//"		\
+		< config/config.in > ${DSTDIR}/config/config.in
+
+grep -v CONFIG_USER_MARADNS_MARADNS user/Makefile | \
+	grep -v CONFIG_USER_MARADNS_ZONESERVER | \
+	grep -v CONFIG_USER_RECOVER_STATIC_TFTP  \
+		> ${DSTDIR}/user/Makefile
+
+if [ "$KEEP_PROP" = "true" ]
+then
+	CONFIG_PROP="CONFIG_DUMMY"
+else
+	rm -rf ${DSTDIR}/prop
+	cp ${DSTDIR}/config/config.in ${DSTDIR}/config/config.in.org
+	sed -e "s/source ..\/prop\/config.in//"	\
+		< ${DSTDIR}/config/config.in.org > ${DSTDIR}/config/config.in
+	rm -f ${DSTDIR}/config/config.in.org
+	CONFIG_PROP="CONFIG_PROP"
+fi
+rm -rf ${DSTDIR}/user/arch
+rm -rf ${DSTDIR}/user/cryptimage
+rm -rf ${DSTDIR}/user/idb
+rm -rf ${DSTDIR}/user/ipsec
+rm -rf ${DSTDIR}/user/flashtftp
+rm -rf ${DSTDIR}/user/maradns
+rm -rf ${DSTDIR}/user/multitech
+rm -rf ${DSTDIR}/user/portsentry
+rm -rf ${DSTDIR}/user/protect
+rm -rf ${DSTDIR}/user/upnpd
+rm -rf ${DSTDIR}/lib/arch
+rm -rf ${DSTDIR}/lib/libsnapgear
+rm -rf ${DSTDIR}/lib/libsnapgear++
+rm -rf ${DSTDIR}/lib/libconfigdd
+rm -Rf ${DSTDIR}/manufacturing
+
+rm -f ${DSTDIR}/bin/mkether
+rm -f ${DSTDIR}/bin/mkfactory
+rm -f ${DSTDIR}/bin/mkverhdr
+rm -f ${DSTDIR}/bin/printmac
+rm -f ${DSTDIR}/bin/mk-*
+
+
+#
+#	Remove mention of vendors from configs...
+#
+#rm -rf ${DSTDIR}/vendors/3com
+rm -rf ${DSTDIR}/vendors/3M
+rm -rf ${DSTDIR}/vendors/6wind
+#rm -rf ${DSTDIR}/vendors/ADI
+rm -rf ${DSTDIR}/vendors/Adtran
+#rm -rf ${DSTDIR}/vendors/Akizuki
+rm -rf ${DSTDIR}/vendors/Amazon
+#rm -rf ${DSTDIR}/vendors/Apple
+#rm -rf ${DSTDIR}/vendors/Arcturus
+#rm -rf ${DSTDIR}/vendors/Arnewsh
+rm -rf ${DSTDIR}/vendors/Asita
+#rm -rf ${DSTDIR}/vendors/AtmarkTechno
+#rm -rf ${DSTDIR}/vendors/Atmel
+rm -rf ${DSTDIR}/vendors/ATT
+#rm -rf ${DSTDIR}/vendors/Avnet
+rm -rf ${DSTDIR}/vendors/CheckPoint
+#rm -rf ${DSTDIR}/vendors/Cirrus
+#rm -rf ${DSTDIR}/vendors/Cogent
+#rm -rf ${DSTDIR}/vendors/Conexant
+rm -rf ${DSTDIR}/vendors/Control4
+rm -rf ${DSTDIR}/vendors/Crossport
+#rm -rf ${DSTDIR}/vendors/Cwlinux
+#rm -rf ${DSTDIR}/vendors/CyberGuard
+#rm -rf ${DSTDIR}/vendors/Cytek
+#rm -rf ${DSTDIR}/vendors/Exys
+#rm -rf ${DSTDIR}/vendors/Feith
+#rm -rf ${DSTDIR}/vendors/Future
+#rm -rf ${DSTDIR}/vendors/GDB
+#rm -rf ${DSTDIR}/vendors/Generic
+rm -rf ${DSTDIR}/vendors/Gilbarco
+#rm -rf ${DSTDIR}/vendors/Hitachi
+#rm -rf ${DSTDIR}/vendors/Imt
+rm -rf ${DSTDIR}/vendors/IndusRiver
+#rm -rf ${DSTDIR}/vendors/Insight
+#rm -rf ${DSTDIR}/vendors/Intel
+rm -rf ${DSTDIR}/vendors/InternetAppliance
+rm -rf ${DSTDIR}/vendors/JBM
+#rm -rf ${DSTDIR}/vendors/KendinMicrel
+#rm -rf ${DSTDIR}/vendors/LEOX
+#rm -rf ${DSTDIR}/vendors/Lineo
+rm -rf ${DSTDIR}/vendors/Localhost
+rm -rf ${DSTDIR}/vendors/Marconi
+#rm -rf ${DSTDIR}/vendors/Mecel
+#rm -rf ${DSTDIR}/vendors/Midas
+#rm -rf ${DSTDIR}/vendors/Motorola
+rm -rf ${DSTDIR}/vendors/MP3.com
+rm -rf ${DSTDIR}/vendors/Mungo
+#rm -rf ${DSTDIR}/vendors/NEC
+#rm -rf ${DSTDIR}/vendors/Netburner
+rm -rf ${DSTDIR}/vendors/NetCelo
+#rm -rf ${DSTDIR}/vendors/NetSilicon
+#rm -rf ${DSTDIR}/vendors/Nintendo
+rm -rf ${DSTDIR}/vendors/Onieta
+#rm -rf ${DSTDIR}/vendors/OPENcores
+#rm -rf ${DSTDIR}/vendors/Promise
+rm -rf ${DSTDIR}/vendors/QTAB
+rm -rf ${DSTDIR}/vendors/Reefedge
+#rm -rf ${DSTDIR}/vendors/Samsung
+#rm -rf ${DSTDIR}/vendors/SecureEdge
+#rm -rf ${DSTDIR}/vendors/senTec
+rm -rf ${DSTDIR}/vendors/Serverbits
+rm -rf ${DSTDIR}/vendors/ServGate
+#rm -rf ${DSTDIR}/vendors/Signal
+#rm -rf ${DSTDIR}/vendors/SnapGear
+#rm -rf ${DSTDIR}/vendors/SNEHA
+#rm -rf ${DSTDIR}/vendors/Soekris
+#rm -rf ${DSTDIR}/vendors/Sony
+#rm -rf ${DSTDIR}/vendors/SSV
+#rm -rf ${DSTDIR}/vendors/StrawberryLinux
+#rm -rf ${DSTDIR}/vendors/SWARM
+rm -rf ${DSTDIR}/vendors/TAMS
+rm -rf ${DSTDIR}/vendors/TelcoTech
+#rm -rf ${DSTDIR}/vendors/TeleIP
+#rm -rf ${DSTDIR}/vendors/TI
+#rm -rf ${DSTDIR}/vendors/Triscend
+rm -rf ${DSTDIR}/vendors/Trusonic
+rm -rf ${DSTDIR}/vendors/Velseis
+#rm -rf ${DSTDIR}/vendors/Via
+#rm -rf ${DSTDIR}/vendors/Weiss
+#rm -rf ${DSTDIR}/vendors/Xilinx
+
+
+# Remove specific SecureEdge boards...
+rm -rf ${DSTDIR}/vendors/SecureEdge/SecureEdge*Factory
+rm -rf ${DSTDIR}/vendors/SecureEdge/SecureEdge*Recover
+rm -rf ${DSTDIR}/vendors/SecureEdge/SecureEdgeFirewall
+rm -rf ${DSTDIR}/vendors/SecureEdge/SecureEdge5410*
+rm -rf ${DSTDIR}/vendors/SecureEdge/LINT
+rm -rf ${DSTDIR}/vendors/SecureEdge/httpd*
+rm -rf ${DSTDIR}/vendors/SecureEdge/icons
+
+# Remove specific SnapGear boards...
+rm -rf ${DSTDIR}/vendors/SnapGear/Amazon*
+rm -rf ${DSTDIR}/vendors/SnapGear/Att*
+rm -rf ${DSTDIR}/vendors/SnapGear/*EMC
+rm -rf ${DSTDIR}/vendors/SnapGear/Coyote
+rm -rf ${DSTDIR}/vendors/SnapGear/httpd*
+rm -rf ${DSTDIR}/vendors/SnapGear/IXDP425
+rm -rf ${DSTDIR}/vendors/SnapGear/LINT
+rm -rf ${DSTDIR}/vendors/SnapGear/nanoVPN
+rm -rf ${DSTDIR}/vendors/SnapGear/SnapGear*
+rm -rf ${DSTDIR}/vendors/SnapGear/SoekrisNET4801
+rm -rf ${DSTDIR}/vendors/SnapGear/TAMS*
+rm -rf ${DSTDIR}/vendors/SnapGear/TestCD
+rm -rf ${DSTDIR}/vendors/SnapGear/TriBot
+
+# Remove specific CyberGuard directories
+rm -rf ${DSTDIR}/vendors/CyberGuard/httpd*
+rm -rf ${DSTDIR}/vendors/CyberGuard/Virtual*
+rm -rf ${DSTDIR}/vendors/CyberGuard/*Factory
+rm -rf ${DSTDIR}/vendors/CyberGuard/Rosser*
+
+# Always remove the Intel/MonteJade Factory build
+rm -rf ${DSTDIR}/vendors/Intel/*Factory
+
+
+#
+#	Remove other miscellaneous stuff...
+#
+echo "Cleaning out miscellaneous other stuff..."
+cd ${DSTDIR}
+find . -name errs -print | xargs rm -f
+find . -name .depend -print | xargs rm -f
+find . -name .depend.embed -print | xargs rm -f
+find . -name .version -print | xargs rm -f
+find . -name .cvsignore -print | xargs rm -f
+find vendors -name config.languages | grep -v config/config.languages | xargs rm -f
+rm -f linux-2.?.x/.config*
+rm -f linux-2.?.x/include/asm
+rm -f linux-2.?.x/include/asm-arm/arch
+rm -f linux-2.?.x/include/asm-arm/proc
+rm -f .config config.arch
+rm -f config/autoconf.h config/.config config/.config.old
+rm -rf vendors/.config vendors/.config.old
+rm -rf vendors/Hitachi/dsp
+rm -f images/*
+rm -rf romfs
+rm -rf tools/c++ tools/gcc-* tools/misc/gcc-include
+rm -f tools/misc/pivio*
+rm -f tools/misc/nap5272.gdb
+rm -f tools/misc/*.hdc
+rm -rf glibc/build
+rm -f uClibc/.config*
+rm -f lib/glibc lib/uClibc
+rm -f uClibc/extra/config/conf
+
+if [ "$KEEP_MODULE_CONFIGS" != "true" ]; then
+	find vendors -name config.modules | xargs rm -f
+fi
+
+#
+#	Clean out crypto code...
+#
+echo "Cleaning out crypto code..."
+
+grep -v radius ${SRCDIR}/user/pppd/pppd/plugins/Makefile \
+	> ${DSTDIR}/user/pppd/pppd/plugins/Makefile
+rm -f ${DSTDIR}/user/pppd/pppd/radius*
+rm -f ${DSTDIR}/user/pppd/pppd/librad*
+
+if [ "$KEEP_CRYPTO" != "true" ]; then
+	sed 's/hw_assist.o//g' ${SRCDIR}/freeswan/libdes/Makefile \
+		> ${DSTDIR}/freeswan/libdes/Makefile
+	sed -e 's/ -DHIFN=1//g' \
+		-e 's/ -I$(ROOTDIR)\/modules\/crypto//g' \
+		-e 's/CONFIG_HW_ASSIST = y//g' \
+		${SRCDIR}/lib/libdes/Makefile \
+		> ${DSTDIR}/lib/libdes/Makefile
+	grep -v CONFIG_HW_ASSIST ${SRCDIR}/linux-2.4.x/net/ipsec/libdes/Makefile \
+		> ${DSTDIR}/linux-2.4.x/net/ipsec/libdes/Makefile
+	rm -f ${DSTDIR}/freeswan/libdes/hw_assist*
+	rm -f ${DSTDIR}/freeswan/libdes/sw_des.c
+	rm -rf ${DSTDIR}/lib/libssl
+fi
+
+#
+#	Put any binaries wanted into the dist.
+#
+if [ "$KEEP_CRYPTO" = "true" -o "$KEEP_BOOT" = "true" ] ; then
+	if [ "$KEEP_CRYPTO" = "true" ] ; then
+		mkdir -p modules/crypto/safenet
+	fi
+	if [ "$KEEP_BOOT" = "true" ] ; then
+		mkdir -p boot/etherboot
+		mkdir -p boot/sh4
+		mkdir -p boot/x86
+	fi
+	( cd ${SRCDIR}; find . -name 'Makefile*.bin' ) | while read t
+	do
+		[ -d `dirname $t` ] || continue
+		echo "copying $t ..."
+		cp ${SRCDIR}/$t `dirname $t`/`basename $t .bin`
+		for i in vendors/*; do
+			[ -d $i ] || continue
+			for j in ${SRCDIR}/`dirname $t`/*.`basename $i`_*; do
+				[ -f "$j" ] || continue
+				echo "copying `basename $j` to `dirname $t` ..."
+				cp $j `dirname $t`/.
+			done
+		done
+	done
+
+	cp ${SRCDIR}/modules/crypto/hifn.h modules/crypto
+	if [ "$KEEP_LZS" = "true" ] ; then
+		sed -e "s/^subdir-m.*:=.*$/subdir-m := crypto lzs/g"  \
+			${SRCDIR}/modules/Makefile > ${DSTDIR}/modules/Makefile
+		cp ${SRCDIR}/modules/crypto/config.in modules/config.in
+		cp -r ../${SRCDIR}/modules/lzs modules/.
+		rm -rf modules/lzs/CVS
+		rm -f modules/lzs/*.o
+	else
+		sed -e "s/^subdir-m.*:=.*$/subdir-m := crypto/g"  \
+			${SRCDIR}/modules/Makefile > ${DSTDIR}/modules/Makefile
+		grep -v CONFIG_MODULES_LZS_LZS < ${SRCDIR}/modules/crypto/config.in \
+			> modules/config.in
+		sed -e "s/.*CONFIG_IPSEC_IPCOMP_LZS.*/define_bool CONFIG_IPSEC_IPCOMP_LZS n/g" < ${SRCDIR}/freeswan/klips/net/ipsec/Config.in \
+			> freeswan/klips/net/ipsec/Config.in
+	fi
+fi
+
+if [ "$KEEP_IXP_MODULES" = "true" ]; then
+	sed -e "s/^subdir-m.*:=.*$/subdir-m := ixp425/g"  \
+		${SRCDIR}/modules/Makefile > ${DSTDIR}/modules/Makefile
+	cat ${DSTDIR}/modules/ixp425/config.in >> ${DSTDIR}/modules/config.in
+	rm -f ${DSTDIR}/modules/ixp425/config.in
+fi
+
+#
+#	The below should be gone, but imports might re-create it - better
+#	to be safe.
+#
+rm -f ${DSTDIR}/user/ssh/rijndael.*
+
+#
+#	Do not enable SSH in any target, no libssl to build against...
+#
+cd ${DSTDIR}
+find vendors -name "config.vendor*" |
+while read FILE
+do
+	sed -e "s/CONFIG_USER_SSH_SSH=y/# CONFIG_USER_SSH_SSH is not set/g" \
+	    -e "s/CONFIG_USER_SSH_SSHD=y/# CONFIG_USER_SSH_SSHD is not set/g" \
+	    -e "s/CONFIG_USER_SSH_SSHKEYGEN=y/# CONFIG_USER_SSH_SSHKEYGEN is not set/g" \
+	    -e "s/CONFIG_USER_OPENSSL_APPS=y/# CONFIG_USER_OPENSSL_APPS is not set/g" \
+	    -e "s/CONFIG_USER_BOA_WITH_SSL=y/# CONFIG_USER_BOA_WITH_SSL is not set/g" \
+	    -e "s/CONFIG_USER_NESSUS_NASL=y/# CONFIG_USER_NESSUS_NASL is not set/g" \
+	    -e "s/CONFIG_USER_SSLWRAP_SSLWRAP=y/# CONFIG_USER_SSLWRAP_SSLWRAP is not set/g" \
+	    ${SRCDIR}/${FILE} | \
+	grep -v "${CONFIG_PROP}" | \
+	grep -v "CONFIG_LIB_LIBSSL=y" | \
+	grep -v "# CONFIG_LIB_LIBSSL is not set" | \
+	grep -v "CONFIG_LIB_SNAPGEAR" | \
+	grep -v "CONFIG_USER_MIGRATE" | \
+	grep -v "CONFIG_USER_NEWCGI" | \
+	grep -v "CONFIG_USER_CGI_DISKTEL" \
+	    > ${DSTDIR}/${FILE}
+done
+
+
+#
+#	All other last minute fixups...
+#
+rm -rf ${DSTDIR}/user/httptunnel
+cp -r ${SRCDIR}/user/httptunnel ${DSTDIR}/user/
+find ${DSTDIR}/user/httptunnel -name CVS | xargs rm -rf
+
+
+#
+#	Remove private vendor names from config files.
+#
+cd ${DSTDIR}
+find vendors -name "config.device*" |
+while read FILE
+do
+	grep -v "CONFIG_DEFAULTS_ADTRAN_" ${SRCDIR}/${FILE} | \
+	    grep -v "CONFIG_DEFAULTS_ATT_" | \
+	    grep -v "CONFIG_DEFAULTS_MARCONI_" | \
+	    grep -v "CONFIG_DEFAULTS_GILBARCO_" \
+	    > ${DSTDIR}/${FILE}
+done
+#
+#	Change some permissions, so they look nice.
+#
+chmod 775 ${DSTDIR}/bin/*
+
+#
+#	Fix up some autogen files so they don't get rebuilt.
+#
+touch ${DSTDIR}/user/mawk/array.[ch]
+touch ${DSTDIR}/glibc/locale/programs/*-kw.h
+
+echo "Packaging ${DSTDIR}..."
+cd ${CURPWD}
+tar cf ${PACKAGE}.tar ${NAME}
+echo "gziping ${PACKAGE}.tar..."
+gzip -9 ${PACKAGE}.tar
+
+mv ${PACKAGE}.tar.gz ${PKGDIR}
+
+exit 0

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo "Mounting /etc/config: "
+mount -t ramfs none /etc/config
+echo "Populating /etc/config: "
+/bin/flatfsd -r
+
+TMPDIR=/tmp/config
+[ ! -d "$TMPDIR" ] && mkdir $TMPDIR > /dev/null 2>&1
+cp -a /etc/default/* /etc/default/.[0-9A-z]* $TMPDIR > /dev/null 2>&1
+cp -a /etc/config/* /etc/config/.[0-9A-z]* $TMPDIR > /dev/null 2>&1
+cp -a $TMPDIR/* $TMPDIR/.[0-9A-z]* /etc/config > /dev/null 2>&1
+rm -rf $TMPDIR

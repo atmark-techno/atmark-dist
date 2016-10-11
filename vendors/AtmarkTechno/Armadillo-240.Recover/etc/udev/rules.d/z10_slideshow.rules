@@ -1,0 +1,3 @@
+KERNEL=="sd*",DEVPATH=="/block/sd*/sd*[0-9]",BUS=="usb",ACTION=="add",RUN+="/usr/share/slideshow/slideshow_auto_run start"
+
+KERNEL=="sd*",ACTION=="remove",RUN+="/usr/share/slideshow/slideshow_auto_run stop"

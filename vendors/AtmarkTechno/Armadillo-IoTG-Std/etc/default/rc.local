@@ -1,0 +1,22 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+#
+# Starting a state monitoring applications
+#
+START_THERMALMONITOR=n
+if [ "${START_THERMALMONITOR}" = "y" ]; then
+	echo -n "Starting thermalmonitor: "
+	/etc/config/thermalmonitor &
+	check_status
+fi
+
+START_VINMONITOR=n
+if [ "${START_VINMONITOR}" = "y" ]; then
+	echo -n "Starting vinmonitor: "
+	/etc/config/vinmonitor &
+	check_status
+fi

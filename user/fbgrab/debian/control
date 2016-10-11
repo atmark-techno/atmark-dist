@@ -1,0 +1,17 @@
+Source: fbgrab
+Section: misc
+Priority: optional
+Maintainer: Luca Bruno <luca.br@uno.it>
+Build-Depends: debhelper (>> 5.0.0), zlib1g-dev, libpng12-dev
+Standards-Version: 3.6.2
+
+Package: fbgrab
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Framebuffer grabber
+ Grabs an image of a framebuffer device and store it as a png file.
+ .
+ Also has a timer-feature so you can do things before the image is
+ grabbed.
+ .
+ Homepage: http://hem.bredband.net/gmogmo/fbgrab/

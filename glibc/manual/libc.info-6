@@ -1,0 +1,686 @@
+This is libc.info, produced by makeinfo version 4.3 from libc.texinfo.
+
+INFO-DIR-SECTION GNU libraries
+START-INFO-DIR-ENTRY
+* Libc: (libc).                 C library.
+END-INFO-DIR-ENTRY
+
+   This file documents the GNU C library.
+
+   This is Edition 0.10, last updated 2001-07-06, of `The GNU C Library
+Reference Manual', for Version 2.2.x.
+
+   Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2001, 2002
+Free Software Foundation, Inc.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "Free Software Needs Free Documentation" and
+"GNU Lesser General Public License", the Front-Cover texts being (a)
+(see below), and with the Back-Cover Texts being (b) (see below).  A
+copy of the license is included in the section entitled "GNU Free
+Documentation License".
+
+   (a) The FSF's Front-Cover Text is:
+
+   A GNU Manual
+
+   (b) The FSF's Back-Cover Text is:
+
+   You have freedom to copy and modify this GNU Manual, like GNU
+software.  Copies published by the Free Software Foundation raise
+funds for GNU development.
+
+
+File: libc.info,  Node: Classification of Wide Characters,  Next: Using Wide Char Classes,  Prev: Case Conversion,  Up: Character Handling
+
+Character class determination for wide characters
+=================================================
+
+   Amendment 1 to ISO C90 defines functions to classify wide
+characters.  Although the original ISO C90 standard already defined the
+type `wchar_t', no functions operating on them were defined.
+
+   The general design of the classification functions for wide
+characters is more general.  It allows extensions to the set of
+available classifications, beyond those which are always available.
+The POSIX standard specifies how extensions can be made, and this is
+already implemented in the GNU C library implementation of the
+`localedef' program.
+
+   The character class functions are normally implemented with bitsets,
+with a bitset per character.  For a given character, the appropriate
+bitset is read from a table and a test is performed as to whether a
+certain bit is set.  Which bit is tested for is determined by the class.
+
+   For the wide character classification functions this is made visible.
+There is a type classification type defined, a function to retrieve this
+value for a given class, and a function to test whether a given
+character is in this class, using the classification value.  On top of
+this the normal character classification functions as used for `char'
+objects can be defined.
+
+ - Data type: wctype_t
+     The `wctype_t' can hold a value which represents a character class.
+     The only defined way to generate such a value is by using the
+     `wctype' function.
+
+     This type is defined in `wctype.h'.
+
+ - Function: wctype_t wctype (const char *PROPERTY)
+     The `wctype' returns a value representing a class of wide
+     characters which is identified by the string PROPERTY.  Beside
+     some standard properties each locale can define its own ones.  In
+     case no property with the given name is known for the current
+     locale selected for the `LC_CTYPE' category, the function returns
+     zero.
+
+     The properties known in every locale are:
+
+     `"alnum"'         `"alpha"'         `"cntrl"'         `"digit"'
+     `"graph"'         `"lower"'         `"print"'         `"punct"'
+     `"space"'         `"upper"'         `"xdigit"'        
+
+     This function is declared in `wctype.h'.
+
+   To test the membership of a character to one of the non-standard
+classes the ISO C standard defines a completely new function.
+
+ - Function: int iswctype (wint_t WC, wctype_t DESC)
+     This function returns a nonzero value if WC is in the character
+     class specified by DESC.  DESC must previously be returned by a
+     successful call to `wctype'.
+
+     This function is declared in `wctype.h'.
+
+   To make it easier to use the commonly-used classification functions,
+they are defined in the C library.  There is no need to use `wctype' if
+the property string is one of the known character classes.  In some
+situations it is desirable to construct the property strings, and then
+it is important that `wctype' can also handle the standard classes.
+
+ - Function: int iswalnum (wint_t WC)
+     This function returns a nonzero value if WC is an alphanumeric
+     character (a letter or number); in other words, if either
+     `iswalpha' or `iswdigit' is true of a character, then `iswalnum'
+     is also true.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("alnum"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswalpha (wint_t WC)
+     Returns true if WC is an alphabetic character (a letter).  If
+     `iswlower' or `iswupper' is true of a character, then `iswalpha'
+     is also true.
+
+     In some locales, there may be additional characters for which
+     `iswalpha' is true--letters which are neither upper case nor lower
+     case.  But in the standard `"C"' locale, there are no such
+     additional characters.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("alpha"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswcntrl (wint_t WC)
+     Returns true if WC is a control character (that is, a character
+     that is not a printing character).
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("cntrl"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswdigit (wint_t WC)
+     Returns true if WC is a digit (e.g., `0' through `9').  Please
+     note that this function does not only return a nonzero value for
+     _decimal_ digits, but for all kinds of digits.  A consequence is
+     that code like the following will *not* work unconditionally for
+     wide characters:
+
+          n = 0;
+          while (iswdigit (*wc))
+            {
+              n *= 10;
+              n += *wc++ - L'0';
+            }
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("digit"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswgraph (wint_t WC)
+     Returns true if WC is a graphic character; that is, a character
+     that has a glyph associated with it.  The whitespace characters
+     are not considered graphic.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("graph"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswlower (wint_t WC)
+     Returns true if WC is a lower-case letter.  The letter need not be
+     from the Latin alphabet, any alphabet representable is valid.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("lower"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswprint (wint_t WC)
+     Returns true if WC is a printing character.  Printing characters
+     include all the graphic characters, plus the space (` ') character.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("print"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswpunct (wint_t WC)
+     Returns true if WC is a punctuation character.  This means any
+     printing character that is not alphanumeric or a space character.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("punct"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswspace (wint_t WC)
+     Returns true if WC is a "whitespace" character.  In the standard
+     `"C"' locale, `iswspace' returns true for only the standard
+     whitespace characters:
+
+    `L' ''
+          space
+
+    `L'\f''
+          formfeed
+
+    `L'\n''
+          newline
+
+    `L'\r''
+          carriage return
+
+    `L'\t''
+          horizontal tab
+
+    `L'\v''
+          vertical tab
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("space"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswupper (wint_t WC)
+     Returns true if WC is an upper-case letter.  The letter need not be
+     from the Latin alphabet, any alphabet representable is valid.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("upper"))
+
+     It is declared in `wctype.h'.
+
+ - Function: int iswxdigit (wint_t WC)
+     Returns true if WC is a hexadecimal digit.  Hexadecimal digits
+     include the normal decimal digits `0' through `9' and the letters
+     `A' through `F' and `a' through `f'.
+
+     This function can be implemented using
+
+          iswctype (wc, wctype ("xdigit"))
+
+     It is declared in `wctype.h'.
+
+   The GNU C library also provides a function which is not defined in
+the ISO C standard but which is available as a version for single byte
+characters as well.
+
+ - Function: int iswblank (wint_t WC)
+     Returns true if WC is a blank character; that is, a space or a tab.
+     This function is a GNU extension.  It is declared in `wchar.h'.
+
+
+File: libc.info,  Node: Using Wide Char Classes,  Next: Wide Character Case Conversion,  Prev: Classification of Wide Characters,  Up: Character Handling
+
+Notes on using the wide character classes
+=========================================
+
+   The first note is probably not astonishing but still occasionally a
+cause of problems.  The `iswXXX' functions can be implemented using
+macros and in fact, the GNU C library does this.  They are still
+available as real functions but when the `wctype.h' header is included
+the macros will be used.  This is the same as the `char' type versions
+of these functions.
+
+   The second note covers something new.  It can be best illustrated by
+a (real-world) example.  The first piece of code is an excerpt from the
+original code.  It is truncated a bit but the intention should be clear.
+
+     int
+     is_in_class (int c, const char *class)
+     {
+       if (strcmp (class, "alnum") == 0)
+         return isalnum (c);
+       if (strcmp (class, "alpha") == 0)
+         return isalpha (c);
+       if (strcmp (class, "cntrl") == 0)
+         return iscntrl (c);
+       ...
+       return 0;
+     }
+
+   Now, with the `wctype' and `iswctype' you can avoid the `if'
+cascades, but rewriting the code as follows is wrong:
+
+     int
+     is_in_class (int c, const char *class)
+     {
+       wctype_t desc = wctype (class);
+       return desc ? iswctype ((wint_t) c, desc) : 0;
+     }
+
+   The problem is that it is not guaranteed that the wide character
+representation of a single-byte character can be found using casting.
+In fact, usually this fails miserably.  The correct solution to this
+problem is to write the code as follows:
+
+     int
+     is_in_class (int c, const char *class)
+     {
+       wctype_t desc = wctype (class);
+       return desc ? iswctype (btowc (c), desc) : 0;
+     }
+
+   *Note Converting a Character::, for more information on `btowc'.
+Note that this change probably does not improve the performance of the
+program a lot since the `wctype' function still has to make the string
+comparisons.  It gets really interesting if the `is_in_class' function
+is called more than once for the same class name.  In this case the
+variable DESC could be computed once and reused for all the calls.
+Therefore the above form of the function is probably not the final one.
+
+
+File: libc.info,  Node: Wide Character Case Conversion,  Prev: Using Wide Char Classes,  Up: Character Handling
+
+Mapping of wide characters.
+===========================
+
+   The classification functions are also generalized by the ISO C
+standard.  Instead of just allowing the two standard mappings, a locale
+can contain others.  Again, the `localedef' program already supports
+generating such locale data files.
+
+ - Data Type: wctrans_t
+     This data type is defined as a scalar type which can hold a value
+     representing the locale-dependent character mapping.  There is no
+     way to construct such a value apart from using the return value of
+     the `wctrans' function.
+
+     This type is defined in `wctype.h'.
+
+ - Function: wctrans_t wctrans (const char *PROPERTY)
+     The `wctrans' function has to be used to find out whether a named
+     mapping is defined in the current locale selected for the
+     `LC_CTYPE' category.  If the returned value is non-zero, you can
+     use it afterwards in calls to `towctrans'.  If the return value is
+     zero no such mapping is known in the current locale.
+
+     Beside locale-specific mappings there are two mappings which are
+     guaranteed to be available in every locale:
+
+     `"tolower"'                        `"toupper"'
+
+     These functions are declared in `wctype.h'.
+
+ - Function: wint_t towctrans (wint_t WC, wctrans_t DESC)
+     `towctrans' maps the input character WC according to the rules of
+     the mapping for which DESC is a descriptor, and returns the value
+     it finds.  DESC must be obtained by a successful call to `wctrans'.
+
+     This function is declared in `wctype.h'.
+
+   For the generally available mappings, the ISO C standard defines
+convenient shortcuts so that it is not necessary to call `wctrans' for
+them.
+
+ - Function: wint_t towlower (wint_t WC)
+     If WC is an upper-case letter, `towlower' returns the corresponding
+     lower-case letter.  If WC is not an upper-case letter, WC is
+     returned unchanged.
+
+     `towlower' can be implemented using
+
+          towctrans (wc, wctrans ("tolower"))
+
+     This function is declared in `wctype.h'.
+
+ - Function: wint_t towupper (wint_t WC)
+     If WC is a lower-case letter, `towupper' returns the corresponding
+     upper-case letter.  Otherwise WC is returned unchanged.
+
+     `towupper' can be implemented using
+
+          towctrans (wc, wctrans ("toupper"))
+
+     This function is declared in `wctype.h'.
+
+   The same warnings given in the last section for the use of the wide
+character classification functions apply here.  It is not possible to
+simply cast a `char' type value to a `wint_t' and use it as an argument
+to `towctrans' calls.
+
+
+File: libc.info,  Node: String and Array Utilities,  Next: Character Set Handling,  Prev: Character Handling,  Up: Top
+
+String and Array Utilities
+**************************
+
+   Operations on strings (or arrays of characters) are an important
+part of many programs.  The GNU C library provides an extensive set of
+string utility functions, including functions for copying,
+concatenating, comparing, and searching strings.  Many of these
+functions can also operate on arbitrary regions of storage; for
+example, the `memcpy' function can be used to copy the contents of any
+kind of array.
+
+   It's fairly common for beginning C programmers to "reinvent the
+wheel" by duplicating this functionality in their own code, but it pays
+to become familiar with the library functions and to make use of them,
+since this offers benefits in maintenance, efficiency, and portability.
+
+   For instance, you could easily compare one string to another in two
+lines of C code, but if you use the built-in `strcmp' function, you're
+less likely to make a mistake.  And, since these library functions are
+typically highly optimized, your program may run faster too.
+
+* Menu:
+
+* Representation of Strings::   Introduction to basic concepts.
+* String/Array Conventions::    Whether to use a string function or an
+				 arbitrary array function.
+* String Length::               Determining the length of a string.
+* Copying and Concatenation::   Functions to copy the contents of strings
+				 and arrays.
+* String/Array Comparison::     Functions for byte-wise and character-wise
+				 comparison.
+* Collation Functions::         Functions for collating strings.
+* Search Functions::            Searching for a specific element or substring.
+* Finding Tokens in a String::  Splitting a string into tokens by looking
+				 for delimiters.
+* strfry::                      Function for flash-cooking a string.
+* Trivial Encryption::          Obscuring data.
+* Encode Binary Data::          Encoding and Decoding of Binary Data.
+* Argz and Envz Vectors::       Null-separated string vectors.
+
+
+File: libc.info,  Node: Representation of Strings,  Next: String/Array Conventions,  Up: String and Array Utilities
+
+Representation of Strings
+=========================
+
+   This section is a quick summary of string concepts for beginning C
+programmers.  It describes how character strings are represented in C
+and some common pitfalls.  If you are already familiar with this
+material, you can skip this section.
+
+   A "string" is an array of `char' objects.  But string-valued
+variables are usually declared to be pointers of type `char *'.  Such
+variables do not include space for the text of a string; that has to be
+stored somewhere else--in an array variable, a string constant, or
+dynamically allocated memory (*note Memory Allocation::).  It's up to
+you to store the address of the chosen memory space into the pointer
+variable.  Alternatively you can store a "null pointer" in the pointer
+variable.  The null pointer does not point anywhere, so attempting to
+reference the string it points to gets an error.
+
+   "string" normally refers to multibyte character strings as opposed to
+wide character strings.  Wide character strings are arrays of type
+`wchar_t' and as for multibyte character strings usually pointers of
+type `wchar_t *' are used.
+
+   By convention, a "null character", `'\0'', marks the end of a
+multibyte character string and the "null wide character", `L'\0'',
+marks the end of a wide character string.  For example, in testing to
+see whether the `char *' variable P points to a null character marking
+the end of a string, you can write `!*P' or `*P == '\0''.
+
+   A null character is quite different conceptually from a null pointer,
+although both are represented by the integer `0'.
+
+   "String literals" appear in C program source as strings of
+characters between double-quote characters (`"') where the initial
+double-quote character is immediately preceded by a capital `L' (ell)
+character (as in `L"foo"').  In ISO C, string literals can also be
+formed by "string concatenation": `"a" "b"' is the same as `"ab"'.  For
+wide character strings one can either use `L"a" L"b"' or `L"a" "b"'.
+Modification of string literals is not allowed by the GNU C compiler,
+because literals are placed in read-only storage.
+
+   Character arrays that are declared `const' cannot be modified
+either.  It's generally good style to declare non-modifiable string
+pointers to be of type `const char *', since this often allows the C
+compiler to detect accidental modifications as well as providing some
+amount of documentation about what your program intends to do with the
+string.
+
+   The amount of memory allocated for the character array may extend
+past the null character that normally marks the end of the string.  In
+this document, the term "allocated size" is always used to refer to the
+total amount of memory allocated for the string, while the term
+"length" refers to the number of characters up to (but not including)
+the terminating null character.
+
+   A notorious source of program bugs is trying to put more characters
+in a string than fit in its allocated size.  When writing code that
+extends strings or moves characters into a pre-allocated array, you
+should be very careful to keep track of the length of the text and make
+explicit checks for overflowing the array.  Many of the library
+functions _do not_ do this for you!  Remember also that you need to
+allocate an extra byte to hold the null character that marks the end of
+the string.
+
+   Originally strings were sequences of bytes where each byte
+represents a single character.  This is still true today if the strings
+are encoded using a single-byte character encoding.  Things are
+different if the strings are encoded using a multibyte encoding (for
+more information on encodings see *Note Extended Char Intro::).  There
+is no difference in the programming interface for these two kind of
+strings; the programmer has to be aware of this and interpret the byte
+sequences accordingly.
+
+   But since there is no separate interface taking care of these
+differences the byte-based string functions are sometimes hard to use.
+Since the count parameters of these functions specify bytes a call to
+`strncpy' could cut a multibyte character in the middle and put an
+incomplete (and therefore unusable) byte sequence in the target buffer.
+
+   To avoid these problems later versions of the ISO C standard
+introduce a second set of functions which are operating on "wide
+characters" (*note Extended Char Intro::).  These functions don't have
+the problems the single-byte versions have since every wide character is
+a legal, interpretable value.  This does not mean that cutting wide
+character strings at arbitrary points is without problems.  It normally
+is for alphabet-based languages (except for non-normalized text) but
+languages based on syllables still have the problem that more than one
+wide character is necessary to complete a logical unit.  This is a
+higher level problem which the C library functions are not designed to
+solve.  But it is at least good that no invalid byte sequences can be
+created.  Also, the higher level functions can also much easier operate
+on wide character than on multibyte characters so that a general advise
+is to use wide characters internally whenever text is more than simply
+copied.
+
+   The remaining of this chapter will discuss the functions for handling
+wide character strings in parallel with the discussion of the multibyte
+character strings since there is almost always an exact equivalent
+available.
+
+
+File: libc.info,  Node: String/Array Conventions,  Next: String Length,  Prev: Representation of Strings,  Up: String and Array Utilities
+
+String and Array Conventions
+============================
+
+   This chapter describes both functions that work on arbitrary arrays
+or blocks of memory, and functions that are specific to null-terminated
+arrays of characters and wide characters.
+
+   Functions that operate on arbitrary blocks of memory have names
+beginning with `mem' and `wmem' (such as `memcpy' and `wmemcpy') and
+invariably take an argument which specifies the size (in bytes and wide
+characters respectively) of the block of memory to operate on.  The
+array arguments and return values for these functions have type `void
+*' or `wchar_t'.  As a matter of style, the elements of the arrays used
+with the `mem' functions are referred to as "bytes".  You can pass any
+kind of pointer to these functions, and the `sizeof' operator is useful
+in computing the value for the size argument.  Parameters to the `wmem'
+functions must be of type `wchar_t *'.  These functions are not really
+usable with anything but arrays of this type.
+
+   In contrast, functions that operate specifically on strings and wide
+character strings have names beginning with `str' and `wcs'
+respectively (such as `strcpy' and `wcscpy') and look for a null
+character to terminate the string instead of requiring an explicit size
+argument to be passed.  (Some of these functions accept a specified
+maximum length, but they also check for premature termination with a
+null character.)  The array arguments and return values for these
+functions have type `char *' and `wchar_t *' respectively, and the
+array elements are referred to as "characters" and "wide characters".
+
+   In many cases, there are both `mem' and `str'/`wcs' versions of a
+function.  The one that is more appropriate to use depends on the exact
+situation.  When your program is manipulating arbitrary arrays or
+blocks of storage, then you should always use the `mem' functions.  On
+the other hand, when you are manipulating null-terminated strings it is
+usually more convenient to use the `str'/`wcs' functions, unless you
+already know the length of the string in advance.  The `wmem' functions
+should be used for wide character arrays with known size.
+
+   Some of the memory and string functions take single characters as
+arguments.  Since a value of type `char' is automatically promoted into
+an value of type `int' when used as a parameter, the functions are
+declared with `int' as the type of the parameter in question.  In case
+of the wide character function the situation is similarly: the
+parameter type for a single wide character is `wint_t' and not
+`wchar_t'.  This would for many implementations not be necessary since
+the `wchar_t' is large enough to not be automatically promoted, but
+since the ISO C standard does not require such a choice of types the
+`wint_t' type is used.
+
+
+File: libc.info,  Node: String Length,  Next: Copying and Concatenation,  Prev: String/Array Conventions,  Up: String and Array Utilities
+
+String Length
+=============
+
+   You can get the length of a string using the `strlen' function.
+This function is declared in the header file `string.h'.
+
+ - Function: size_t strlen (const char *S)
+     The `strlen' function returns the length of the null-terminated
+     string S in bytes.  (In other words, it returns the offset of the
+     terminating null character within the array.)
+
+     For example,
+          strlen ("hello, world")
+              => 12
+
+     When applied to a character array, the `strlen' function returns
+     the length of the string stored there, not its allocated size.
+     You can get the allocated size of the character array that holds a
+     string using the `sizeof' operator:
+
+          char string[32] = "hello, world";
+          sizeof (string)
+              => 32
+          strlen (string)
+              => 12
+
+     But beware, this will not work unless STRING is the character
+     array itself, not a pointer to it.  For example:
+
+          char string[32] = "hello, world";
+          char *ptr = string;
+          sizeof (string)
+              => 32
+          sizeof (ptr)
+              => 4  /* (on a machine with 4 byte pointers) */
+
+     This is an easy mistake to make when you are working with
+     functions that take string arguments; those arguments are always
+     pointers, not arrays.
+
+     It must also be noted that for multibyte encoded strings the return
+     value does not have to correspond to the number of characters in
+     the string.  To get this value the string can be converted to wide
+     characters and `wcslen' can be used or something like the following
+     code can be used:
+
+          /* The input is in `string'.
+             The length is expected in `n'.  */
+          {
+            mbstate_t t;
+            char *scopy = string;
+            /* In initial state.  */
+            memset (&t, '\0', sizeof (t));
+            /* Determine number of characters.  */
+            n = mbsrtowcs (NULL, &scopy, strlen (scopy), &t);
+          }
+
+     This is cumbersome to do so if the number of characters (as
+     opposed to bytes) is needed often it is better to work with wide
+     characters.
+
+   The wide character equivalent is declared in `wchar.h'.
+
+ - Function: size_t wcslen (const wchar_t *WS)
+     The `wcslen' function is the wide character equivalent to
+     `strlen'.  The return value is the number of wide characters in the
+     wide character string pointed to by WS (this is also the offset of
+     the terminating null wide character of WS).
+
+     Since there are no multi wide character sequences making up one
+     character the return value is not only the offset in the array, it
+     is also the number of wide characters.
+
+     This function was introduced in Amendment 1 to ISO C90.
+
+ - Function: size_t strnlen (const char *S, size_t MAXLEN)
+     The `strnlen' function returns the length of the string S in bytes
+     if this length is smaller than MAXLEN bytes.  Otherwise it returns
+     MAXLEN.  Therefore this function is equivalent to `(strlen (S) < n
+     ? strlen (S) : MAXLEN)' but it is more efficient and works even if
+     the string S is not null-terminated.
+
+          char string[32] = "hello, world";
+          strnlen (string, 32)
+              => 12
+          strnlen (string, 5)
+              => 5
+
+     This function is a GNU extension and is declared in `string.h'.
+
+ - Function: size_t wcsnlen (const wchar_t *WS, size_t MAXLEN)
+     `wcsnlen' is the wide character equivalent to `strnlen'.  The
+     MAXLEN parameter specifies the maximum number of wide characters.
+
+     This function is a GNU extension and is declared in `wchar.h'.
+

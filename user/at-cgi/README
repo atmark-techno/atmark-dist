@@ -1,0 +1,97 @@
+
+AT-CGI Dependencies
+-------------------
+
+AT-CGI depends on certain system configurations consisting of the following
+types of components:
+
+  * AT-CGI specific configuration files
+  * command line utilities
+  * daemons and their configuration files
+  * system wide configuration files
+
+Most noteworthy is the fact that AT-CGI depends on:
+
+  * sudo
+
+to allow it to execute commands with specific permission restrictions when it is
+run by the http server. The sudo configuration file (sudoers) must be configured
+so that the http server user is allowed to execute these commands without
+suppling a password.
+
+Some functionality in AT-CGI relies on specific configuration of components
+which are not even directly controlled by AT-CGI. For example the USBDATA
+function requires that:
+
+  * udev and its runtime scripts
+
+are properly configured to mount usb devices at a specific path.
+
+Determining required components
+-------------------------------
+
+To get an idea of what components are required, take a look at what is included
+in:
+
+  * The Atmark Dist system image profiles for products supported by AT-CGI.
+    These will give you concrete examples of the required components and their
+    configurations.
+
+    Currently supported products include include:
+
+        Product        | Atmark Dist Image Profile
+       ----------------|-------------------------------------------
+        Armadillo-220  | vendors/AtmarkTechno/Armadillo-220.Recover
+        Armadillo-230  | vendors/AtmarkTechno/Armadillo-230.Recover
+        Armadillo-240  | vendors/AtmarkTechno/Armadillo-240.Recover
+
+  * The path definitions in the header files of the AT-CGI source.
+
+    The following is a list of paths known to be accessed by AT-CGI. This lists
+    may not be exhaustive but will get you off to a good start.
+
+      /etc/config/at-admin
+      /etc/config/at-admin-packetscan
+      /etc/config/at-admin-firewall
+
+      /etc/config/HOSTNAME
+      /etc/config/interfaces
+      /etc/config/bridges
+      /etc/config/resolv.conf
+      /etc/config/hosts
+      /etc/config/root.crontab
+      /etc/config/etc/DISTNAME
+
+      /etc/init.d/avahi-daemon
+      /etc/init.d/bridges
+      /etc/init.d/snort
+
+      /sbin/avahi-daemon
+      /sbin/ifup
+      /sbin/ifdown
+      /sbin/reboot
+      /sbin/ifconfig
+      /bin/pidof
+      /bin/hostname
+      /bin/netflash
+      /bin/touch
+      /bin/brctl
+      /bin/flatfsd
+      /usr/bin/wget
+      /usr/bin/sudo
+      /bin/uname
+      /bin/cat
+      /bin/rm
+      /bin/cp
+      /bin/ledctrl
+      /usr/bin/crontab
+      /bin/mail
+
+      /home/www-data/admin/.htpasswd
+      /var/log/messages
+
+      /tmp/at-admin/
+
+      /dev/flash/userland
+      /dev/flash/kernel
+

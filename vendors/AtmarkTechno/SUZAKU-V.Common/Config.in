@@ -1,0 +1,29 @@
+#
+# Vendor specific
+#
+
+define_bool CONFIG_VENDOR_AUTO_LIBINSTALLER y
+define_bool CONFIG_VENDOR_AUTO_STRIPPER y
+
+comment 'SUZAKU Starter Kit Sample Application'
+bool '7seg-cgi-control'		CONFIG_VENDOR_SUZAKU_STARTERKIT_7SEG_CGI
+
+comment 'SUZAKU I/O LED/SW Board Sample Application'
+bool 'demo-led'			CONFIG_VENDOR_SUZAKU_SIL_LED
+bool 'demo-7seg'		CONFIG_VENDOR_SUZAKU_SIL_7SEG
+bool 'demo-sw'			CONFIG_VENDOR_SUZAKU_SIL_SW
+bool 'demo-rsw'			CONFIG_VENDOR_SUZAKU_SIL_RSW
+
+comment 'SUZAKU I/O A/D Board Sample Application'
+bool 'demo-ad'			CONFIG_VENDOR_SUZAKU_SID_AD
+
+comment 'SUZAKU I/O AV Board Sample Application'
+bool 'demo-av'			CONFIG_VENDOR_SUZAKU_SIV_AV
+bool 'demo-impose'		CONFIG_VENDOR_SUZAKU_SIV_IMPOSE
+
+bool 'Change SUZAKU Root Password'	CONFIG_VENDOR_CHANGE_SUZAKU_ROOT_PASSWD
+if [ $CONFIG_VENDOR_CHANGE_SUZAKU_ROOT_PASSWD = "y" ]; then
+	string 'SUZAKU Root Password'	CONFIG_VENDOR_SUZAKU_ROOT_PASSWD "root"
+else
+	define_string CONFIG_VENDOR_SUZAKU_ROOT_PASSWD "root"
+fi

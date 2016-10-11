@@ -1,0 +1,9 @@
+--- Makefile.in.orig	2005-03-19 14:33:59.591014024 -0500
++++ Makefile.in	2005-03-19 14:34:26.521919904 -0500
+@@ -148,3 +148,6 @@
+ 		mv $(CONF_DIR)/$(PRELOAD) $(CONF_DIR)/$(PRELOAD).old; \
+ 	fi
+ 	$(INSTALL_FILE) config/$(PRELOAD) $(CONF_DIR)
++
++distclean: clobber
++

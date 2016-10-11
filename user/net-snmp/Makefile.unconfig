@@ -1,0 +1,11 @@
+
+CONFIGURE_TARGET = all romfs install
+IGNORE_TARGET = clean distclean
+
+$(CONFIGURE_TARGET):
+	@/bin/sh ./default.configure
+	@make
+
+$(IGNORE_TARGET):
+
+

@@ -1,0 +1,11 @@
+armsd (0.9.0) unstable; urgency=low
+
+  * 0.9.0
+
+ -- yamazaki <yamazaki@iij.ad.jp>  Wed, 13 Mar 2013 13:22:21 +0900
+
+armsd (0.7.0) unstable; urgency=low
+
+  * First release packaged for debian
+
+ -- Kouki Ooyatsu <kouki-o@iij.ad.jp>  Tue, 10 Apr 2012 19:48:32 +0900

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+logger -p user.info "thermal state passive."
+logger -p user.info "set the 3G in nomal mode."
+
+# set 3G Nomal mode
+echo 1 > /sys/class/gpio/W_DISABLE_3G/value
+
+ifdown umts0
+ifup umts0

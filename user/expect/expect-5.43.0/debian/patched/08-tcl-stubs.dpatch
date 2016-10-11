@@ -1,0 +1,10 @@
+patching file configure.in
+patching file exp_command.c
+Hunk #2 succeeded at 2316 (offset 1 line).
+Hunk #3 succeeded at 2963 (offset 1 line).
+patching file exp_command.h
+Hunk #1 succeeded at 35 (offset 1 line).
+patching file exp_main_exp.c
+patching file exp_main_sub.c
+patching file exp_main_tk.c
+Hunk #1 succeeded at 32 with fuzz 2.

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+id=$1
+version=$2
+info=$3
+config=$4
+
+echo start script invoked: $0 $*
+
+echo module-id=$id
+echo version=$version
+echo info=$info
+echo config:
+cat -n $config

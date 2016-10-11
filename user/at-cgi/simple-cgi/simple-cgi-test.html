@@ -1,0 +1,51 @@
+<html>
+
+<head>
+
+<title>simple-cgi test</title>
+
+<script type="text/javascript">
+    function submit_form(method){
+        document.main.method = method;
+        document.main.submit();
+    }
+</script>
+
+<style type="text/css">
+body {
+    font-family: Arial;
+    padding: 10px 10px 10px 10px;
+    tfont-size: 12px;
+}
+h1 {
+    color: #cc0000;
+    font-size: 22px;
+    font-weight: normal;
+}
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>SIMPLE-CGI TEST</h1>
+
+<form name="main" action="simple-cgi-test.cgi" method="post">
+
+<input type="text" name="text_box_input" value="" size="30"/><br />
+
+<input name="submit" type="submit" value="Post this" onclick="submit_form('post')"/><br />
+<input name="submit" type="submit" value="Get this" onclick="submit_form('get')"/><br />
+
+<a href="simple-cgi-test.cgi">Link (get)</a>
+
+</form>
+
+</body>
+
+</html>
+  

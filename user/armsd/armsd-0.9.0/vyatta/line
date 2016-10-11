@@ -1,0 +1,88 @@
+#!/bin/bash
+
+NEEDPOLL=128
+CONNECTED=129
+DISCONNECTED=130
+
+action=$1
+type=$2
+ifindex=$3
+ppp_id=$4
+ppp_pass=$5
+mobile_telno=$6
+mobile_cid=$7
+mobile_apn=$8
+mobile_pdp=$9
+
+echo line script invoked: $0 $*
+
+echo type=$type
+echo action=$action
+echo ifindex=$ifindex
+if [ "$type" = "pppoe" ] || [ "$type" = "mobile" ]; then
+    echo ppp_id=$ppp_id
+    echo ppp_pass=$ppp_pass
+fi
+if [ "$type" = "mobile" ]; then
+    echo mobile_telno=$mobile_telno
+    echo mobile_cid=$mobile_cid
+    echo mobile_apn=$mobile_apn
+    echo mobile_pdp=$mobile_pdp
+fi
+
+vyatta_sbin=/opt/vyatta/sbin
+CFG_CMD=${vyatta_sbin}/vyatta-cfg-cmd-wrapper 
+SHELL_API=/bin/cli-shell-api
+
+session_env=$($SHELL_API getSessionEnv $PPID)
+eval $session_env
+$SHELL_API setupSession
+
+case $action in
+"connect")
+    echo line connedted
+    case $type in
+    "pppoe")
+        ;;
+    "dhcp")
+        ${CFG_CMD} begin
+        ${CFG_CMD} set interfaces ethernet eth${ifindex} address dhcp
+        ${CFG_CMD} commit
+        ${CFG_CMD} end
+        ;;
+    esac
+    exit $CONNECTED
+    ;;
+"disconnect")
+    echo line disconnected
+    case $type in
+    "pppoe")
+        ;;
+    "dhcp")
+        ${CFG_CMD} begin
+        ${CFG_CMD} delete interfaces ethernet eth${ifindex} address dhcp
+        ${CFG_CMD} commit
+        ${CFG_CMD} end
+        ;;
+    esac
+    exit $DISCONNECTED
+    ;;
+"status")
+    echo line connected
+    case $type in
+    "pppoe")
+        ;;
+    "dhcp")
+        ip route show | grep -q -s 'eth${ifindex}' && exit $CONNECTED
+        exit $DISCONNECTED
+        ;;
+    *)
+        ;;
+    esac
+    exit $CONNECTED
+    ;;
+*)
+    echo unknown action
+    exit 1
+    ;;
+esac

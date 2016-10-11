@@ -1,0 +1,10 @@
+#! /bin/sh
+
+# This is a hack to arrange for openssh-client-udeb to show up as a
+# retrievable debian-installer component in expert mode (due to the
+# Installer-Menu-Item: control field) while not actually appearing on the
+# d-i main menu. See:
+#
+#   http://lists.debian.org/debian-boot/2004/07/msg01207.html
+
+exit 1

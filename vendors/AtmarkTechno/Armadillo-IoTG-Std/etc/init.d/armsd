@@ -1,0 +1,55 @@
+#! /bin/sh
+
+. /etc/init.d/functions
+
+DAEMON=/usr/sbin/armsd
+NAME=armsd
+PID_FILE=/var/run/armsd.pid
+LED_DEV=/sys/class/leds/led3
+
+blink_led()
+{
+	echo timer > $LED_DEV/trigger
+	echo 500 > $LED_DEV/delay_on
+	echo 500 > $LED_DEV/delay_off
+}
+
+start()
+{
+	echo -n "Starting ${NAME}: "
+	/etc/armsd/gen-conf.sh
+	rm -f /etc/network/interfaces
+	rm -f /etc/resolv.conf
+	[ -f /etc/config/armsd.cache ] && \
+	    cp /etc/config/armsd.cache /etc/armsd/armsd.cache
+	blink_led
+	$DAEMON
+	check_status
+}
+
+shutdown()
+{
+	echo -n "Stopping $NAME: "
+	kill `cat $PID_FILE`
+	check_status
+}
+
+case "$1" in
+    start | "")
+	start
+	;;
+    stop)
+	shutdown
+	;;
+    restart)
+	shutdown
+	sleep 1
+	start
+	;;
+    *)
+	echo "Usage: /etc/init.d/$NAME {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

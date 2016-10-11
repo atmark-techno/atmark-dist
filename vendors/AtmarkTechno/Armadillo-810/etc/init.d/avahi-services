@@ -1,0 +1,52 @@
+#! /bin/sh
+
+PRIMARY_IF=$1
+SERIAL=`cat /proc/cpuinfo | grep ^Serial | sed -e "s/^Serial.*: //"`
+LABEL=`printf "S/N %06d" 0x${SERIAL}`
+SERVICE_DIR=/etc/avahi/services
+
+HTTP_SERVICE=${SERVICE_DIR}/http.service
+cat > ${HTTP_SERVICE} <<EOF
+<service-group>
+  <name replace-wildcards="yes">http on %h [${LABEL}]</name>
+  <service>
+    <type>_http._tcp</type>
+    <port>80</port>
+  </service>
+</service-group>
+EOF
+
+AT_ADMIN_SERVICE=${SERVICE_DIR}/at-admin.service.disabled
+cat > ${AT_ADMIN_SERVICE} <<EOF
+<service-group>
+  <name replace-wildcards="yes">AT Admin on %h [${LABEL}]</name>
+  <service>
+    <type>_http._tcp</type>
+    <port>80</port>
+    <txt-record>path=/index.cgi</txt-record>
+  </service>
+</service-group>
+EOF
+
+CAMERA_SERVICE=${SERVICE_DIR}/camera.service.disabled
+cat > ${CAMERA_SERVICE} <<EOF
+<service-group>
+  <name replace-wildcards="yes">Camera on %h [${LABEL}]</name>
+  <service>
+    <type>_http._tcp</type>
+    <port>8080</port>
+    <txt-record>path=/</txt-record>
+  </service>
+</service-group>
+EOF
+
+SSH_SERVICE=${SERVICE_DIR}/ssh.service.disabled
+cat > ${SSH_SERVICE} <<EOF
+<service-group>
+  <name replace-wildcards="yes">Remote Terminal on %h [${LABEL}]</name>
+  <service>
+    <type>_ssh._tcp</type>
+    <port>22</port>
+  </service>
+</service-group>
+EOF

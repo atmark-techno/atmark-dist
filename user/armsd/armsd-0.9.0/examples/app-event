@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#if [ line_status_changed ]; then
+#	exit 1
+#fi
+
+exit 0

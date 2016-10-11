@@ -1,0 +1,68 @@
+#!/usr/bin/env expect
+
+source /usr/share/3g/3g-function.exp
+log_user 0
+
+proc hl8548_pdp_act {pid} {
+	set retry 10
+	set delay 3
+	set try 0
+	while {$try < $retry} {
+		send_command "AT+CGACT=1,$pid"
+		set timeout -1
+		expect {
+			"OK" {
+				return
+			} "ERROR" {
+				incr try
+				puts "AT+CGACT error"
+				sleep $delay
+				continue
+			}
+		}
+	}
+
+	exit 1
+}
+
+proc hl8548_pdp_deact {pid} {
+	send_command "AT+CGACT=0,$pid"
+	check_status 10
+}
+
+proc hl8548_xcedata_bug_workaround {pid} {
+	puts "check APN/username/password"
+	hl8548_pdp_act $pid
+	hl8548_pdp_deact $pid
+	sleep 1
+	puts "success"
+}
+
+global module_type_mc8090
+global module_type_hl8548
+
+if { $argc < 1 } {
+	puts "usage: $argv0 \[pid\]"
+	exit 1
+}
+
+set pid [lindex $argv 0]
+
+serial_connect 30
+busy_wait 30
+
+set module_type [get_module_type]
+
+if {$module_type == $module_type_mc8090} {
+	puts "3G connect"
+	send_command "AT!SCACT=1,$pid"
+	check_status 30
+	puts "success"
+} elseif {$module_type == $module_type_hl8548} {
+	hl8548_xcedata_bug_workaround $pid
+	puts "3G connect"
+	send_command "AT+XCEDATA=$pid,0"
+	#check_status 30
+}
+
+exit 0

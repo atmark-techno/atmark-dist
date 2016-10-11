@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# network setup script
+#	Copyright (c) by Shuu Yamaguchi <shuu@wondernetworkresources.com>
+#	Can be freely distributed and used under the terms of the GNU GPL.
+#
+# network
+#
+
+IFUP=/sbin/ifup
+IFDOWN=/sbin/ifdown
+
+DEV=`grep eth /proc/net/dev | cut -d : -f 1`
+for dev in $DEV
+do
+	case $ACTION in
+	add)
+		ifconfig $dev | grep UP
+		if [ $? != 0 ];then
+			$IFUP $dev
+		fi
+		;;
+	remove)
+		ifconfig $dev | grep UP
+		if [ $? = 0 ];then
+			$IFDOWN $dev
+		fi
+		;;
+	esac	
+done

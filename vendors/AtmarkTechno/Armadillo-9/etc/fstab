@@ -1,0 +1,5 @@
+/dev/ram0		/		ext2	defaults		0 1
+#/dev/hda1		/		ext2	defaults		0 1
+#/dev/hda2		none		swap	sw			0 0
+none			/proc		proc	defaults		0 0
+usbfs			/proc/bus/usb	usbfs	defaults		0 0

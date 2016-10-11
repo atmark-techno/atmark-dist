@@ -1,0 +1,3 @@
+2005-01-10  cristy  <cristy@virgi...>
+  * Added normalize parameter to GetPixels().  Use normalize=>'true' to return
+    normalized pixel values.

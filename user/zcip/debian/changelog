@@ -1,0 +1,54 @@
+zcip (4-8) unstable; urgency=low
+
+  * Set Standards-Version to 3.6.2.
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Sat, 29 Oct 2005 16:01:56 +1000
+
+zcip (4-7) unstable; urgency=low
+
+  * Fixed "segfault at startup (tested on ARM)" (Closes: #302486).
+    Patch by armcc@lycos.com.
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Thu, 07 Apr 2005 17:51:47 +1000
+
+zcip (4-6) unstable; urgency=low
+
+  * Fixed "zcip doesn't work on aliases" (Closes: #190547).
+    Patch by Robert de Bath <robert$@mayday.cix.co.uk>.
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Sun, 13 Feb 2005 12:51:02 +1100
+
+zcip (4-5) unstable; urgency=low
+
+  * FTBFS: replace Build-Depends 'libpcap-dev' with 'libpcap0.8-dev'
+    (closes: #264144).
+    Patch by Andreas Jochens <aj@andaco.de>
+
+ -- Anibal Monsalve Salazar <A.Monsalve.Salazar@IEEE.org>  Mon, 09 Aug 2004 23:14:21 +1000
+
+zcip (4-4) unstable; urgency=low
+
+  * Include 'zeroconf' in package description (closes: #204640).
+  * Add '#include <linux/types.h>' to zcip.c (closes: #208649).
+
+ -- Anibal Monsalve Salazar <A.Monsalve.Salazar@IEEE.org>  Thu, 04 Sep 2003 21:52:06 +1000
+
+zcip (4-3) unstable; urgency=low
+
+  * New Maintainer (closes: #188107, #196207).
+  * Include TODO and README in package (closes: #193715).
+
+ -- Anibal Monsalve Salazar <A.Monsalve.Salazar@IEEE.org>  Thu, 05 Jun 2003 22:03:54 +1000
+
+zcip (4-2) unstable; urgency=low
+
+  * Build-depend on libnet0-dev, not libnet-dev (closes: #184679).
+  * Describe algorithm in description (closes: #183385).
+
+ -- Matt Kraai <kraai@debian.org>  Fri, 21 Mar 2003 14:47:52 -0800
+
+zcip (4-1) unstable; urgency=low
+
+  * Package.
+
+ -- Matt Kraai <kraai@debian.org>  Mon, 24 Feb 2003 09:44:11 -0800

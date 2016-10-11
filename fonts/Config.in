@@ -1,0 +1,6 @@
+#
+# fonts/Config.in
+#
+
+source ../fonts/truetype/fonts-takao/Config.in
+source ../fonts/truetype/vlgothic/Config.in

@@ -1,0 +1,38 @@
+#!/usr/bin/make -f
+# Copyright (C) 2003-2005 Anibal Monsalve Salazar <anibal@debian.org>
+
+binary: binary-arch binary-indep
+
+binary-arch: build
+	install -d -m 755 debian/tmp/DEBIAN
+
+	install -d -m 755 debian/tmp/sbin
+	install -m 755 zcip debian/tmp/sbin
+	strip --remove-section=.comment --remove-section=.note \
+	      debian/tmp/sbin/zcip
+
+	install -d -m 755 debian/tmp/usr/share/man/man8
+	install -p -m 644 zcip.8 debian/tmp/usr/share/man/man8
+	gzip -9 debian/tmp/usr/share/man/man8/zcip.8
+
+	install -d -m 755 debian/tmp/usr/share/doc/zcip
+	install -p -m 644 Changelog debian/tmp/usr/share/doc/zcip/changelog
+	install -p -m 644 README TODO debian/tmp/usr/share/doc/zcip
+	install -p -m 644 debian/changelog debian/tmp/usr/share/doc/zcip/changelog.Debian
+	gzip -9 debian/tmp/usr/share/doc/zcip/*
+	install -p -m 644 debian/copyright debian/tmp/usr/share/doc/zcip
+
+	dpkg-shlibdeps debian/tmp/sbin/zcip
+	dpkg-gencontrol -isp
+	dpkg --build debian/tmp ..
+
+build:
+	$(MAKE)
+	touch build
+
+clean:
+	$(MAKE) clean
+	rm -f debian/files debian/substvars
+	rm -fr debian/tmp 
+
+.PHONY: binary binary-arch binary-indep build clean

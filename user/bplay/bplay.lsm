@@ -1,0 +1,16 @@
+Begin3
+Title:          bplay
+Version:        0.991
+Entered-date:   Mon Sep 18, 2000
+Description:    A buffered audio play/record program. Handles WAV, VOC
+                and raw sound files. Should allow glitch-free recording
+                at 44100kHz/16 bit stereo on most hardware.
+Keywords:       audio play record
+Author:         davidm@amberdata.demon.co.uk (David Monro)
+Maintained-by:  davidm@amberdata.demon.co.uk (David Monro)
+Primary-site:   http://www.amberdata.demon.co.uk/bplay/
+		20kB	bplay-0.991.tar.gz
+		1kB	bplay.lsm
+Platform:       Linux and supported sound card
+Copying-policy: GPL
+End

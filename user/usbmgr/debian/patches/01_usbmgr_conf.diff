@@ -1,0 +1,415 @@
+--- config/usbmgr.orig.conf	2005-03-19 11:41:11.661178936 -0500
++++ config/usbmgr.conf	2005-03-19 12:03:50.353626288 -0500
+@@ -1,6 +1,6 @@
+ ###
+ # usbmgr configuration file
+-# Mon Feb 19 09:01:12 JST 2001
++# Fri Apr 12 23:23:03 PDT 2002
+ ###
+ 
+ ### HOST CONTROLLER
+@@ -16,22 +16,29 @@
+ 
+ # Apple USB keyboard [Alps Electric] G3 keyboard 
+ vendor 0x5ac product 0x203 module hid , keybdev
++# QTRONIX USB Keyboard [Belkin]
++vendor 0x5c7 product 0x2011 module hid, keybdev
++# Solid Year USB Keyboard [Belkin]
++vendor 0x1293 product 0x2101 module hid, keybdev
+ # Apple USB keyboard [Mitsumi] iMac keyboard 
+ vendor 0x5ac product 0x201 module hid , keybdev
++# Apple USB Pro Keyboard
++vendor 0x5ac product 0x204 module hid , keybdev
+ # 109 JPN USB KBD/M[NEC] (not available)
+ vendor 0x409 product 0x14 module hid , keybdev
+ # Mate MA40C [NEC]
+ vendor 0x409 product 0x19 module hid , keybdev
+ # Mate MA66T [NEC]
+ vendor 0x409 product 0x25 module hid , keybdev
+-# Belkin (QTRONIX) USB Keyboard             
+-vendor 0x5c7 product 0x2011 module hid, keybdev
+-# Belkin (Solid Year) USB Keyboard             
+-vendor 0x1293 product 0x2101 module hid, keybdev
+ # Ortek USB Keyboard             
+ vendor 0x5a4 product 0x8801 module hid, keybdev
++# Ortek USB Keyboard
++vendor 0x5a4 product 0x8801 module hid, keybdev
++vendor 0x5a4 product 0x973a module hid, keybdev
++# 
+ 
+ # Class setup
++class 0x3 subclass 0x0 protocol 0x1 module hid , keybdev
+ class 0x3 subclass 0x1 protocol 0x1 module hid , keybdev
+ 
+ ### MOUSE 
+@@ -42,6 +49,7 @@
+ vendor 0x603 product 0x712d module hid , mousedev
+ # Optical Wheel Mouse [Logitech]
+ vendor 0x46d product 0xc00c module hid , mousedev
++vendor 0x46d product 0xc00e module hid , mousedev
+ # First Mouse Wheel(N48) [Logitech]
+ vendor 0x46d product 0xc001 module hid , mousedev
+ # Wingman Gaming Mouse [Logitech]
+@@ -50,6 +58,8 @@
+ vendor 0x46d product 0xc001 module hid, mousedev
+ # USB-PS/2 Trackball [Logitech]
+ vendor 0x46d product 0xc401 module hid, mousedev
++# Optical iFeel Wheel Mouse [Logitech]
++vendor 0x46d product 0xc030 module hid , mousedev
+ # Apple USB Mouse[Mitsumi] iMAC/G3 mouse
+ vendor 0x5ac product 0x301 module hid, mousedev
+ # Quick Scroll Mouse (USB) [Mitsumi]
+@@ -66,10 +76,19 @@
+ vendor 0x458 product 0x2 module hid, mousedev
+ 
+ # Class setup
++class 0x3 subclass 0x0 protocol 0x2 module hid , mousedev
+ class 0x3 subclass 0x1 protocol 0x2 module hid , mousedev
+ 
++### PS2 -> USB interface
++# Y-Mouse keyboard and mouse adaptor [PI engineering]
++vendor 0x5f3 product 0x203 module hid, keybdev, mousedev
++# PS2 -> USB interface [USBLink]
++vendor 0x4b4 product 0x101 module hid, keybdev
++
+ ###  PRINTER
+ 
++# HL-1270N series [Brother]
++vendor 0x04f9 product 0x0008 module printer
+ # Deskjet 810C [HP]
+ vendor 0x3f0 product 0x0304 module printer
+ # DeskJet 880C [HP]
+@@ -78,12 +97,19 @@
+ vendor 0x4a9 product 0x1055 module printer
+ # UC-1284B Printer Cable [ATEN]
+ vendor 0x0557 product 0x2006 module printer
++# Epson Stylus Photo 875CD [EPSON]
++# Epson Stylus Color 980/777/670/880 [EPSON]
++vendor 0x4b8 product 0x0005 module printer
++# Prolific IEEE-1284 Controller
++vendor 0x067d product 0x2305 module printer
+ 
+ # Class setup
+ class 0x7 subclass 0x1 protocol 0x1 module printer
+ # PM-670/760/770/777/800/820/880/900/980|875CD [EPSON]
+ class 0x7 subclass 0x1 protocol 0x2 module printer
+ class 0x7 subclass 0x1 protocol 0x3 module printer
++# Prolific IEEE-1284 Controller
++class 0x0 module printer
+ 
+ ###  TABLET
+ 
+@@ -99,12 +125,24 @@
+ vendor 0x56a product 0x23 module evdev , mousedev , wacom
+ # Intuos 12x18  [WACOM]
+ vendor 0x56a product 0x24 module evdev , mousedev , wacom
++# Graphire2 USB Tablet [WACOM]
++vendor 0x056a product 0x0011 module evdev, mousedev, wacom
+ 
+ ### CAMERA
+ #
++# Coolpix 885 [Nikon]
++vendor 0x04b0 product 0x0105 module scsi_mod , sd_mod , usb-storage
++# Coolpix 995 [Nikon]
++vendor 0x04b0 product 0x0104 module scsi_mod , sd_mod , usb-storage
++# Dimage7 [MINOLTA]
++vendor 0x0686 product 0x4006 module scsi_mod , sd_mod , usb-storage
++# GR-DVP3 [JVC]
++vendor 0x4f1 product 0x4 module scsi_mod , sd_mod , usb-storage
++# C-2040ZOOM/C-700/C-40ZOOM/C-3040ZOOM [Olympus]
++vendor 0x7b4 product 0x105 module scsi_mod , sd_mod , usb-storage
+ # E-10 [Olympus]
+ vendor 0x7b4 product 0x102 module scsi_mod , sd_mod , usb-storage
+-# FinePix1300 [FUJIFILM]
++# FinePix 1300/4500/4700z [FUJIFILM]
+ vendor 0x4cb product 0x100 module scsi_mod , sd_mod , usb-storage
+ # DSC-S30/S50/S70/P1 Cyber-Shot [Sony]
+ vendor 0x54c product 0x10 module scsi_mod , sd_mod , usb-storage
+@@ -123,6 +161,8 @@
+ vendor 0x040a product 0x0112 module dc2xx
+ # PhotoSmart C500 [HP]
+ vendor 0xf003 product 0x6002 module dc2xx
++# PhotoSmart C315 [HP]
++vendor 0x03f0 product 0x6102 module scsi_mod , sd_mod , usb-storage
+ # (mdc800)
+ # MDC800 [Mustek]
+ vendor 0x055f product 0xa800 module mdc800
+@@ -146,11 +186,37 @@
+ # (ibmcam)
+ # C-It [IBM]
+ vendor 0x0545 product 0x8080 module ibmcam
++# ToUcam Pro (PCVC740K) [Philips]
++vendor 0x471 product 0x311 module pwc
++# Webcam Vesta [Philips]
++vendor 0x471 product 0x307 module pwc
++# Webcam Vesta Pro [Philips]
++vendor 0x471 product 0x308 module pwc
++# Other Philips Products
++# (Please teach me the product name)
++vendor 0x471 product 0x302 module pwc
++vendor 0x471 product 0x0303 module pwc
++vendor 0x471 product 0x0304 module pwc
++vendor 0x471 product 0x030C module pwc
++vendor 0x471 product 0x0310 module pwc
++vendor 0x471 product 0x0312 module pwc
++# Philips OEM Pdoructs
++# (Please teach me the product name)
++vendor 0x69A product 0x0001 module pwc
++vendor 0x46D product 0x0b80 module pwc
++vendor 0x55D product 0x9000 module pwc
++vendor 0x55D product 0x9001 module pwc
++vendor 0x41e product 0x400C module pwc
++vendor 0x4CC product 0x8116 module pwc
++
+ 
+ ### MP3 Player
+ 
+ # Rio 500 [Diamond]
+ vendor 0x841 product 0x1 module rio500
++# DM-1 [Olympus]
++vendor 0x7b4 product 0x204 module scsi_mod, sd_mod, usb-storage
++
+ 
+ ### Modem
+ 
+@@ -158,6 +224,15 @@
+ vendor 0x4c1 product 0x097 module acm
+ # HI Val
+ vendor 0x483 product 0x7554 module none
++# Modem Blaster USB [Creative Labs]
++vendor 0x1690 product 0x0101 module acm
++# MicroLink 56k Fun USB EU  (unsupported)
++vendor 0x05cc product 0x2280 module unsupported_device
++# Motorola Corporation SurfBoard 4100 USB Cable Modem
++vendor 0x07b2 product 0x4100 module acm
++vendor 0x07b2 product 0x4200 module acm
++
++## ISDN
+ # Aterm ITX72,ITX62,IT42 [NEC]
+ vendor 0x409 product 0x84 module acm
+ 
+@@ -175,6 +250,8 @@
+ 
+ # Class setup
+ class 0x1 subclass 0x1 module audio
++class 0x1 subclass 0x2 module audio
++class 0x1 subclass 0x3 module audio
+ 
+ ### JUKEBOX
+ 
+@@ -184,16 +261,30 @@
+ ### SCANNER
+ 
+ # (scanner)
++# Canon CanoScan N650U
++vendor 0x4a5 product 0x2206 module scanner
++# Perfection1640 [Epson]
++vendor 0x04b8 product 0x010a module scanner
++# Perfection 1240U [Epson]
++vendor 0x4b8 product 0x10b module scanner
+ # Perfection 636U , 636Photo [Epson]
+ vendor 0x04b8 product 0x0101 module scanner
+ # Perfection 610 [Epson]
+ vendor 0x04b8 product 0x0103 module scanner
+ # Perfection 1200U , 1200Photo [Epson]
+ vendor 0x4b8 product 0x104 module scanner
++# Perfection 1260
++vendor 0x4b8 product 0x11d module scanner
++# Perfection 1650 [Epson]
++vendor 0x4b8 product 0x110 module scanner
++# Colorio Scanner GT8700F [Epson]
++vendor 0x4b8 product 0x10a module scanner
+ # Prisa Acerscan 620U [Acer]
+ vendor 0x04a5 product 0x2060 module scanner
+ # Prisa Acerscan 620U [Acer]
+ vendor 0x04a5 product 0x2040 module scanner
++# SnapScan 40E [Agfa]
++vendor 0x06bd product 0x208d module scanner
+ # SnapScan 1212U [Agfa]
+ vendor 0x06bd product 0x0001 module scanner
+ # SnapScan 1212U [Agfa]
+@@ -202,6 +293,8 @@
+ vendor 0x06bd product 0x0100 module scanner
+ # ColorPage-Vivid Pro [Genius]
+ vendor 0x0458 product 0x2001 module scanner
++# 2200C scanjet [HP]
++vendor 0x03f0 product 0x0605 module scanner
+ # 3300C [HP]
+ vendor 0x03f0 product 0x0205 module scanner
+ # 4100C [HP]
+@@ -210,6 +303,7 @@
+ vendor 0x03f0 product 0x0105 module scanner
+ # PhotoSmart S20 [HP]
+ vendor 0x03f0 product 0x0102 module scanner
++vendor 0x03f0 product 0x102 module scanner
+ # 5200C [HP]
+ vendor 0x03f0 product 0x0401 module scanner
+ # 6200C [HP]
+@@ -220,6 +314,8 @@
+ vendor 0x0638 product 0x0268 module scanner
+ # 1200 CU [Mustek]
+ vendor 0x055f product 0x0001 module scanner
++# 1200 UB [Mustek]
++vendor 0x055f product 0x6 module scanner
+ # G2-300 [Colorado]
+ vendor 0x0461 product 0x0300 module scanner
+ vendor 0x0461 product 0x0302 module scanner
+@@ -270,32 +366,70 @@
+ vendor 0x5da product 0x80a3 module microtek
+ # Scanmaker V6UL
+ vendor 0x5da product 0x80ac module microtek
++# Nikon Coolscan IV
++vendor 0x4b0 product 0x4000 module unsupported_device
+ 
+ ### STORAGE
+ 
++### SD
++# USB MMC/SD [DataFab System Inc.]
++vendor 0x7c4 product 0xb004 module scsi_mod , sd_mod , usb-storage
++### Memory Stick
++# VAIO (PCG-SR9*) Memory Stick Slot [SONY] 
++vendor 0x54c product 0x32 module scsi_mod , sd_mod , usb-storage
+ ### FD
+ # VAIO FD(PCGA-UFD5) [SONY]
+ vendor 0x57b product 0x0 module scsi_mod , sd_mod , usb-storage
++# External USB Floppy Disk Drive [IBM]
++vendor 0x644 product 0x0 module scsi_mod, sd_mod, usb-storage
++# USB Memory Key [IBM] (M-system DiskOnKey)
++vendor 0x8ec product 0x0010 module scsi_mod, sd_mod, usb-storage
+ ### ZIP
+-# Iomega Zip 100Mb
++# Iomega Zip 100Mb [Iomega]
+ vendor 0x059b product 0x0031 module scsi_mod , sd_mod , usb-storage
++vendor 0x059b product 0x0032 module scsi_mod , sd_mod , usb-storage
+ # Iomega USB Zip 250
+ vendor 0x059b product 0x0030 module scsi_mod , sd_mod , usb-storage
+ ### Super Disk - LS 120
+ # E-USB Bridge [Shuttle Technologies]
+ vendor 0x04e6 product 0x0001 module scsi_mod , sd_mod , usb-storage
++### Hard disk
++# Acom disk
++vendor 0xc0b product 0xb001 module scsi_mod , sd_mod , usb-storage
++### ATAPI Bridge
++# In-System Design (used in Archos Jukebox 2000)
++vendor 0x5ab product 0x31 module scsi_mod , sd_mod , usb-storage
+ ### COMPACT FLASH READER
+ # RATOC REX-CF03
+ vendor 0x0584 product 0x0001 module scsi_mod , sd_mod , usb-storage
++# BUFFALO MCR-CF2 CF Card Reader [Melco]
++vendor 0x411 product 0x15 module scsi_mod , sd_mod , usb-storage
++### FreeCom USB/ATAPI adapter (Used by OnStream tapes, Philips CD-RW)
++vendor 0x07ab product 0xfc01 module scsi_mod, usb-storage
+ ### CD
++# CD-RW i1210B [IO Data]
++vendor 0x5ab product 0x5700 module scsi_mod, sr_mod, sg, usb-storage
+ # CD-Writer Plus 8200e/8210e [HP]
+ vendor 0x3f0 product 0x107 module scsi_mod, sr_mod, usb-storage
++# CD-Writer Plus 8200e [HP]
++vendor 0x3f0 product 0x207 module scsi_mod, sr_mod, usb-storage
+ # zipCD 650 [Iomega]
+ vendor 0x59b product 0x050 module scsi_mod, sr_mod, sg, usb-storage
++# USB CD-ROM [IBM]
++vendor 0x4b3 product 0x4427 module scsi_mod, sr_mod, usb-storage
++# Image Tank 1.5 USB Storage
++vendor 0xee3 product 0x1000 module scsi_mod, sd_mod, usb-storage
+ 
+ # Class Setup
++class 0x8 subclass 0x1 module scsi_mod , sd_mod , usb-storage
++# IBM CD-ROM
++class 0x8 subclass 0x2 module scsi_mod , sr_mod , usb-storage
+ # USB Clik! 40 [NEC]
+ class 0x8 subclass 0x4 module scsi_mod , sd_mod , usb-storage
++# Jaz | SD
++class 0x8 subclass 0x6 module scsi_mod , sd_mod , usb-storage
++# Image Tank 1.5 USB Storage
++class 0x8 subclass 0x5 protocol 0x50 module scsi_mod , sd_mod, usb-storage
+ 
+ ### Bluetooth
+ class 0xe0 subclass 0x1 protocol 0x1 module bluetooth
+@@ -310,6 +444,9 @@
+ vendor 0x08dd product 0x0986 script network module pegasus
+ # BUFFALO LUA-TX [MELCO]
+ vendor 0x0411 product 0x0001 script network module pegasus
++vendor 0x0411 product 0x0005 script network module pegasus
++# BUFFALO LUA-TX [MELCO]
++vendor 0x0411 product 0x0009 script network module pegasus
+ # DSB-650X [D-link]
+ vendor 0x2001 product 0x4001 script network module pegasus
+ vendor 0x2001 product 0x4002 script network module pegasus
+@@ -322,6 +459,8 @@
+ # USB100TX [Linksys]
+ vendor 0x066b product 0x2203 script network module pegasus
+ vendor 0x066b product 0x2204 script network module pegasus
++# USB10T [Linksys]
++vendor 0x0565 product 0x0005 script network module kaweth
+ # USB Ethernet Adapter
+ vendor 0x066b product 0x2206 script network module pegasus
+ # 202 USB Ethernet [SMC]
+@@ -334,25 +473,39 @@
+ vendor 0x083a product 0x1046 script network module pegasus
+ # USB ET/TX [IO DATA]
+ vendor 0x04bb product 0x0904 script network module pegasus
++# USB ET/TX-S [IO DATA]
++vendor 0x04bb product 0x0913 script network module pegasus
+ # LD-USB/TX [LANEED]
+ vendor 0x056e product 0x4002 script network module pegasus
+ # Ehternet USB [SONY]
+ vendor 0x05e9 product 0x9 script network module pegasus
++# EA101 Ethernet [NetGear]
++vendor 0x0846 product 0x1001 script network module kaweth
++
+ 
+ ### serial
+ # Visor [Handspring]
+-vendor 0x82d product 0x100 module usb-serial
++vendor 0x82d product 0x100 module usbserial , visor
+ 
+ ### Joystick
+ 
+ # WingMan force [Logitech]
+ vendor 0x046d product 0xc281 module hid , iforce
++# Sidewinder GamePad Pro [Microsoft]
++vendor 0x045e product 0x26 module hid , joydev
+ # Sidewinder [Microsoft]
+ vendor 0x045e product 0x0008 module hid , joydev
+ # Logic3 USB Intruder [Mega World]
+ vendor 0x7b5 product 0x9902 module hid , joydev
+ # Destroyer Xtreme [Gravis]
+ vendor 0x47d product 0x3002 module hid , joydev
++# Destroyer Tiltpad [Gravis]
++vendor 0x47d product 0x4008 module hid , joydev
++# USB Game Pad JC-U609SV/GT/ID [ELECOM]
++vendor 0x995 product 0x1 module hid , joydev
++
++# Class setup
++class 0x3 subclass 0x0 protocol 0x0 module hid , joydev
+ 
+ ### USB Host-to-Host Cable
+ # USB Direct Connect [Belkin]
+@@ -360,6 +513,16 @@
+ # Hama [Prolific Technologies]
+ vendor 0x67b product 0x0 module plusb
+ 
++# Other
++# Hardlock USB dongle
++vendor 0x529 product 0x1 module none
++# D-Link DSB-R100 FM radio
++vendor 0x4b4 product 0x1002 module dsbr100
++
++### GPS
++# Deluo USB GPS (and other pl2303 serial adapters?)
++vendor 0x67b product 0x2303 module pl2303
++
+ ###  HUB
+ 
+ # HUB should match this configuration
+@@ -377,3 +540,9 @@
+ # vendor 0x58f product 0x9213 module none
+ # Hub - 4P [Belkin]
+ # vendor 0x451 product 0x1446 module none 
++# Portgear USB Hub 4-port [Xircom]
++# vendor 0x451 product 0x1446 module none
++# Hub in Ortek USB Keyboard
++# vendor 0x58f product 0x9213 module none
++# vendor 0x57b product 0x0000 module none
++

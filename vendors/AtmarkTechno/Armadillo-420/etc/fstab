@@ -1,0 +1,5 @@
+/dev/ram0		/		ext2	defaults		0 1
+proc			/proc		proc	defaults		0 0
+udev			/dev		tmpfs	mode=0755		0 0
+run			/run		tmpfs	mode=0755		0 0
+sysfs			/sys		sysfs	defaults		0 0

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+logger -p user.info "thermal state hot."
+logger -p user.info "set the 3G in airplane mode."
+
+# set 3G airplane mode
+echo 0 > /sys/class/gpio/W_DISABLE_3G/value

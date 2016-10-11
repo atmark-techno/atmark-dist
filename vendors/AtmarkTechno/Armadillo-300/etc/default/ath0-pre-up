@@ -1,0 +1,18 @@
+#!/bin/sh
+
+IFACE=ath0
+ESSID=
+ENC=
+
+if [ "$ESSID" = "" ]; then
+	echo "Error: not set SSID."
+	echo ""
+	wlanconfig $IFACE list scan
+	exit 1
+fi
+
+iwconfig $IFACE essid $ESSID &&
+if [ ! "$ENC" = "" ]; then
+	iwconfig $IFACE enc $ENC
+fi
+

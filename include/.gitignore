@@ -1,0 +1,18 @@
+include
+asm-*
+*.h
+*.in
+*.nt
+
+ac
+asm
+config
+linux
+mtd
+setup.*
+
+#
+# Directories
+#
+STLport
+c++

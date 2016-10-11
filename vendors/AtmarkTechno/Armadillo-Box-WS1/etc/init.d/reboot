@@ -1,0 +1,39 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo
+echo "System is going down for system reboot now."
+echo
+
+. /etc/init.d/functions
+
+echo "Starting local stop scripts."
+
+for i in /etc/rc.d/rc.stop/rc.*
+do
+  if [ -x $i ]; then
+    $i
+  fi
+done
+
+for i in `/bin/ls /proc|sort -nr`
+do
+  if [ $i -eq 1 ]; then
+    break
+  elif [ $i -ne $$ -a $i -ne `grep 'PPid:' /proc/$$/status|cut -f2 -d:` ]; then
+    kill -15 $i 2>/dev/null
+  fi
+done
+
+#echo -n "Disabling swap space: "
+#swapoff -a
+#check_status
+
+echo -n "Syncing all filesystems: "
+sync
+check_status
+
+echo -n "Unmounting all filesystems: "
+umount -a -r
+check_status

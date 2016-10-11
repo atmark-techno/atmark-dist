@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. /usr/share/3g/3g-common.sh
+
+if [ $# -ne 2 ]; then
+	exit 1
+fi
+
+if [ "${1}" = "umts0" ]; then
+	if [ "${2}" = "down" ]; then
+		#for i in `lsof | grep $SERIAL_3G_LOCK | cut -f 1`
+		#do
+		#	kill -USR1 $i
+		#done
+		echo 1 > /sys/class/gpio/W_DISABLE_3G/value
+		ifdown umts0
+		ifup umts0
+	fi
+fi
+
+exit 0

@@ -1,0 +1,5 @@
+bool 'Vine Linux Fonts' CONFIG_FONTS_VL
+if [ "$CONFIG_FONTS_VL" = "y" ]; then
+	bool '  VL Gothic' CONFIG_FONTS_VL_GOTHIC
+	bool '  VL PGothic' CONFIG_FONTS_VL_PGOTHIC
+fi

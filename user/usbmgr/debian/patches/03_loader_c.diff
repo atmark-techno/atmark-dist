@@ -1,0 +1,44 @@
+--- loader.orig.c	2003-08-17 02:08:30.000000000 -0500
++++ loader.c	2005-07-31 03:50:50.897337160 -0500
+@@ -96,7 +96,7 @@
+ static void
+ load(char *loader,int argc,char **argv,int action)
+ {
+-	int modutil_type,i;
++	int modutil_type,i,fd;
+ 	char *new_command[4];	/* 0: loader 1: option 2: module 3: NULL */
+ 
+ 	if ((modutil_type = get_modutils_type()) == OLD_TYPE) {
+@@ -105,7 +105,7 @@
+ 		if (action & MODULE_LOAD)
+ 			argv[1] = "-as";
+ 		else
+-			argv[1] = "-asr";
++			argv[1] = "-asn";
+ 		DPRINTF(LOG_DEBUG,"load:execute %s %s",argv[0],argv[1]);
+ #ifdef	DEBUG
+ 		for (i = 2;argv[i] != NULL;i++) {
+@@ -121,12 +121,19 @@
+ 		if (action & MODULE_LOAD)
+ 			new_command[1] = "-s";
+ 		else
+-			new_command[1] = "-sr";
++			new_command[1] = "-sn";
+ 		for (i = START_ARGV;argv[i] != NULL;i++) {
+ 			new_command[2] = argv[i];
+-			DPRINTF(LOG_DEBUG,"load:execute %s %s %s\n",
+-				new_command[0], new_command[1], new_command[2]);
+-			execute(loader,new_command);
++			if (new_command[2] == "scsi_mod") {
++				if ((fd = open("/proc/scsi",O_RDONLY)) != -1) {
++					close(fd);
++			  		syslog(LOG_DEBUG,"Module %s not loaded, SCSI system already available",new_command[2]);
++				} else {
++					DPRINTF(LOG_DEBUG,"load:execute %s %s %s\n",
++					new_command[0], new_command[1], new_command[2]);
++					execute(loader,new_command);
++				}
++			}
+ 		}
+ 	}
+ }

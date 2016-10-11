@@ -1,0 +1,18 @@
+.TH composite 1 "Date: 2005/03/01 01:00:00" "ImageMagick"
+.SH NAME
+composite \-  overlaps one image over another.
+.SH SYNOPSIS
+.TP
+\fBcomposite\fP \fB[\fP \fIoptions\fP \fB... ]\fP \fIchange-file base-file\fP \fB[\fP \fImask-file\fP \fB]\fP \fIoutput-image\fP
+.SH OVERVIEW
+The \fBcomposite\fP program is a member of the ImageMagick(1) suite of tools.  Use it to overlap overlaps one image over another.
+
+For more information about the composite command, point your browser to file://@MagickDocumentPath@/www/composite.html or http://www.imagemagick.org/script/composite.php.
+
+Run `composite -help' to get a summary of the \fBcomposite\fP command options.
+.SH SEE-ALSO
+ImageMagick(1)
+
+.SH COPYRIGHT
+
+\fBCopyright (C) 1999-2005 ImageMagick Studio LLC. Additional copyrights and licenses apply to this software, see http://www.imagemagick.org/script/license.php\fP

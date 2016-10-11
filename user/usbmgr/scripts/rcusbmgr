@@ -1,0 +1,128 @@
+#! /bin/sh
+# Copyright (c) 1995-2000 SuSE GmbH Nuernberg, Germany.
+#
+# Author: <olh@suse.de>
+#
+# /etc/init.d/usbmgr
+#
+#   and symbolic its link
+#
+# /sbin/rcusbmgr
+#
+### BEGIN INIT INFO
+# Provides:  usb
+# Required-Start: syslog
+# Required-Stop: 
+# Default-Start: 1 2 3 5
+# Default-Stop:
+# Description: loads and unloads usb module
+### END INIT INFO
+
+. /etc/rc.status
+. /etc/rc.config
+
+# Determine the base and follow a runlevel link name.
+base=${0##*/}
+link=${base#*[SK][0-9][0-9]}
+
+# Force execution if not called by a runlevel directory.
+# we want it always...
+#test $link = $base && START_USB=yes
+#test "$START_USB" = yes || exit 0
+
+# Shell functions sourced from /etc/rc.status:
+#      rc_check         check and set local and overall rc status
+#      rc_status        check and set local and overall rc status
+#      rc_status -v     ditto but be verbose in local rc status
+#      rc_status -v -r  ditto and clear the local rc status
+#      rc_failed        set local and overall rc status to failed
+#      rc_reset         clear local rc status (overall remains)
+#      rc_exit          exit appropriate to overall rc status
+
+# First reset status of this service
+rc_reset
+case "$1" in
+    start)
+	# check if the hostcontroller file is already there
+	if [ ! -f /etc/usbmgr/host -o ! -s /etc/usbmgr/host ] ; then
+		echo "creating /etc/usbmgr/host ... "
+	# if the last echo fails the module will be loaded anyway
+		$0 init || modprobe -av $USB_HCI
+	fi
+	echo -n "Starting service usbmgr"
+	## Start daemon with startproc(8). If this fails
+	## the echo return value is set appropriate.
+	if [ "$RUNLEVEL" = "S" ] ; then
+		MY_OPTS=" -p "
+	fi
+	startproc /sbin/usbmgr $MY_OPTS
+
+	# Remember status and be verbose
+	rc_status -v
+	;;
+    stop)
+	echo -n "Shutting down service usbmgr"
+	## Stop daemon with killproc(8) and if this fails
+	## set echo the echo return value.
+
+	killproc -TERM /sbin/usbmgr
+
+	# Remember status and be verbose
+	rc_status -v
+	;;
+    restart)
+	## If first returns OK call the second, if first or
+	## second command fails, set echo return value.
+	$0 stop  &&  $0 start
+
+	# Remember status and be quiet
+	rc_status
+	;;
+    reload)
+	echo -n "Reload usbmgr config"
+	/sbin/update_usbdb -f /etc/usbmgr/usbmgr.conf
+
+	;;
+    status)
+	echo -n "Checking for running usbmgr: "
+	## Check status with checkproc(8), if process is running
+	## checkproc will return with exit status 0.
+
+	checkproc /sbin/usbmgr && echo OK || echo "No process (no USB?)"
+	;;
+    init)
+	# this will check for the hostcontroller type
+	# it stores either usb-ohci or usb-uhci into
+	# /etc/usbmgr/host
+	# it will be called by /lib/YaST/bootsetup and
+	# /usr/lib/YaST2/bin/YaST2.firstboot
+	test -f /proc/cpuinfo || mount -n -t proc proc /proc
+	if test -x /sbin/lspci; then
+		USB_PCI="/sbin/lspci"
+	else
+		test -e /proc/pci && USB_PCI="cat /proc/pci"
+	fi
+
+	echo "USB determination method: $USB_PCI"
+	USB_HCI=`
+	eval $USB_PCI |
+	while read line ; do
+		case "$line" in
+		*USB*Intel*|*USB*VIA*) echo "usb-uhci"; break ;;
+		*USB*)                 echo "usb-ohci"; break ;;
+		esac
+	done`
+	if test -z "$USB_HCI"; then
+	echo "No USB controller found" 
+	else
+	echo "USB driver to be loaded: $USB_HCI (stored in /etc/usbmgr/host)"
+	echo "$USB_HCI" > /etc/usbmgr/host
+	fi
+
+	;;
+    *)
+	echo "Usage: $0 {start|stop|status|restart|reload|init}"
+	exit 1
+	;;
+esac
+rc_exit

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Changing file permissions: "
+chmod 640 /etc/shadow &&
+chmod 640 /etc/gshadow &&
+chmod 600 /etc/busybox.conf &&
+chmod 6775 /bin/busybox &&
+check_status

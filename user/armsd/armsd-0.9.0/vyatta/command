@@ -1,0 +1,20 @@
+#!/bin/vbash
+
+id=$1
+in=$2
+out=$3
+
+echo command script invoked: $0 $*
+
+echo --- input parameter ---
+cat -n $in
+echo --- end ---
+
+echo "command script: module-id=$id" >$out
+echo "input command: `cat $in`" >> $out
+echo "----" >> $out
+
+shopt -s expand_aliases
+. /etc/bash_completion.d/vyatta-op
+export LC_ALL=C
+eval `cat $in` >> $out 2>&1

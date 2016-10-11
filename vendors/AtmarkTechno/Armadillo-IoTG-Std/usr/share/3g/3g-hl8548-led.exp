@@ -1,0 +1,22 @@
+#!/usr/bin/env expect
+
+source /usr/share/3g/3g-function.exp
+log_user 0
+
+if { $argc < 1 } {
+	puts "usage: $argv0 \[cde\]"
+	exit 1
+}
+
+set cde [lindex $argv 0]
+
+serial_connect 10
+busy_wait 10
+
+send_command "AT+KGPIOCFG=4,0,2"
+check_status 3
+
+send_command "AT+KGPIO=4,$cde"
+check_status 3
+
+exit 0

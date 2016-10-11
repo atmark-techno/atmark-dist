@@ -1,0 +1,97 @@
+#!/usr/bin/make -f
+
+# Comment this to turn off verbose mode.
+export DH_VERBOSE=1
+
+# This is the debhelper compatibility version to use.
+export DH_COMPAT=2
+
+CFLAGS = -O2 -Wall -Wno-comment
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+CFLAGS += -g
+endif
+export CFLAGS
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	./configure --prefix=/usr -v \
+		--with-all-insults \
+		--with-exempt=sudo --with-pam --with-fqdn \
+		--with-logging=syslog --with-logfac=authpriv \
+		--with-env-editor --with-editor=/usr/bin/editor \
+		--with-timeout=15 --with-password-timeout=0 \
+		--disable-root-mailer --disable-setresuid \
+		--with-sendmail=/usr/sbin/sendmail \
+		--with-secure-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
+
+	-$(MAKE)
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	-$(MAKE) distclean || exit 0
+
+	-test -r /usr/share/misc/config.sub && \
+		cp -f /usr/share/misc/config.sub config.sub
+	-test -r /usr/share/misc/config.guess && \
+		cp -f /usr/share/misc/config.guess config.guess
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -o root -g root -m 4755 -s sudo debian/sudo/usr/bin/sudo
+	ln -sf sudo debian/sudo/usr/bin/sudoedit
+	install -o root -g root -m 0755 -s visudo debian/sudo/usr/sbin/visudo
+	install -o root -g root -m 0644 sudo.man \
+		debian/sudo/usr/share/man/man8/sudo.8 
+	install -o root -g root -m 0644 visudo.man \
+		debian/sudo/usr/share/man/man8/visudo.8 
+	install -o root -g root -m 0644 sudoers.man \
+		debian/sudo/usr/share/man/man5/sudoers.5 
+	install -o root -g root -m 0644 sample.sudoers \
+		debian/sudo/usr/share/doc/sudo/examples/sudoers
+	install -o root -g root -m 0644 debian/sudo.pam \
+		debian/sudo/etc/pam.d/sudo
+
+	install -o root -g root -m 0644 debian/sudo.lintian \
+		debian/sudo/usr/share/lintian/overrides/sudo
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs debian/OPTIONS BUGS RUNSON UPGRADE PORTING \
+		TODO HISTORY README TROUBLESHOOTING
+	dh_installexamples
+	dh_installmenu
+	dh_installinit
+	dh_installcron
+	dh_installmanpages fnmatch.3
+	dh_installinfo
+	dh_installchangelogs CHANGES
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	chown root.root debian/sudo/usr/bin/sudo
+	chmod 4755 debian/sudo/usr/bin/sudo
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

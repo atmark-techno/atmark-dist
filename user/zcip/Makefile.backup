@@ -1,0 +1,27 @@
+
+
+CPPFLAGS=`libnet-config --cflags` `libnet-config --defines`
+CFLAGS=-O2 -Wall -W
+LDFLAGS=
+
+OBJS=zcip.o lockfile.o
+
+
+
+
+all: zcip make-arp
+
+
+make-arp: make-arp.o
+	$(CC) make-arp.o $(LDFLAGS) -o make-arp -lpcap `libnet-config --libs`
+
+zcip: $(OBJS)
+	$(CC) -Wall -W $(OBJS) $(LDFLAGS) -o zcip -lpcap `libnet-config --libs`
+
+romfs:
+	$(ROMFSINST) /bin/zcip
+
+clean:
+	rm -f $(OBJS) zcip make-arp make-arp.o *~
+
+

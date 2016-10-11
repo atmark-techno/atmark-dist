@@ -1,0 +1,178 @@
+What Is This?
+~~~~~~~~~~~~~
+
+This is an implementation of the ad-hoc link-local IP autoconfiguration
+algorithm described in the IETF Draft "Dynamic Configuration of IPv4
+link-local addresses", provided in the tarball, and also available at:
+
+http://www.ietf.org/internet-drafts/draft-ietf-zeroconf-ipv4-linklocal-07.txt
+
+[Note, zcip does not currently completely comply with this version]
+
+Basically, it is a way of getting an IP address without manual assignment
+or DHCP.
+
+
+Usage
+~~~~~
+
+Refer to the man page.
+
+
+Building
+~~~~~~~~
+
+This uses "libnet", from http://www.packetfactory.net/libnet;
+there are other "libnet" projects, make sure you get the right one.
+Version 1.0.2a works. Later versions don't.
+
+It also uses "libpcap", from http://www.tcpdump.org;
+Version 0.7.1 works.
+
+On RedHat 7.3, you may need to modify the Makefile. Dave Brownell
+says:
+    CPPFLAGS += -I/usr/include/pcap
+
+On NetBSD (and probably FreeBSD) you need to apply a couple of
+patches that are provided in the tarball (makearp-netbsd.patch and
+zcip-netbsd.patch). These will be tested and probably applied in
+the next version.
+
+Just type "make".
+
+
+
+Troubleshooting
+~~~~~~~~~~~~~~~
+
+Linux kernels need to support the "Socket Filtering" option (CONFIG_FILTER)
+in the networking code. This is not turned on by default in standard "Linus"
+kernels.  If you don't have it, you'll normally get a message like:
+
+    kernel doesn't support BSD socket filters ... reconfigure
+
+You may need to recompile your kernel to get the needed functionality - see:
+http://www.linuxdoc.org/HOWTO/Kernel-HOWTO.html if you need
+instructions on kernel modification.
+
+If you get "high speed" looping, where addresses are tried and
+immediately discarded (without any apparent delay), and messages like
+the following:
+    interface: eth0 (00:40:05:DE:83:36)
+    probing for 169.254.41.245
+    avoiding collision - discarding address
+    address in use
+    probing for 169.254.117.250
+    avoiding collision - discarding address
+    address in use
+    probing for 169.254.24.84
+    ...
+then you probably have a kernel problem.
+
+
+
+Copyright
+~~~~~~~~~
+
+Copyright 2002 Transmeta Corporation.  This program as released under
+the 3-clause BSD license, see the file "Copyright" for details.
+
+
+Written by Sebastian Kuzminsky <seb@kernel.org>, with contributions from
+Peter Anvin <hpa@transmeta.com>, David Brownell <david-b@pacbell.net>,
+Michael Schmidt <schmidt@nue.et-inf.uni-siegen.de>.
+
+Brad Hards <bradh@frogmouth.net> is the current maintainer.
+
+
+Updates
+~~~~~~~
+
+The latest version of this program is available at
+<ftp://ftp.kernel.org/pub/software/network/zcip> or from
+http://zeroconf.sf.net 
+
+
+For more information, or if you have questions, comments or
+patches, please join the ZCIP mailing list.  Get info by sending
+a message with just the word `help' as subject or in the body to
+<zcip-request@hera.kernel.org>, or visiting:
+
+    http://linux.kernel.org/mailman/listinfo/zcip
+
+
+
+
+Interoperability
+~~~~~~~~~~~~~~~~
+
+
+Windows ME:
+
+    When set to "Obtain an IP address automatically", WME tries to DHCP
+    for an address.  If it fails, it looks to see if it has remembered a
+    previous DHCP lease.  If one is found, it is used.  If no old lease is
+    found, it'll do a variant of the zeroconf trick.  So the general case
+    for getting WME to talk on a zeroconf network is to boot it up, run
+    'winipcfg', click 'Release', then click 'Renew'.  When the hourglass
+    goes away and the 'Error' window comes up, you're good to go.
+
+
+Windows 2000:
+
+    I did my tests with Windows 2000 Professional, build 2195.
+
+    Verify that "ipconfig /all" shows "Autoconfiguration Enabled: Yes"
+    for the relevant network interface.
+
+    W2K behaves differently from WME in terms of network configuration.
+    When it's set to "Obtain an IP address automatically", it'll first
+    try to DHCP.  If that fails, it'll do the zeroconf autoconfiguration.
+    This is an improvement, but all is not well.
+
+    If it does not automatically do zeroconf, run "ipconfig /release",
+    then "ipconfig /renew".  When it returns with the error "DHCP Server
+    unreachable", it's set up and good to go.
+
+    NOTE: W2K does not comply with the zeroconf standard draft.
+
+    The standard draft defines three distinct stages of configuration
+    (although it does not talk of them in these terms): 'detection',
+    'claim', and 'defense'.  In the 'detection' phase, the machine
+    sends out a couple of ARP probes (ARP requests with the sender IP
+    address set to 0.0.0.0, indicating that the sender does not yet
+    have a valid address).  If no ARP response is received, then the
+    machine moves on to the 'claim' stage and sends out some gratuitous
+    ARP requests with the sender IP address being the machine's desired
+    IP address.
+
+    W2K skips the 'detection' stage and goes straight to the 'claim'
+    stage.  That is, the first ARP request it sends out has the sender
+    IP set to it's desired address.  This will cause a collision defense
+    response from any zeroconf-standards-compliant machine configured
+    with that address.  Normally the defending machine would send out an
+    ARP request defending it's ownership of the address, and the newcomer
+    would see the claim and try another address.  However, W2K ignores
+    the defense and sends out second identical gratuitous ARP request.
+    A defending standards-compliant zeroconf implementation is required
+    to respond to this second collision by releasing the address and
+    reconfiguring.
+
+    So if W2K decides to use an address that is already in use by another
+    machine, W2K will effectively kick the defending machine out of
+    the disputed IP address, forcing it to pick a new one.  This is a
+    relatively low probability occurrence, roughly 1 in 65000 if there
+    are only two machine on the network.
+
+
+Windows XP:
+
+    Windows XP behaves like Windows 2000: it correctly tries to do
+    autoconfiguration if DHCP fails, and it does it wrong.  The only
+    difference I've noticed between WXP and W2K in this regard is that
+    WXP doesn't have the 'ipconfig' program which lets the user tell
+    Windows to obtain an IP address automatically (this is required for
+    autoconfiguration to work).  The user can still set this option by
+    going to the Network configuration section of the control panel.
+
+

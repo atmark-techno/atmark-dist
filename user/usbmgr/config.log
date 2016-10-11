@@ -1,0 +1,69 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:529: checking for gcc
+configure:642: checking whether the C compiler (gcc  ) works
+configure:658: gcc -o conftest    conftest.c  1>&5
+configure:684: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:689: checking whether we are using GNU C
+configure:698: gcc -E conftest.c
+configure:717: checking whether gcc accepts -g
+configure:749: checking how to run the C preprocessor
+configure:770: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:859: checking for a BSD compatible install
+configure:912: checking whether ln -s works
+configure:933: checking whether make sets ${MAKE}
+configure:966: checking for dirent.h that defines DIR
+configure:979: gcc -c -g -O2  conftest.c 1>&5
+configure:1004: checking for opendir in -ldir
+configure:1023: gcc -o conftest -g -O2   conftest.c -ldir   1>&5
+/usr/bin/ld: cannot find -ldir
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1012 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char opendir();
+
+int main() {
+opendir()
+; return 0; }
+configure:1087: checking for ANSI C header files
+configure:1100: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1167: gcc -o conftest -g -O2   conftest.c  1>&5
+configure: In function 'main':
+configure:1162: warning: incompatible implicit declaration of built-in function 'exit'
+configure:1191: checking for sys/wait.h that is POSIX.1 compatible
+configure:1212: gcc -c -g -O2  conftest.c 1>&5
+configure:1236: checking for fcntl.h
+configure:1246: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1236: checking for limits.h
+configure:1246: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1236: checking for sys/ioctl.h
+configure:1246: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1236: checking for syslog.h
+configure:1246: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1236: checking for unistd.h
+configure:1246: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1274: checking for pid_t
+configure:1307: checking for size_t
+configure:1342: checking whether gcc needs -traditional
+configure:1391: checking for unistd.h
+configure:1430: checking for getpagesize
+configure:1458: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1483: checking for working mmap
+configure:1631: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1562: warning: conflicting types for built-in function 'malloc'
+configure: In function 'main':
+configure:1579: warning: incompatible implicit declaration of built-in function 'exit'
+configure:1654: checking return type of signal handlers
+configure:1676: gcc -c -g -O2  conftest.c 1>&5
+configure:1697: checking for mkdir
+configure:1725: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1697: checking for strdup
+configure:1725: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1709: warning: conflicting types for built-in function 'strdup'
+configure:1697: checking for strtoul
+configure:1725: gcc -o conftest -g -O2   conftest.c  1>&5

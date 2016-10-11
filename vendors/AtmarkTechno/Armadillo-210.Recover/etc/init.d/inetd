@@ -1,0 +1,14 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting inetd: "
+inetd
+check_status
+
+iptables -A INPUT -p tcp -d 0/0 --dport telnet -j ACCEPT
+iptables -A INPUT -p tcp -d 0/0 --dport ftp    -j ACCEPT
+
+

@@ -1,0 +1,17 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 06-pkgindex.dpatch by Michael A. Cleverly <michael@cleverly.com>
+##
+## DP: Fixes stupid typo in pkgIndex.in (Closes: #186179).
+## DP: Adjusted for new soname (Closes: #381052).
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/pkgIndex.in expect-5.43.0/pkgIndex.in
+--- expect-5.43.0.orig/pkgIndex.in	2002-02-12 02:00:56.000000000 +0000
++++ expect-5.43.0/pkgIndex.in	2006-07-10 17:03:27.000000000 +0000
+@@ -7,4 +7,4 @@
+ # script is sourced, the variable $dir must contain the
+ # full path name of this file's directory.
+ 
+-package ifneeded Expect @EXP_VERSION_FULL@ [list load [file join $dir .. @EXP_SHARED_LIB_FILE@]]
++package ifneeded Expect @EXP_VERSION_FULL@ [list load [file join @prefix@ lib libexpect.so.@EXP_VERSION_FULL@]]

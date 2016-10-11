@@ -1,0 +1,18 @@
+.TH mogrify 1 "Date: 2005/03/01 01:00:00" "ImageMagick"
+.SH NAME
+mogrify \- resize an image, blur, crop, despeckle, dither, draw on, flip, join, re-sample, and much more. Mogrify overwrites the original image file, whereas, convert(1) writes to a different image file.
+.SH SYNOPSIS
+.TP
+\fBmogrify\fP [\fIoptions\fP] \fIinput-file\fP 
+.SH OVERVIEW
+The \fBmogrify\fP program is a member of the ImageMagick(1) suite of tools.  Use it to resize an image, blur, crop, despeckle, dither, draw on, flip, join, re-sample, and much more. This tool is similiar to convert(1) except the original image file is overwritten with any changes you request.
+
+For more information about the mogrify command, point your browser to file://@MagickDocumentPath@/www/morify.html or http://www.imagemagick.org/script/mogrify.php.
+
+Run `mogrify -help' to get a summary of the \fBmogrify\fP command options.
+.SH SEE-ALSO
+ImageMagick(1)
+
+.SH COPYRIGHT
+
+\fBCopyright (C) 1999-2005 ImageMagick Studio LLC. Additional copyrights and licenses apply to this software, see http://www.imagemagick.org/script/license.php\fP

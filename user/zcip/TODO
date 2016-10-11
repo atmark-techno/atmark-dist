@@ -1,0 +1,41 @@
+
+
+It'd be cool if it didnt need libnet and libpcap. Might be possible to
+incorporate it into normal linux net-tools, which has its own lib support.
+
+
+Make sure all ARP packets are broadcast, not unicast.
+
+
+verify standards compliance
+
+
+atexit bring down the interface
+
+
+Add autoconf. Maybe work around no packet filtering? Don't link everything
+statically.
+
+
+Look at portability issues (for when we don't have glibc support, such
+as in embedded applications).
+
+
+Add support for ipaliasing. Ideally we'd check if the interface was
+already configured UP, and if so, use the next alias (so if eth0 is up,
+we use eth0:0, then eth0:1 and so on up to eth0:255). Maybe trash existing
+configurations if some option was specified.
+
+
+Maybe add an option to put a link-local on all interfaces that are
+present? (SIOGIFCONF ioctl can help) Or if we had the ipaliaising
+stuff, we could make this the default, and use the -i option for doing
+individual interfaces.
+
+
+interoperates poorly with the incorrect zeroconf implementation in W2K
+build 2195
+
+    W2K skips the detection phase and goes straight to the claim phase.
+    It's initial ARP requests have the sender IP set to the machine's
+    desired IP address.

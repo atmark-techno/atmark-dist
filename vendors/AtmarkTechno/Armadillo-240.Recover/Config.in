@@ -1,0 +1,7 @@
+#
+# Vendor specific
+#
+
+source ../vendors/AtmarkTechno/Armadillo-2x0.Common/Config.in
+
+bool 'slideshow' CONFIG_VENDOR_SLIDESHOW_SLIDESHOW

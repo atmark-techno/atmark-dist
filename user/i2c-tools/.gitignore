@@ -1,0 +1,4 @@
+i2cdetect
+i2cdump
+i2cget
+i2cset

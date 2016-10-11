@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# RC script for usbmgr
+#			Shuu Yamaguchi	<shuu@wondernetworkresources.com>
+#
+#  without init.d/functions         Thu Aug  3 08:49:47 JST 2000
+#
+
+PATH=$PATH:/sbin
+ 
+DAEMON=usbmgr
+LOCK=/var/run/${DAEMON}.pid
+FUNC_FILE=/etc/rc.d/init.d/functions
+RedHat=0
+
+if [ -f ${FUNC_FILE} ];then
+	. ${FUNC_FILE}
+	RedHat=1
+	LOCK=/var/lock/subsys/$DAEMON
+fi
+
+# $1:daemon
+daemon_start(){
+		$1
+		if [ $? -eq 0 ];then
+			echo "OK"
+		else
+			echo "Fail"
+		fi
+}
+
+daemon_stop(){
+	kill -TERM `cat $LOCK`
+	if [ $? -eq 0 ];then
+		echo "OK"
+	else
+		echo "Fail"
+	fi
+	rm -f $LOCK
+}
+ 
+[ -f /sbin/$DAEMON ] || exit 0
+ 
+case "$1" in
+  start)
+	if [ ! -f $LOCK ];then
+		echo -n "Starting $DAEMON daemon: "
+		if [ ${RedHat} -eq 1 ];then
+			daemon $DAEMON
+			[ $? -eq 0 ] && touch $LOCK
+			echo
+		else
+			daemon_start $DAEMON
+		fi
+	else
+		echo "$DAEMON has already run"
+		echo "   or $LOCK exists on your machine"
+		echo "   if so, you should execute following as root"
+		echo "     rm -f $LOCK"
+	fi
+        ;;
+  stop)
+	echo -n "Stopping $DAEMON daemon: "
+	if [ ${RedHat} -eq 1 ];then
+		killproc $DAEMON
+		[ $? -eq 0 ] && rm -f $LOCK
+		echo 
+	else
+		daemon_stop
+	fi
+        ;;
+  restart|reload)
+        $0 stop
+        $0 start
+        ;;
+  *)
+        echo "Usage: /etc/rc.d/init.d/usbmgr {start|stop|restart}"
+        exit 1
+esac
+ 
+exit 0
+

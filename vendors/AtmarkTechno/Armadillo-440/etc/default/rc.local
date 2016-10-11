@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting functester: "
+export TZ=JST-9
+GDK_NATIVE_WINDOWS=true DISPLAY=:0 functester >/dev/null 2>&1 &
+check_status

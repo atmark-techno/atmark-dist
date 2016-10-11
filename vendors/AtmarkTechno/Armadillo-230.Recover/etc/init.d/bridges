@@ -1,0 +1,96 @@
+#! /bin/sh
+
+# Bridge control script utilizing brctl
+
+BRCTL=/bin/brctl
+CONFIG=/etc/config/bridges
+
+. $CONFIG
+
+create()
+{
+  if [ $CREATE_BRIDGE != 1 ]; then
+    exit 0
+  fi
+  echo "Creating bridge: "
+  for i in $BRIDGED_IFACES; do
+    ifconfig $i 0.0.0.0
+  done
+  brctl addbr $BRIDGE_NAME
+  for i in $BRIDGED_IFACES; do
+    brctl addif $BRIDGE_NAME $i
+  done
+  if [ $SETAGEING != DEFAULT ]; then
+    brctl setageing $BRIDGE_NAME $SETAGEING
+  fi
+  if [ $STP_ON = 1 ]; then
+    brctl stp $BRIDGE_NAME on
+    if [ $SETBRIDGEPRIO != DEFAULT ]; then
+      brctl setbridgeprio $BRIDGE_NAME $SETBRIDGEPRIO
+    fi
+    if [ $SETFD != DEFAULT ]; then
+      brctl setfd $BRIDGE_NAME $SETFD
+    fi
+    if [ $SETGCINT != DEFAULT ]; then
+      brctl setgcint $BRIDGE_NAME $SETGCINT
+    fi
+    if [ $SETHELLO != DEFAULT ]; then
+      brctl sethello $BRIDGE_NAME $SETHELLO
+    fi
+    if [ $SETMAXAGE != DEFAULT ]; then
+      brctl setmaxage $BRIDGE_NAME $SETMAXAGE
+    fi
+    for i in $BRIDGED_IFACES; do
+      SETPATHCOST=`cat $CONFIG | awk -F '=' "/SETPATHCOST_$i/"'{print $2}'` 
+      SETPATHPRIO=`cat $CONFIG | awk -F '=' "/SETPATHPRIO_$i/"'{print $2}'` 
+      if [ $SETPATHCOST != DEFAULT ]; then
+        brctl setpathcost $BRIDGE_NAME $i $SETPATHCOST
+      fi
+      if [ $SETPATHPRIO != DEFAULT ]; then
+        brctl setportprio $BRIDGE_NAME $i $SETPATHPRIO
+      fi
+    done
+  fi
+  UPWAIT=15
+  if [ $STP_ON = 1 ]; then
+    if [ $SETFD != "DEFAULT" ]; then
+      let UPWAIT=$SETFD*2
+    else
+      let UPWAIT=30
+    fi
+  fi
+  echo "Upping bridge (${UPWAIT}sec): "
+  ifconfig $BRIDGE_NAME up
+  sleep $UPWAIT
+}
+
+remove()
+{
+  echo "Removing bridge: "
+  ifconfig $BRIDGE_NAME down
+  for i in $BRIDGED_IFACES; do
+    brctl delif $BRIDGE_NAME $i
+  done
+  brctl delbr $BRIDGE_NAME
+}
+
+case "$1" in
+  create)
+    create
+  ;;
+  remove)
+    remove
+  ;;
+  recreate)
+    remove
+    sleep 1
+    create
+  ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {create|remove|recreate}" >&2
+    exit 1
+  ;;
+esac
+
+exit 0
+

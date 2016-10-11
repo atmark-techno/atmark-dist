@@ -1,0 +1,27 @@
+Author: Gregor Jasny <gjasny@googlemail.com>
+Description: Build fixes for GCC 4.7 (discovered via launchpad)
+Origin: upstream, 9475926b6e50f60ac56175915cf82dd4f97d00ae
+
+--- a/utils/dvb/dvb-v5-std.h
++++ b/utils/dvb/dvb-v5-std.h
+@@ -20,6 +20,7 @@
+  * 	http://linuxtv.org/downloads/v4l-dvb-apis/FE_GET_SET_PROPERTY.html
+  */
+ 
++#include <stddef.h>
+ #include "dvb_frontend.h"
+ 
+ const unsigned int sys_dvbt_props[] = {
+--- a/utils/dvb/dvb-v5.h
++++ b/utils/dvb/dvb-v5.h
+@@ -3,7 +3,10 @@
+  */
+ #ifndef _DVB_V5_CONSTS_H
+ #define _DVB_V5_CONSTS_H
++
++#include <stddef.h>
+ #include "dvb_frontend.h"
++
+ struct fe_caps_name {
+ 	unsigned  idx;
+ 	char *name;

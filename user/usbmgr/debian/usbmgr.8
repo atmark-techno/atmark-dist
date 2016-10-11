@@ -1,0 +1,70 @@
+.TH "usbmgr" "8" "1.0.0" "Shuu Yamaguchi" "USB Utilities"
+.SH "NAME"
+.LP 
+usbmgr \- Daemon to load/unload USB modules
+.SH "SYNTAX"
+.LP 
+\fBusbmgr\fR [\-Vdnph] [\-D \fIn\fP] [\-c \fIfile\fP] [\-t \fItime\fP]
+.SH "DESCRIPTION"
+.LP 
+The \fBusbmgr\fR daemon takes care of loading and unloading USB kernel modules
+when necessary. 
+.LP 
+When USB devices connect to or disconnect from a USB hub,
+the usbmgr works as follows, according to configuration:
+.TP 
+a)
+It loads and unloads Linux kernel modules.
+.TP 
+b)
+It executes files to setup USB devices.
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-V\fR
+Prints version and exits.
+.TP 
+\fB\-d\fR
+Debug mode. Implies \fB\-n\fR.
+.TP 
+\fB\-n\fR
+Non daemon execution mode.
+.TP 
+\fB\-p\fR
+Don't create PID file.
+.TP 
+\fB\-h\fR
+Print usage and exit.
+.TP 
+\fB\-b\fR
+Don't beep.
+.TP 
+\fB\-D\fR \fIn\fP
+Turn on debug mode, where \fIn\fP is the debug level.
+.TP 
+\fB\-c\fR \fIfile\fP
+Specify alternate configuration file.
+.TP 
+\fB\-t\fR \fItime\fP
+Specify polling time in microseconds.
+.SH "FILES"
+.LP 
+\fI/etc/usbmgr/usbmgr.conf\fP 
+.br 
+\fI/etc/usbmgr/network\fP 
+.br 
+\fI/etc/usbmgr/preload.conf\fP 
+.br 
+.SH "ENVIRONMENT VARIABLES"
+.LP 
+None.
+.SH "AUTHOR"
+.LP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.LP 
+This manual page was written by Esteban Manchado Velázquez <zoso@debian.org>, for the Debian GNU/Linux system (but may be used by others).
+.SH "SEE ALSO"
+.LP 
+.BR dump_usbdev (8),
+.BR update_usbdb (8),
+.BR usbmgr.conf (5)

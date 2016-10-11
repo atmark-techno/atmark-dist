@@ -1,0 +1,25 @@
+#!/bin/sh
+
+id=$1
+version=$2
+info=$3
+config=$4
+
+echo "configure module: $id ($version)"
+
+case $id in
+0)
+	cp "$config" /etc/armsd/line.conf
+	;;
+1)
+	cp "$config" /etc/lighttpd.conf
+	;;
+2)
+	mkdir -p ~root/.ssh
+	chmod 700 ~root/.ssh
+	cp "$config" ~root/.ssh/authorized_keys
+	;;
+*)
+	echo unknown module: $id
+	;;
+esac

@@ -1,0 +1,3 @@
+config.linux-2.6.x
+etc/DISTNAME
+!etc/init.d

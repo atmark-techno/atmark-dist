@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../../www/magick.css");
+  //--></style>
+  <title>ImageMagick: MagickCore, C API for ImageMagick: Decorate an Image</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="magickcore, c, api, for, imagemagick:, decorate, an, image, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../../index.html"><img id="titlebar-west" src="../../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="584035008"><img id="titlebar-west" src="../../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img src="../../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img id="titlebar-east" src="../../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../../index.html">About ImageMagick</a>
+      <a href="../../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/install-source.html">Install from Source</a>
+      <a href="../../www/binary-releases.html">Binary Releases</a>
+      <a href="../../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../../www/sponsors.html">Sponsors</a>
+  <a href="http://www.webservertalk.com" class="sponsor" target="sponsor">Server Administration<br />Support Forum</a><!-- 20050515 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[ <a href="#BorderImage">BorderImage</a> | <a href="#FrameImage">FrameImage</a> | <a href="#RaiseImage">RaiseImage</a> ]</p>
+
+<div style="margin: auto;">
+  <h2><a name="BorderImage">BorderImage</a></h2>
+</div>
+
+<p>BorderImage() surrounds the image with a border of the color defined by the bordercolor member of the image structure.  The width and height of the border are defined by the corresponding members of the border_info structure.</p>
+
+<p>The format of the BorderImage method is:</p>
+
+<pre class="code">
+  Image *BorderImage(const Image *image,const RectangleInfo *border_info,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>border_info</h4>
+<p>Define the width and height of the border.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="FrameImage">FrameImage</a></h2>
+</div>
+
+<p>FrameImage() adds a simulated three-dimensional border around the image. The color of the border is defined by the matte_color member of image. Members width and height of frame_info specify the border width of the vertical and horizontal sides of the frame.  Members inner and outer indicate the width of the inner and outer shadows of the frame.</p>
+
+<p>The format of the FrameImage method is:</p>
+
+<pre class="code">
+  Image *FrameImage(const Image *image,const FrameInfo *frame_info,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>frame_info</h4>
+<p>Define the width and height of the frame and its bevels.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="RaiseImage">RaiseImage</a></h2>
+</div>
+
+<p>RaiseImage() creates a simulated three-dimensional button-like effect by lightening and darkening the edges of the image.  Members width and height of raise_info define the width of the vertical and horizontal edge of the effect.</p>
+
+<p>The format of the RaiseImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType RaiseImage(const Image *image,
+    const RectangleInfo *raise_info,const MagickBooleanType raise)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>raise_info</h4>
+<p>Define the width and height of the raise area.</p>
+
+<h4>raise</h4>
+<p>A value other than zero creates a 3-D raise effect, otherwise it has a lowered effect.</p>
+
+
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="1198618539">Discourse Server</a> |
+    <a href="../../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="380351712">Image Gallery</a> |
+    <a href="http://net11.imagemagick.org/MagickStudio/scripts/MagickStudio.cgi" target="498221222">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

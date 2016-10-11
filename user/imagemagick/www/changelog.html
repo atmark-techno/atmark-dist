@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../www/magick.css");
+  //--></style>
+  <title>ImageMagick: ImageMagick Changelog</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="imagemagick, changelog, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../index.html"><img id="titlebar-west" src="../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="1644862869"><img id="titlebar-west" src="../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img src="../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img id="titlebar-east" src="../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../index.html">About ImageMagick</a>
+      <a href="../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/install-source.html">Install from Source</a>
+      <a href="../www/binary-releases.html">Binary Releases</a>
+      <a href="../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../www/sponsors.html">Sponsors</a>
+  <a href="http://www.travelsur.net/" class="sponsor" target="sponsor">Trips to Argentina</a><!-- 20050621 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<ul><dt>2005-09-06  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> Fixed small memory leak in the RegisterTTFImage() module (patch provided    by jon@websuper...).</li>
+  <li> Extend -delay to accept ticks-per-second (e.g. -delay 10x100 is 10 one    hundredths of a second).  The default is hundredths of a second.</li>
+  <li> Clone the virtual pixel method when cloning the image cache (thanks to    Anthony for discovering this bug).</li>
+  <li> 'montage rose: -geometry 0 rose.gif' no longer seg faults (bug report by    Anthony).</li>
+  <li> Compute correct image statistics for grayscale images.</li>
+  <li> Given -crop WxH+X+Y! the image page width and height is set to WxH and    the image offset has the crop offset subtracted, so the image is relative    to the new crop/page/canvas area.</li><br />
+<dt>2005-09-03  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> Eliminate additional pedantic compiler warnings.</li>
+  <li> Bump SONAME version due to binary compatibility break.</li>
+  <li> The caption coder converts carriage-returns to plain spaces.</li>
+  <li> Cropping a 'paged' image with a negative offset is now working correctly.</li>
+  <li> Persist the gravity setting on the convert command line.</li>
+  <li> The info: format respects the -verbose option.</li>
+  <li> Added new -format embedded formatting characters, %P canvas/page size and    %O image offset on canvas/pag.</li>
+  <li> A centered crop with a precentage noew positions the image correctly on    the page.</li>
+  <li> New Transparent virtual pixel methods.</li>
+  <li> Fixed display to properly skip images with 3&lt;space&gt; or 3&lt;backspace&gt;, for    example.</li>
+  <li> Fixed display to go to the proceeding image when its the last image in    the sequence and &lt;backspace&gt; is pressed.</li>
+  <li> Fixed ConstituteImage() to properly return the opacity when a map of O    is used rather than A (bug report by magickbugs@picta...).</li>
+  <li> Use -channel RGBA to generate transparent Postscript images.</li><br />
+<dt>2005-08-24  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Invert 1-bit min-is-black TIFF images.</li>
+  <li> Fixed small memory leak in SVG coder.</li>
+  <li> Get rid of spurious "unable to find type-ghostscript.xml" message under    Windows.</li>
+  <li> eliminated corrupt memory with 'identify -list delegate' command.</li>
+  <li> -fx 'u &gt; .4' no longer generates a parse error.</li>
+  <li> Fixed cropping with a negative page offset.</li>
+  <li> The -radial-blur option can now be controlled with -channel option.</li>
+  <li> Reading the annotation string using the '@' filename prefix, now works for    standard input .</li><br />
+<dt>2005-08-20  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> Add the -motion-blur option to simulate motion blur.</li><br />
+<dt>2005-08-17  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> Restore iCCP chunk when writing PNG images with a color profile.</li>
+  <li> remove halo effect caused by transparent images from special effect    filters convolve, implode, swirl, and wave.</li><br />
+<dt>2005-08-16  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> Export the MaxRGB symbol in Magick.pm of PerlMagick.</li>
+  <li> Support CMYK pixels for the implode, swirl, and wave special effects.</li><br />
+<dt>2005-08-06  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> resizing a light colored image on a transparent background will now NOT    produce a incorrect black halo.</li>
+  <li> The experimental  -identify   option has been replaced with info:. This    special output format will do the same task as the 'identify' command,    but will allow you to save the result into a seperate file or to    standard output.  This output format will understand the use of the    -format setting within the convert command.</li>
+  <li> -label and -draw text will no longer deal with the special escapes chars.    That is  percent '%' image info formats will nolonger be expanded, or    '\n' newlines (for multiple line draws) handled.</li>
+  <li> A new -extent  operator.  This is a ultra-fast and simple image size    changer.  The image data is preserved in the topleft corner of the    resulting image, but no effort is made to set any form of background    color, or preserve image data that falls outside the new image size.    Note -crop is still the prefered operator, but this is appropriate for    handling very very large, or huge numbers of images.</li><br />
+<dt>2005-07-26  Cristy  &lt;stentz@image...&gt;</dt>
+  <li> Add the Compare() method to the ImageMagickObject.</li><br />
+<dt>2005-07-24  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Modified the configure script to makes sure that -lcygipc only gets added    if shmctl is actually found in it (Debian bug report and patch).</li><br />
+<dt>2005-07-20  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Modified the configure script to validate the new Graphviz 2.4 GVC library.</li>
+  <li> Updated to the latest autoconf/automake scripts (suggested by Arfune).</li><br />
+<dt>2005-07-20  Shish &lt;shish@shish...&gt;</dt>
+  <li> The -font option for the display program no longer causes a memory    reallocation error.</li><br />
+<dt>2005-07-13  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fixed an obscure heap-overflow vulnerability in the AVS reader reported by    Damian Put (http://www.overflow.pl/adv/imheapoverflow.txt).</li>
+  <li> Fixed race condistion in semaphore implementation (fix suggested by    Matt Wytock).</li>
+  <li> 16-bit FITS images are now scaled properly (bug report from Ivan aka Detro).</li><br />
+<dt>2005-07-04  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Read image rather than ping image for -format %r.</li><br />
+<dt>2005-06-20  Glenn Randers-Pehrson &lt;glennrp@glenn...&gt;</dt>
+  <li> coders/png.c: Fixed a problem with reading 16-bit PNG images using the Q8    quantum depth.</li><br />
+<dt>2005-06-18  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added methods MagickSetImageAttribute(), MagickSetOption(), and     MagickGetOption().</li><br />
+<dt>2005-06-14  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed bug recently introduced for stroke/fill drawing primitives.</li>
+  <li> Fixed bug when saving an 8BIM profile.</li><br />
+<dt>2005-06-13  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Add stdarg.h include in magick/api.h to satisfy RMagick configure script.</li><br />
+<dt>2005-06-05  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Image rotation no longer creates a black backgound when the image background    color is fully transparent.</li><br />
+<dt>2005-06-02  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added Log to Linear colorspace conversion.</li>
+  <li> Deprecated magick/api.h, use magick/ImageMagick.h instead.</li><br />
+<dt>2005-05-28  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Embeded ImageMagick no longer checks for configuration files on disk and<dt>	  instead uses the built-in configuration.</dt>
+  <li> GetImageTotalInkDensity() returns the total ink density for an image.</li><br />
+<dt>2005-05-26  Falcon  &lt;sss@rdw.r...&gt;</dt>
+  <li> Patch for support black-channel(CMYK) in MagickGetImageHistogram().</li><br />
+<dt>2005-05-26  m.objects &lt;imagemagick@mobjec...&gt;</dt>
+  <li> Fixed  ConstrainColormapIndex() bug in coders/mat.c.</li><br />
+<dt>2005-05-26  Kevin A. McGrail</dt>
+  <li> Added code to perform dissolution of composite image during dissolve    operation.</li><br />
+<dt>2005-05-18  Obache  &lt;obache@users...&gt;</dt>
+  <li> Permit escaping the % in a filename (e.g. hmb_50%%x50%%.jpg).</li><br />
+<dt>2005-05-06  Taviso  &lt;taviso@sdf.li...&gt;</dt>
+  <li> Avoid infinite loop if bogus XWD rad/green/blue masks are 0;</li><br />
+<dt>2005-05-06  John Cupitt  &lt;jcupitt@gmail...&gt;</dt>
+  <li> Eliminate seg-fault when pinging images not recognised by ImageMagick.</li><br />
+<dt>2005-05-03  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Eliminate seg-fault when command line options are missing their required    values (e.g. convert -fill).</li><br />
+<dt>2005-04-23  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fixed an obscure heap-overflow vulnerability in the PNM reader reported by    Damian Put (http://www.overflow.pl/adv/imheapoverflow.txt).</li><br />
+<dt>2005-04-18  Volker Kuhlmann  &lt;list0570@parad...&gt;</dt>
+  <li>  adds a number of missing exif tags and correct the name of 2 existing ones.</li><br />
+<dt>2005-04-16  Rick Mabry  &lt;rmabry@sport...&gt;</dt>
+  <li> Fixed memory overflow computation.</li><br />
+<dt>2005-04-13  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> Permit a 0 x or y shear value.</li><br />
+<dt>2005-04-10  K Brady &lt;kbrady@newba...&gt;</dt>
+  <li> Check AVI chunk size to ensure it does not exceed file length.</li><br />
+<dt>2005-04-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Add support for JPEG2000 compressed PDF images.  Use -compress jpeg2000.</li><br />
+<dt>2005-04-01  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Return more accurate results for transforming from the HSB to RGB    colorspaces and back.</li>
+  <li> Fixed image rotation for proper blending near transparent/opaque edges.</li><br />
+<dt>2005-03-30  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Check return status of ReadBlob() for various coders.</li><br />
+<dt>2005-03-22  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -sigmoidal-contrast option for non-linear contrast control (suggested    by Anthony/Gabe).</li><br />
+<dt>2005-03-20  Lee Sobieski  &lt;lee.h.sobieski@solar...&gt; </dt>
+  <li> Added ResetImageAttributeIterator() and GetNextImageAttribute() to permit    iterating over all the attributes associated with an image.</li><br />
+<dt>2005-03-15  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Change sampling_factor to sampling-factor so the -sampling-factor option is    properly recognized.</li><br />
+<dt>2005-03-10  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Added the SepiaToneImage() method to simulate a sepia-toned photo.</li><br />
+<dt>2005-03-03  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> AppendImages() no longer returns an alpha channel if the image sequence    does not have one.</li><br />
+<dt>2005-02-26  Taviso  &lt;taviso@sdf.lo...&gt;</dt>
+  <li> A filename embedded with %n (e.g. logo%n.png) no longer causes a fault.</li><br />
+<dt>2005-02-24  Albert Chin-A-Young  &lt;china@thewri...&gt;</dt>
+  <li> The Tru64 UNIX 4.0D/5.1 C++ compiler doesn't support ios::binary.    There is an #ifdef for this, MISSING_STD_IOS_BINARY, but nothing sets    it in configure.ac. So, I whipped up something to test it. I've tested    this with the Sun, HP, IBM, SGI, and GNU C++ compilers.</li><br />
+<dt>2005-02-21  Peter Seiderer  &lt;ps.report@gmx.n..&gt;</dt>
+  <li> Bitmaps in wmf files which are drawed via ipa_bmp_draw (in coders/wmf.c)    are not scaled to the output size, but drawn with the original size. </li><br />
+<dt>2005-02-12  Rick Mabry  &lt;rmabry@sport...&gt;</dt>
+  <li> Shear no longer produces artifacts for a 0 y-shear (e.g. 60x0).</li><br />
+<dt>2005-02-08  Marc Zonnenberg &lt;marc.zonnenberg@wayne...&gt;</dt>
+  <li> The PerlMagick memory, disk, etc., limits were not being set for values    other than unlimited.</li><br />
+<dt>2005-02-08  Francis Labonte &lt;francis_labonte@hotma...&gt;</dt>
+  <li> Not all memory allocated in GetTransformTokens & GetStyleTokens are freed    in SVG parsing.</li><br />
+<dt>2005-02-03  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Distinquish Fax and Group4 compression when writing PDF.</li><br />
+<dt>2005-01-28  Samual Sieb  &lt;samuel@sieb....&gt;</dt>
+  <li> Fixed bug with the -fx modulo operator.</li><br />
+<dt>2005-01-26  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> ImportQuantumPixels() was missing a parameter in the FPX coder module (ref.    http://studio.imagemagick.org/magick/viewtopic.html?t=3574).</li><br />
+<dt>2005-01-22  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fixed precendence for ^ -fx operator (bug report by Rick Mabry).</li><br />
+<dt>2005-01-14  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed iDEFENSE PSD heap overflow vulnerability reported by Andrei    Nigmatulin.</li>
+  <li> Support writing grayscale TGA images.</li><br />
+<dt>2005-01-13  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Deprecated PushImagePixels() and PopImagePixels() and replaced them with    ExportMagickPixels() and ImportMagickPixels().  The latter have a pad    parameter.</li><br />
+<dt>2005-01-05  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Certain values for the -affine/-transform options caused a premature exit    (bug report from Jan Willi).</li>
+  <li> Removed infinite loop from `import -window root`.</li><br />
+<dt>2004-12-21  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> ReadPALMImage() now produces a proper RGB image (bug report from Paul    Bolle).</li><br />
+<dt>2004-12-18  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added the -shadow option to simulate an image shadow (note, not documented    yet).</li><br />
+<dt>2004-12-16  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fix file leak in ImageToBlob() method (bug report by hpuck@tec-i...).</li><br />
+<dt>2004-12-11  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The -modulate option hue parameter represents a rotation from -180 degrees    to +180 degrees expressed as an argument of 0 to 2.0 (1.0 for no change).</li><br />
+<dt>2004-12-09  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> GetConfigureList() previously would only returns options the first time it    was called.</li><br />
+<dt>2004-12-06  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> CompareImages() now sets the black channel when comparing CMYK images.</li><br />
+<dt>2004-11-30  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The -channel option is operational again.</li><br />
+<dt>2004-11-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The black channel offset was incorrectly computed when compositing causing    a seg-fault (bug report from Arfune).</li>
+  <li> Under extremely rare conditions the GIF coder had a memory leak.</li>
+  <li> Moved image list advancement to after the progress monitor call in    QuantizeImages() (bug report by Tim Hunter).</li><br />
+<dt>2004-11-12  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> The display program no longer exits after the first image.</li><br />
+<dt>2004-11-11  Peter Seiderer  &lt;ps.report@gmx.n..&gt;</dt>
+  <li> The JP2 coders no longer interprets the first channel as an opacity channel.</li><br />
+<dt>2004-11-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The VID coder no longer generates a fault (bug report from Arfune).</li>
+  <li> CMYK Postscript with a subimage specification no longer returns a grayscale    image (bug report from Arfune).</li><br />
+<dt>2004-11-08  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Handle image settings with MogrifyImageInfo() method.</li><br />
+<dt>2004-11-06  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> GNS contributed QueryMultilineTypeMetrics().  Its like QueryTypeMetrics()    but returns the maximum text width and height for multiple lines of text.</li><br />
+<dt>2004-11-05  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Treat -channel as a setting in the command line programs.</li>
+  <li> InitializeMagick() accepts a directory or filename (bug report by    Roger James).</li><br />
+<dt>2004-11-04  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> insert 0 (to insert before image number 0) is no longer a no-op.</li><br />
+<dt>2004-11-03  Peter Seiderer  &lt;ps.report@gmx.n..&gt;</dt>
+  <li> Enhance the JP2 coder to accept image in the YCbCr colorspace.</li><br />
+<dt>2004-11-02  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fix option list to specify a colorspace of YIQ, not YIZ (bug report by GNS).</li>
+  <li> More endianess problems with TIFF (bug report from Scott Minster).</li>
+  <li> High-resolution PCD images no longer go into an infinite loop.</li><br />
+<dt>2004-10-31  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> PerlMagick GetPixels() type.  RGMA should be RGBA.</li><br />
+<dt>2004-10-28  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Allocate the number of colors given to AllocateImageColormap() even if it    exceeds the MaxColormapSize value (bug report by GNS).</li><br />
+<dt>2004-10-28  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Initialize image colormap before pixels are initialized when utilizing the    JPEG quantization algorithm.</li><br />
+<dt>2004-10-28  Jean-Louis Morel &lt;jl_morel@bribe..&gt;</dt>
+  <li></li>
+  <li> Win98 bug reported by Jouke Visser: the module crashes with Win98.    I found the bug in the function lt_dlclose: on Win98, FreeLibrary always    returns 0 (failure) but GetLastError returns 0 too (success)!    There is nothing about that in the Microsoft documentation :-)  2 With this small patch, one can compile the module for Perl5.6 without an    error message</li><br />
+<dt>2004-10-26  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> The -compose option is a setting.  Use -composite with the convert program    to composite two images with the operator specified with -compose.</li><br />
+<dt>2004-10-25  Daniel Kobras &lt;kobras@debian.org&gt;</dt>
+  <li> Fix EXIF code to prevent an overflow of the ifdstack array by one entry.</li><br />
+<dt>2004-10-23  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> The -fx power operator changed to ^ and xor is : because it's not used very    often.  The bitwise operators &, |, and ^ have their operands multiplied by    MaxRGB and the result divided by MaxRGB.  The &lt;, &gt;, and = operators return    1 if true, 0 if false (e.g. for the threshold operation (u &gt; .5),    solarize (u * (u &lt; .5 | u = .5) + (1 - u) * (u &gt; .5)) (suggested by Gabe).</li><br />
+<dt>2004-10-22  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> A bezier with no current point must assume assume the first control point    is coincident with the current point (e.g. M100 400l590 259s36 12 61 12).</li>
+  <li> Fix ExpandFilenames() to not expand glob expressions if they are an option    parameter.</li><br />
+<dt>2004-10-20  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed FlattenImage() to ignore any PSD invisible layers.</li><br />
+<dt>2004-10-15  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> If ImageMagick cannot find its configuration files, allow the process to    continue, perhaps in a diminished capacity.</li><br />
+<dt>2004-10-14  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fixed bug in PSD coder that improperly removed an informational layer.</li>
+  <li> Perl threads requires local storage for ImageMagick exceptions.</li><br />
+<dt>2004-10-12  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> FlattenImage() should flatten relative to the page geometry if it exists.</li>
+  <li> PerlMagick's Profile() method no longer produces an assertion error when    the profile parameter is set to undef.</li><br />
+<dt>2004-10-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Additional fixes for crop geometry relative to a page geometry, see    http://www.cit.gu.edu.au/~anthony/graphics/imagick6/size/.</li><br />
+<dt>2004-10-08  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Embedded filenames failed to produce correct filenames for TIFF    (e.g. image%02d.tif).</li>
+  <li> Search module path under Windows for configure files.</li><br />
+<dt>2004-10-06  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> The mogrify command parsed the -compress option but failed to set the    compress member of the image_info structure.</li><br />
+<dt>2004-10-03  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Add methods PaintOpaqueImage() and PaintTransparentImage() and deprecated    OpaqueImage() and TransparentImage().  These methods are similar except    they accept CMYK images in addition to RGB.</li><br />
+<dt>2004-10-02  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fix round-off error when computing tile geometry for the montage program.</li><br />
+<dt>2004-10-02  Adam Megacz &lt;adam@megac...&gt;</dt>
+  <li> Fix decoding of opacity on rle-encoded xcf images</li><br />
+<dt>2004-10-01  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Don't let corrupt EXIF overflow the stack.</li><br />
+<dt>2004-09-30  Christophe Olivier  &lt;palf@quadr...&gt;</dt>
+  <li> Correct another problem with PSD and group layer-- if the group layer is    not visible, all the layers of the group should be not visible.</li><br />
+<dt>2004-09-29  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Converting images to Postscript larger than a Postscript page no longer    produces an incorrect bounding box.</li>
+  <li> Return degrees, not radians, for asin(), acos(), and atan() in FxImage()     (bug report by cerv@iue.tu...).</li>
+  <li> The montage program faulted when an image tile was the same size as the    specified geometry and in the CMYK colorspace.</li><br />
+<dt>2004-09-29  Jacob (=Jouk) Jansen &lt;joukj@hrem...&gt;</dt>
+  <li> VMS patches to 6.0.1:</li><br />
+<dt>2004-09-29  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Add new -bias option to convert/mogrify to add bias when convolving an    image.</li>
+  <li> GetHistogramImage() no longer reports bogus values.</li><br />
+<dt>2004-09-20  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Report errors reported by the TIFF library when reading invalid TIFF image    files (see Debian Bug#272794).</li>
+  <li> Eliminated compiler warnings reported by gcc 3.5.0.</li><br />
+<dt>2004-09-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Move low-level blob methods declarations to a private header,    blob-private.</li>
+  <li> DescribeImage() display any clipping path if available.</li>
+  <li> Write the clip mask with the clipmask format (e.g. clipmask:clip.png).</li>
+  <li> Enhance the cache clipping algorithm to clip the black channel of a CMYK    image.</li><br />
+<dt>2004-09-15  C Pillet  &lt;cpillet73@yahoo...&gt;</dt>
+  <li> Update destination in the SubstituteString() method.</li><br />
+<dt>2004-09-15  Christophe Olivier  &lt;palf@quadr...&gt;</dt>
+  <li> Fix to enable reading Photoshop images with a group of layers.</li><br />
+<dt>2004-09-15  Christophe Olivier  &lt;palf@quadr...&gt;</dt>
+  <li> Fix to enable reading Photoshop images with a group of layers.</li><br />
+<dt>2004-09-15  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Respect the montage tile geometry (e.g. -tile 4x3 produces a page for    12 tiles even if you only have 8).</li><br />
+<dt>2004-09-14  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fixed a dependancy ordering problem in the top-level Makefile.</li><br />
+<dt>2004-09-14  Steve Turner  &lt;norseman@first...&gt;</dt>
+  <li> Changed the I variable to image in coders/mat.c.  It appears I is defined    in the Slackware header files and it caused a compile error.</li><br />
+<dt>2004-09-13  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Some Postscript files were not translated properly when read.</li>
+  <li> DestroyImage() was previous void, now it returns (Image *) NULL to force    the image to a known value and to detect logic errors in the program    (any reference to image after it is destroyed will cause a fault).    Other destroy methods will be changed in this manner as well.  Note,    this change will not affect existing programs that rely on these methods.</li><br />
+<dt>2004-09-13  Bengt-Arne Fjellner  &lt;Bengt-Arne.Fjellner@ltu.s...&gt;</dt>
+  <li> Fixed bmp.c so Imagemagick can read RLE4 coded bmp.</li><br />
+<dt>2004-09-11  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Initialize lists before relinquishing the thread lock.</li>
+  <li> The Grab button of the file browser widget no longer reports an error.</li><br />
+<dt>2004-09-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added new -floodfill option for the convert and mogrify program (e.g.    -floodfill +100+100 red).</li>
+  <li> The -clip option no longer reports no clipping path when one is present    (e.g. convert image.tif -negate -clip image.jpg).</li><br />
+<dt>2004-09-06  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Don't allow a corrupt GIF image to overflow pixel stack.</li>
+  <li> Increment image reference count when opening a cache view.</li>
+  <li> The -border 0x0 option no longer produces a black image.</li><br />
+<dt>2004-09-03  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Writing a TIFF image to STDOUT no longer generates a seg fault.</li>
+  <li> The -colors option no longer causes a seg fault in a grayscale JPEG image.</li><br />
+<dt>2004-09-02  Glenn Randers-Pehrson &lt;glennrp@glenn...&gt;</dt>
+  <li> The -coalesce option was not honoring dispose-to-previous disposal method.</li><br />
+<dt>2004-09-01  Daniel Kobras  &lt;kobras@debia...&gt;</dt>
+  <li> PerlMagick's Profile crashes unless name option is set.</li><br />
+<dt>2004-08-30  Richard Kettlewell  &lt;rjk@green...&gt;</dt>
+  <li> Don't sync file when not owned by ImageMagick.</li><br />
+<dt>2004-08-31  Daniel Kobras  &lt;kobras@debia...&gt;</dt>
+  <li> #define __attribute__ leaks outside the scope of a single header file,    thereby killing any __attribute__ settings in the following code.</li><br />
+<dt>2004-08-30  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> The default -module option operates in the HSB colorspace.  You can operate    in the HSL or HWB colorspace by using the -colorspace option (e.g.    -colorspace HSL -modulate 100,130).</li><br />
+<dt>2004-08-30  Sebastien  &lt;sc5@herme...&gt;</dt>
+  <li> Images are not created when we receive a SVG error so an attempt to set the    image title or comment caused an assertion exception.</li><br />
+<dt>2004-08-28  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The DrawingWand DrawComposite() takes a wand rather than an image.</li><br />
+<dt>2004-08-28  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Add SetImageProgressMonitor() and SetImageInfoProgressMonitor() to the    core API and MagickSetProgressMonitor() to the Wand API.  These methods    permit you to pass client data which is not permitted with the deprecated    SetMagickMonitor() method.</li><br />
+<dt>2004-08-26  Glenn Randers-Pehrson &lt;glennrp@glenn...&gt;</dt>
+  <li> avoid libpng-1.2.6 bug by setting PNG_HAVE_IDAT flag.</li><br />
+<dt>2004-08-26  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The display program properly respects -geometry (suggested by    Dean S. Messing).</li><br />
+<dt>2004-08-24  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Do not issue module warning when writing an image in an unknown implicit    image format (e.g. convert logo.png logo.thumb).</li><br />
+<dt>2004-08-23  Marcus Meissner  &lt;&lt;meissner@suse....&gt;</dt>
+  <li> Prevent buffer overruns when decoding runlength-encoded images in the BMP    format.</li><br />
+<dt>2004-08-19  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Using a subimage specification on Postwww/PDF no long renderes a    grayscale image (e.g. image.pdf[0]).</li>
+  <li> Comparing two CMYK images with the compare program now produces a proper    difference image.</li>
+  <li> Improved a number of algorithms to better support CMYk images (e.g    MedianFilterImage()).</li><br />
+<dt>2004-08-16  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Limit endianess to raw image formats and TIFF.</li>
+  <li> GetImageBoundingBox() now works properly for CMYK images.</li><br />
+<dt>2004-08-14  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> The -draw option now respects the image page geometry.</li>
+  <li> The A channel for the -fx option was inverted.</li><br />
+<dt>2004-08-14  Ken Cantwell</dt>
+  <li> Relinquish the wand id linked-list when all wands are destroyed.</li><br />
+<dt>2004-08-12  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Only scale FITS pixels if they are float/double.</li><br />
+<dt>2004-08-06  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> Images with less than 256 unique colors, retain the exact colors.    Previously some close colors were merged (e.g. 253 and 255 were averaged    to 254).</li>
+  <li> Added -repage option, like -page but it acts as an image operator rather    than a setting.</li><br />
+<dt>2004-08-04  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> PNG vulnerability fix.</li>
+  <li> Added YCbCr coder for raw Y, Cb, and Cr samples.</li>
+  <li> Fixed the -fx option operator precendence problem (+ and - should be the    same precendence).</li><br />
+<dt>2004-07-23  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Rare memory corruption due to a JPEG comment (bug report by    brundlefly76@hotma...).</li><br />
+<dt>2004-07-19  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The PerlMagick Evaluate() method no longer fails with an assertion error.</li>
+  <li> Restore -dSAFER for a more secure Ghostscript invocation.  The downside is    we must copy the Postscript file to a temporary file otherwise we get a    the ocassional invalidfileaccess fom Ghostscript.</li><br />
+<dt>2004-07-18  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Do not report image depth unless the -verbose or -format %z option is used    with the identify program.</li><br />
+<dt>2004-07-11  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Center gravity now works when cropping by percent (e.g. -crop 75%).</li>
+  <li> Small memory leak on exception in the ImageToBlob() method.</li>
+  <li> %@ returns the image bounding box (e.g. identify -format %@ logo:).</li>
+  <li> Sync pixel cache when cloning an image-- just in case someone clones    an image clone and accesses pixels with AcquireImagePixel() instead of    GetImagePixels().</li><br />
+<dt>2004-07-09  Glenn Randers-Pehrson &lt;randeg@alum.rpi.edu&gt;</dt>
+  <li> coders/bmp.c (ReadBMPImage): Removed if-test on reading red_mask,    green_mask, and blue_mask. These are only *valid* under certain conditions,    but they are always present in the file.</li><br />
+<dt>2004-07-05  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Support CMYK Postscript with the bmpsep8 device.</li>
+  <li> Add support for channels for the -unsharp options.</li>
+  <li> Add support for reading PCL with the Alladin pcl6 delegate.</li><br />
+<dt>2004-06-26  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Fixed SVG-path-implementation for elliptical arcs for angle < 45° and the    sweep-flag is 1 (bug repored by Juergen).</li>
+  <li> Fixed PerlMagick memory leak for corrupt TIFF images.</li>
+  <li> MagickBooleanType changed from unsigned int to an enum for stronger type    checking.  This should not affect the C API, however, for the C++ API you    can no longer use `bool' instead of MagickTrue/MagickFalse for the methods    that require a MagickBooleanType.</li><br />
+<dt>2004-06-23  Suryakant Patidar  &lt;surya_iiit@lyco...&gt;</dt>
+  <li> Add copious usability features to the animate program.</li><br />
+<dt>2004-06-22  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Add support for compositing pixels in the CMYK colorspace.</li><br />
+<dt>2004-06-20  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> Shear no longer produces artifacts for a 0 y-shear (e.g. 60x0).</li><br />
+<dt>2004-06-19  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Convert image resolution relative to the value specified by the -units    option.</li><br />
+<dt>2004-06-18  Jan Kratochvil  &lt;lace@jankr...&gt;</dt>
+  <li> Perl interface for MagickToMime().</li><br />
+<dt>2004-06-13  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Gaussian kernel widths must be odd.</li>
+  <li> Report corrupt PNG image (bug report by Ryuichi Arafune).</li>
+  <li> Move X11 compatibility defines from xwindow.c to xwindow.h (suggested by    Harald Koenig).</li><br />
+<dt>2004-06-12  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Call new AsychronousDestroyResources() method from signal handler.</li><br />
+<dt>2004-06-10  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> The +tile option is recognized once more.</li><br />
+<dt>2004-06-09  Alexandra Christini  &lt;alexandra@image...&gt;</dt>
+  <li> ImageMagick 6.0.2 released.</li><br />
+<dt>2004-06-09  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> GetTypeByFamily() did not always return an italic font when requested</li>
+  <li> ColorFloodfill() sometimes prematurely exited with a large fuzz value.</li><br />
+<dt>2004-06-06  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> The file browser returned incorrect filenames when saving an image with the    display program.</li><br />
+<dt>2004-05-31  Chris Madison  &lt;madisonblu@hotma...&gt;</dt>
+  <li> Added checkerboard background to display/animate X window to assist in    visualizing transparent images.</li>
+  <li> The configure script now automatically enables OS features by selectively    setting defines such as XOPEN_SOURCE, _POSIX_C_SOURCE, etc.</li>
+  <li> Added anonymous memory-mapping to the pixel cache.  This makes it possible    for memory to be returned to the system after the image is destroyed.</li><br />
+<dt>2004-05-31  Good Will  &lt;pu@dr...&gt;</dt>
+  <li> Fixed a bug in EnhanceImage() that incorrected shifted edge pixels.</li><br />
+<dt>2004-05-26  Alexandra Christini  &lt;alexandra@image...&gt;</dt>
+  <li> Fixed problem with relative filename wildcards (e.g. identify images/*.jpg).</li>
+  <li> MagickWand tracks the wand construction/destructions and initializes/    destroys the ImageMagick core API environment as appropriate.</li><br />
+<dt>2004-05-23 Richardo Fabbri  &lt;ricardofabbri@users...&gt;</dt>
+  <li> The active_list variable must be reset when a list is destroyed.</li><br />
+<dt>2004-05-18  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Introduce MagickBooleanType and MagickStatusType types of unsigned int.    These types are 100% compatible with the existing API but removes    ambiguity.  Previously we got complaints that users did not realize that a    return value of unsigned int in most cases meant a binary value (True/    False).  MagickStatusType is used for methods that return a bit mask.</li>
+  <li> Introduce MagickFalse and MagickTrue while we deprecate True/False.</li><br />
+<dt>2004-05-18  David Strobach  &lt;strobach@exec...&gt;</dt>
+  <li> Don't open a loadable module if its already open.</li><br />
+<dt>2004-05-14  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Most Wand methods return an `unsigned int' where True indicates success and    False indicates an error.  We enhanced these methods to return    MagickBooleanType and MagickTrue/MagickFalse to make it less ambiguous.    Note these changes are 100% compatible so existing Wand calls will continue    to work as written.</li><br />
+<dt>2004-05-14  Eli Barzilay  &lt;li@barzi...&gt;</dt>
+  <li> DrawSetStrokeDashArray() now respects the number_elements argument.</li><br />
+<dt>2004-05-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Since the WMF coder has Wand dependancies we only enable this coder when    both WMF is available and module support enabled.</li><br />
+<dt>2004-05-08  Daniel Kobras  &lt;kobras@debia...&gt;</dt>
+  <li> When an unknown property is encountered in the XCF coder, it enters a bogus    loop that never terminates.</li><br />
+<dt>2004-05-06  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Various modules in coders/ require external libraries (bug report from    kobras).</li>
+  <li> PerlMagick's QueryFontMetrics() incorrectly reports `unrecognized    attribute'` for the `font' attribute (bug report from Arfune).</li><br />
+<dt>2004-05-05  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> convert fails to make multipage pdf from more than one postscript input    files (bug report from Arfune).</li><br />
+<dt>2004-05-04  Alexandra Christini  &lt;ally@image...&gt;</dt>
+  <li> ImageMagick 6.0.1 released.</li><br />
+<dt>2004-04-30  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Some XCF tiles were not being read properly (bug report from Arfune).</li><br />
+<dt>2004-04-26  David Strobach  &lt;strobach@exec...&gt;</dt>
+  <li> Fixed memory leak in EPT coder.</li>
+  <li> Fixed memory leak in DestroyImage().</li>
+  <li> Close Windows registry when no longer needed.</li><br />
+<dt>2004-04-25  Oliver Hirschi  &lt;ohirschi@pm-me...&gt;</dt>
+  <li> RelinquishUniqueFileResource() was not freeing file resource properly.</li><br />
+<dt>2004-04-24  David Strobach  &lt;strobach@exec...&gt;</dt>
+  <li> Free the ImageInfo structure allocated by CloneImageInfo() in the    WriteImages() method.</li><br />
+<dt>2004-04-22  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> EPT images cannot support blobs.</li><br />
+<dt>2004-04-20  David Strobach  &lt;strobach@exec...&gt;</dt>
+  <li> Fixed temporary file resource limit leak in RelinquishUniqueFileResource().</li><br />
+<dt>2004-04-19  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> ConvolveImageChannel() incorrectly initialized non-selected channels to 0.</li>
+  <li> Prep shared memory segments to automatically destroy itself in the event    of a process kill (see    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=207379).</li><br />
+<dt>2004-04-19  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> ConvolveImageChannel() incorrectly initialized non-selected channels to 0.</li><br />
+<dt>2004-04-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added Cisco IP phone image format (write only).</li><br />
+<dt>2004-04-15  Alexandra Christini  &lt;ally@image...&gt;</dt>
+  <li> ImageMagick 6.0.0 released.</li><br />
+<dt>2004-04-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Updated the dot coder to use the new graphviz 1.12 API.</li>
+  <li> The next/previous fields of the configuration structures (magick_info,    type_info, etc.) are deprecated, instead use the Get???InfoList()    method (e.g. GetTypeInfoList()).</li><br />
+<dt>2004-04-07  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> ColorFloodfillImage() with FillToBorder option stopped working in 6.0.0.    Fixed now (bug report by Tim Hunter)..</li><br />
+<dt>2004-04-05  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> GetColorInfoList() returns an array of ColorInfo structures.  Also added    similiar methods for each of the ImageMagick lists (e.g. magick, delegate,    etc.).</li><br />
+<dt>2003-03-27  Nathan Brown  &lt;nathan@sputn...&gt;</dt>
+  <li> Fixed a couple bugs in the AVI coder MJPG support.</li><br />
+<dt>2004-03-25  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -family, -stretch, -style, and -weight to the convert program.  These    options are used in conjunction with -font to specify font attributes.</li><br />
+<dt>2004-03-22  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Frame decorations are opaque if the matte color is opaque.</li><br />
+<dt>2004-03-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added CombineImages() to combine several grayscale images into a single    image (e.g. convert -channel RGB image.R image.G image.B -combine logo.png).</li><br />
+<dt>2004-03-08  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added EvaluateImageChannel() method to the API.  Use it to apply an an    arithmetic, relational, or logical operator to an image.  These operations    can be used to lighten or darken an image, to increase or decrease contrast    in an image, or to produce the "negative" of an image.</li><br />
+<dt>2004-03-07  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added a pixel iterator to the MagickWand API (suggested by Kyle Shorter).</li><br />
+<dt>2004-03-05   Teemu Ikonen &lt;tpikonen@pcu.h...&gt;</dt>
+  <li> fixed the Matlab file reader read also files written in little-endian    architectures.</li><br />
+<dt>2004-02-10  Alexandra Christini  &lt;achristini@bigpl...&gt;</dt>
+  <li> Reset errno in PerlMagick constant() method.</li><br />
+<dt>2004-02-20  &lt;yarrow@image...&gt;</dt>
+  <li> Added `O' for importing/exporting pixels.  `O' is the image opacity the    eqiuvalent of MaxRGB-`A' (suggested by Dave Welton).</li><br />
+<dt>2004-02-04  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added the -posterize option to reduce the image to a limited number of color    levels.</li><br />
+<dt>2004-02-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added the -splice option to splice the background color into an image    (suggested by Anthony Thyssen).</li><br />
+<dt>2004-02-10  Alexandra Christini  &lt;achristini@bigpl...&gt;</dt>
+  <li> Add -radial-blur option to the command line utilities.</li><br />
+<dt>2004-02-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Cache views can grow dynamically now (suggested by Andrew Reid).</li><br />
+<dt>2004-02-09  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -clone, -remove, -splice, and -swap as options to the convert program    to enhance image list manipulation (suggested by Anthony Thyssen).</li><br />
+<dt>2004-02-05  Anthony Thyssen  &lt;anthony@griff...&gt;</dt>
+  <li> Expand the range of -dissolve to go from 0 to 200. That is values 0 to    100 slowly dissolve the overlay onto the background.  But then  values    100 to 200 slowly dissolve the background away until it is just the source    image on top of a clear canvas the size of the original background.</li><br />
+<dt>2004-01-30  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -separate to the convert program to separate a channel from    an image and return a grayscale image (suggested by Anthony Thyssen).</li><br />
+<dt>2004-02-02 Glenn Randers-Pehrson &lt;randeg@alum.rpi.edu&gt;</dt>
+  <li> coders/bmp.c: fix potential use of uninitialized data.</li>
+  <li> coders/png.c: fix potential use of uninitialized data.</li><br />
+<dt>2004-01-30  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> New map option, P, for padding pixels when calling the ConstituteImage(),    ExportImagePixels(), and ImportImagePixels() methods.</li><br />
+<dt>2004-01-24  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Support raw camera formats for the ImageMagick under Windows.</li><br />
+<dt>2004-01-24  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Privatized the BlobInfo structure and added news methods in blob.c to    get/set members of the BlobInfo structure.</li>
+  <li> Fixed a memory leak in the JNG coder concerning blobs.</li><br />
+<dt>2004-01-23  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Bumped the beta release from 5.5.8 to 6.0.0.</li><br />
+<dt>2004-01-17  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added a resample element to the MSL coder.</li><br />
+<dt>2004-01-13  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added new -annotate option for the convert and mogrify program (e.g.    -annotate +100+100 'Some text', -annotate 30x30+100+100 'Some text').</li>
+  <li> New TrimImage() C API method.</li><br />
+<dt>2004-01-07  Dan Rogahn &lt;rogahn@...&gt;</dt>
+  <li> update and add new scripting elements to coders/msl.c</li><br />
+<dt>2004-01-06  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed color shift problem when adjusting brightness.</li>
+  <li> Rename MagickCloneImage() to MagickGetImage().</li>
+  <li> Account for pixels-per-centimeter resolution when resampling.</li><br />
+<dt>2004-01-04  Jacob (=Jouk) Jansen &lt;joukj@hrem...&gt;</dt>
+  <li> VMS patches to 5.5.8: coders/avi.c, remove all the <CR> at the    end of the lines magick/config.h_vms, add HAVE_FT2BUILD_H directive    magick/Make.com, and add compare.c</li><br />
+<dt>2004-01-03  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> In coders/sgi.c, opacity channel was lost when writing grayscale SGI    images.</li><br />
+<dt>2003-12-31  Dan Rogahn &lt;rogahn@...&gt;</dt>
+  <li> Default gamma to 1.0 in coders/msl.c.</li><br />
+<dt>2003-12-27  Volker Kuhlmann  &lt;list0570@parad...&gt;</dt>
+  <li> Applied latest Suze 9.0 patches.</li><br />
+<dt>2003-12-22  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed a number of Magick Wand nits as reported by Rolf in the MagickWand    discussion group (http://studio.imagemagick.org/magick/viewforum.html?f=6).</li>
+  <li> Added explicit option grouping to the convert command, for example,    convert \( 1.png 2.png -append \) \( 3.png 4.png -append \) +append    image.jpg (suggested by Anthony Thyssen).</li>
+  <li> Option -draw image respects gravity (suggested by Anthony Thyssen).</li>
+  <li> Text annotate respects gravity (suggested by Anthony Thyssen).</li>
+  <li> Add latest TIFF library to ImageMagick Windows distribution.</li><br />
+<dt>2003-12-22  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> Added JPEG Quality, JPEG Colorspace, and JPEG Sampling factors to    the "identify -verbose" report.  Added "-define jpeg:preserve-settings"    flag.  If this is set, and the input and output formats are both JPEG,    the input quality is used to compress the output file.  Also, if the    colorspace was not changed, the same sampling factors are used for    compression.</li><br />
+<dt>2003-12-16  Marek Scholaster" &lt;Marek.Scholaster@sezna...&gt;</dt>
+  <li> ResizeImage() parameter "filter" is never used.</li><br />
+<dt>2003-12-16  Ron Stanonik &lt;stanonik@cogsc...&gt;</dt>
+  <li> CloneMagickMemory() did not always copy overlapping memory correct    (bug report by Ron Stanonik).</li><br />
+<dt>2003-12-16  Nathan Brown  &lt;nathan@sputn...&gt;</dt>
+  <li> Modified the AVI coder to support MJPG compression.</li><br />
+<dt>2003-12-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Previous signal handlers were not being called properly.</li><br />
+<dt>2003-12-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added new image comparsion utility (e.g.    compare -metric PSNR image reconstructed difference).</li><br />
+<dt>2003-12-11  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The display program no longer exits after the last image.  You must press Q    or ESC or choose the Quit menu option to exit (suggested by Anthony    Thyssen).</li>
+  <li> Off-by-one error for RLA image dimensions (patch provided by Jean-Francois    Panisset).</li><br />
+<dt>2003-12-06  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The gravity is now repected by the -draw option (bug report by    Anthony Thyssen).</li><br />
+<dt>2003-12-03  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Reset image->extract_info.{x,y} when parsing the -size option.</li>
+  <li> New MAGICK_CONFIGURE_PATH environment variable allows the user to specify    the search path for configuration (.xml) files</li><br />
+<dt>2003-12-03 Jouk &lt;Joukj@hrem.stm.tudelft.{nl}&gt;</dt>
+  <li> Patch to get ImageMagick working under OpenVMS.</li><br />
+<dt>2003-11-30  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Recognize `unlimited' for limit option: convert -limit memory unlimited.</li><br />
+<dt>2003-11-20  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Converted composite operators to inline methods in magick/composite.c.</li>
+  <li> Accept floating point image sizes (e.g. -geometry 1662.179324x2079.019558).</li>
+  <li> Added QueryMagickColor() to define CMYK colors.  First use is with    the XC image format (e.g. -size 100x100 xc:'cmyk(100,100,100,50)');</li><br />
+<dt>2003-11-18  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Get EXIF data with $im->Get('%[EXIF:*]') in PerlMagick.</li>
+  <li> Added the -orient option to set the image orientation.</li>
+  <li> Postwww/PDF once again respects the image gravity attribute.</li><br />
+<dt>2003-11-16  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Noise is scaled to the value of QuantumDepth.  Previously noise was less    intense for Q16 and Q32.</li><br />
+<dt>2003-11-06  Armani &lt;a.krueger@xebec.{de}&gt;</dt>
+  <li> Memory leak in DrawComposite(), base64 is never freed.</li><br />
+<dt>2003-11-03  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added EPT2 and EPT3 image types which embeds Postscript level II and    Postscript level III repectively.</li>
+  <li> Text compression is limited to 65535 bytes for the PNG coder (libpng    restriction).</li>
+  <li> To write an image clip mask, use the CLIP: coder.</li>
+  <li> Added GetImageExtrema() and GetImageChannelExtrema() to return the extrema    for an image or image channel.</li>
+  <li> Added GetImageMean() and GetImageChannelMeand() to return the mean and    standard deviation for an image or image channel.</li><br />
+<dt>2003-11-01  Lars Ruben Skyum  &lt;lars.skyum@stibo.com&gt;</dt>
+  <li> coders/jpeg.c: changed to not write gray CMYK images as grayscales. That    would not be a valid optimization.</li>
+  <li> magick/color.c (IsGrayImage, IsMonochromeImage): Changed to never return    true for CMYK images. Separated images get wrong colors when optimized to    grayscales based on what these two functions return. Gray and CMYK are two    different color spaces.</li>
+  <li> magick/nt_feature.c (NTIsMagickConflict): changed to accept colon as part    of the magick string, consistent with the way the function is used.</li>
+  <li> magick/utility.c, magick/utility.h (ExpandFilenames, GetPathComponent):    Fixed filename glob expansion. Added handling of filename prefix-magick and    sub-image specification to GetPathComponent. Sub-image specification takes    precedence over any filename patterns.</li><br />
+<dt>2003-11-01 Kenneth J. Davis &lt;jeremyd@computer.{org}&gt;</dt>
+  <li> Fixed assertion error in GetConfigureOptions().</li><br />
+<dt>2003-10-29 Tony Butt &lt;magick-bugs&gt;</dt>
+  <li> Fixed off-by-one array error in magick/xwindows.c.</li><br />
+<dt>2003-10-24 Manuel Jouglet &lt;manu.jouglet@wanadoo.{fr}&gt;</dt>
+  <li> Fixed possible infiinite loop in Windows thread locking.</li><br />
+<dt>2003-10-21 Jouk &lt;Joukj@hrem.stm.tudelft.{nl}&gt;</dt>
+  <li> Patch to get ImageMagick working under OpenVMS.</li><br />
+<dt>2003-10-20  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added new GetPixels() method to PerlMagick.</li><br />
+<dt>2003-10-16  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Began support for CIELab PSD and TIFF images.</li>
+  <li> New -method-prefix configure option to add a unique prefix for all    Magick API methods.</li><br />
+<dt>2003-10-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Thanks to Catalin Mihaila for contributing a ZX-Spectrum SCREEN$ reader.</li><br />
+<dt>2003-10-09  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> When JPEG sampling factors aren't fully supplied, any omitted ones    should be 1x1.</li><br />
+<dt>2003-10-08  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added Get*List() to consistently return ImageMagick lists    (e.g. GetMagickList() returns a list of support image formats).</li>
+  <li> Added -define option to support options associated with an image    format (e.g. -define ps3:imagemask).</li><br />
+<dt>2003-10-08  Kelly Bergougnoux &lt;three3@users.sourceforge.{net}&gt;</dt>
+  <li> Contributed new Cineon image format coder.</li><br />
+<dt>2003-10-08 Lars Ruben Skyum &lt;lars.skyum@stibo.com&gt;</dt>
+  <li> magick/attribute.c (TraceSVGClippingPath): optimized for speed and    precision in clipping mask generation by using lines to connect Bezier    curve control points where applicable.</li><br />
+<dt>2003-09-30  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> The PNG decoder would exit too early when reading file.png[0].</li><br />
+<dt>2003-10-02  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Wrote an option parser to uniformly deal with enumerated types.</li><br />
+<dt>2003-09-30  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> In the Q8 configuration, the bmp decoder was scaling 5-5-5-bit and    5-6-5-bit colors slightly incorrectly when decoding 16-bit BMPs, as    well as when decoding 8-8-8-8-bit colors in 32-bit BMPs.</li><br />
+<dt>2003-09-26  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added MagickWand API methods to get, append, and remove images from    a wand.</li><br />
+<dt>2003-09-24  Wolfgang Textor  &lt;Textor-Duisburg@t-online.de&gt;</dt>
+  <li> Applied changes to get the current ImageMagick 5.5.8 beta sources    compile on a Mac with Codewarrior 8.3.</li><br />
+<dt>2003-09-21  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Image profiles are now conveniently handled with a hashmap structure.    The color_profile and iptc_profile members of the Image structure    are still maintained for backwards compatibility, however, we    encourage you to use the new PutImageProfile(), GetImageProfile(),    and DeleteImageProfile() methods.</li><br />
+<dt>2003-09-20  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Error messages are enhanced to give greater detail.  Use -debug    Exception to trace the source location of an error.</li><br />
+<dt>2003-09-18 Lars Ruben Skyum &lt;lars.skyum@stibo.com&gt;</dt>
+  <li> coders/ps3.c: Major update of the PS3 coder.  The coder now    creates much smaller files for bilevel, gray, and colormapped    images. Compression and image type is now separated so they may    be combined independently. Any alpha channel is separated into a    separate mask so it's possible to mask bilevel, gray, colormapped,    rgb, and CKYK images. You may also mask a JPEG compressed PS file    for instance. Clipping masks created from a photoshop clipping path    with -clip option is converted to a corresponding postscript clipping    path. New functions need comment headers.</li>
+  <li> magick/attribute.c: Added TracePSClippingPath for creating a    postscript clipping path from a Photoshop clipping path.</li>
+  <li> magick/image.c: ClipPathImage now stores the name of the clipping    path in the mask image filename so that it is remembered and may be    used for creating a postscript clipping path for postscript output.</li><br />
+<dt>2003-09-16  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> There is a new ImageMagick license (see    http://www.imagemagick.org/www/license.html).  It is a W3C-style rather    than BSD-style license to address the frequently-asked-questions    about what the license permits you to do.  It makes it more clear    that you can do pretty much whatever you want with ImageMagick as long    as you don't claim your wrote it.</li><br />
+<dt>2003-09-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Created a number of new header files to localize exported methods.</li>
+  <li> Updated source files to minimize the number of lint warnings.</li><br />
+<dt>2003-09-08  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Deprecated Extended*Type.  Replace with Magick*Type.</li>
+  <li> Updating multiple source files to make lint happy.</li><br />
+<dt>2003-09-08  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> Revised TraceArc to use TraceEllipse; removed now unused large_arc    and sweep flags.</li><br />
+<dt>2003-09-03  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Add module alias for OTF => TTF.</li><br />
+<dt>2003-09-01  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Reworked configuration file logic to load files from the current    directory, at MAGICK_HOME, or at ~/.magick before the system versions    of the configuration file.  This allows a user to define private fonts    in ~/.magick/type.xml, for example.</li><br />
+<dt>2003-09-01  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Color was inverted when writing OTB monochrome images.</li>
+  <li> Add image histogram methods to C, C++, Perlmagick, and MagickWand API.</li><br />
+<dt>2003-08-31  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Palm coder bug fix (patch provided by Chris Hawks).</li><br />
+<dt>2003-08-26  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added a Wand error classfication for the Wand API.</li>
+  <li> Geometries with a % and a missing value now works correctly (e.g. x25%).</li><br />
+<dt>2003-08-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Truetype fonts are now found under Win98 (patch provided by Patrick    Broyer).</li><br />
+<dt>2003-08-11  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added infa-structure to help support image channels.</li><br />
+<dt>2003-08-08  Lars Ruben Skyum  &lt;lars.skyum@st...&gt;</dt>
+  <li> isspace() required an unsigned char.</li><br />
+<dt>2003-08-04  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -tint option (contributed by Winfried Truemper).</li>
+  <li> The temporary EPT file requires a binary header (patch provided by    James Keifenheim).</li>
+  <li> Add a Visual C++ workspace for ImageMagickObject (workspace contributed by    James Keifenheim).</li><br />
+<dt>2003-08-04  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added 'Save' option to animate program menu.</li><br />
+<dt>2003-07-30  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -fx option to the convert program.</li><br />
+<dt>2003-07-28  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Port of Troy Edwards' script to support ImageMagick.  Thanks Troy.</li><br />
+<dt>2003-07-26  Lars Ruben Skyum  &lt;lars.skyum@st...&gt;</dt>
+  <li> Additional imporvements to ClipPathImage() & TraceClippingPath().</li><br />
+<dt>2003-07-18  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed "Draw transparent color on background image without alpha" bug    (bug report by Anthony Thyssen).</li>
+  <li> -fuzz now accept negative values.</li><br />
+<dt>2003-07-17  Lars Ruben Skyum  &lt;lars.skyum@st...&gt;</dt>
+  <li> support for grayscale color profiles. You may now convert to/from CMYK    or RGB from/to grayscale with a grayscale profile.  This is what Photoshop    does when it creates grayscales from color images or makes true color    images from grayscales.</li>
+  <li> any alpha channel is now maintained across colorspace conversions. It    was previously lost in the conversions.</li>
+  <li> colormapped images may now be profiled with a color profile. They were    previously passed through unchanged.</li>
+  <li> improved error handling. Any invalid colorspace / color profile    combination is now catched in ImageMagick before LCMS gets a chance to catch    the same error. LCMS will exit() the program the hard way if it catches    such an error. ImageMagick clean-up routines will now be performed on exit.</li>
+  <li> support for the two remaining colorspaces, YCbCr and LUV, for which there    is support in both ImageMagick and LCMS (or ICC 3.4, really). Profiles    using other ICC 3.4 colorspaces not supported by ImageMagick will now    properly throw an exception before LCMS exit's the application.</li><br />
+<dt>2003-07-16  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -clippath to convert (patch provided by Lars Ruben Skyum).</li>
+  <li> Fix transparent font problem (bug report by Anthony Thyssen).</li><br />
+<dt>2003-07-13  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Read old-style Adobe clipping paths (patch by Lars Ruben Skyum).</li>
+  <li> Properly read CMYK TIFF images (bug report by Lars Ruben Skyum ).</li><br />
+<dt>2003-07-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Recall the MagickWand API is in flux.  The drawing wand methods    that previously accepted or returned a PixelPacket now accepts/returns    a PixelWand.  The MagickWand API should be stable by the end of    this year.</li><br />
+<dt>2003-07-05  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Adopted William Radcliffe's semaphore spin lock for Win32 builds.</li><br />
+<dt>2003-07-04  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Fixed a small bug in the fuzzy color matching algorithm.</li>
+  <li> Image compare requires a sqrt() (bug report by Anthony Thyssen).</li><br />
+<dt>2003-06-17  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Separated the MagickWand API into its own library, MagickWand.a.</li><br />
+<dt>2003-06-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> New identifier for TXT images so they can be read.</li>
+  <li> Do not change X window root cursor.</li><br />
+<dt>2003-06-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Promote PseudoClass images to DirectClass in method ImportImagePixels().</li>
+  <li> New -list configure option.</li><br />
+<dt>2003-06-06  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -strip option to strip an image of all profiles and comments.</li>
+  <li> Added -support option to sharpen/blur while resizing an image.</li>
+  <li> Adopted Bob FriesenHahn's log event patches.</li>
+  <li> MagickCloneWand() did not properly clone the wand-&gt;image member.</li>
+  <li> Fixed small memory leak in PerlMagick.</li><br />
+<dt>2003-06-04  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Color profile patches provided by (dge at softec.st).</li>
+  <li> The TXT coder now respects image depth.</li>
+  <li> Only define X coder/decoder if HasX11 is defined.</li>
+  <li> Applied William Radcliffe's META coder patches.</li><br />
+<dt>2003-06-02  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Applied William Radcliffe's LCMS color profile patches.</li><br />
+<dt>2003-05-30  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> The MNG encoder failed to set the JNG bit in the simplicity profile.</li>
+  <li> The MNG encoder failed to write FRAM chunks when all images were JNG.</li>
+  <li> The JNG encoder wrote the wrong alpha_sample_depth for opaque images.</li><br />
+<dt>2003-05-28  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Large images (greater than 2048*2048) are cached to disk to reduce    virtual memory thrashing.  Set MAGICK_AREA_LIMIT environment variable    to change limit.</li><br />
+<dt>2003-05-23  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> PNG encoder would dump core when writing grayscale image in png24    or png32 format.</li><br />
+<dt>2003-05-20  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added support for the Ghostscript pngalpha device to support    Postscript transparency.</li><br />
+<dt>2003-05-18  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Deprecated LiberateMemory() and ReacquireMemory() due to ANSI    strict-alias rules.</li>
+  <li> Updated DllMain for Windows (patch by Achim Domma).</li>
+  <li> Resizing the image window with display program did not resize the    image properly under the Metacity window manager.</li><br />
+<dt>2003-05-17  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added -thumbnail as an option to the utilities.</li>
+  <li> No TIFF preview was written on EPT write (patch provided by    Lars Ruben Skyum).</li>
+  <li> NegateImage() now negates the K channel of a CMYK image (patch provided    by Lars Ruben Skyum).</li><br />
+<dt>2003-05-13  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Parameter 'elevation' misspelled for PerlMagick Shape() method.</li>
+  <li> A number of minor leak/unitialized memory problems fixed.</li>
+  <li> Allocate free nodes from the heap in QuantizeImage().</li>
+  <li> Magick-config --version returned gibberish.</li>
+  <li> Adopted Bob Friesenhahn's patterns-- use as filename pattern:checkboard,    pattern:bricks, etc.</li><br />
+<dt>2003-05-12  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> ImageMagick 5.5.7 released.</li><br />
+<dt>2003-05-07  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> We cannot reliably auto rotate PDF files so this feature was removed.</li><br />
+<dt>2003-05-02  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The conjure program did not correctly handle the gravity attribute.</li><br />
+<dt>2003-04-26  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The persistent cache reference count was not properly incremented.</li><br />
+<dt>2003-04-22  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added $image->Describe() method to PerlMagick to interface to the    DescribeImage() C API method.</li>
+  <li> Added support for the EXIF Tag Parsing Library.  Currently we simply    display the tags when calling DescribeImage().  In the near future    there will be support for modifying or adding tags.</li>
+  <li> Added Bob Friesenhahn's updated Windows installation instructions.</li>
+  <li> Interfaced the drawing routines with the new MagickWand API.    MagickWand will be the primary public C interface to ImageMagick in    the near future.</li><br />
+<dt>2003-04-22  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> magick/effect.c: RandomChannelThresholdImage was not handling    PseudoColor, non-gray images correctly.</li><br />
+<dt>2003-04-21  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> png.c would not compile with libpng versions older than libpng-0.95,    due to bugs introduced in ImageMagick version 5.5.2.</li><br />
+<dt>2003-04-16  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> Implemented -random-threshold and -ordered-dither options.</li><br />
+<dt>2003-04-15  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The locale messaging system now uses a hash for fast lookup.</li>
+  <li> Updated libtool to the new released version, 1.5.</li><br />
+<dt>2003-04-11  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> Fixed bug with decoding grayscale PNG images and JNG alpha channel    at Q:32.</li><br />
+<dt>2003-04-10  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Now recognize 32-bit hex color specifications, patches provided by    Bob Friesenhahn.</li><br />
+<dt>2003-04-08  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Started API wrappers based on Bob Friesenhahn's method suggestions.</li>
+  <li> Text annotations that started with '\n' were not rendered correctly.</li><br />
+<dt>2003-04-06  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Removed artifacts from images rotated with a small number of degrees.</li><br />
+<dt>2003-04-04  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> Minor bug fix in the ParseGeometry() method.</li><br />
+<dt>2003-04-01  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Modified the non-public inline AlphaComposite() to use a PixelPacket    pointer; previously it returned a PixelPacket structure.</li>
+  <li> You can now specify an image geometry as an image file (e.g. -geometry    image.jpg).</li><br />
+<dt>2003-04-01  Glenn Randers-Pehrson &lt;glennrp@image...&gt;</dt>
+  <li> Use new temporary file manager for JNG components.</li><br />
+<dt>2003-04-01  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added support for 12-bit TIFF images.</li><br />
+<dt>2003-03-31  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added improved locale message subsystem (contributed by Kyle Shorter).</li><br />
+<dt>2003-03-27  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Removed a bias from SampleImage() and DrawAffineImage() (bug report    by Glenn Randers-Pehrson).</li><br />
+<dt>2003-03-27  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> PerlMagick now recognizes percent values for fuzz or opacity.</li>
+  <li> Not enough memory allocated for reading PCX (bug report by Trevor    Willis).</li><br />
+<dt>2003-03-26  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> There were artifacts when using the Bessel function for resizing    (bug report by Bob Friesenhahn).</li>
+  <li> Added -resample to convert to change the resolution of an image.</li><br />
+<dt>2003-03-25  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Added a temporary file manager that prevents race conditions and    removes any remaining files on exit.</li><br />
+<dt>2003-03-22  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> Prepped ImageMagick to work with Visual C++ 7.0 under Windows.    The Windows configure patches came from William Radcliffe.</li><br />
+<dt>2003-03-21  Cristy  &lt;yarrow@image...&gt;</dt>
+  <li> The refresh of the display image window no longer lags when the    magnify window overlay it.</ul>      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="1175842577">Discourse Server</a> |
+    <a href="../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="798361402">Image Gallery</a> |
+    <a href="http://net11.imagemagick.org/MagickStudio/scripts/MagickStudio.cgi" target="598542502">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

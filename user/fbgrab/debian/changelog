@@ -1,0 +1,50 @@
+fbgrab (1.0.0-3) unstable; urgency=low
+
+  * New maintainer (Closes: #344450)
+  * Raised debian/compat level to 5 (level 3 is now deprecated), updated
+    debhelper dependency accordingly 
+  * Fixed typos in manpage and hyphen problems
+  * Updated FSF address in copyright
+  * debian/watch: updated to work with our .0 version (thanks Florian Ernst)
+
+ -- Luca Bruno <luca.br@uno.it>  Tue, 27 Dec 2005 11:10:12 +0100
+
+fbgrab (1.0.0-2) unstable; urgency=low
+
+  * New maintainer address, many thanks to Ola Lundqvist for previous
+    sponsoring
+  * debian/control: Standards-Version 3.6.2, no changes required
+  * fix duplicate word in manpage
+
+ -- Florian Ernst <florian@debian.org>  Tue,  9 Aug 2005 15:57:16 +0200
+
+fbgrab (1.0.0-1) unstable; urgency=low
+
+  * New upstream release, new maintainer (Closes: #232351)
+  * This version called 1.0.0 (upstream is only 1.0) in order to have a
+    greater version string than the previous version in the archive
+  * debian/control:
+    + clean Build-Depends
+    + Standards-Version 3.6.1
+    + added upstream home page
+  * debian/copyright:
+    + note about maintainer(s)
+    + copyright clarified
+    + update upstream homepage
+  * debian/README.Debian: changed wording
+  * debian/rules: streamlined to best practices
+  * debian/watch: added
+
+ -- Florian Ernst <florian_ernst@gmx.net>  Wed, 28 Jul 2004 14:48:33 +0200
+
+fbgrab (1.0b1-2) unstable; urgency=low
+
+  * Now using libpng3-dev instead of libpng2-dev, closes: #165828.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 23 Oct 2002 10:15:42 +0200
+
+fbgrab (1.0b1-1) unstable; urgency=low
+
+  * Initial release, closes: #163746.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu, 10 Oct 2002 14:00:26 +0200

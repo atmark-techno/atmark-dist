@@ -1,0 +1,3 @@
+KERNEL=="sd*",DEVPATH=="/block/sd*/sd*[0-9]",BUS=="usb",ACTION=="add",RUN+="/usr/share/mount_usb_storage/mount_usb_storage add"
+
+KERNEL=="sd*",ACTION=="remove",RUN+="/usr/share/mount_usb_storage/mount_usb_storage remove"

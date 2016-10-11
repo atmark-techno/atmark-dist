@@ -1,0 +1,114 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# Include dpatch stuff
+include /usr/share/dpatch/dpatch.make
+
+PACKAGE="procps"
+DEBROOT=$(CURDIR)/debian/procps
+
+DEB_HOST_GNU_SYSTEM	?= $(shell dpkg-architecture -qDEB_HOST_GNU_SYSTEM)
+
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+
+build: build-stamp
+
+build-stamp: patch-stamp
+	dh_testdir
+
+	# Add here commands to compile the package.
+	mkdir static
+	$(MAKE) lib64=lib SHARED=0 proc/libproc.a
+	mv proc/libproc.a static
+	$(MAKE) clean
+	$(MAKE) W_SHOWFROM=\-DW_SHOWFROM lib64=lib 
+
+	touch build-stamp
+
+clean: clean1 unpatch
+clean1:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp 
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) clean
+	-rm -rf static
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# Add here commands to install the package into debian/procps.
+	$(MAKE) lib64=lib ln_f="ln -sf" ldconfig=echo DESTDIR=$(DEBROOT) install
+	install --mode 644 -o root -g root debian/sysctl.conf $(DEBROOT)/etc/
+	cp debian/lintian $(DEBROOT)/usr/share/lintian/overrides/procps
+
+	# Rename w as there are two of them
+	(cd $(DEBROOT)/usr/bin && mv w w.procps )
+	(cd $(DEBROOT)/usr/share/man/man1 && mv w.1 w.procps.1 )
+
+	# Work-around until proc includes fixed
+	(cp proc/*.h $(CURDIR)/debian/libproc-dev/usr/include/proc)
+	cp static/libproc.a $(CURDIR)/debian/libproc-dev/usr/lib
+
+ifneq ($(DEB_HOST_GNU_SYSTEM), linux-gnu)
+	rm -f \
+		$(CURDIR)/debian/procps/bin/kill \
+		$(CURDIR)/debian/procps/usr/share/man/man1/kill.1 \
+		$(CURDIR)/debian/procps/sbin/sysctl \
+		$(CURDIR)/debian/procps/usr/share/man/man8/sysctl.8 \
+		$(NULL)
+endif
+
+	dh_movefiles --sourcedir=debian/procps
+	#rmdir $(CURDIR)/debian/procps/usr/include/proc
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs NEWS
+	dh_installdocs
+	dh_installexamples
+	dh_install
+	dh_installmenu
+#	dh_installdebconf	
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installcatalogs
+#	dh_installpam
+#	dh_installmime
+	dh_installinit --update-rcd-params='start 30 S .' --init-script='procps.sh'
+#	dh_installcron
+	dh_installinfo
+#	dh_undocumented
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_perl
+	dh_makeshlibs -V "procps (>= 3.2.7), procps (<< 3.2.8)"
+	dh_installdeb
+	dh_shlibdeps -Lprocps -ldebian/procps/lib
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install patch unpatch clean1

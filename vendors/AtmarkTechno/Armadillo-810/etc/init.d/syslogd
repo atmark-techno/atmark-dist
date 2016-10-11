@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting syslogd: "
+syslogd -L
+check_status

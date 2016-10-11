@@ -1,0 +1,5 @@
+CONSOLE_BAUD_RATE = 115200
+
+VENDOR_CFLAGS = -I$(GCC_DIR)/include
+
+include $(ROOTDIR)/vendors/config/powerpc/config.arch

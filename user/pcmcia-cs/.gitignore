@@ -1,0 +1,4 @@
+.prereq.ok
+PCMCIA-HOWTO
+config.mk
+config.out

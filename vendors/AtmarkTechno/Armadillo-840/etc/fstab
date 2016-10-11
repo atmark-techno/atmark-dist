@@ -1,0 +1,7 @@
+/dev/ram0		/		ext2	defaults		0 1
+proc			/proc		proc	defaults		0 0
+usbfs			/proc/bus/usb	usbfs	defaults		0 0
+sysfs			/sys		sysfs	defaults		0 0
+udev			/dev		tmpfs	mode=0755		0 0
+/dev/flashblk/firmware	/opt/firmware	squashfs	defaults	0 0
+/dev/flashblk/license	/opt/license	squashfs	defaults	0 0

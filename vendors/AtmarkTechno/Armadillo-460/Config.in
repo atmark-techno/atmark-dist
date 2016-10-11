@@ -1,0 +1,38 @@
+#
+# Vendor specific
+#
+define_bool CONFIG_VENDOR_AUTO_LIBINSTALLER y
+define_bool CONFIG_VENDOR_AUTO_STRIPPER y
+
+choice  'generate file-system option' 	"Auto CONFIG_VENDOR_GENFS_AUTO \
+					 Manual CONFIG_VENDOR_GENFS_MANUAL
+					" Auto
+if [ "$CONFIG_VENDOR_GENFS_MANUAL" = "y" ]; then
+	int '    Size of the image in blocks' CONFIG_VENDOR_GENFS_BLOCKS 6592
+	int '    Maximum number of inodes' CONFIG_VENDOR_GENFS_INODES 1024
+fi
+
+comment 'Applications'
+
+bool 'gpioctrl' CONFIG_VENDOR_GPIOCTRL_GPIOCTRL
+bool 'ledctrl' CONFIG_VENDOR_LEDCTRL_LEDCTRL
+bool 'swmgr' CONFIG_VENDOR_SWMGR_SWMGR
+
+comment 'Kernel modules'
+
+bool 'Armadillo-WLAN' CONFIG_VENDOR_WLAN
+
+if [ "$CONFIG_VENDOR_WLAN" = "y" ]; then
+	choice 'Armadillo-WLAN Products'	"AWL12 CONFIG_VENDOR_AWL12_AERIAL \
+						 AWL13 CONFIG_VENDOR_AWL13_AWL13
+						 " AWL13
+
+	if [ "$CONFIG_VENDOR_AWL13_AWL13" = "y" ]; then
+		choice 'AWL13 Support interface'	"SDIO CONFIG_VENDOR_AWL13_AWL13_SDIO \
+							 USB CONFIG_VENDOR_AWL13_AWL13_USB
+							 " SDIO
+		choice 'AWL13 Support mode'		 "STA CONFIG_VENDOR_AWL13_AWL13_STA \
+							 AP CONFIG_VENDOR_AWL13_AWL13_AP
+							 " STA
+	fi
+fi

@@ -1,0 +1,45 @@
+Patches applied in the Debian version of :
+
+debian/patches/01-example-shebang.dpatch (Mike Markley <mike@markley.org>):
+  Fixes shebangs in examples (Closes: #152367).
+
+debian/patches/02-example-cryptdir.dpatch (Mike Markley <mike@markley.org>):
+  Checks for /usr/bin/crypt in cryptdir example (Closes: #67197).
+
+debian/patches/03-spawn.dpatch (HJ Lu <hjl@lucon.org>):
+  Fixes problems when running GCCs testsuite (Closes: #156854).
+
+debian/patches/04-64bit.dpatch (John R.Daily <jdaily@progeny.com>):
+  Fixes problems on 64bit platforms (Closes: #126091).
+
+debian/patches/05-makefile-soname.dpatch (Mike Markley <mike@markley.org>):
+  Adds '-soname' to the Makefile.
+
+debian/patches/06-pkgindex.dpatch (Michael A. Cleverly <michael@cleverly.com>):
+  Fixes stupid typo in pkgIndex.in (Closes: #186179).
+  Adjusted for new soname (Closes: #381052).
+
+debian/patches/07-file-handle.dpatch (Russell Coker <russell@coker.com.au>):
+  Fixes file handle 3 to be left open when running programs
+  (Closes: #166677).
+
+debian/patches/08-tcl-stubs.dpatch (David Engel <david@debian.org>):
+  Uses tcl stubs if available.
+
+debian/patches/09-unsafe-traps.dpatch (Anonymous (FIXME)):
+  Fixes some unsafe traps.
+
+debian/patches/10-manpage.dpatch (Anonymous (FIXME)):
+  Fixes sample expect shebang.
+  Excapes dashes.
+
+debian/patches/11-ttyname.dpatch (Ian Jackson <iwj@ubuntu.com>):
+  Check before call ttyname, so don't coredump in chroots without /proc.
+  (Closes: #440804).
+
+debian/patches/12-fdout.dpatch (Ian Jackson <iwj@ubuntu.com>):
+  expBusy forgets to open fdout (Closes: #440818).
+
+debian/patches/13-implicit-defs.dpatch (LaMont Jones <lamont@debian.org>):
+  Fix implicit definitions throughout (Closes: #441115).
+

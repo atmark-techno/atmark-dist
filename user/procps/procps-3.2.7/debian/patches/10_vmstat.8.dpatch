@@ -1,0 +1,76 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 10_vmstat.8.dpatch by  <csmall@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad procps-3.2.7~/vmstat.8 procps-3.2.7/vmstat.8
+--- procps-3.2.7~/vmstat.8	2006-06-25 16:41:48.000000000 +1000
++++ procps-3.2.7/vmstat.8	2006-06-26 12:47:08.000000000 +1000
+@@ -35,19 +35,19 @@
+ The process and memory reports are instantaneous in either case.
+ 
+ .SS Options
+-The \fB-a\fP switch displays active/inactive memory, given a 2.5.41 kernel or better.
++The \fB\-a\fP switch displays active/inactive memory, given a 2.5.41 kernel or better.
+ .PP
+-The \fB-f\fP switch displays the number of forks since boot.
++The \fB\-f\fP switch displays the number of forks since boot.
+ This includes the fork, vfork, and clone system calls, and is
+ equivalent to the total number of tasks created. Each process
+ is represented by one or more tasks, depending on thread usage.
+ This display does not repeat.
+ .PP
+-The \fB-m\fP displays slabinfo.
++The \fB\-m\fP displays slabinfo.
+ .PP
+-The \fB-n\fP switch causes the header to be displayed only once rather than periodically.
++The \fB\-n\fP switch causes the header to be displayed only once rather than periodically.
+ .PP
+-The \fB-s\fP switch displays a table of various event counters
++The \fB\-s\fP switch displays a table of various event counters
+ and memory statistics. This display does not repeat.
+ .PP
+ .I delay
+@@ -58,13 +58,13 @@
+ is the number of updates.  If no count is specified and delay is
+ defined, \fIcount\fP defaults to infinity.
+ .PP
+-The \fB-d\fP reports disk statistics (2.5.70 or above required) 
++The \fB\-d\fP reports disk statistics (2.5.70 or above required) 
+ .PP
+-The \fB-p\fP followed by some partition name for detailed statistics (2.5.70 or above required) 
++The \fB\-p\fP followed by some partition name for detailed statistics (2.5.70 or above required) 
+ .PP
+-The \fB-S\fP followed by k or K or m or M switches outputs between 1000, 1024, 1000000, or 1048576 bytes 
++The \fB\-S\fP followed by k or K or m or M switches outputs between 1000, 1024, 1000000, or 1048576 bytes 
+ .PP
+-The \fB-V\fP switch results in displaying version information.
++The \fB\-V\fP switch results in displaying version information.
+ .PP
+ .SH FIELD DESCRIPTION FOR VM MODE
+ .SS
+@@ -81,8 +81,8 @@
+ free: the amount of idle memory.
+ buff: the amount of memory used as buffers.
+ cache: the amount of memory used as cache.
+-inact: the amount of inactive memory. (-a option)
+-active: the amount of active memory. (-a option)
++inact: the amount of inactive memory. (\-a option)
++active: the amount of active memory. (\-a option)
+ .fi
+ .PP
+ .SS
+@@ -110,9 +110,9 @@
+ .B "CPU "
+ These are percentages of total CPU time.
+ .nf
+-us: Time spent running non-kernel code. (user time, including nice time)
++us: Time spent running non\-kernel code. (user time, including nice time)
+ sy: Time spent running kernel code. (system time)
+-id: Time spent idle. Prior to Linux 2.5.41, this includes IO-wait time.
++id: Time spent idle. Prior to Linux 2.5.41, this includes IO\-wait time.
+ wa: Time spent waiting for IO. Prior to Linux 2.5.41, included in idle.
+ st: Time stolen from a virtual machine. Prior to Linux 2.6.11, unknown.
+ 

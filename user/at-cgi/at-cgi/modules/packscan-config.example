@@ -1,0 +1,10 @@
+#! /bin/sh
+
+PACKETSCAN_ON="1"
+WINNY_SCAN_ON="1"
+PORT_SCAN_ON="1"
+CONTENT_SCAN_ON="1"
+CONTENT_SCAN_CONTENT="test"
+ALERT_RECIPIENT="chris@atmark-techno.com"
+ALERT_SMTP_HOST="smtp.example.com"
+ALERT_SEND_FREQ_MAX="15"

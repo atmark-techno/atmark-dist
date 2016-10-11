@@ -1,0 +1,103 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+TZ=JST-9
+
+. /etc/init.d/functions
+
+# Ignore CTRL-C only in this shell, so we can interrupt subprocesses.
+trap ":" INT QUIT TSTP
+
+###############################################################################
+# mount proc
+###############################################################################
+echo -n "Mounting proc: "
+mount -n proc
+check_status
+
+###############################################################################
+# fsck
+###############################################################################
+echo "Starting fsck for root filesystem."
+mount -n -o remount,ro /
+fsck -C -p /
+if [ "$?" -gt 1 ]; then
+  echo "WARNING: Error while checking root filesystem."
+  echo "You can login as root now, the system will reboot after logout."
+  sulogin
+  reboot
+else
+  echo -n "Checking root filesystem: "
+  check_status
+fi
+
+###############################################################################
+# remount /
+###############################################################################
+echo -n "Remounting root rw: "
+mount -n -o remount,rw /
+check_status
+
+###############################################################################
+# mount pseudo filesystem
+###############################################################################
+echo -n "Mounting usbfs: "
+mount usbfs
+check_status
+
+echo -n "Mounting sysfs: "
+mount sysfs
+check_status
+
+echo -n "Mounting tmpfs on /dev: "
+mount udev
+check_status
+
+#echo -n "Enabling swap space: "
+#swapon -a
+#check_status
+
+###############################################################################
+# cleaning up
+###############################################################################
+echo -n "Cleaning up system: "
+cleanup_dirs="/tmp /var/lock /var/run"
+rm -rf $cleanup_dirs
+mkdir $cleanup_dirs
+
+> /var/run/utmp
+touch /var/log/wtmp
+touch /var/log/messages
+chmod 0664 /var/run/utmp
+chmod 0664 /var/log/wtmp
+chmod 0660 /var/log/messages
+check_status
+
+###############################################################################
+# create issue
+###############################################################################
+echo "`cat /etc/DISTNAME`" > /etc/issue
+echo "`cat /etc/DISTNAME`" > /etc/issue.net
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue.net
+echo >> /etc/issue
+echo >> /etc/issue.net
+
+echo "Running local start scripts."
+for i in /etc/rc.d/S0*
+do
+  if [ -x $i ]; then
+    $i
+  fi
+done
+
+# we create a symbolic-link to "/etc/rc.d" if init-script(s) are exist at
+# "/etc/config/rc.d/".
+ls /etc/config/rc.d/S* >/dev/null 2>&1 && \
+  ln -s /etc/config/rc.d/S* /etc/rc.d/ 2>/dev/null
+for i in /etc/rc.d/S[1-9]*
+do
+  if [ -x $i ]; then
+    $i
+  fi
+done

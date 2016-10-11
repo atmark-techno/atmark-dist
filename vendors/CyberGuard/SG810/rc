@@ -1,0 +1,47 @@
+echo "/etc/rc processing ..."
+echo "Starting watchdog ..."
+watchdog /dev/watchdog
+hostname SG810 
+echo "Making Filesystems ..."
+# /dev/ram0 is the root filesystem for recovery images
+/bin/expand /etc/ramfs.img /dev/ram1
+echo "Mounting Filesystems ..."
+mount -t proc proc /proc
+mount -t devpts devpts /dev/pts
+mount -t ext2 /dev/ram1 /var
+if ! mount -t ext3 /dev/flash/config /etc/config
+then
+	# do not do this ever,  image boot CD trashes disk
+	# mke2fs -j /dev/flash/config
+	# if ! mount -t ext3 /dev/flash/config /etc/config
+	# then
+		/bin/expand /etc/ramfs.img /dev/ram2
+		mount -t ext2 /dev/ram2 /etc/config
+		echo "**************************************"
+		echo "**                                  **"
+		echo "**  Could not mount config          **"
+		echo "**  partition on /dev/flash/config  **"
+		echo "**                                  **"
+		echo "**************************************"
+	# fi
+fi
+mkdir /var/tmp
+mkdir /var/log
+mkdir /var/run
+mkdir /var/lock
+mkdir /var/empty
+[ -d /etc/config/persistent ] || mkdir /etc/config/persistent
+echo "Processing Config Filesystem ..."
+/bin/flatfsd -r
+migrate_config
+cp /etc/config/resolv.user /etc/config/resolv.conf
+echo "Setting system clock ..."
+hwclock --hctosys --utc
+logd boot
+echo "Loading network drivers."
+# ip link set eth0 name tmp
+# ip link set eth1 name eth0
+# ip link set tmp name eth1
+echo "Loading crypto drivers."
+insmod hifn7951
+echo "/etc/rc complete."

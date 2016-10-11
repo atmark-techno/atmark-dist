@@ -1,0 +1,54 @@
+--- parse_device.orig.c	2003-08-17 02:05:21.000000000 -0500
++++ parse_device.c	2004-02-18 03:34:41.000000000 -0500
+@@ -27,9 +27,7 @@
+ #ifndef	DEVFILE
+ #define	DEVFILE		USB_PROCDIR "/devices"
+ #endif
+-#ifndef	USBMGR_BLOCK_SIZE
+-#define	USBMGR_BLOCK_SIZE	PAGE_SIZE		/* unit of allocation */
+-#endif
++
+ #ifndef USBMGR_BLOCK_COUNT
+ #define	USBMGR_BLOCK_COUNT		3		/* count of units */
+ #endif
+@@ -174,7 +172,7 @@
+ 	char path[PATH_MAX+1];
+ 
+ 	curp = bufp;
+-	while(parse_devices(&curp,bufp+size-1,&dev_tmp) != ST_END) {
++	if (size > 0)while(parse_devices(&curp,bufp+size-1,&dev_tmp) != ST_END) {
+ 		/*
+ 		 * check if dev is loaded on memory 
+ 		 */
+@@ -223,8 +221,9 @@
+ 	int i,len;
+ 	int bnum = USBMGR_BLOCK_COUNT;	/* count of block */
+ 	int sum,refresh;
++	int usbmgr_block_size = getpagesize();
+ 
+-	buf = malloc(bnum * USBMGR_BLOCK_SIZE);
++	buf = malloc(bnum * usbmgr_block_size);
+ 	if (buf == NULL)
+ 		return;
+ 	if ((pd.fd = open(devfile,O_RDONLY)) == -1) {
+@@ -242,17 +241,17 @@
+ #endif
+ 		lseek(poll_fd,0,SEEK_SET);
+ 		bufp = buf;
+-		for(i = 0,sum = 0;(len = read(poll_fd,bufp,USBMGR_BLOCK_SIZE)) != 0;i++) {
++		for(i = 0,sum = 0;(len = read(poll_fd,bufp,usbmgr_block_size)) != 0;i++) {
+ 			if (i + 1 >= bnum) {	/* filled */
+ 				bnum *= 2;
+-				buf = realloc(buf,bnum * USBMGR_BLOCK_SIZE);
++				buf = realloc(buf,bnum * usbmgr_block_size);
+ 				if (buf == NULL) {
+ 					syslog(LOG_ERR,mesg[MSG_ALLOC_ERR]);
+ 					goto return_close;	/* error */
+ 				}
+ 			}
+ 			sum += len;
+-			if (len < USBMGR_BLOCK_SIZE)	/* maybe end of file */
++			if (len < usbmgr_block_size)	/* maybe end of file */
+ 				break;
+ 			bufp = buf + sum;
+ 		}

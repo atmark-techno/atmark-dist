@@ -1,0 +1,723 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:568: checking for autoconf
+configure:596: checking configure up to date
+configure:657: checking host system type
+configure:678: checking target system type
+configure:696: checking build system type
+configure:726: checking shell to use within Make
+configure:760: checking for gcc
+configure:873: checking whether the C compiler (gcc  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT ) works
+configure:889: gcc -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure:915: checking whether the C compiler (gcc  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT ) is a cross-compiler
+configure:920: checking whether we are using GNU C
+configure:929: gcc -E conftest.c
+configure:948: checking whether gcc accepts -g
+configure:988: checking for building with threads
+configure:1041: checking for Tcl configuration
+configure:1134: checking Tcl build library
+configure:1138: checking for Tcl_CreateCommand
+configure:1166: gcc -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -L/usr/lib -ltcl8.4 -ldl  -lpthread -lieee -lm 1>&5
+/usr/bin/ld: cannot find -ltcl8.4
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1143 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char Tcl_CreateCommand(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char Tcl_CreateCommand();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_Tcl_CreateCommand) || defined (__stub___Tcl_CreateCommand)
+choke me
+#else
+Tcl_CreateCommand();
+#endif
+
+; return 0; }
+configure:1192: checking if Tcl library build specification is valid
+configure:1224: checking for Tk configuration
+configure:1313: checking for Tk_Init
+configure:1341: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -L/usr/lib -ltcl8.4  1>&5
+/usr/bin/ld: cannot find -ltcl8.4
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1318 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char Tk_Init(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char Tk_Init();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_Tk_Init) || defined (__stub___Tk_Init)
+choke me
+#else
+Tk_Init();
+#endif
+
+; return 0; }
+configure:1367: checking if Tk library build specification is valid
+configure:1382: checking whether the compiler (gcc -pipe) actually works
+configure:1391: gcc -pipe -c  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT  conftest.c 1>&5
+configure:1410: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure:1444: checking for a BSD compatible install
+configure:1501: checking for ranlib
+configure:1541: checking how to run the C preprocessor
+configure:1562: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:1622: checking if running LynxOS
+configure:1698: checking for ANSI C header files
+configure:1711: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:1778: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure: In function 'main':
+configure:1773: warning: incompatible implicit declaration of built-in function 'exit'
+configure:1802: checking for pid_t
+configure:1835: checking return type of signal handlers
+configure:1857: gcc -pipe -c  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT  conftest.c 1>&5
+configure:1876: checking whether time.h and sys/time.h may both be included
+configure:1890: gcc -pipe -c  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT  conftest.c 1>&5
+configure:1911: checking for sys/wait.h that is POSIX.1 compatible
+configure:1932: gcc -pipe -c  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT  conftest.c 1>&5
+configure:1974: checking if running Mach
+configure:1990: checking if running MachTen
+configure:2000: checking if on Pyramid
+configure:2010: checking if on Apollo
+configure:2020: checking if on Interactive
+configure:2030: checking stty to use
+configure:2043: checking if stty reads stdout
+configure:2099: checking if running Solaris
+configure:2119: checking for sin
+configure:2147: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure:2131: warning: conflicting types for built-in function 'sin'
+/tmp/cc258DGe.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `sin'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 2124 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char sin(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char sin();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_sin) || defined (__stub___sin)
+choke me
+#else
+sin();
+#endif
+
+; return 0; }
+configure:2245: checking for Tcl private headers
+configure:2387: checking type of library to build
+configure:2404: checking whether to use Tcl stubs
+configure:2484: checking for gethostname
+configure:2512: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm 1>&5
+configure:2580: checking for gethostname
+configure:2608: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -ldl  -lpthread -lieee -lm 1>&5
+configure:2676: checking for gethostname
+configure:2704: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure:2775: checking for socket
+configure:2803: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm 1>&5
+configure:2871: checking for socket
+configure:2899: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -ldl  -lpthread -lieee -lm 1>&5
+configure:2967: checking for socket
+configure:2995: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure:3065: checking for select
+configure:3093: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm 1>&5
+configure:3161: checking for select
+configure:3189: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -ldl  -lpthread -lieee -lm 1>&5
+configure:3257: checking for select
+configure:3285: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+configure:3355: checking for getpseudotty
+configure:3383: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm 1>&5
+/tmp/ccfX7tTV.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `getpseudotty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3360 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char getpseudotty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpseudotty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_getpseudotty) || defined (__stub___getpseudotty)
+choke me
+#else
+getpseudotty();
+#endif
+
+; return 0; }
+configure:3406: checking for getpseudotty in -lseq
+configure:3425: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lseq   -lm 1>&5
+/usr/bin/ld: cannot find -lseq
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3414 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpseudotty();
+
+int main() {
+getpseudotty()
+; return 0; }
+configure:3458: checking for getpseudotty
+configure:3486: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -ldl  -lpthread -lieee -lm 1>&5
+/tmp/ccSfs3R1.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `getpseudotty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3463 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char getpseudotty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpseudotty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_getpseudotty) || defined (__stub___getpseudotty)
+choke me
+#else
+getpseudotty();
+#endif
+
+; return 0; }
+configure:3509: checking for getpseudotty in -lseq
+configure:3528: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lseq  -ldl  -lpthread -lieee -lm 1>&5
+/usr/bin/ld: cannot find -lseq
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3517 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpseudotty();
+
+int main() {
+getpseudotty()
+; return 0; }
+configure:3561: checking for getpseudotty
+configure:3589: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+/tmp/ccJHSAk6.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `getpseudotty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3566 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char getpseudotty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpseudotty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_getpseudotty) || defined (__stub___getpseudotty)
+choke me
+#else
+getpseudotty();
+#endif
+
+; return 0; }
+configure:3612: checking for getpseudotty in -lseq
+configure:3631: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lseq   1>&5
+/usr/bin/ld: cannot find -lseq
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3620 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpseudotty();
+
+int main() {
+getpseudotty()
+; return 0; }
+configure:3667: checking for openpty
+configure:3695: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm 1>&5
+/tmp/ccayFIN7.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `openpty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3672 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char openpty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char openpty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_openpty) || defined (__stub___openpty)
+choke me
+#else
+openpty();
+#endif
+
+; return 0; }
+configure:3718: checking for openpty in -lutil
+configure:3737: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lutil   -lm 1>&5
+configure:3772: checking for openpty
+configure:3800: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -ldl  -lpthread -lieee -lm 1>&5
+/tmp/ccDHGGxf.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `openpty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3777 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char openpty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char openpty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_openpty) || defined (__stub___openpty)
+choke me
+#else
+openpty();
+#endif
+
+; return 0; }
+configure:3823: checking for openpty in -lutil
+configure:3842: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lutil  -ldl  -lpthread -lieee -lm 1>&5
+configure:3874: checking for openpty
+configure:3902: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  1>&5
+/tmp/cciZtzDk.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `openpty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 3879 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char openpty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char openpty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_openpty) || defined (__stub___openpty)
+choke me
+#else
+openpty();
+#endif
+
+; return 0; }
+configure:3925: checking for openpty in -lutil
+configure:3944: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lutil   1>&5
+configure:3982: checking if running Sequent running SVR4
+configure:3996: checking for sys/sysmacros.h
+configure:4006: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4032: checking for stdlib.h
+configure:4042: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4069: checking for inttypes.h
+configure:4079: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4109: checking for varargs.h
+configure:4119: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+In file included from configure:4115:
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/varargs.h:4:2: error: #error "GCC no longer implements <varargs.h>."
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/varargs.h:5:2: error: #error "Revise your code to use <stdarg.h>."
+configure: failed program was:
+#line 4114 "configure"
+#include "confdefs.h"
+#include <varargs.h>
+configure:4145: checking for unistd.h
+configure:4155: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4183: checking for sys/stropts.h
+configure:4193: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4220: checking for sys/sysconfig.h
+configure:4230: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4226:27: error: sys/sysconfig.h: No such file or directory
+configure: failed program was:
+#line 4225 "configure"
+#include "confdefs.h"
+#include <sys/sysconfig.h>
+configure:4256: checking for sys/fcntl.h
+configure:4266: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4292: checking for sys/select.h
+configure:4302: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4328: checking for sys/time.h
+configure:4338: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4364: checking for sys/ptem.h
+configure:4374: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4370:22: error: sys/ptem.h: No such file or directory
+configure: failed program was:
+#line 4369 "configure"
+#include "confdefs.h"
+#include <sys/ptem.h>
+configure:4400: checking for sys/strredir.h
+configure:4410: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4406:26: error: sys/strredir.h: No such file or directory
+configure: failed program was:
+#line 4405 "configure"
+#include "confdefs.h"
+#include <sys/strredir.h>
+configure:4436: checking for sys/strpty.h
+configure:4446: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:4442:24: error: sys/strpty.h: No such file or directory
+configure: failed program was:
+#line 4441 "configure"
+#include "confdefs.h"
+#include <sys/strpty.h>
+configure:4473: checking for sys/bsdtypes.h
+configure:4525: checking for memmove
+configure:4553: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4537: warning: conflicting types for built-in function 'memmove'
+configure:4576: checking for sysconf
+configure:4604: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4627: checking for strftime
+configure:4655: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4639: warning: conflicting types for built-in function 'strftime'
+configure:4678: checking for strchr
+configure:4706: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4690: warning: conflicting types for built-in function 'strchr'
+configure:4729: checking for timezone
+configure:4757: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4780: checking for siglongjmp
+configure:4808: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4835: checking for memcpy
+configure:4847: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: In function 'main':
+configure:4842: warning: incompatible implicit declaration of built-in function 'memcpy'
+configure:4869: checking if WNOHANG requires _POSIX_SOURCE
+configure:4887: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: failed program was:
+#line 4875 "configure"
+#include "confdefs.h"
+
+#include <sys/wait.h>
+main() {
+#ifndef WNOHANG
+	return 0;
+#else
+	return 1;
+#endif
+}
+configure:4907: checking if any value exists for WNOHANG
+configure:4930: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:4963: checking union wait
+configure:4977: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5007: checking mask type of select
+configure:5021: checking if signals need to be re-armed
+configure:5066: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5030:1: warning: "RETSIGTYPE" redefined
+In file included from configure:5027:
+confdefs.h:3:1: warning: this is the location of the previous definition
+configure: In function 'main':
+configure:5049: warning: passing argument 2 of 'signal' from incompatible pointer type
+configure:5052: warning: passing argument 2 of 'signal' from incompatible pointer type
+configure:5061: warning: incompatible implicit declaration of built-in function 'exit'
+configure: failed program was:
+#line 5027 "configure"
+#include "confdefs.h"
+
+#include <signal.h>
+#define RETSIGTYPE 
+
+int signal_rearms = 0;
+
+RETSIGTYPE
+child_sigint_handler(n)
+int n;
+{
+}
+
+RETSIGTYPE
+parent_sigint_handler(n)
+int n;
+{
+signal_rearms++;
+}
+
+main()
+{
+	signal(SIGINT,parent_sigint_handler);
+
+	if (0 == fork()) {
+		signal(SIGINT,child_sigint_handler);
+		kill(getpid(),SIGINT);
+		kill(getpid(),SIGINT);
+		kill(getppid(),SIGINT);
+	} else {
+		int status;
+
+		wait(&status);
+		unlink("core");
+		exit(signal_rearms);
+	}
+}
+configure:5097: checking if on Convex
+configure:5116: checking if on NeXT
+configure:5127: checking if on HP
+configure:5137: checking sane default stty arguments
+configure:5155: checking for HP style pty allocation
+configure:5169: checking for HP style pty trapping
+configure:5172:23: error: sys/ptyio.h: No such file or directory
+configure:5193: checking for AIX new-style pty allocation
+configure:5205: checking for SGI old-style pty allocation
+configure:5222: checking for SCO style pty allocation
+configure:5239: checking for SVR4 style pty allocation
+configure:5248: checking for libpts=-lpt in -lpt
+configure:5267: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c -lpt   -lm -lutil 1>&5
+configure:5260: error: called object '"-lpt"' is not a function
+configure: In function 'main':
+configure:5263: error: called object '"-lpt"' is not a function
+configure: failed program was:
+#line 5256 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char libpts="-lpt"();
+
+int main() {
+libpts="-lpt"()
+; return 0; }
+configure:5288: checking for ptsname
+configure:5316: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5338: checking for ptsname
+configure:5387: checking for ptsname
+configure:5442: checking for OSF/1 style pty allocation
+configure:5456: checking for tcgetattr
+configure:5484: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5504: checking for tcsetattr
+configure:5532: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5564: checking for struct sgttyb
+configure:5580: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: In function 'main':
+configure:5575: error: storage size of 'tmp' isn't known
+configure:5576: warning: incompatible implicit declaration of built-in function 'exit'
+configure: failed program was:
+#line 5570 "configure"
+#include "confdefs.h"
+
+#include <sgtty.h>
+main()
+{
+  struct sgttyb tmp;
+  exit(0);
+}
+configure:5609: checking for struct termio
+configure:5624: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: In function 'main':
+configure:5620: warning: incompatible implicit declaration of built-in function 'exit'
+configure:5646: checking for struct termios
+configure:5666: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: In function 'main':
+configure:5662: warning: incompatible implicit declaration of built-in function 'exit'
+configure:5688: checking if TCGETS or TCGETA in termios.h
+configure:5710: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: failed program was:
+#line 5694 "configure"
+#include "confdefs.h"
+
+/* including termios.h on Solaris 5.6 fails unless inttypes.h included */
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
+#include <termios.h>
+main() {
+#if defined(TCGETS) || defined(TCGETA)
+	return 0;
+#else
+	return 1;
+#endif
+}
+configure:5730: checking if TIOCGWINSZ in termios.h
+configure:5752: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: failed program was:
+#line 5736 "configure"
+#include "confdefs.h"
+
+/* including termios.h on Solaris 5.6 fails unless inttypes.h included */
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
+#include <termios.h>
+main() {
+#ifdef TIOCGWINSZ
+	return 0;
+#else
+	return 1;
+#endif
+}
+configure:5773: checking for Cray-style ptys
+configure:5792: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: failed program was:
+#line 5780 "configure"
+#include "confdefs.h"
+
+main(){
+#ifdef CRAY
+	return 0;
+#else
+	return 1;
+#endif
+}
+
+configure:5817: checking for select
+configure:5845: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5865: checking for poll
+configure:5893: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure:5913: checking event handling
+configure:5935: checking for _getpty
+configure:5963: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+/tmp/ccphzyXh.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `_getpty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5940 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char _getpty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char _getpty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub__getpty) || defined (__stub____getpty)
+choke me
+#else
+_getpty();
+#endif
+
+; return 0; }
+configure:5990: checking for getpty
+configure:6018: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+/tmp/ccO4c6dk.o: In function `main':
+conftest.c:(.text+0x12): undefined reference to `getpty'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 5995 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char getpty(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char getpty();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_getpty) || defined (__stub___getpty)
+choke me
+#else
+getpty();
+#endif
+
+; return 0; }
+configure:6045: checking whether setpgrp takes no argument
+configure:6073: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: In function 'main':
+configure:6065: error: too many arguments to function 'setpgrp'
+configure:6066: warning: incompatible implicit declaration of built-in function 'exit'
+configure: failed program was:
+#line 6053 "configure"
+#include "confdefs.h"
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+/*
+ * If this system has a BSD-style setpgrp, which takes arguments, exit
+ * successfully.
+ */
+main()
+{
+    if (setpgrp(1,1) == -1)
+	exit(0);
+    else
+	exit(1);
+}
+
+configure:6101: checking for SV-style timezone
+configure:6120: gcc -pipe -o conftest  -ansi -D_BSD_SOURCE -D_SVID_SOURCE -D_POSIX_SOURCE -D_REENTRANT   conftest.c  -lm -lutil 1>&5
+configure: In function 'main':
+configure:6116: warning: incompatible implicit declaration of built-in function 'exit'
+configure:6166: checking for Tk private headers
+configure:6237: checking for tk.h
+configure:6247: gcc -pipe -E  conftest.c >/dev/null 2>conftest.out
+configure:6243:16: error: tk.h: No such file or directory
+configure: failed program was:
+#line 6242 "configure"
+#include "confdefs.h"
+#include <tk.h>
+configure:6346: checking for long file names
+configure:6403: checking for type of library to build

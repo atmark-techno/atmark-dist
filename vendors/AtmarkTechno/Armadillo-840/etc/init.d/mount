@@ -1,0 +1,22 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Mounting firmware on /opt/firmware: "
+mount /dev/flashblk/firmware >/dev/null 2>&1
+check_status
+
+echo -n "Mounting license on /opt/license: "
+mount /dev/flashblk/license >/dev/null 2>&1
+check_status
+
+echo -n "Mounting tmpfs on /tmp, /var/tmp: "
+mount -t tmpfs -omode=1777 tmpfs /tmp >/dev/null 2>&1 &&
+mount -t tmpfs -omode=1777 tmpfs /var/tmp >/dev/null 2>&1
+check_status
+
+echo -n "Mounting ramfs on /home/ftp/pub: "
+mount -t ramfs -omode=777 ramfs /home/ftp/pub >/dev/null 2>&1
+check_status

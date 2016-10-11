@@ -1,0 +1,15 @@
+Source: sudo
+Section: admin
+Priority: optional
+Maintainer: Bdale Garbee <bdale@gag.com>
+Build-Depends: debhelper (>= 2.1.6), libpam0g-dev
+Standards-Version: 3.6.1.0
+
+Package: sudo
+Architecture: any
+Depends: ${shlibs:Depends}, libpam-modules
+Description: Provide limited super user privileges to specific users
+ Sudo is a program designed to allow a sysadmin to give limited root
+ privileges to users and log root activity.  The basic philosophy is to give
+ as few privileges as possible but still allow people to get their work done.
+

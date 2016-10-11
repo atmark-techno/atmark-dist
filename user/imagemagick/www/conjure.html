@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../www/magick.css");
+  //--></style>
+  <title>ImageMagick: Command-line Tools: Conjure</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="command-line, tools:, conjure, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../index.html"><img id="titlebar-west" src="../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="394432643"><img id="titlebar-west" src="../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img src="../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img id="titlebar-east" src="../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../index.html">About ImageMagick</a>
+      <a href="../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/install-source.html">Install from Source</a>
+      <a href="../www/binary-releases.html">Binary Releases</a>
+      <a href="../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../www/sponsors.html">Sponsors</a>
+  <a href="http://www.webservertalk.com" class="sponsor" target="sponsor">Server Administration<br />Support Forum</a><!-- 20050515 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[<a href="#usage">Example Usage</a> | <a href="#options">Option Summary</a>]</p>
+
+<p>The <kbd>conjure</kbd> program processes a Magick Scripting Language (MSL) script.  The Magick scripting language (MSL) will primarily benefit those  that want to accomplish  custom image processing tasks but do not wish to program, or those that do not have access to a Perl interpreter or a compiler. See <a href="../www/command-line-processing.html">Command Line Processing</a> for advice on how to structure your <kbd>conjure</kbd> command or see below for example usages of the command.</p>
+
+<div style="margin: auto;">
+  <h2><a name="usage"></a>Example Usage</h2>
+</div>
+
+<p>We list a few examples of the <kbd>conjure</kbd> command here to illustrate its usefulness and ease of use. To get started, here is simple <kbd>conjure</kbd> command:</p>
+
+<pre class="text">
+  conjure -dimensions 400x400 incantation.msl
+</pre>
+
+<p>Where <a href="../www/source/incantation.msl">incantation.msl</a> is our MSL script:</p>
+
+<pre class="text">
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;image size="400x400" \&gt;
+    &lt;read filename="image.gif" /&gt;
+    &lt;get width="base-width" height="base-height" /&gt;
+    &lt;resize geometry="%[dimensions]" /&gt;
+    &lt;get width="width" height="height" /&gt;
+    &lt;print output="Image sized from %[base-width]x%[base-height] to %[width]x%[height].\n" /&gt;
+    &lt;write filename="image.png" /&gt;
+  &lt;/image&gt;
+</pre>
+
+<p>You can find additional examples of using <kbd>conjure</kbd> in <a href="http://www-106.ibm.com/developerworks/library/l-graf/?ca=dnt-428" target="446570453">Graphics from the Command Line</a>.  Further discussion is available in <a href="http://www-106.ibm.com/developerworks/library/l-graf2/?ca=dgr-lnxw15GraphicsLine" target="458830127">More Graphics from the Command Line</a> and <a href="http://www.cit.gu.edu.au/~anthony/graphics/imagick6" target="352879559">Examples of ImageMagick Usage</a>.</p>
+
+<div style="margin: auto;">
+  <h2><a name="options"></a>Option Summary</h2>
+</div>
+
+<p>The <kbd>conjure</kbd> command recognizes these options.  Click on an option to get more details about how that option works.</p>
+
+<table width="100%" id="table" cellpadding="2" cellspacing="0">
+  <tbody>
+  <tr>
+    <th align="left">Option</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#authenticate" target="magick-options">-authenticate <em class="option">value</em></a></td>
+    <td>decrypt image with this password</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#channel" target="magick-options">-channel <em class="option">type</em></a></td>
+    <td>apply option to select image channels</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#debug" target="magick-options">-debug <em class="option">events</em></a></td>
+    <td>display copious debugging information</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#define" target="magick-options">-define <em class="option">format:option</em></a></td>
+    <td>define one or more image format options</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#density" target="magick-options">-density <em class="option">geometry</em></a></td>
+    <td>horizontal and vertical density of the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#depth" target="magick-options">-depth <em class="option">value</em></a></td>
+    <td>image depth</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#extract" target="magick-options">-extract <em class="option">geometry</em></a></td>
+    <td>extract area from image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#format" target="magick-options">-format <em class="option">string</em></a></td>
+    <td>output formatted image characteristics</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#help" target="magick-options">-help</a></td>
+    <td>print program options</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#interlace" target="magick-options">-interlace <em class="option">type</em></a></td>
+    <td>type of image interlacing scheme</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#limit" target="magick-options">-limit <em class="option">type value</em></a></td>
+    <td>pixel cache resource limit</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#list" target="magick-options">-list <em class="option">type</em></a></td>
+    <td>Color, Configure, Delegate, Format, Magic, Module, Resource, or Type</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#log" target="magick-options">-log <em class="option">format</em></a></td>
+    <td>format of debugging information</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#monitor" target="magick-options">-monitor</a></td>
+    <td>monitor progress</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#quiet" target="magick-options">-quiet</a></td>
+    <td>suppress all error or warning messages</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#sampling-factor" target="magick-options">-sampling-factor <em class="option">geometry</em></a></td>
+    <td>horizontal and vertical sampling factor</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#set" target="magick-options">-set <em class="option">attribute value</em></a></td>
+    <td>set an image attribute</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#size" target="magick-options">-size <em class="option">geometry</em></a></td>
+    <td>width and height of image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#strip" target="magick-options">-strip</a></td>
+    <td>strip image of all profiles and comments</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#units" target="magick-options">-units <em class="option">type</em></a></td>
+    <td>the units of image resolution</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#verbose" target="magick-options">-verbose</a></td>
+    <td>print detailed information about the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#version" target="magick-options">-version</a></td>
+    <td>print version information</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#virtual-pixel" target="magick-options">-virtual-pixel <em class="option">method</em></a></td>
+    <td>access method for pixels outside the boundaries of the image</td>
+  </tr>
+
+  </tbody>
+</table>
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="284910915">Discourse Server</a> |
+    <a href="../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="274666372">Image Gallery</a> |
+    <a href="http://redux.imagemagick.org/MagickStudio/scripts/MagickStudio.cgi" target="1521560708">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

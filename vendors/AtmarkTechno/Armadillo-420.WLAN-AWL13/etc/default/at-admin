@@ -1,0 +1,6 @@
+VERSION="1.0"
+PRODUCT_NAME="Armadillo-420.WLAN-AWL13"
+PRIMARY_IF="eth0"
+FIRMWARE_URL="http://download.atmark-techno.com/armadillo-420/image/"
+FIRMWARE_KERNEL_MATCH="linux-a400-wlan-"
+FIRMWARE_USERLAND_MATCH="romfs-a420-wlan-awl13-"

@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/simple-patchsys.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+DEB_CONFIGURE_NORMAL_ARGS = --prefix=/ --exec_prefix=/usr
+
+DEB_MAKE_INSTALL_TARGET := install prefix=$(CURDIR)/debian/usbmgr exec_prefix=$(CURDIR)/debian/usbmgr/usr; $(MAKE) use_mouse prefix=$(CURDIR)/debian/usbmgr exec_prefix=$(CURDIR)/debian/usbmgr/usr
+
+DEB_DH_INSTALLINIT_ARGS := -- start 15 1 2 3 4 5 . stop 55 0 6 .
+#DEB_UPDATE_RCD_PARAMS := start 15 1 2 3 4 5 . stop 55 0 6 .

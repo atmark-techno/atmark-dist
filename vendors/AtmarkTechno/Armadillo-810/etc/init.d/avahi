@@ -1,0 +1,14 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Creating avahi.services: "
+mkdir -p /etc/avahi/services
+/etc/init.d/avahi-services usb0
+check_status
+
+echo -n "Starting avahi.daemon: "
+/etc/init.d/avahi-daemon start >/dev/null
+check_status

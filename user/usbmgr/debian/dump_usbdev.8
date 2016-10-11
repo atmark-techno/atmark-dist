@@ -1,0 +1,115 @@
+.TH "dump_usbdev" "8" "0.4.8" "Shuu Yamaguchi" "USB Utilities"
+.SH "NAME"
+.LP 
+dump_usbdev \- Dumps connected USB devices information
+.SH "SYNTAX"
+.LP 
+dump_usbdev [\-Vvds] [\fIfile\fP]
+.SH "DESCRIPTION"
+.LP 
+The utility \fBdump_usbdev\fP aids you in writing
+\fIusbmgr.conf\fP. After \fBusbmgr\fP has been started,
+running \fBdump_usbdev\fP will dump infomation about all
+attached devices in a format suitable for
+\fIusbmgr.conf\fP.
+.LP 
+If you connect USB devices to your USB HUB, you'll see a line
+like the following:
+.LP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+This line will help you writing your
+\fI/etc/usbmgr/usbmgr.conf\fP configuration file.
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-V\fR
+Prints version. It \fBDOES NOT\fP exit.
+.TP 
+\fB\-v\fR
+Verbose mode.
+.TP 
+\fB\-d\fR
+Debug mode. Prints device data details.
+.TP 
+\fB\-s\fR
+Print simply the device numbers, not the entire configuration
+file text.
+.TP 
+\fIfile\fR
+Specify alternate file to read data from, instead of the default
+\fI/proc/bus/usb/001/*\fP. If it's not an absolute path,
+take as \fI/proc/bugs/usb/001/file\fP. The file format is a
+series of register of type \fBusb_device_descriptor\fP.
+.SH "FILES"
+.LP 
+\fI/proc/bus/usb/001/*\fP 
+.SH "ENVIRONMENT VARIABLES"
+.LP 
+None.
+.SH "EXAMPLES"
+.LP 
+To run this program the standard way type:
+.LP 
+dump_usbdev
+.LP 
+If you want to debug its output, you can create an appropriate
+file as \fImyfile\fP and call it:
+.LP 
+dump_usdev /path/to/myfile
+.LP 
+In the following output:
+.LP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+.LP 
+"class 0x9" means USB HUB. If no USB devices are connected,
+only the root HUB will appear. Modifying "<module_name>"
+would complete the configuration for this device (HUB).
+In the case of a HUB, you should change "module_name" to "none"
+because the HUB driver is included in usbcore.
+.LP 
+After a USB mouse has been connected to the HUB, running 
+\fBdump_usbdev\fP will give you the following:
+.LP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+vendor 0x56e product 0x4 module <module_name>
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+.LP 
+The 2nd line is new. This is the infomation about the USB 
+mouse. The USB mouse requires the "hid" and "mousedev" drivers.
+So, "<module>" should be changed to "hid , mousedev".
+.LP 
+So the complete \fIusbmgr.conf\fP would look like this:
+.LP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module none
+vendor 0x56e product 0x4 module hid , mousedev
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+.LP 
+You should copy this into \fI/etc/usbmgr/usbmgr.conf\fP,
+and then run \fBupdate_usbdb\fP to create the configuration
+data.
+.SH "AUTHORS"
+.LP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.LP 
+This manual page was written by Esteban Manchado Velázquez
+<zoso@debian.org>, for the Debian GNU/Linux system (but may be
+used by others).
+.SH "SEE ALSO"
+.LP 
+.BR usbmgr (8),
+.BR update_usbdb (8),
+.BR usbmgr.conf (5)

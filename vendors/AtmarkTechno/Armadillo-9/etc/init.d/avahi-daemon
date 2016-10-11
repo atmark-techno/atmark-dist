@@ -1,0 +1,51 @@
+#! /bin/sh
+
+DAEMON=/sbin/avahi-daemon
+NAME=avahi-daemon
+
+test -x $DAEMON || exit 0
+
+start()
+{
+  echo -n "Starting ${NAME}: "
+  chmod 600 /etc/config/.htpasswd-at-admin
+  chown -R guest:guest /home/guest
+  chown -R 33:33 /home/www-data
+  mkdir -p /tmp/at-admin && chown -R 33:33 /tmp/at-admin
+  $DAEMON -D
+}
+
+shutdown()
+{
+  echo "Stopping $NAME"
+  $DAEMON -k
+}
+
+reload()
+{
+  echo "Reloading $NAME config"
+  $DAEMON -r
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    shutdown
+  ;;
+  reload)
+    reload
+  ;;
+  restart)
+    shutdown
+    sleep 1
+    start
+  ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|reload|restart}" >&2
+    exit 1
+  ;;
+esac
+
+exit 0

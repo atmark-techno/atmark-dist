@@ -1,0 +1,37 @@
+#!/bin/sh
+
+. /usr/share/3g/3g-common.sh
+
+LABEL_ON="on"
+LABEL_OFF="off"
+
+support_3g_hl8548_check
+if [ $? -ne 0 ]; then
+    echo "This command support HL8548 only."
+    exit 1
+fi
+
+usage() {
+    echo "usage: $0 ${LABEL_ON}|${LABEL_OFF}"
+    exit 1
+}
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+VALUE=${1}
+
+case "$VALUE" in
+    ${LABEL_ON} )
+        CDE="1"
+    ;;
+    ${LABEL_OFF} )
+        CDE="0"
+    ;;
+    * )
+        usage ;;
+esac
+
+restore_stty_setting_handler
+flock $SERIAL_3G_LOCK expect /usr/share/3g/3g-hl8548-led.exp $CDE

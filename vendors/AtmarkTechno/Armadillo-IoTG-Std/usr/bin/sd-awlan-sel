@@ -1,0 +1,69 @@
+#!/bin/sh
+
+SDHC2_PWRE_SYSFS="/sys/class/gpio/SDHC2_PWRE/value"
+SD_AWLAN_SEL_SYSFS="/sys/class/gpio/SD_AWLAN_SEL/value"
+
+LABEL_SD="sd"
+LABEL_AWLAN="awlan"
+
+usage() {
+    echo "usage: $0 ${LABEL_SD}|${LABEL_AWLAN}"
+    exit 1
+}
+
+current_mode() {
+    is_awlan=`cat ${SD_AWLAN_SEL_SYSFS}`
+    if [ "${is_awlan}" = "1" ]; then
+        echo ${LABEL_AWLAN}
+    else
+        echo ${LABEL_SD}
+    fi
+}
+
+sdhc2_poweroff() {
+    if [ -e $SDHC2_PWRE_SYSFS ]; then
+        echo 0 > $SDHC2_PWRE_SYSFS
+        sleep 1
+    fi
+}
+
+sdhc2_poweron() {
+    if [ -e $SDHC2_PWRE_SYSFS ]; then
+        echo 1 > $SDHC2_PWRE_SYSFS
+    fi
+}
+
+sdhc2_select_sd() {
+    echo 0 > $SD_AWLAN_SEL_SYSFS
+}
+
+sdhc2_select_awlan() {
+    echo 1 > $SD_AWLAN_SEL_SYSFS
+}
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+MODE=${1}
+
+case "$MODE" in
+    ${LABEL_SD} )
+    if [ "$MODE" != "`current_mode`" ]; then
+        sdhc2_poweroff
+        sdhc2_select_sd
+        sdhc2_poweron
+        echo "select to SD"
+    fi
+    ;;
+    ${LABEL_AWLAN} )
+    if [ "$MODE" != "`current_mode`" ]; then
+        sdhc2_poweroff
+        sdhc2_select_awlan
+        sdhc2_poweron
+        echo "select to AWLAN"
+    fi
+    ;;
+    * )
+        usage ;;
+esac

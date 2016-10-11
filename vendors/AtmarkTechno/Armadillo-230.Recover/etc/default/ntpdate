@@ -1,0 +1,6 @@
+# Synchronize system clock
+SYNC_CLOCK=no
+
+# ntp server to check time with
+NTPSERVER=asia.pool.ntp.org
+

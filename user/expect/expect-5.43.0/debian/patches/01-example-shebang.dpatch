@@ -1,0 +1,376 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 01-example-shebang.dpatch by Mike Markley <mike@markley.org>
+##
+## DP: Fixes shebangs in examples (Closes: #152367).
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/example/archie expect-5.43.0/example/archie
+--- expect-5.43.0.orig/example/archie	2002-02-12 02:00:56.000000000 +0000
++++ expect-5.43.0/example/archie	2006-07-10 14:41:49.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ 
+ # archie
+ 
+diff -Naur expect-5.43.0.orig/example/autoexpect expect-5.43.0/example/autoexpect
+--- expect-5.43.0.orig/example/autoexpect	2002-02-12 02:00:56.000000000 +0000
++++ expect-5.43.0/example/autoexpect	2006-07-10 14:41:53.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # Name: autoexpect - generate an Expect script from watching a session
+ #
+ # Description:
+diff -Naur expect-5.43.0.orig/example/autopasswd expect-5.43.0/example/autopasswd
+--- expect-5.43.0.orig/example/autopasswd	2004-08-16 23:49:40.000000000 +0000
++++ expect-5.43.0/example/autopasswd	2006-07-10 14:42:00.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # wrapper to make passwd(1) be non-interactive
+ # username is passed as 1st arg, passwd as 2nd
+ 
+diff -Naur expect-5.43.0.orig/example/beer.exp expect-5.43.0/example/beer.exp
+--- expect-5.43.0.orig/example/beer.exp	2002-02-12 02:00:56.000000000 +0000
++++ expect-5.43.0/example/beer.exp	2006-07-10 14:42:07.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect -f
++#!/usr/bin/expect -f
+ 
+ # 99 bottles of beer on the wall, Expect-style
+ # Author: Don Libes <libes@nist.gov>
+diff -Naur expect-5.43.0.orig/example/chess.exp expect-5.43.0/example/chess.exp
+--- expect-5.43.0.orig/example/chess.exp	2002-02-12 02:00:56.000000000 +0000
++++ expect-5.43.0/example/chess.exp	2006-07-10 14:46:02.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # expect script to connect two UNIX chess programs together.
+ # written by Don Libes - May 9, 1990
+ 
+diff -Naur expect-5.43.0.orig/example/cryptdir expect-5.43.0/example/cryptdir
+--- expect-5.43.0.orig/example/cryptdir	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/cryptdir	2006-07-10 14:46:13.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # Name: cryptdir
+ # Author: Don Libes, NIST
+ #
+diff -Naur expect-5.43.0.orig/example/decryptdir expect-5.43.0/example/decryptdir
+--- expect-5.43.0.orig/example/decryptdir	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/decryptdir	2006-07-10 14:46:28.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # Name: cryptdir
+ # Author: Don Libes, NIST
+ #
+diff -Naur expect-5.43.0.orig/example/dislocate expect-5.43.0/example/dislocate
+--- expect-5.43.0.orig/example/dislocate	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/dislocate	2006-07-10 14:46:19.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # dislocate - allow disconnection and reconnection to a background program
+ # Author: Don Libes, NIST
+ 
+diff -Naur expect-5.43.0.orig/example/dvorak expect-5.43.0/example/dvorak
+--- expect-5.43.0.orig/example/dvorak	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/dvorak	2006-07-10 14:46:24.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # simulate a dvorak keyboard
+ # Actually just the lowercase letters are mapped to show the basic idea.
+ # Really, uppercase and control should probably be mapped too.
+diff -Naur expect-5.43.0.orig/example/expectd.proto expect-5.43.0/example/expectd.proto
+--- expect-5.43.0.orig/example/expectd.proto	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/expectd.proto	2006-07-10 14:46:53.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/tcl/src/expect/e --
++#!/usr/bin/expectk -f
+ # Description: Simple fragment to begin a telnet daemon
+ # For more information, see Chapter 17 of "Exploring Expect"
+ # Author: Don Libes, NIST
+diff -Naur expect-5.43.0.orig/example/ftp-inband expect-5.43.0/example/ftp-inband
+--- expect-5.43.0.orig/example/ftp-inband	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/ftp-inband	2006-07-10 14:46:58.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # ftp-inband - copy files over a telnet/rlogin/etc link
+ # Author: Don Libes, NIST
+ # Date: Jan 11, 1993
+diff -Naur expect-5.43.0.orig/example/ftp-rfc expect-5.43.0/example/ftp-rfc
+--- expect-5.43.0.orig/example/ftp-rfc	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/ftp-rfc	2006-07-10 14:47:01.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ 
+ # ftp-rfc <rfc-number>
+ # ftp-rfc -index
+diff -Naur expect-5.43.0.orig/example/gethostbyaddr expect-5.43.0/example/gethostbyaddr
+--- expect-5.43.0.orig/example/gethostbyaddr	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/gethostbyaddr	2006-07-10 14:47:05.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ #
+ # gethostbyaddr a.b.c.d - translate an internet address to a FQDN,
+ #			  guessing (a lot) if necessary.
+diff -Naur expect-5.43.0.orig/example/irsh expect-5.43.0/example/irsh
+--- expect-5.43.0.orig/example/irsh	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/irsh	2006-07-10 14:47:12.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect --
++#!/usr/bin/expect --
+ 
+ # Do rsh interactively.  For example, consider the following command:
+ #    rsh <remote> ls -l "|" more
+diff -Naur expect-5.43.0.orig/example/kibitz expect-5.43.0/example/kibitz
+--- expect-5.43.0.orig/example/kibitz	2004-06-24 16:24:16.000000000 +0000
++++ expect-5.43.0/example/kibitz	2006-07-10 14:47:15.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # allow another user to share a shell (or other program) with you
+ # See kibitz(1) man page for complete info.
+ # Author: Don Libes, NIST
+diff -Naur expect-5.43.0.orig/example/lpunlock expect-5.43.0/example/lpunlock
+--- expect-5.43.0.orig/example/lpunlock	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/lpunlock	2006-07-10 14:47:21.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ 
+ # This script unhangs a printer which claims it is "waiting for lock".
+ # Written by Don Libes.  Based on English instructions from Scott Paisley.
+diff -Naur expect-5.43.0.orig/example/mkpasswd expect-5.43.0/example/mkpasswd
+--- expect-5.43.0.orig/example/mkpasswd	2004-12-06 23:38:21.000000000 +0000
++++ expect-5.43.0/example/mkpasswd	2006-07-10 14:47:26.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect --
++#!/usr/bin/expect --
+ # mkpasswd - make a password, if username given, set it.
+ # Author: Don Libes, NIST
+ 
+diff -Naur expect-5.43.0.orig/example/multixterm expect-5.43.0/example/multixterm
+--- expect-5.43.0.orig/example/multixterm	2004-08-30 19:20:52.000000000 +0000
++++ expect-5.43.0/example/multixterm	2006-07-10 14:47:36.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expectk
++#!/usr/bin/expectk
+ #
+ # NAME
+ #	multixterm - drive multiple xterms separately or together
+diff -Naur expect-5.43.0.orig/example/passmass expect-5.43.0/example/passmass
+--- expect-5.43.0.orig/example/passmass	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/passmass	2006-07-10 14:47:42.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # passmass: change password on many machines
+ # Synopsis: passmass host1 host2 host3 ....
+ # Don Libes - March 11, 1991
+diff -Naur expect-5.43.0.orig/example/passwd.cgi expect-5.43.0/example/passwd.cgi
+--- expect-5.43.0.orig/example/passwd.cgi	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/passwd.cgi	2006-07-10 14:47:50.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect --
++#!/usr/bin/expect --
+ 
+ # This is a CGI script to process requests created by the accompanying
+ # passwd.html form.  This script is pretty basic, although it is
+diff -Naur expect-5.43.0.orig/example/passwdprompt expect-5.43.0/example/passwdprompt
+--- expect-5.43.0.orig/example/passwdprompt	2003-03-28 18:52:56.000000000 +0000
++++ expect-5.43.0/example/passwdprompt	2006-07-10 14:47:56.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect
++#!/usr/bin/expect
+ 
+ # This script prompts for a passwd from stdin while echoing *'s
+ 
+diff -Naur expect-5.43.0.orig/example/read1char expect-5.43.0/example/read1char
+--- expect-5.43.0.orig/example/read1char	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/read1char	2006-07-10 14:48:00.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ 
+ # read a single character
+ # Author: Don Libes, NIST
+diff -Naur expect-5.43.0.orig/example/reprompt expect-5.43.0/example/reprompt
+--- expect-5.43.0.orig/example/reprompt	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/reprompt	2006-07-10 14:48:05.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect --
++#!/usr/bin/expect --
+ 
+ # Name: reprompt
+ # Description: reprompt every so often until user enters something
+diff -Naur expect-5.43.0.orig/example/rftp expect-5.43.0/example/rftp
+--- expect-5.43.0.orig/example/rftp	2002-05-24 19:13:57.000000000 +0000
++++ expect-5.43.0/example/rftp	2006-07-10 14:48:08.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # rftp - ftp a directory hierarchy (i.e. recursive ftp)
+ # Version 2.10
+ # Don Libes, NIST
+diff -Naur expect-5.43.0.orig/example/rlogin-cwd expect-5.43.0/example/rlogin-cwd
+--- expect-5.43.0.orig/example/rlogin-cwd	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/rlogin-cwd	2006-07-10 14:48:12.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # rlogin-cwd - rlogin but with same directory
+ #
+ # You can extend this idea to save any arbitrary information across rlogin
+diff -Naur expect-5.43.0.orig/example/robohunt expect-5.43.0/example/robohunt
+--- expect-5.43.0.orig/example/robohunt	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/robohunt	2006-07-10 14:48:16.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # Synopsis
+ #    robohunt player-name [-nodisplay]
+ 
+diff -Naur expect-5.43.0.orig/example/rogue.exp expect-5.43.0/example/rogue.exp
+--- expect-5.43.0.orig/example/rogue.exp	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/rogue.exp	2006-07-10 14:48:20.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # Look for a GREAT game of rogue.
+ # Idea is that any game with a Strength of 18 is unusually good.
+ # Written by Don Libes - March, 1990
+diff -Naur expect-5.43.0.orig/example/telnet-cwd expect-5.43.0/example/telnet-cwd
+--- expect-5.43.0.orig/example/telnet-cwd	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/telnet-cwd	2006-07-10 14:48:24.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # telnet-cwd - telnet but with same directory
+ #
+ # You can extend this idea to save any arbitrary information across telnet
+diff -Naur expect-5.43.0.orig/example/term_expect expect-5.43.0/example/term_expect
+--- expect-5.43.0.orig/example/term_expect	2004-11-04 17:25:19.000000000 +0000
++++ expect-5.43.0/example/term_expect	2006-07-10 14:49:12.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expectk
++#!/usr/bin/expectk
+ 
+ # Name: tkterm - terminal emulator using Expect and Tk text widget, v3.0
+ # Author: Don Libes, July '94
+diff -Naur expect-5.43.0.orig/example/timed-read expect-5.43.0/example/timed-read
+--- expect-5.43.0.orig/example/timed-read	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/timed-read	2006-07-10 14:48:40.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # read a complete line from stdin
+ # aborting after the number of seconds (given as an argument)
+ # - Don Libes
+diff -Naur expect-5.43.0.orig/example/timed-run expect-5.43.0/example/timed-run
+--- expect-5.43.0.orig/example/timed-run	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/timed-run	2006-07-10 14:48:45.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ # run a program for a given amount of time
+ # i.e. time 20 long_running_program
+ 
+diff -Naur expect-5.43.0.orig/example/tknewsbiff expect-5.43.0/example/tknewsbiff
+--- expect-5.43.0.orig/example/tknewsbiff	2004-04-06 14:03:18.000000000 +0000
++++ expect-5.43.0/example/tknewsbiff	2006-07-10 14:48:51.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expectk
++#!/usr/bin/expectk
+ 
+ # Name: tknewsbiff
+ # Author: Don Libes
+diff -Naur expect-5.43.0.orig/example/tkpasswd expect-5.43.0/example/tkpasswd
+--- expect-5.43.0.orig/example/tkpasswd	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/tkpasswd	2006-07-10 14:49:01.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expectk -f
++#!/usr/bin/expectk -f
+ # tkpasswd - Change passwords using Expectk
+ # Author: Don Libes, NIST, October 1, 1993
+ # Version: 1.8 - Added support for Tk 4.1
+diff -Naur expect-5.43.0.orig/example/tkterm expect-5.43.0/example/tkterm
+--- expect-5.43.0.orig/example/tkterm	2004-11-04 17:42:21.000000000 +0000
++++ expect-5.43.0/example/tkterm	2006-07-10 14:49:06.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expectk
++#!/usr/bin/expectk
+ 
+ # Name: tkterm - terminal emulator using Expect and Tk text widget, v3.0
+ # Author: Don Libes, July '94
+diff -Naur expect-5.43.0.orig/example/unbuffer expect-5.43.0/example/unbuffer
+--- expect-5.43.0.orig/example/unbuffer	2004-01-25 01:37:49.000000000 +0000
++++ expect-5.43.0/example/unbuffer	2006-07-10 14:49:21.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ # Description: unbuffer stdout of a program
+ # Author: Don Libes, NIST
+ 
+diff -Naur expect-5.43.0.orig/example/virterm expect-5.43.0/example/virterm
+--- expect-5.43.0.orig/example/virterm	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/virterm	2006-07-10 14:49:29.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ 
+ # Name: virterm - terminal emulator using Expect, v1.0, December, 1994
+ # Author: Adrian Mariano <adrian@cam.cornell.edu>
+diff -Naur expect-5.43.0.orig/example/vrfy expect-5.43.0/example/vrfy
+--- expect-5.43.0.orig/example/vrfy	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/vrfy	2006-07-10 14:49:34.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect -f
++#!/usr/bin/expect -f
+ 
+ 
+ # separate address into user and host
+diff -Naur expect-5.43.0.orig/example/weather expect-5.43.0/example/weather
+--- expect-5.43.0.orig/example/weather	2003-07-31 18:28:24.000000000 +0000
++++ expect-5.43.0/example/weather	2006-07-10 14:49:38.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect -f
++#!/usr/bin/expect -f
+ 
+ # weather - Expect script to get the weather (courtesy University of Michigan)
+ # Don Libes
+diff -Naur expect-5.43.0.orig/example/xkibitz expect-5.43.0/example/xkibitz
+--- expect-5.43.0.orig/example/xkibitz	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/xkibitz	2006-07-10 14:49:42.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!../expect --
++#!/usr/bin/expect --
+ 
+ # share an xterm with other users
+ # See xkibitz(1) man page for complete info.
+diff -Naur expect-5.43.0.orig/example/xpstat expect-5.43.0/example/xpstat
+--- expect-5.43.0.orig/example/xpstat	2004-04-06 14:04:19.000000000 +0000
++++ expect-5.43.0/example/xpstat	2006-07-10 14:49:54.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expectk
++#!/usr/bin/expectk
+ 
+ # This script acts as a front-end for xpilot.  Run it in the background,
+ # and it will pop up a window for each server it finds running.  After
+diff -Naur expect-5.43.0.orig/example/xrlogin expect-5.43.0/example/xrlogin
+--- expect-5.43.0.orig/example/xrlogin	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/xrlogin	2006-07-10 14:49:48.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/depot/path/expect --
++#!/usr/bin/expect --
+ # xrlogin - rlogin but with current DISPLAY
+ #
+ # You can extend this idea to save any arbitrary information across rlogin

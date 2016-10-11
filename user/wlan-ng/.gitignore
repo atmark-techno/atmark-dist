@@ -1,0 +1,7 @@
+*.cmd
+*.ko
+*.mod.c
+
+config.mk
+config.opt
+config.out

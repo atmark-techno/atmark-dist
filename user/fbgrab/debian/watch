@@ -1,0 +1,3 @@
+version=3
+opts=dversionmangle=s/\.0$// \
+http://hem.bredband.net/gmogmo/fbgrab/fbgrab-(.*)\.tar\.gz

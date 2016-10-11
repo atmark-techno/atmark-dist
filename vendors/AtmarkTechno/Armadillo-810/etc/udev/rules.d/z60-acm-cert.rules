@@ -1,0 +1,1 @@
+DRIVERS=="acm", ENV{MODULE}=="certification", ACTION=="change", RUN+="/etc/config/acm-cert.sh $ENV{CODEC}"

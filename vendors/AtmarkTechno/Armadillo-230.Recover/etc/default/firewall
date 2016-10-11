@@ -1,0 +1,106 @@
+#
+# iptables firewall script (filter table)
+# Produced by at-cgi
+#
+
+# Options
+
+IPT=/bin/iptables
+IP_FORWARD=no
+
+# Pre-rule configuration
+
+# Enable/disable IP forading
+if [ "$IP_FORWARD" = "yes" ] ; then
+  echo "1" > /proc/sys/net/ipv4/ip_forward
+else
+  echo "0" > /proc/sys/net/ipv4/ip_forward
+fi
+
+# Disable Source Routed Packets
+for f in /proc/sys/net/ipv4/conf/*/accept_source_route
+do
+  echo 0 > $f
+done
+
+# Drop spoofed packets coming in on an interface, where responses
+# would result in the reply going out a different interface.
+for f in /proc/sys/net/ipv4/conf/*/rp_filter
+do
+  echo 1 > $f
+done
+
+# Disable ICMP redirect acceptance
+for f in /proc/sys/net/ipv4/conf/*/accept_redirects
+do
+  echo 0 > $f
+done
+
+# Accept ICMP redirect messages only for gateways,
+# listed in default gateway list
+for f in /proc/sys/net/ipv4/conf/*/secure_redirects
+do
+  echo 1 > $f
+done
+
+# Don't send redirect messages
+for f in /proc/sys/net/ipv4/conf/*/send_redirects
+do
+  echo 0 > $f
+done
+
+# Log packets with impossible addresses
+for f in /proc/sys/net/ipv4/conf/*/log_martians
+do
+  echo 1 > $f
+done
+
+# Ignore echo broadcasts
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+# Ignore ICMP errors
+echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses
+
+# Enable TCP SYN sookies
+#echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+
+$IPT -F INPUT
+$IPT -F OUTPUT
+$IPT -F FORWARD
+$IPT -X
+
+$IPT -A INPUT -i lo -j ACCEPT
+$IPT -A OUTPUT -o lo -j ACCEPT
+
+# Filter table policies
+
+$IPT -P INPUT DROP
+$IPT -P OUTPUT DROP
+$IPT -P FORWARD ACCEPT
+
+# Input chain rules - default
+
+$IPT -A INPUT -p udp --dport 5353 -j ACCEPT 
+$IPT -A INPUT -p tcp --dport http -j ACCEPT 
+$IPT -A INPUT -p tcp --dport ssh -j ACCEPT 
+
+# Input chain rules - user set
+
+$IPT -A INPUT -p tcp --dport 1024:65535 -j ACCEPT 
+$IPT -A INPUT -p udp --dport 1024:65535 -j ACCEPT 
+$IPT -A INPUT -p icmp -j ACCEPT 
+
+# Output chain rules - default
+
+$IPT -A OUTPUT -p tcp --dport domain -j ACCEPT 
+$IPT -A OUTPUT -p udp --dport domain -j ACCEPT 
+$IPT -A OUTPUT -p udp --dport ntp -j ACCEPT 
+$IPT -A OUTPUT -p tcp --dport http -j ACCEPT 
+$IPT -A OUTPUT -p tcp --dport smtp -j ACCEPT 
+$IPT -A OUTPUT -p tcp --dport 1024:65535 -j ACCEPT 
+$IPT -A OUTPUT -p udp --dport 1024:65535 -j ACCEPT 
+
+# Output chain rules - user set
+
+$IPT -A OUTPUT -p icmp -j ACCEPT 
+

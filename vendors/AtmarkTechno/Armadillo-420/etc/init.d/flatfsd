@@ -1,0 +1,38 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+# make sure we have /dev/flash/config
+CONFIG=/dev/flash/config
+
+if [ ! -L $CONFIG ]; then
+    node=$(grep nor.config /proc/mtd | while IFS=: read node rest; do echo $node; done)
+    test $node && mkdir -p /dev/flash && ln -sf /dev/$node $CONFIG
+fi
+
+if [ ! -L $CONFIG ]; then
+    echo -n "WARNING: Unable to find /dev/flash/config: "
+    false
+    check_status
+else
+    echo -n "Checking config region: "
+    flatfsd -c > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+	check_status
+    else
+	check_status
+	echo "WARNING: config region will be reinitialized."
+    fi
+
+    echo -n "Loading /etc/config: "
+    flatfsd -r > /dev/null 2>&1
+    check_status
+fi
+
+mkdir -p /tmp/config >/dev/null 2>&1
+cp -a /etc/default/* /etc/default/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /etc/config/* /etc/config/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /tmp/config/* /tmp/config/.[A-z]* /etc/config >/dev/null 2>&1
+rm -rf /tmp/config

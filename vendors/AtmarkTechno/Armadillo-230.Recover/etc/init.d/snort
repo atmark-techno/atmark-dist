@@ -1,0 +1,40 @@
+#! /bin/sh
+
+PRIMARY_IF=$2
+
+. /etc/config/at-admin-packetscan
+
+start()
+{
+  if [ $PACKETSCAN_ON = 1 ]; then
+    echo "Starting snort: "
+    PCAP_FRAMES=3000 snort -q -N -A fast -c /etc/snort/snort.conf \
+        -i $PRIMARY_IF -l /var/log/snort --pid-path /var/run -D
+  fi
+}
+
+stop()
+{
+  echo "Stopping snort"
+  SNORT_PID_FILE=/var/run/snort_${PRIMARY_IF}.pid
+  [ -f $SNORT_PID_FILE ] && kill `cat ${SNORT_PID_FILE}`
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  restart)
+    stop
+    sleep 2
+    start
+  ;;
+  *)
+    echo "Usage: /etc/init.d/snort {start|stop|restart} interface" >&2
+    exit 1
+  ;;
+esac
+

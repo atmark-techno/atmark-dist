@@ -1,0 +1,85 @@
+#!/usr/bin/env expect
+
+set module_type_unknown 0
+set module_type_mc8090 1
+set module_type_hl8548 2
+
+proc serial_connect {wait_time} {
+	global spawn_id
+
+	set timeout $wait_time
+	set tty_dev "/dev/ttyATCMD"
+	set tty_ctl "clocal raw 9600"
+
+	if { [catch {set file [ open $tty_dev r+ ]} msg] } {
+		puts  $msg
+		exit 1
+	}
+	if { [catch {system /bin/stty -F $tty_dev $tty_ctl } msg] } {
+		puts $msg
+		exit 1
+	}
+	spawn -open $file
+}
+
+proc send_command {str} {
+	set timeout 1
+
+	for {set li 0} {$li < 5} {incr li} {
+		send "$str\r"
+		expect "$str" {
+			return 0
+		}
+	}
+
+	puts "ERRORCMD: $str";
+	exit 1
+}
+
+proc busy_wait {try} {
+	set timeout 1
+	for {set i 0} {$i < $try} {incr i} {
+		send_command "AT"
+		expect "OK" {
+			return 0
+		}
+	}
+	puts "3G: busy wait timeout!"
+	exit 1
+}
+
+proc check_status {time} {
+	set timeout $time
+	expect {
+		"OK" {
+			return 0
+		} "ERROR" {
+			puts "error"
+		} timeout {
+			puts "timeout"
+		}
+	}
+	exit 1
+}
+
+proc get_module_type {} {
+	global module_type_mc8090
+	global module_type_hl8548
+	set timeout 3
+	send_command "ati"
+	expect {
+		"Model: MC8090" {
+			check_status 3
+			return $module_type_mc8090
+		} "HL8548" {
+			check_status 3
+			return $module_type_hl8548
+		} "ERROR" {
+			puts "error"
+		} timeout {
+			puts "timeout"
+		}
+	}
+	puts "unknown 3G module"
+	exit 1
+}

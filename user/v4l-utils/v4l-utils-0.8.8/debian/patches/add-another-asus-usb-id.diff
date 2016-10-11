@@ -1,0 +1,20 @@
+Origin: a03edd3d4f87d792fc3476081f21cb1ab627d3fc
+From: Gregor Jasny <gjasny@googlemail.com>
+Subject: [PATCH] libv4lcontrol: Add another USB ID to ASUS table
+
+Signed-off-by: Gregor Jasny <gjasny@googlemail.com>
+(cherry picked from commit 2ba650f05f83f08885fcd7cada608b089c4776e4)
+---
+ lib/libv4lconvert/control/libv4lcontrol.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+--- a/lib/libv4lconvert/control/libv4lcontrol.c
++++ b/lib/libv4lconvert/control/libv4lcontrol.c
+@@ -284,6 +284,7 @@
+ 	{ 0x04f2, 0xb071 },
+ 	{ 0x04f2, 0xb072 },
+ 	{ 0x04f2, 0xb106 },
++	{ 0x04f2, 0xb169 },
+ 	{ 0x04f2, 0xb16b },
+ 	{ 0x04f2, 0xb1b9 },
+ 	{ 0x04f2, 0xb1bb },

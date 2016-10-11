@@ -1,0 +1,29 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 01-unsafe-traps.dpatch by Anonymous (FIXME)
+##
+## DP: Fixes some unsafe traps.
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/exp_trap.c expect-5.43.0/exp_trap.c
+--- expect-5.43.0.orig/exp_trap.c	2002-03-23 04:11:54.000000000 +0000
++++ expect-5.43.0/exp_trap.c	2006-07-10 17:15:31.000000000 +0000
+@@ -261,6 +261,18 @@
+ #if defined(SIGSTOP)
+ 	traps[SIGSTOP].reserved = TRUE;
+ #endif
++#if defined(SIGSEGV)
++	traps[SIGSEGV].reserved = TRUE;
++#endif
++#if defined(SIGBUS)
++	traps[SIGBUS].reserved = TRUE;
++#endif
++#if defined(SIGILL)
++	traps[SIGILL].reserved = TRUE;
++#endif
++#if defined(SIGFPE)
++	traps[SIGFPE].reserved = TRUE;
++#endif
+ 
+ 	async_handler = Tcl_AsyncCreate(tophalf,(ClientData)0);
+ 

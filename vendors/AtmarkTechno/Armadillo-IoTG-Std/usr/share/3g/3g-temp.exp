@@ -1,0 +1,38 @@
+#!/usr/bin/env expect
+
+source /usr/share/3g/3g-function.exp
+log_user 0
+
+global module_type_mc8090
+global module_type_hl8548
+set temp 0
+
+serial_connect 10
+busy_wait 10
+
+set module_type [get_module_type]
+
+if {$module_type == $module_type_mc8090} {
+	send_command "AT!PCTEMP?"
+	set timeout 3
+	expect "Temperature:"
+	expect "degC" {
+	    scan $expect_out(buffer) "%s" temp
+	}
+} elseif {$module_type == $module_type_hl8548} {
+	send_command "AT+KADC=3,3"
+	set timeout 3
+	expect "+KADC:"
+	expect ", "
+	expect ", "
+	expect ", " 
+	expect "\r" {
+	    scan $expect_out(buffer) "%s" temp
+	}
+}
+
+check_status 1
+
+puts "$temp"
+
+exit 0

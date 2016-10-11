@@ -1,0 +1,11 @@
+
+*.pyc
+*.pre
+
+Makefile
+buildno
+
+config.cache
+config.h
+config.log
+config.status

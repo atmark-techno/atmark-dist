@@ -1,0 +1,114 @@
+Author: Mauro Carvalho Chehab <mchehab@redhat.com>
+Author: Gregor Jasny <gjasny@googlemail.com>
+Description: Add Sanyo and RC-5-SZ protocol
+
+--- a/utils/keytable/keytable.c
++++ b/utils/keytable/keytable.c
+@@ -86,6 +86,8 @@
+ 	JVC		= 1 << 3,
+ 	SONY		= 1 << 4,
+ 	LIRC		= 1 << 5,
++	SANYO		= 1 << 6,
++	RC_5_SZ		= 1 << 7,
+ 	OTHER		= 1 << 31,
+ };
+ 
+@@ -110,7 +112,7 @@
+ 	"  SYSDEV   - the ir class as found at /sys/class/rc\n"
+ 	"  TABLE    - a file with a set of scancode=keycode value pairs\n"
+ 	"  SCANKEY  - a set of scancode1=keycode1,scancode2=keycode2.. value pairs\n"
+-	"  PROTOCOL - protocol name (nec, rc-5, rc-6, other) to be enabled\n"
++	"  PROTOCOL - protocol name (nec, rc-5, rc-6, jvc, sony, sanyo, rc-5-sz, lirc, other) to be enabled\n"
+ 	"  DELAY    - Delay before repeating a keystroke\n"
+ 	"  PERIOD   - Period to repeat a keystroke\n"
+ 	"  CFGFILE  - configuration file that associates a driver/table name with a keymap file\n"
+@@ -225,6 +227,10 @@
+ 							ch_proto |= JVC;
+ 						else if (!strcasecmp(p,"sony"))
+ 							ch_proto |= SONY;
++						else if (!strcasecmp(p,"sanyo"))
++							ch_proto |= SANYO;
++						else if (!strcasecmp(p,"rc-5-sz"))
++							ch_proto |= RC_5_SZ;
+ 						else if (!strcasecmp(p,"other") || !strcasecmp(p,"unknown"))
+ 							ch_proto |= OTHER;
+ 						else {
+@@ -454,8 +460,12 @@
+ 				ch_proto |= JVC;
+ 			else if (!strcasecmp(p,"sony"))
+ 				ch_proto |= SONY;
++			else if (!strcasecmp(p,"sanyo"))
++				ch_proto |= SANYO;
+ 			else if (!strcasecmp(p,"lirc"))
+ 				ch_proto |= LIRC;
++			else if (!strcasecmp(p,"rc-5-sz"))
++				ch_proto |= RC_5_SZ;
+ 			else
+ 				goto err_inval;
+ 			p = strtok(NULL, ",;");
+@@ -725,6 +735,10 @@
+ 			proto |= JVC;
+ 		else if (!strcmp(p, "sony"))
+ 			proto |= SONY;
++		else if (!strcmp(p, "sanyo"))
++			proto |= SANYO;
++		else if (!strcmp(p, "rc-5-sz"))
++			proto |= RC_5_SZ;
+ 		else
+ 			proto |= OTHER;
+ 
+@@ -765,6 +779,12 @@
+ 	if (rc_dev->current & SONY)
+ 		fprintf(fp, "sony ");
+ 
++	if (rc_dev->current & SANYO)
++		fprintf(fp, "sanyo ");
++
++	if (rc_dev->current & RC_5_SZ)
++		fprintf(fp, "rc-5-sz ");
++
+ 	if (rc_dev->current & OTHER)
+ 		fprintf(fp, "unknown ");
+ 
+@@ -885,8 +905,12 @@
+ 			proto = JVC;
+ 		else if (!strcmp(p, "sony"))
+ 			proto = SONY;
++		else if (!strcmp(p, "sanyo"))
++			proto = SANYO;
+ 		else if (!strcmp(p, "lirc"))	/* Only V2 has LIRC support */
+ 			proto = LIRC;
++		else if (!strcmp(p, "rc-5-sz"))
++			proto = RC_5_SZ;
+ 		else
+ 			proto = OTHER;
+ 
+@@ -934,9 +958,15 @@
+ 	if (rc_dev->current & SONY)
+ 		fprintf(fp, "+sony\n");
+ 
++	if (rc_dev->current & SANYO)
++		fprintf(fp, "+sanyo\n");
++
+ 	if (rc_dev->current & LIRC)
+ 		fprintf(fp, "+lirc\n");
+ 
++	if (rc_dev->current & RC_5_SZ)
++		fprintf(fp, "+rc-5-sz\n");
++
+ 	if (rc_dev->current & OTHER)
+ 		fprintf(fp, "+unknown\n");
+ 
+@@ -960,8 +990,12 @@
+ 		fprintf (stderr, "JVC ");
+ 	if (proto & SONY)
+ 		fprintf (stderr, "SONY ");
++	if (proto & SANYO)
++		fprintf (stderr, "SANYO ");
+ 	if (proto & LIRC)
+ 		fprintf (stderr, "LIRC ");
++	if (proto & RC_5_SZ)
++		fprintf (stderr, "RC-5-SZ ");
+ 	if (proto & OTHER)
+ 		fprintf (stderr, "other ");
+ }

@@ -1,0 +1,49 @@
+--- zcip.c	2002-06-17 07:38:32.000000000 -0400
++++ zcip.c.new	2002-07-31 19:04:29.000000000 -0400
+@@ -19,7 +19,11 @@
+ #include <errno.h>
+ #include <stdarg.h>
+ #include <stddef.h>
++#ifdef _BSD
++#include <inttypes.h>
++#else
+ #include <stdint.h>
++#endif
+ #include <stdio.h>
+ 
+ 
+@@ -40,7 +44,12 @@
+ 
+ #include <arpa/inet.h>
+ 
++#ifdef _BSD
++#define ETH_ALEN ETHER_ADDR_LEN
++#include <netinet/ip_compat.h>
++#else
+ #include <net/ethernet.h>
++#endif
+ #include <net/if.h>
+ #include <net/if_arp.h>
+ #include <net/route.h>
+@@ -598,12 +607,20 @@
+     memset(&rte, 0, sizeof(rte));
+ 
+     // destination: 0.0.0.0
++#ifdef _BSD
++    (rt_key(&rte))->sa_family = AF_INET;
++    ((struct sockaddr_in *)rt_key(&rte))->sin_addr = tmp_ip;
++#else
+     rte.rt_dst.sa_family = AF_INET;
+     ((struct sockaddr_in *)&rte.rt_dst)->sin_addr = tmp_ip;
++#endif
+ 
+     rte.rt_flags = RTF_UP;
+-
++#ifdef _BSD
++    strcpy(rte.rt_ifp->if_xname,this_if->if_name);
++#else
+     rte.rt_dev = this_if->if_name;
++#endif
+     
+     r = ioctl(sock_fd, SIOCADDRT, &rte);
+     if (r < 0) die("SIOCSADDRT error: %s\n", strerror(errno));

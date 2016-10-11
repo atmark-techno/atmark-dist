@@ -1,0 +1,99 @@
+#! /bin/sh
+
+# Bridge control script utilizing brctl
+
+STP_ON=1
+SETAGEING=DEFAULT
+SETBRIDGEPRIO=DEFAULT
+SETFD=4
+SETHELLO=DEFAULT
+SETGCINT=DEFAULT
+SETMAXAGE=DEFAULT
+SETPATHCOST_ETH0=DEFAULT
+SETPATHPRIO_ETH0=DEFAULT
+SETPATHCOST_ETH1=DEFAULT
+SETPATHPRIO_ETH1=DEFAULT
+
+create()
+{
+  echo "Creating bridge: "
+  ifconfig eth0 0.0.0.0
+  ifconfig eth1 0.0.0.0
+  brctl addbr br0
+  brctl addif br0 eth0
+  brctl addif br0 eth1
+  if [ $SETAGEING != DEFAULT ]; then
+    brctl setageing br0 $SETAGEING
+  fi
+  if [ $STP_ON = 1 ]; then
+    brctl stp br0 on
+    if [ $SETBRIDGEPRIO != DEFAULT ]; then
+      brctl setbridgeprio br0 $SETBRIDGEPRIO
+    fi
+    if [ $SETFD != DEFAULT ]; then
+      brctl setfd br0 $SETFD
+    fi
+    if [ $SETGCINT != DEFAULT ]; then
+      brctl setgcint br0 $SETGCINT
+    fi
+    if [ $SETHELLO != DEFAULT ]; then
+      brctl sethello br0 $SETHELLO
+    fi
+    if [ $SETMAXAGE != DEFAULT ]; then
+      brctl setmaxage br0 $SETMAXAGE
+    fi
+    if [ $SETPATHCOST_ETH0 != DEFAULT ]; then
+      brctl setpathcost br0 eth0 $SETPATHCOST_ETH0
+    fi
+    if [ $SETPATHPRIO_ETH0 != DEFAULT ]; then
+      brctl setportprio br0 eth0 $SETPATHPRIO_ETH0
+    fi
+    if [ $SETPATHCOST_ETH1 != DEFAULT ]; then
+      brctl setpathcost br0 eth1 $SETPATHCOST_ETH1
+    fi
+    if [ $SETPATHPRIO_ETH1 != DEFAULT ]; then
+      brctl setportprio br0 eth1 $SETPATHPRIO_ETH1
+    fi
+  fi
+  UPWAIT=15
+  if [ $STP_ON = 1 ]; then
+    if [ $SETFD != "DEFAULT" ]; then
+      let UPWAIT=$SETFD*2
+    else
+      UPWAIT=30
+    fi
+  fi
+  echo "Upping bridge (${UPWAIT}sec): "
+  ifconfig br0 up
+  sleep $UPWAIT
+}
+
+remove()
+{
+  echo "Removing bridge: "
+  ifconfig br0 down
+  brctl delif br0 eth0
+  brctl delif br0 eth1
+  brctl delbr br0
+}
+
+case "$1" in
+  create)
+    create
+  ;;
+  remove)
+    remove
+  ;;
+  recreate)
+    remove
+    sleep 1
+    create
+  ;;
+  *)
+    echo "Usage: /etc/init.d/bridges {create|remove|recreate}" >&2
+    exit 1
+  ;;
+esac
+
+exit 0
+

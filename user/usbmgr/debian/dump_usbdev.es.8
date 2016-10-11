@@ -1,0 +1,106 @@
+.TH "dump_usbdev" "8" "0.4.8" "Shuu Yamaguchi" "Herramientas USB"
+.SH "NOMBRE"
+.LP 
+dump_usbdev \- Vuelca información de dispositivos USB conectados
+.SH "SINOPSIS"
+.LP 
+dump_usbdev [\-Vvds] [\fIfichero\fP]
+.SH "DESCRIPCIÓN"
+.PP 
+La herramienta \fBdump_usbdev\fP le ayuda al escribir el fichero \fIusbmgr.conf\fP. Después de iniciar \fBusbmgr\fP, al ejecutar \fBdump_usbdev\fP éste volcará información sobre los dispositivos conectados en un formato apropiado para \fIusbmgr.conf\fP.
+.PP 
+Si usted conecta dispositivos USB al concentrador USB, verá una línea como la siguiente:
+.LP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+Esta línea le ayudará a escribir su fichero \fI/etc/usbmgr/usbmgr.conf\fP.
+.SH "OPCIONES"
+.LP 
+.TP 
+\fB\-V\fR
+Imprime la versión. Pero \fBNO\fP finaliza.
+.TP 
+\fB\-v\fR
+Modo detallado.
+.TP 
+\fB\-d\fR
+Modo de depuración. Imprime detalles de los datos del dispositivo.
+.TP 
+\fB\-s\fR
+Solamente imprime el número de los dispositivos, no el texto completo para el fichero de configuración.
+.PP 
+\fIfichero\fR
+Especifica un fichero alternativo desde donde leer la data, en lugar del predeterminado \fI/proc/bus/usb/001/*\fR. Si no es una ruta absoluta la toma como \fI/proc/bugs/usb/001/file\fR. El formato del fichero es una serie de registros del tipo \fBusb_device_descriptor\fR.
+.SH "FICHEROS"
+.PP 
+\fI/proc/bus/usb/001/*\fP 
+.SH "VARIABLES DE ENTORNO"
+.LP 
+Ninguna.
+.SH "EJEMPLOS"
+.LP 
+Para ejecutar este programa en modo estándar, escriba:
+.LP 
+\fBdump_usbdev\fR
+.LP 
+Si usted desea depurar su salida, puede crear un fichero apropiado como \fImifichero\fP e invocar de la siguiente forma:
+.LP 
+\fBdump_usdev\fR \fI/ruta/hasta/mifichero\fR
+.LP 
+En la siguiente salida:
+.LP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+.LP 
+"class 0x9" significa concentrador USB. Si no hay dispositivos USB conectados.
+solamente aparecerá el concentrador raíz. Modificar "<module_name>" 
+completaría la configuración para este dispositivo (concentrador).
+En el caso de un concentrador, usted deberá cambiar "module_name" a "none"
+porque el manejador del concentrador esta incluido en usbcore.
+.PP 
+Luego de que un ratón USB ha sido conectado al concentrador, al ejecutar 
+\fBdump_usbdev\fP obtendrá lo siguiente:
+.PP 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module <nombre_modulo>
+vendor 0x56e product 0x4 module <nombre_modulo>
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+.LP 
+La segunda línea es nueva. Ésta es la información sobre el ratón USB.
+Los ratones USB requieren los manejadores "hid" y "mousedev". Por lo tanto,
+"<module_name>" deberá ser cambiado a "hid , mousedev".
+.PP 
+De esta manera, el fichero \fIusbmgr.conf\fP se vería de como sigue:
+ 
+.nf 
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+class 0x9 subclass 0x0 protocol 0x0 module none
+vendor 0x56e product 0x4 module hid , mousedev
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+.fi 
+.PP 
+Usted deberá copiar esto en \fI/etc/usbmgr/usbmgr.conf\fP, y luego ejecutar \fBupdate_usbdb\fP para crear la data de
+configuración.
+.SH "AUTOR"
+.LP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.LP 
+Esta página de manual ha sido escrita por Esteban Manchado Velázquez
+<zoso@debian.org>, para el sistema Debian GNU/Linux (pero podría ser
+usado por otros).
+.SH "TRADUCTOR"
+.LP
+Rudy Godoy <rudy@kernel\-panik.org>
+.SH "VÉASE TAMBIÉN"
+.LP 
+.BR usbmgr (8),
+.BR update_usbdb (8),
+.BR usbmgr.conf (5)

@@ -1,0 +1,35 @@
+Source: squashfs-tools
+Section: kernel
+Priority: optional
+Maintainer: Daniel Baumann <daniel.baumann@progress-technologies.net>
+Uploaders: Otavio Salvador <otavio@debian.org>
+Build-Depends:
+ debhelper (>= 9), libattr1-dev, liblzma-dev, liblzo2-dev, zlib1g-dev
+Standards-Version: 3.9.3
+Homepage: http://squashfs.sourceforge.net/
+
+Package: squashfs-tools
+Architecture: linux-any kfreebsd-any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Tool to create and append to squashfs filesystems
+ Squashfs is a highly compressed read-only filesystem for Linux. It uses zlib
+ compression to compress both files, inodes and directories. Inodes in the
+ system are very small and all blocks are packed to minimise data overhead.
+ Block sizes greater than 4K are supported up to a maximum of 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival use
+ (i.e. in cases where a .tar.gz file may be used), and in constrained block
+ device/memory systems (e.g. embedded systems) where low overhead is needed.
+
+Package: squashfs-tools-dbg
+Section: debug
+Priority: extra
+Architecture: linux-any kfreebsd-any
+Depends: ${misc:Depends}, squashfs-tools (= ${binary:Version})
+Description: Tool to create and append to squashfs filesystems (debug)
+ Squashfs is a highly compressed read-only filesystem for Linux. It uses zlib
+ compression to compress both files, inodes and directories. Inodes in the
+ system are very small and all blocks are packed to minimise data overhead.
+ Block sizes greater than 4K are supported up to a maximum of 64K.
+ .
+ This package contains the debugging symbols.

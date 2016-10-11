@@ -1,0 +1,54 @@
+i2c-tools (3.0.2-5) unstable; urgency=low
+
+  * Add depends on adduser to i2ctools. (Closes: #608835). 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Mon, 03 Jan 2011 23:22:26 +0100
+
+i2c-tools (3.0.2-4) unstable; urgency=low
+
+  * Add ${misc:Depends} to all binaries.
+  * Create an i2c group on install, and add a udev file to set the group
+    and the mode of /dev/i2c-* nodes.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Thu, 14 Jan 2010 06:39:06 +0100
+
+i2c-tools (3.0.2-3) unstable; urgency=low
+
+  * Correctly call dh_pysupport. (Closes: #556147). 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sat, 14 Nov 2009 14:27:26 +0100
+
+i2c-tools (3.0.2-2) unstable; urgency=low
+
+  * i2c-tools: depends on udev | makedev and create /dev/i2c-0 (Closes: 
+    bug#546871).
+  * Bump standard versions to 3.8.3 (no changes).
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 14 Oct 2009 00:19:49 +0200
+
+i2c-tools (3.0.2-1) unstable; urgency=low
+
+  * New upstream version.
+  * Bump standard versions to 3.8.0 (no changes).
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 28 Jan 2009 23:37:31 +0100
+
+i2c-tools (3.0.1-1) unstable; urgency=low
+
+  * New upstream version. 
+
+ -- Aurelien Jarno <aurel32@debian.org>  Fri, 04 Apr 2008 22:14:04 +0200
+
+i2c-tools (3.0.0-2) unstable; urgency=low
+
+  * Bump standard versions to 3.7.3 (no changes).
+  * Fix python-pysmbus description.
+  * Fix debian/copyright.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Sun, 02 Mar 2008 18:54:37 +0100
+
+i2c-tools (3.0.0-1) unstable; urgency=low
+
+  * New upstream package split from lm-sensors.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 27 Nov 2007 16:46:35 +0100

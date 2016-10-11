@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo "Starting thttpd: "
+cp /home/httpd/demo-av.cgi /var/tmp/index.cgi
+chmod 755 /var/tmp/index.cgi
+thttpd -c *.cgi -d /var/tmp -u root &
+

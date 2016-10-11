@@ -1,0 +1,15 @@
+#!/bin/sh
+
+OUT=/tmp/script.out
+
+case $1 in
+"start")
+	echo "start" > $OUT
+	;;
+"stop")
+	echo "stop" > $OUT
+	;;
+*)
+	echo "ouch!" > $OUT
+	;;
+esac

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+case "$1" in
+  remove|deconfigure)
+	update-alternatives --remove w /usr/bin/w.procps
+    ;;
+  upgrade|failed-upgrade)
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

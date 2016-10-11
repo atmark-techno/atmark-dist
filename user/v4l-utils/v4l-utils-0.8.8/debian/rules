@@ -1,0 +1,86 @@
+#!/usr/bin/make -f
+
+V4L_COMMON_FLAGS = PREFIX=/usr DESTDIR=$(CURDIR)/debian/tmp
+
+# if we have dpkg 1.16.1
+#include /usr/share/dpkg/default.mk
+#V4L_COMMON_FLAGS += CPPFLAGS+="$(CPPFLAGS)" CFLAGS+="$(CFLAGS)" CXXFLAGS+="$(CXXFLAGS)" LDFLAGS+="$(LDFLAGS)"
+
+# else
+
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+V4L_COMMON_FLAGS += CPPFLAGS+="$(shell dpkg-buildflags --get CPPFLAGS)"
+V4L_COMMON_FLAGS += CFLAGS+="$(shell dpkg-buildflags --get CFLAGS)"
+V4L_COMMON_FLAGS += CXXFLAGS+="$(shell dpkg-buildflags --get CXXFLAGS)"
+V4L_COMMON_FLAGS += LDFLAGS+="$(shell dpkg-buildflags --get LDFLAGS)"
+
+# endif
+
+V4L_NATIVE_FLAGS = $(V4L_COMMON_FLAGS) LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) LIBCONVERTSUBDIR=libv4lconvert0
+V4L_32BIT_FLAGS  = $(V4L_COMMON_FLAGS) LIBDIR=/usr/lib32 CPPFLAGS+=-m32 LDFLAGS+=-m32 DISABLE_LIBJPEG=1 
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+build-stamp:
+	dh_testdir
+	dh_prep
+	dh_installdirs -s
+	#
+	# The Debian library packaging guide mandates that private library subdirs
+	# must be versioned with the library package name. However this would break
+	# compatibility with older packages so for libv4l-0 lib/libv4l is used.
+	# If upstream bumps soname and the package name becomes libv4l-1, use
+	# LIBSUBDIR=libv4l-1 as $(MAKE) argument to allow different soname versions
+	# to be installed side by side.
+	#
+	# build shared libs and install
+	$(MAKE) $(V4L_NATIVE_FLAGS)
+	$(MAKE) $(V4L_NATIVE_FLAGS) install
+ifeq ($(DEB_HOST_ARCH_OS), linux)
+	# prefix filenames with /lib/udev/rc_keymaps
+	sed -i -e 's,^\([^#][[:graph:]]*[[:space:]]\+[[:graph:]]\+[[:space:]]\+\)\([[:graph:]]\+.*\),\1/lib/udev/rc_keymaps/\2,' -e 's,^\(#[[:space:]]\+\*[[:space:]]\+\*[[:space:]]\+\)\([[:alnum:]].*\),\1/lib/udev/rc_keymaps/\2,' $(CURDIR)/debian/tmp/etc/rc_maps.cfg
+endif
+ifeq ($(DEB_HOST_ARCH), amd64)
+	# clean object files
+	$(MAKE) clean
+	# build 32 bit shared libs and install
+	$(MAKE) -C lib $(V4L_32BIT_FLAGS)  
+	$(MAKE) -C lib $(V4L_32BIT_FLAGS) install
+endif
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	$(MAKE) clean
+	dh_clean
+	rm -f build-stamp
+
+binary-indep: build
+
+binary-arch: build
+	dh_testdir
+	dh_testroot
+	dh_lintian -s
+	dh_installudev -s
+	dh_bugfiles -s
+	dh_installchangelogs -plibv4l-0 -pir-keytable -plibv4lconvert0 -pdvb-tools ChangeLog
+	dh_installdocs -plibv4l-0 -pir-keytable -plibv4lconvert0 -pdvb-tools
+	dh_installman -s
+	dh_install -s --sourcedir=debian/tmp
+	dh_link -s
+	dh_strip -s
+	dh_compress -s
+	dh_fixperms -s
+	dh_makeshlibs -s -Xv4l1compat -Xv4l2convert
+	dh_installdeb -s
+	dh_shlibdeps -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

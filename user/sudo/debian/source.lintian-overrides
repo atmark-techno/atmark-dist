@@ -1,0 +1,1 @@
+sudo source: maintainer-script-lacks-debhelper-token debian/postinst

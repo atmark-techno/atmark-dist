@@ -1,0 +1,5 @@
+#
+# Vendor specific
+#
+
+source ../vendors/AtmarkTechno/Armadillo-210.Common/Config.in

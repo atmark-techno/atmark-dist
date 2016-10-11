@@ -1,0 +1,6 @@
+if [ $CONFIG_PLATFORM_HAVE_QT5_SUPPORT = "y" ]; then
+	bool 'Qt5' CONFIG_USER_QT5
+	if [ "$CONFIG_USER_QT5" = "y" ]; then
+		bool "  photoviewer" CONFIG_USER_QT5_PHOTOVIEWER
+	fi
+fi

@@ -1,0 +1,12 @@
+Source: armsd
+Section: admin
+Priority: extra
+Maintainer: Kouki Ooyatsu <kouki-o at iij.ad.jp>
+Build-Depends: make, gcc, libarms-dev (>= 5.00), debhelper, cdbs, autotools-dev
+Homepage: http://dev.smf.jp/
+
+Package: armsd
+Architecture: any
+Section: admin
+Depends: ${misc:Depends}, ${shlibs:Depends}, libarms (>= 5.00)
+Description: ARMS protocol daemon.

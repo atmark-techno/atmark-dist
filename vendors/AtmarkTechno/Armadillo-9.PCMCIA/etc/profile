@@ -1,0 +1,36 @@
+# /etc/profile
+
+alias ll="ls -lF"
+alias ls="ls -F"
+alias rm="rm -i"
+
+TZ=JST-9
+
+PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+PS1="[\u@\h (`tty | cut -b6-`) \w]\\$ "
+
+ulimit -c 0
+if [ `id -gn` = `id -un` -a `id -u` -gt 14 ]; then
+	umask 002
+else
+	umask 022
+fi
+
+USER=`id -un`
+LOGNAME=$USER
+
+HOSTNAME=`/bin/hostname`
+HISTSIZE=1000
+
+EDITOR=vi
+VISUAL=vi
+
+export TZ PATH PS1 USER LOGNAME HOSTNAME HISTSIZE EDITOR VISUAL
+
+for i in /etc/profile.d/*.sh ; do
+	if [ -x $i ]; then
+		. $i
+	fi
+done
+
+unset i

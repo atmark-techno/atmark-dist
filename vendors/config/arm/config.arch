@@ -1,0 +1,216 @@
+.EXPORT_ALL_VARIABLES:
+############################################################################
+
+#
+#  A generic ARM config.arch that can be included by other platforms
+#  to reduce the number of places that need to be edited when something
+#  common changes. If you include this file you should provide:
+#
+#  CPUCFLAGS           - cpu specific flags to pass to the compiler
+#  CPULDFLAGS          - cpu specific flags to pass to the linker
+#  VENDOR_CFLAGS       - vendor specific flags to pass to the compiler
+#
+#  Greg Ungerer <gerg@snapgear.com>
+#
+
+############################################################################
+
+#
+# Default console setting
+#
+
+ifndef CONSOLE_BAUD_RATE
+CONSOLE_BAUD_RATE = 115200
+endif
+
+ifndef HW_PRODUCT
+  HW_PRODUCT = $(CONFIG_PRODUCT)
+endif
+
+ifndef HW_VENDOR
+  HW_VENDOR = $(CONFIG_VENDOR)
+endif
+
+ifndef EXTRA_MODULE_DIRS
+ifeq ($(ROOTDIR)/modules,$(wildcard $(ROOTDIR)/modules))
+EXTRA_MODULE_DIRS = $(ROOTDIR)/modules
+endif
+endif
+
+ifndef RELFILES
+  RELFILES =	boot/boot.bin,.sgb boot/boot.elf		\
+  		images/image.bin,.sgu $(LINUXDIR)/linux
+endif
+
+ifndef NFIMAGE
+  NFIMAGE=image.bin
+endif
+
+############################################################################
+
+#
+# The makefiles need to know how to do things in different contexts
+# To save some pain we put it all here.
+#
+# First settings we always want for all builds.
+#
+
+MACHINE       = arm
+ARCH          = arm
+CROSS_COMPILE ?= arm-linux-
+CROSS         = $(CROSS_COMPILE)
+CROSS_USR_DIR ?= /usr/$(CROSS_COMPILE:-=)
+CROSS_CFLAGS  += -I$(CROSS_USR_DIR)/include -I$(GCC_DIR)/include -isystem $(GCC_DIR)/include-fixed
+CROSS_LDFLAGS += -L$(CROSS_USR_DIR)/lib
+
+CC        = $(CROSS_COMPILE)gcc $(CPUCFLAGS)
+AS        = $(CROSS_COMPILE)as $(CPUCFLAGS)
+CXX       = $(CROSS_COMPILE)g++ $(CPUCFLAGS)
+AR        = $(CROSS_COMPILE)ar
+LD        = $(CROSS_COMPILE)ld $(CPULDFLAGS)
+OBJCOPY   = $(CROSS_COMPILE)objcopy
+RANLIB    = $(CROSS_COMPILE)ranlib
+STRIPTOOL = $(CROSS_COMPILE)strip
+STRIP     = $(STRIPTOOL)
+
+PKG_CONFIG_LIBDIR = $(CROSS_USR_DIR)/lib/pkgconfig:$(CROSS_USR_DIR)/share/pkgconfig
+
+GCC_DIR = $(shell $(CC) $(CPUCFLAGS) -print-libgcc-file-name 2>&1 | sed -e 's/libgcc.a//' -e 's/be\///')
+GCC_LIB = $(shell $(CC) $(CPUCFLAGS) -print-libgcc-file-name 2>&1 | sed -e 's/libgcc.a//')
+GXX_DIR = $(shell $(CC) $(CPUCFLAGS) -print-file-name=libstdc++.a 2>&1 | sed -e 's/libstdc++.a//')
+
+UCLINUX_BUILD_SET = 0					# have we set a special config below
+
+############################################################################
+# Setup crt* appropriately for each libc
+# CRT? are used for regular executables
+# CXX_CRT? are used for building C++ executables
+# SH_CRT? are used for building shared libraries
+
+ifeq ($(findstring glibc,$(LIBCDIR)),glibc)
+#	CRTI     = -nostartfiles $(ROOTDIR)/lib/crt1.o \
+#				$(ROOTDIR)/lib/crti.o \
+#				$(GCC_LIB)/crtbegin.o
+#	SH_CRTI  = -nostartfiles $(ROOTDIR)/lib/crti.o \
+#				$(GCC_LIB)/crtbeginS.o
+#	CRTN     = $(ROOTDIR)/lib/ld-linux.so.2 \
+#				$(GCC_LIB)/crtend.o \
+#				$(ROOTDIR)/lib/crtn.o \
+#				-lc_nonshared
+# REVISIT
+#				$(GCC_LIB)/libgcc.a
+#	SH_CRTN  = $(GCC_LIB)/crtendS.o $(ROOTDIR)/lib/crtn.o
+else
+#	# This means we are using uClibc
+#	CRTI     = -nostartfiles $(ROOTDIR)/lib/crt1.o \
+#				$(ROOTDIR)/lib/crti.o
+#	CRTN     = $(ROOTDIR)/lib/crtn.o
+# REVISIT - use static linking
+#	CRTN    = $(GCC_LIB)/libgcc.a
+
+	CXX_CRTI = -nostartfiles $(ROOTDIR)/lib/crt1.o \
+				$(ROOTDIR)/lib/crti.o \
+				$(GCC_LIB)/crtbegin.o
+
+	CXX_CRTN = $(GCC_LIB)/crtend.o $(ROOTDIR)/lib/crtn.o
+endif
+
+# Pull in common definitions
+include $(ROOTDIR)/vendors/config/common/config.arch
+
+############################################################################
+#
+# General purpose lib building rules, uClibc.config uses these when
+# possible.
+#
+
+ifdef UCLINUX_BUILD_LIB
+  ifeq ($(findstring glibc,$(LIBCDIR)),glibc)
+	GLIBC_TARGET_OPTS = arm-linux --enable-shared
+  endif
+  ifdef CONFIG_LIB_DEBUG
+	CFLAGS  := -g
+	LDFLAGS :=
+  else
+	CFLAGS  := -O2
+	LDFLAGS := -Wl,-S
+  endif
+	CFLAGS  += -fno-common -Wall #-Werror
+	CFLAGS  += $(VENDOR_CFLAGS)
+	CFLAGS  += $(CROSS_CFLAGS)
+	_SH_LDFLAGS := $(CFLAGS)
+	LDLIBS   = -nodefaultlibs
+	LDFLAGS  = $(CFLAGS) $(CRT0)
+
+	CFLAGS  += -fno-builtin
+#	CFLAGS  += -DEMBED
+	CFLAGS  += -nostdinc -I$(ROOTDIR)/include
+	# don't want all the CFLAGS for uClibc/Config
+	ARCH_CFLAGS = $(CFLAGS)
+	CFLAGS  += -Dlinux -D__linux__ -Dunix
+	UCLINUX_BUILD_SET=1
+endif
+
+############################################################################
+#
+# Settings for building user apps
+#
+
+ifdef UCLINUX_BUILD_USER
+
+
+	LDPATH = -L$(ROOTDIR)/lib
+
+  ifdef CONFIG_USER_DEBUG
+	CFLAGS  := -O0 -g
+	LDFLAGS :=
+  else
+	CFLAGS  := -O2
+	LDFLAGS := 
+  endif
+
+	CFLAGS  += $(VENDOR_CFLAGS)
+	CFLAGS  += $(CROSS_CFLAGS)
+	CFLAGS  += -Dlinux -D__linux__ -Dunix -DEMBED
+  ifneq ($(LIBCDIR),)
+	CFLAGS  += -nostdinc -I$(ROOTDIR)/include
+  else
+	CFLAGS  += -idirafter $(ROOTDIR)/include
+  endif
+	CFLAGS  += -Wall -fno-common #-Werror
+#	CFLAGS  += -fno-builtin
+#	CFLAGS	+= -nostdlib
+	CFLAGS  += -I$(ROOTDIR)
+
+	CXXFLAGS = $(CFLAGS) -nostdinc++ -I$(ROOTDIR)/include/STLport
+	CXXSUP = $(GXX_DIR)libsupc++.a
+	CXXLIBS = $(LIBSTDCPP) $(CXXSUP) $(LIBM) $(LIBC) $(LIBGCC) $(CXX_CRTN)
+	CXX_LDFLAGS = -nodefaultlibs $(CXXFLAGS) $(CXX_CRTI) -L$(ROOTDIR)/lib/STLport/lib $(LDPATH) $(CROSS_LDFLAGS)
+
+	_SH_LDFLAGS := $(LDFLAGS)
+	LDFLAGS += $(CRTI) $(LDPATH) $(CROSS_LDFLAGS)
+#	LDLIBS   = -nodefaultlibs $(LIBC) $(LIBGCC) $(CRTN)
+	LDLIBS   = $(LIBC) $(LIBGCC) $(CRTN)
+
+	FLTFLAGS   :=
+	export FLTFLAGS
+
+	# for anyone still using it
+	CONVERT     = /bin/true
+
+	UCLINUX_BUILD_SET=1
+endif
+
+SH_LDFLAGS := $(_SH_LDFLAGS) $(SH_CRTI) $(LDPATH)
+SH_LDLIBS  := -nodefaultlibs $(LIBC) $(LIBGCC) $(SH_CRTN)
+
+############################################################################
+#
+# fall through,  do other config options perhaps
+#
+
+ifeq ($(UCLINUX_BUILD_SET),1)
+	EXTRA_CFLAGS := -Dlinux
+endif
+
+############################################################################

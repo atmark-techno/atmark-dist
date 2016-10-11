@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuremap [
+  <!ELEMENT configuremap (configure+)>
+  <!ELEMENT configure (#PCDATA)>
+  <!ATTLIST configure name CDATA #REQUIRED>
+  <!ATTLIST configure value CDATA #REQUIRED>
+]>
+<configuremap>
+  <configure name="NAME" value="ImageMagick" />
+  <configure name="LIB_VERSION" value="0x624" />
+  <configure name="LIB_VERSION_NUMBER" value="6,2,4,5" />
+  <configure name="RELEASE_DATE" value="04/25/06" />
+  <configure name="CONFIGURE" value="./configure --prefix=/usr --enable-shared --enable-lzw --without-dps --without-fpx --without-perl --without-x --without-xml --host=arm-linux" />
+  <configure name="PREFIX" value="/usr" />
+  <configure name="EXEC-PREFIX" value="/usr" />
+  <configure name="VERSION" value="6.2.4" />
+  <configure name="CC" value="arm-linux-gcc" />
+  <configure name="CFLAGS" value="-I../../lib/libjpeg -I../../lib/libpng -Wall -pthread" />
+  <configure name="CPPFLAGS" value="-I/usr/include" />
+  <configure name="PCFLAGS" value="" />
+  <configure name="DEFS" value="-DHAVE_CONFIG_H" />
+  <configure name="LDFLAGS" value="-L/usr/lib -L../../lib/libjpeg -L../../lib/libpng" />
+  <configure name="LIBS" value="-lMagick -ljpeg -lpng -lbz2 -lz -lpthread -lm -lpthread" />
+  <configure name="CXX" value="arm-linux-g++" />
+  <configure name="CXXFLAGS" value="-pthread" />
+  <configure name="DISTCHECK_CONFIG_FLAGS" value="--prefix=/usr --enable-shared --enable-lzw --without-dps --without-fpx --without-perl --without-x --without-xml --host=arm-linux 'CFLAGS=-I../../lib/libjpeg -I../../lib/libpng' 'LDFLAGS=-L../../lib/libjpeg -L../../lib/libpng'" />
+  <configure name="CVS_BRANCH_TAG" value="HEAD" />
+  <configure name="HOST" value="arm-unknown-linux-gnu" />
+  <configure name="COPYRIGHT" value="Copyright (C) 1999-2005 ImageMagick Studio LLC" />
+  <configure name="WEBSITE" value="http://www.imagemagick.org" />
+  <configure name="QuantumDepth" value="16" />
+</configuremap>

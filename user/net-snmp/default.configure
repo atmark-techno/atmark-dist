@@ -1,0 +1,75 @@
+#! /bin/sh
+
+#
+# net-snmp auto configure
+#
+
+CONFIGURE=./configure
+CONFIGURE_OPTIONS=
+
+##############################################################################
+set_option(){
+	CONFIGURE_OPTIONS="$CONFIGURE_OPTIONS $1"
+}
+
+###############################################################################
+__HOST=`./config.guess`
+
+if [ "$CC" = cc ]; then
+	__TARGET=`configure.guess`
+else
+	__TARGET=`echo $CC | sed -e "s/-.*//"`
+	__TARGET=$__TARGET"-linux-gnu"
+fi
+
+###############################################################################
+set_option "--host=$__HOST"
+set_option "--target=$__TARGET"
+set_option "--with-cc=$CC"
+set_option "--with-ar=$AR"
+#set_option "--with-cflags=\"$CFLAGS\""
+#set_option "--with-ldflags=\"$LDFLAGS\""
+
+if [ "$DISABLE_SHARED_LIBS" = 1 ]; then
+	set_option "--disable-shared"
+fi
+
+if [ "$CONFIG_CPU_BIG_ENDIAN" = y ]; then
+	set_option "--with-endianness=big"
+else
+	set_option "--with-endianness=little"
+fi
+
+###############################################################################
+
+set_option "--enable-mini-agent"
+
+set_option "--disable-debugging"
+set_option "--disable-privacy"
+set_option "--disable-internal-md5"
+
+set_option "--without-opaque-special-types"
+set_option "--without-openssl"
+
+set_option "--with-default-snmp-version=2"
+set_option "--with-sys-contact=Unknown"
+set_option "--with-sys-location=Unknown"
+set_option "--with-logfile=/var/log/snmpd.log"
+set_option "--with-persistent-directory=/var/net-snmp"
+
+#set_option "--with-out-mib-modules=examples/ucdDemoPublic"
+set_option "--with-out-mib-modules=snmpv3mibs"
+
+if [ "$CONFIG_USER_UCDSNMP_SNMPD_ARMADILLOJ" = y ]; then
+    set_option "--with-mib-modules=armadilloj/aj_serial,armadilloj/aj_gpio,armadilloj/aj_misc,armadilloj/aj_command"
+fi
+
+if [ "$CONFIG_USER_UCDSNMP_SNMPD_ARMADILLO210" = y ]; then
+    set_option "--with-openssl=/usr/arm-linux/lib"
+    set_option "--with-mib-modules=armadillo210/a210_common,armadillo210/a210_command,armadillo210/a210_serial,armadillo210/a210_gpio,armadillo210/a210_misc"
+fi
+
+###############################################################################
+
+#echo $CONFIGURE $CONFIGURE_OPTIONS
+$CONFIGURE $CONFIGURE_OPTIONS

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+id=$1
+in=$2
+out=$3
+args=`head -n 1 $in`
+
+echo clear:$id: $args
+
+if [ x"$id" = x"0" ] && [ x"$args" = x"armsd.cache" ]; then
+	rm -f /etc/config/armsd.cache
+	flatfsd -s 2> /dev/null
+	echo "succeeded clear $args" > $out
+else
+	echo "failed to clear:$id: $args" > $out
+fi

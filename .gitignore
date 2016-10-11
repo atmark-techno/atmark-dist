@@ -1,0 +1,46 @@
+#
+# atmark-dist/.gitignore
+# NOTE! Don't add files that are generated in specific
+# subdirectories here. Add them in the ".gitignore" file
+# in that subdirectory instead.
+#
+
+#
+# Normal rules
+#
+*~
+*.[oad]
+
+#
+# Top-level generic files
+#
+.config
+.config.*
+.oldconfig
+autoconf.h
+config.arch
+config.in
+
+#
+# Directories
+#
+images
+release
+romfs
+
+#
+# Linux
+#
+linux-2.*
+linux-3.*
+
+#
+# Armadillo-WLAN
+#
+aerial
+awl13
+
+#
+# Java
+#
+ejdk

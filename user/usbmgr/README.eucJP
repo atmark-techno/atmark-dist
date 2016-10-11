@@ -1,0 +1,260 @@
+	USB Manager(usbmgr)	1.0.0
+
+			Shuu Yamaguchi <shuu@dotAster.com>
+
+usbmgrはUSBデバイスが接続、あるいは切断されたときにconfiguration情報に
+従って、以下のように機能します。
+	* 必要なLinuxカーネルモジュールのロード/アンロード
+	* USBデバイスをセットアップするためにファイルを実行
+
+[内容]
+-----------------------------
+1 必要なこと
+2 ファイル
+  2.1 バイナリ
+  2.2 設定
+3 設定方法
+  3.1 作成方法
+  3.2 インストール方法
+  3.3 実行方法
+  3.4 usbmgr.confの書き方
+  3.5 preload.confの書き方
+  3.6 スクリプトファイルの書き方
+-----------------------------
+
+1 必要なこと
+	* カーネルConfigurationのUSB supportで必要なこと
+		- USB support
+		- Preliminary USB device filesystem
+		- 必要なカーネルモジュール
+
+	* その他
+		- USB機器のconfiguration情報をusbmgr.confに追加する。	    
+
+	全て組み込みにするとusbmgrのする仕事がありません。
+	"Preliminary USB device filesystem"はモジュールにできませんので
+	カーネルに組み込んでください。
+
+2 ファイル
+2.1 バイナリ
+	* usbmgr
+		モジュールをロード/アンロードするデーモン
+		Usage: usbmgr [-Vdnph] [-D #n] [-c file] [-t time] 
+		-V: バージョンを出力
+		-d: デバッグ & デーモンにならないモード
+		-n: デーモンにならないモード
+		-p: pid ファイルを作らない
+		-h: Usageを出力
+		-b: ビープ音を出さない
+		-D: デバッグモード
+			#n: デバッグ番号
+		-c: configuration ファイルを指定する
+			file: configurationファイル
+		-t: ポーリング時間を指定する
+			time: マイクロ秒
+	* dump_usbdev
+		接続されているUSB機器に対するconfiguration情報のヒントを
+		出すコマンド
+		Usage: dump_usbdev [-Vvds] [file]
+			-V: バージョンを出力
+			-v: 冗長
+			-d: より詳しく出力
+			-s: 単純な出力
+			file: linux/usb.hのusb_device_descriptor構造体形式
+	* update_usbdb
+		usbmgrが使用するデータを更新するコマンド
+		Usage: update_usbdb [-dfhs]
+			-d: デバッグモード
+			-f: 強制的にデータを作成する
+			-h: usageを出力
+			-s: syslogdに出力
+	全てのファイルは/usr/sbin配下にインストールされます。
+
+2.2 Configuration
+	Configurationは2種類あり、1つはオリジナルデータ、もう1つはusbmgrに
+	実際に使われます。usbmgr(update_usbdb)はオリジナルデータファイル
+	(usbmgr.conf)からモジュール名だけが書かれた単純なデータファイルを
+	作成します。
+	* usbmgr.conf
+	   これはカーネルモジュールをロード/アンロードするための多くのデータ
+	   が入っているメインのConfigurationファイルです。
+	   データを書くには[3.4 usbmgr.confの書き方]を見てください。
+	* preload.conf
+	   usbmgrが起動する時にロードするモジュール名が入っています。
+	   データを書くには[3.5 preload.confの書き方]を見てください。
+	* host
+	   update_usbdbがusbmgr.confのhost行からつくり出すファイルで、
+	   中にはUSBホストコントローラーのモジュール名が入っています。
+	* nobeep
+	   usbmgrが起動する時に、このファイルがあるとビープ音を出しません。
+	* vendor[/vendor-ID[/product-ID]/module]
+	* class[/class-ID[/subclass-ID[/protocol-ID]]/module]
+	* vendor[/vendor-ID[/product-ID]/script]
+	* class[/class-ID[/subclass-ID[/protocol-ID]]/script]
+	   これらはupdate_usbdbがusbmgr.confを元に作成するファイルで、
+	   moduleファイルには必要なモジュール名が入っています。
+	   scriptファイルにはモジュールがロード/アンロードした後に
+	   実行するファイル名が入っています。
+	全てのファイルは/etc/usbmgr配下にあります。
+
+3 方法
+3.1 作成方法
+	1) ソースをメークする
+		$ configure --sbindir=/sbin --sysconfdir=/etc
+		$ make
+
+3.2 インストール方法
+	1) rootユーザになります。
+		$ su
+	2) インストールします。
+		# make install
+	3) X上でUSB mouseが必要な場合はpreload.confをインストールします。
+		# make use_mouse
+
+3.3 起動方法
+	どのdistribution上でも使用可能なRCスクリプトrcscriptを用意しています。
+	[Redhat系]
+		/etc/rc.d/init.dディレクトリがある場合は、make install時に
+		/etc/rc.d/init.d/usbmgrにコピーし、/etc/rc.d/rc5.d/S46usbmgr
+		からリンクを張ります。
+	[その他]
+		scripts/rcscriptを適当なディレクトリにコピーし、rcscriptを
+		呼び出すようにRCスクリプト(rc.local等)を変更してください。
+	ルートで"/etc/rc.d/init.d/usbmgr start"を実行するか、マシンを
+	再起動してください。
+
+3.4 usbmgr.confの書き方
+	* コメントは'#'から改行までです。
+	* 文字の区切りは1個以上の<space>,<tab>です。
+	* キーワードの後に引数を置きます。
+	* 2つ以上の引数は ","(カンマ)で繋ぎます。
+
+    <キーワード>
+	"host" <host-controller>
+		USBホストコントローラーをモジュールにした場合は、
+		"host"でホストコントローラーを指定します。
+		"usb-uhci","usb-ohci","uhci"から選ぶことができます。
+	"beep" <on|off>
+		"off","on"のどちらかを選ぶことができます。"off"を選んだ場合は
+		usbmgrはビープ音を出しません。
+
+	"vendor" <vendor-id>
+		<vendor-id>はUSB機器のベンダーIDを指定します。
+
+	"product" <product-id>
+		<product-id>はUSB機器のプロダクトIDを指定します。
+
+	"class" <class-id>
+		<class-id>はUSB機器のクラスIDを指定します。
+
+	"subclass" <subclass-id>
+		<subclass-id>はUSB機器のサブクラスIDを指定します。
+
+	"protocol" <protocol-id>
+		<protocol-id>はUSB機器のプロトコルIDを指定します。
+
+	"module" <module_name> [, <module_name> [...]]
+		<module_name>はカーネルモジュール名を指定します。
+		2つ以上のモジュールがある場合は、","(カンマ)の後に
+		<module_name>を追加します。
+		モジュール名が"none"の場合は、何もロードしません。
+		"module"はconfiguration上のの最後のキーワードとして
+		指定しなければなりません。
+
+	"script" <script_name>
+		<script_name> はスクリプト名を指定します。
+		<script_name>はモジュールがロード/アンロードされた後に
+		実行されます。
+		モジュールがロードされた場合、第一引数に"start"を
+		指定し実行されます。
+		モジュールがアンロードされた場合、第一引数に"stop"を
+		指定し実行されます。
+
+	例) Let's Note mini(CF-M32)の場合
+-------------------------------------------------------------
+host usb-uhci
+vendor 0x056a product 0x0010 module evdev , mousedev , wacom
+vendor 0x056e product 0x0004 module hid , mousedev
+class 9 module none
+-------------------------------------------------------------
+	1行目:チップセットがIntel PIIX4ですのでUSB contoller(UHCI)モジュール
+		usb-uhciを指定しています。
+	2行目:"WACOM"社の"ET-0405-UV1.1-1"
+		graphire(日本ではFAVO)のこと
+	3行目:"Cypress Sem."社の"Cypress USB Mouse"
+	4行目:クラス9(HUB)の場合はモジュールをロードしない。
+
+[dump_usbdevを使ったusbmgr.confの書き方]
+	usbmgr.confの作成をサポートするツールdump_usbdevを用意しています。
+	usbmgrを起動してから、dump_usbdevを実行してください。
+	何もつなげていない場合は以下のように出力するはずです。
+
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+-------------------------------------------------------------
+
+	class 9はUSB HUBのことです。何も指していない状態ではroot HUBだけが
+	USB機器として見えます。 この行の"<module_name>"を変更すれば
+	この機器(HUB)に関するconfigurationは完成します。
+	HUBの場合はusbcoreに含まれますので"none"に変更します。
+
+	次にUSB mouseをつなげてみます。その後、同様にdump_usbdevを実行します。
+	すると今度は以下のように出力されました。
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+vendor 0x56e product 0x4 module <module_name>
+-------------------------------------------------------------
+	2行目に新しい情報が出力されました。
+	これが今 つなげたUSB mouseの情報です。USB mouseでは"hid","mousedev"が
+	必要なので"<module>"を"hid , mousedev"に置き換えます。
+
+	以上の結果からusbmgr.confは以下のようになります。
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module none
+vendor 0x56e product 0x4 module hid , mousedev
+-------------------------------------------------------------
+
+	configuration情報を更新するために/etc/usbmgr/usbmgr.confに
+	追加してから、"update_usbdb"を実行してください。
+
+3.5 preload.confの書き方
+	一行に1つのモジュール名を書きます。その後、/etc/usbmgrディレクトリ
+	にコピーしてください。
+
+	例) これは私のpreload.confです。
+-------------------------------------------------------------
+hid
+mousedev
+-------------------------------------------------------------
+
+3.6 スクリプトファイルの書き方
+	スクリプトはconfiguration情報が一致したモジュールのロード/アンロードの
+	後に実行するファイルです。
+	実行権をつけて/etc/usbmgrディレクトリに置いてください。
+	スクリプトファイル中では以下の環境変数が利用できます。
+	"ACTION"
+		ACTION環境変数はモジュールをロード/アンロードを知るために利用できます。
+		"add": モジュールがロードされたことを示します。
+		"remove": モジュールがアンロードされたことを示します。
+	"DEVICE"
+		DEVICE環境変数はモジュールに対応する/procファイルを示します。
+	[注意]
+		インタプリタの指定を忘れないようにしてください。
+
+		例)
+-------------------------------------------------------------
+#!/bin/sh
+
+case $ACTION in
+add)
+	echo start > /tmp/log
+	chmod 666 $DEVICE
+	;;
+remove)
+	echo stop > /tmp/log
+	chmod 644 $DEVICE
+	;;
+esac
+-------------------------------------------------------------
+
+何かあればメール(shuu@dotAster.com)をください。

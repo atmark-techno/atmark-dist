@@ -1,0 +1,6 @@
+# Copyright 2006 Sourcefire, Inc. All Rights Reserved.
+# These rules are licensed under the GNU General Public License.
+# Please see the file LICENSE in this directory for more details. 
+# $Id: community-policy.rules,v 1.1 2006/06/29 12:21:29 akirk Exp $
+
+alert tcp $HOME_NET any -> $EXTERNAL_NET any (msg:"COMMUNITY POLICY Ajax Remote Desktop Connection"; flow:from_server,established; content:"<title>"; content:"AJAX Remote Desktop Viewer"; distance:0; reference:url,www.peterdamen.com/ajaxrd/; sid:100000688; rev:1;)

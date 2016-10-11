@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuremap [
+  <!ELEMENT configuremap (configure+)>
+  <!ELEMENT configure (#PCDATA)>
+  <!ATTLIST configure name CDATA #REQUIRED>
+  <!ATTLIST configure value CDATA #REQUIRED>
+]>
+<configuremap>
+  <configure name="NAME" value="ImageMagick" />
+  <configure name="LIB_VERSION" value="0x624" />
+  <configure name="LIB_VERSION_NUMBER" value="6,2,4,0" />
+  <configure name="RELEASE_DATE" value="08/10/05" />
+  <configure name="CONFIGURE" value="./configure --enable-maintainer-mode" />
+  <configure name="PREFIX" value="/usr/local" />
+  <configure name="EXEC-PREFIX" value="/usr/local" />
+  <configure name="VERSION" value="6.2.4" />
+  <configure name="CC" value="gcc" />
+  <configure name="CFLAGS" value="-g -O2 -Wall -pthread" />
+  <configure name="CPPFLAGS" value="-I/usr/local/include" />
+  <configure name="PCFLAGS" value="" />
+  <configure name="DEFS" value="-DHAVE_CONFIG_H" />
+  <configure name="LDFLAGS" value="-L/usr/local/lib -L/usr/X11R6/lib64 -L/lib/graphviz -L/usr/lib64 -Wl,--rpath -Wl,/usr/lib64 -lfreetype -lz -L/usr/lib" />
+  <configure name="LIBS" value="-lMagick -ltiff -lfreetype -ljpeg -lpng -ldpstk -ldps -lXext -lXt -lSM -lICE -lX11 -lbz2 -lxml2 -lz -lpthread -lm -lpthread" />
+  <configure name="CXX" value="g++" />
+  <configure name="CXXFLAGS" value="-pthread" />
+  <configure name="DISTCHECK_CONFIG_FLAGS" value="--enable-maintainer-mode" />
+  <configure name="CVS_BRANCH_TAG" value="HEAD" />
+  <configure name="HOST" value="x86_64-unknown-linux-gnu" />
+  <configure name="COPYRIGHT" value="Copyright (C) 1999-2005 ImageMagick Studio LLC" />
+  <configure name="WEBSITE" value="http://www.imagemagick.org" />
+  <configure name="QuantumDepth" value="16" />
+</configuremap>

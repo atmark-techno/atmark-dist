@@ -1,0 +1,3 @@
+# This causes the init script to try i82365 if no other bridge module is
+# loaded, which is a reasonably good fallback for ISA systems.
+PCIC=i82365

@@ -1,0 +1,16 @@
+*.pc
+*.so
+*.so.*
+
+udev_version.h
+test-udev
+udevcontrol
+udevd
+udevinfo
+udevmonitor
+udevsettle
+udevstart
+udevtest
+udevtrigger
+extras/volume_id/vol_id
+!etc/udev/rules.d

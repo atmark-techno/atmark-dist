@@ -1,0 +1,12 @@
+require "bundler/gem_tasks"
+require 'rake/extensiontask'
+require 'rake/testtask'
+
+Rake::ExtensionTask.new('scrub') do |ext|
+  ext.name = 'scrub'
+  ext.ext_dir = 'ext/string'
+  ext.lib_dir = 'lib/string'
+  ext.cross_compile = true
+  ext.cross_platform = ENV['CROSS_PLATFORM']
+end
+Rake::TestTask.new {|t| t.libs << 'test' }

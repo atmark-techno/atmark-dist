@@ -1,0 +1,51 @@
+#!/bin/sh
+
+GPIO_3_7V_SYSFS="/sys/class/gpio/3_7V_CE"
+GPIO_3_7V_VALUE="${GPIO_3_7V_SYSFS}/value"
+GPIO_3_7V_DIRECTION="${GPIO_3_7V_SYSFS}/direction"
+
+usage () {
+	echo "usage: $0 {on|off}"
+	echo "This script can be used on baseboard Rev.D and linux-3.14-at8 or later."
+	exit 1
+}
+
+show_3g_power () {
+	if [ `cat ${GPIO_3_7V_VALUE}` -eq 0 ]; then
+		echo "off"
+	else
+		echo "on"
+	fi
+}
+
+store_3g_power () {
+	case ${1} in
+	on)
+		echo "in" > ${GPIO_3_7V_DIRECTION}
+		sleep 1
+		break;;
+	off)
+		echo "low" > ${GPIO_3_7V_DIRECTION}
+		sleep 1
+		break;;
+	*)
+		usage
+	esac
+}
+
+if [ ! -e ${GPIO_3_7V_SYSFS} ]; then
+	echo "${GPIO_3_7V_SYSFS} not found."
+	echo "This script can be used on linux-3.14-at8 or later."
+	exit 1
+fi
+
+case $# in
+0)
+	show_3g_power
+	break;;
+1)
+	store_3g_power ${1}
+	break;;
+*)
+	usage
+esac

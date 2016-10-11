@@ -1,0 +1,13 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Setting up interface lo: "
+ifconfig lo up 127.0.0.1
+check_status
+
+echo -n "Configuring network interfaces: "
+discoverd &
+check_status

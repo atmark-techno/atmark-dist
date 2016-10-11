@@ -1,0 +1,37 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 02-example-cryptdir.dpatch by Mike Markley <mike@markley.org>
+##
+## DP: Checks for /usr/bin/crypt in cryptdir example (Closes: #67197).
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/example/cryptdir expect-5.43.0/example/cryptdir
+--- expect-5.43.0.orig/example/cryptdir	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/cryptdir	2006-07-10 14:39:35.000000000 +0000
+@@ -8,6 +8,11 @@
+ #
+ # Encrypt or decrypts the current directory or named directory if given.
+ 
++if {![file exists /usr/bin/crypt]} {
++    puts "This example requires the mcrypt package."
++    exit
++}
++
+ if {[llength $argv] > 0} {
+     cd $argv
+ }
+diff -Naur expect-5.43.0.orig/example/decryptdir expect-5.43.0/example/decryptdir
+--- expect-5.43.0.orig/example/decryptdir	2002-02-12 02:00:57.000000000 +0000
++++ expect-5.43.0/example/decryptdir	2006-07-10 14:40:08.000000000 +0000
+@@ -8,6 +8,11 @@
+ #
+ # Encrypt or decrypts the current directory or named directory if given.
+ 
++if {![file exists /usr/bin/crypt]} {
++    puts "This example requires the mcrypt package."
++    exit
++}
++
+ if {[llength $argv] > 0} {
+     cd $argv
+ }

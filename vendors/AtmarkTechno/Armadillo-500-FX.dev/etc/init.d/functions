@@ -1,0 +1,14 @@
+check_status()
+{
+  local status=$?
+  /bin/echo -en "\\033[65G"
+  if [ $status = 0 ]
+  then
+    /bin/echo -en "\\033[1;32m"
+    /bin/echo -n "done"
+  else
+    /bin/echo -en "\\033[1;31m"
+    /bin/echo -n "failed"
+  fi
+  /bin/echo -e "\\033[0;39m"
+}

@@ -1,0 +1,4 @@
+.EXPORT_ALL_VARIABLES:
+CROSS_COMPILE = arm-linux-gnueabi-
+
+include $(ROOTDIR)/vendors/config/arm/config.arch

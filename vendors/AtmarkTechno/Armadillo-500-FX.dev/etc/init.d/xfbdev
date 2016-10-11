@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting Xfbdev: "
+keypad_event=
+touch_event=
+if [ `cat /sys/class/input/event0/device/name` = "mxckpd" ] ; then
+	keypad_event=0
+	touch_event=1
+else
+	keypad_event=1
+	touch_event=0
+fi
+
+/usr/bin/Xfbdev -mouse tslib,,device=/dev/input/event${touch_event} \
+	-keybd evdev,,device=/dev/input/event${keypad_event} >/dev/null 2>&1 &
+check_status
+

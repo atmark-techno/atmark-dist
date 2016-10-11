@@ -1,0 +1,45 @@
+.EXPORT_ALL_VARIABLES:
+############################################################################
+#
+# Vendor specific settings
+#
+
+CONSOLE_BAUD_RATE = 9600
+
+############################################################################
+
+# CPUFLAGS :=
+# VENDOR_CFLAGS :=
+# DISABLE_XIP := 1
+# DISABLE_MOVE_RODATA := 1       # until we get a toolchain release
+# LOPT := -O2                  # library is alway 02
+# UOPT := -Os                  # user apps are always Os
+
+# PLATFORM_DIR = /usr/arm-linux/
+
+# STRIP_EXTRA_OPT := --remove-section=.note --remove-section=.comment
+# STRIP_EXTRA_LIBOPT := --remove-section=.note --remove-section=.comment --strip-unneeded
+
+############################################################################
+
+CROSSDEVS = default armel armhf
+
+############################################################################
+
+cc-option = $(shell if $(CC) $(CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
+                    > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
+
+CROSS_CFLAGS += $(call cc-option,-march=armv7-a)
+CROSS_CFLAGS += $(call cc-option,-mtune=cortex-a9)
+
+ifeq ($(CONFIG_CROSSDEV),default)
+include $(ROOTDIR)/vendors/config/armhf/config.arch
+else
+include $(ROOTDIR)/vendors/config/$(CONFIG_CROSSDEV)/config.arch
+endif
+
+############################################################################
+
+LIBINST_SUBDIRS = vfp/neon neon/vfp vfp
+
+############################################################################

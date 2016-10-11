@@ -1,0 +1,15 @@
+.build
+.made
+bash
+bashbug
+builtins/builtext.h
+builtins/builtins.c
+builtins/mkbuiltins
+builtins/pipesize.h
+builtins/psize.aux
+lsignames.h
+mksignames
+mksyntax
+signames.h
+syntax.c
+version.h

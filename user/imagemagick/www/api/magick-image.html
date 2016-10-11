@@ -1,0 +1,5124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../../www/magick.css");
+  //--></style>
+  <title>ImageMagick: MagickWand, C API for ImageMagick: Magick Wand Image Methods</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="magickwc, api, for, imagemagick:, magick, wimage, methods, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../../index.html"><img id="titlebar-west" src="../../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="39217599"><img id="titlebar-west" src="../../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img src="../../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img id="titlebar-east" src="../../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../../index.html">About ImageMagick</a>
+      <a href="../../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/install-source.html">Install from Source</a>
+      <a href="../../www/binary-releases.html">Binary Releases</a>
+      <a href="../../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../../www/sponsors.html">Sponsors</a>
+  <a href="http://www.georeviews.com" class="sponsor" target="sponsor">Consumer Reviews<br />and Ratings</a><!-- 20050515 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[ <a href="#GetImageFromMagickWand">GetImageFromMagickWand</a> | <a href="#MagickAdaptiveThresholdImage">MagickAdaptiveThresholdImage</a> | <a href="#MagickAddImage">MagickAddImage</a> | <a href="#MagickAddNoiseImage">MagickAddNoiseImage</a> | <a href="#MagickAffineTransformImage">MagickAffineTransformImage</a> | <a href="#MagickAnnotateImage">MagickAnnotateImage</a> | <a href="#MagickAnimateImages">MagickAnimateImages</a> | <a href="#MagickAppendImages">MagickAppendImages</a> | <a href="#MagickAverageImages">MagickAverageImages</a> | <a href="#MagickBlackThresholdImage">MagickBlackThresholdImage</a> | <a href="#MagickBlurImage">MagickBlurImage</a> | <a href="#MagickBlurImageChannel">MagickBlurImageChannel</a> | <a href="#MagickBorderImage">MagickBorderImage</a> | <a href="#MagickCharcoalImage">MagickCharcoalImage</a> | <a href="#MagickChopImage">MagickChopImage</a> | <a href="#MagickClipImage">MagickClipImage</a> | <a href="#MagickClipPathImage">MagickClipPathImage</a> | <a href="#MagickCoalesceImages">MagickCoalesceImages</a> | <a href="#MagickColorFloodfillImage">MagickColorFloodfillImage</a> | <a href="#MagickColorizeImage">MagickColorizeImage</a> | <a href="#MagickCombineImages">MagickCombineImages</a> | <a href="#MagickCommentImage">MagickCommentImage</a> | <a href="#MagickCompareImageChannels">MagickCompareImageChannels</a> | <a href="#MagickCompareImage">MagickCompareImage</a> | <a href="#MagickCompositeImage">MagickCompositeImage</a> | <a href="#MagickEvaluateImage">MagickEvaluateImage</a> | <a href="#MagickContrastImage">MagickContrastImage</a> | <a href="#MagickConvolveImage">MagickConvolveImage</a> | <a href="#MagickConvolveImageChannel">MagickConvolveImageChannel</a> | <a href="#MagickCropImage">MagickCropImage</a> | <a href="#MagickCycleColormapImage">MagickCycleColormapImage</a> | <a href="#MagickConstituteImage">MagickConstituteImage</a> | <a href="#MagickDeconstructImages">MagickDeconstructImages</a> | <a href="#MagickDespeckleImage">MagickDespeckleImage</a> | <a href="#MagickDisplayImage">MagickDisplayImage</a> | <a href="#MagickDisplayImages">MagickDisplayImages</a> | <a href="#MagickDrawImage">MagickDrawImage</a> | <a href="#MagickEdgeImage">MagickEdgeImage</a> | <a href="#MagickEmbossImage">MagickEmbossImage</a> | <a href="#MagickEnhanceImage">MagickEnhanceImage</a> | <a href="#MagickEqualizeImage">MagickEqualizeImage</a> | <a href="#MagickEvaluateImage">MagickEvaluateImage</a> | <a href="#MagickFlattenImages">MagickFlattenImages</a> | <a href="#MagickFlipImage">MagickFlipImage</a> | <a href="#MagickFlopImage">MagickFlopImage</a> | <a href="#MagickFrameImage">MagickFrameImage</a> | <a href="#MagickFxImage">MagickFxImage</a> | <a href="#MagickFxImageChannel">MagickFxImageChannel</a> | <a href="#MagickGammaImage">MagickGammaImage</a> | <a href="#MagickGammaImageChannel">MagickGammaImageChannel</a> | <a href="#MagickGaussianBlurImage">MagickGaussianBlurImage</a> | <a href="#MagickGaussianBlurImageChannel">MagickGaussianBlurImageChannel</a> | <a href="#MagickGetImage">MagickGetImage</a> | <a href="#MagickGetImageRegion">MagickGetImageRegion</a> | <a href="#MagickGetImageBackgroundColor">MagickGetImageBackgroundColor</a> | <a href="#MagickGetImageBlob">MagickGetImageBlob</a> | <a href="#MagickGetImageBlob">MagickGetImageBlob</a> | <a href="#MagickGetImageBluePrimary">MagickGetImageBluePrimary</a> | <a href="#MagickGetImageBorderColor">MagickGetImageBorderColor</a> | <a href="#MagickGetImageChannelDepth">MagickGetImageChannelDepth</a> | <a href="#MagickGetImageChannelDistortion">MagickGetImageChannelDistortion</a> | <a href="#MagickGetImageChannelExtrema">MagickGetImageChannelExtrema</a> | <a href="#MagickGetImageChannelMean">MagickGetImageChannelMean</a> | <a href="#MagickGetImageChannelStatistics">MagickGetImageChannelStatistics</a> | <a href="#MagickGetImageColormapColor">MagickGetImageColormapColor</a> | <a href="#MagickGetImageColors">MagickGetImageColors</a> | <a href="#MagickGetImageColorspace">MagickGetImageColorspace</a> | <a href="#MagickGetImageCompose">MagickGetImageCompose</a> | <a href="#MagickGetImageCompression">MagickGetImageCompression</a> | <a href="#MagickGetImageCompression">MagickGetImageCompression</a> | <a href="#MagickGetImageDelay">MagickGetImageDelay</a> | <a href="#MagickGetImageDepth">MagickGetImageDepth</a> | <a href="#MagickGetImageDistortion">MagickGetImageDistortion</a> | <a href="#MagickGetImageExtrema">MagickGetImageExtrema</a> | <a href="#MagickGetImageDispose">MagickGetImageDispose</a> | <a href="#MagickGetImageAttribute">MagickGetImageAttribute</a> | <a href="#MagickGetImageFilename">MagickGetImageFilename</a> | <a href="#MagickGetImageFormat">MagickGetImageFormat</a> | <a href="#MagickGetImageGamma">MagickGetImageGamma</a> | <a href="#MagickGetImageGreenPrimary">MagickGetImageGreenPrimary</a> | <a href="#MagickGetImageHeight">MagickGetImageHeight</a> | <a href="#MagickGetImageHistogram">MagickGetImageHistogram</a> | <a href="#MagickGetImageIndex">MagickGetImageIndex</a> | <a href="#MagickGetImageInterlaceScheme">MagickGetImageInterlaceScheme</a> | <a href="#MagickGetImageIterations">MagickGetImageIterations</a> | <a href="#MagickGetImageMatteColor">MagickGetImageMatteColor</a> | <a href="#MagickGetImagePage">MagickGetImagePage</a> | <a href="#MagickGetImagePixelColor">MagickGetImagePixelColor</a> | <a href="#MagickGetImagePixels">MagickGetImagePixels</a> | <a href="#MagickGetImageProfile">MagickGetImageProfile</a> | <a href="#MagickGetImageRedPrimary">MagickGetImageRedPrimary</a> | <a href="#MagickGetImageRenderingIntent">MagickGetImageRenderingIntent</a> | <a href="#MagickGetImageResolution">MagickGetImageResolution</a> | <a href="#MagickGetImageScene">MagickGetImageScene</a> | <a href="#MagickGetImageSignature">MagickGetImageSignature</a> | <a href="#MagickGetImageSize">MagickGetImageSize</a> | <a href="#MagickGetImageTicksPerSecond">MagickGetImageTicksPerSecond</a> | <a href="#MagickGetImageType">MagickGetImageType</a> | <a href="#MagickGetImageUnits">MagickGetImageUnits</a> | <a href="#MagickGetImageVirtualPixelMethod">MagickGetImageVirtualPixelMethod</a> | <a href="#MagickGetImageWhitePoint">MagickGetImageWhitePoint</a> | <a href="#MagickGetImageWidth">MagickGetImageWidth</a> | <a href="#MagickGetNumberImages">MagickGetNumberImages</a> | <a href="#MagickGetImageTotalInkDensity">MagickGetImageTotalInkDensity</a> | <a href="#MagickHasNextImage">MagickHasNextImage</a> | <a href="#MagickHasPreviousImage">MagickHasPreviousImage</a> | <a href="#MagickIdentifyImage">MagickIdentifyImage</a> | <a href="#MagickImplodeImage">MagickImplodeImage</a> | <a href="#MagickLabelImage">MagickLabelImage</a> | <a href="#MagickLevelImage">MagickLevelImage</a> | <a href="#MagickLevelImageChannel">MagickLevelImageChannel</a> | <a href="#MagickMagnifyImage">MagickMagnifyImage</a> | <a href="#MagickMapImage">MagickMapImage</a> | <a href="#MagickMatteFloodfillImage">MagickMatteFloodfillImage</a> | <a href="#MagickMedianFilterImage">MagickMedianFilterImage</a> | <a href="#MagickMinifyImage">MagickMinifyImage</a> | <a href="#MagickModulateImage">MagickModulateImage</a> | <a href="#MagickMontageImage">MagickMontageImage</a> | <a href="#MagickMorphImages">MagickMorphImages</a> | <a href="#MagickMosaicImages">MagickMosaicImages</a> | <a href="#MagickMotionBlurImage">MagickMotionBlurImage</a> | <a href="#MagickNegateImage">MagickNegateImage</a> | <a href="#MagickNegateImage">MagickNegateImage</a> | <a href="#MagickNewImage">MagickNewImage</a> | <a href="#MagickNextImage">MagickNextImage</a> | <a href="#MagickNormalizeImage">MagickNormalizeImage</a> | <a href="#MagickOilPaintImage">MagickOilPaintImage</a> | <a href="#MagickPaintOpaqueImage">MagickPaintOpaqueImage</a> | <a href="#MagickPaintTransparentImage">MagickPaintTransparentImage</a> | <a href="#MagickPingImage">MagickPingImage</a> | <a href="#MagickPosterizeImage">MagickPosterizeImage</a> | <a href="#MagickPreviewImages">MagickPreviewImages</a> | <a href="#MagickPreviousImage">MagickPreviousImage</a> | <a href="#MagickProfileImage">MagickProfileImage</a> | <a href="#MagickQuantizeImage">MagickQuantizeImage</a> | <a href="#MagickQuantizeImages">MagickQuantizeImages</a> | <a href="#MagickRadialBlurImage">MagickRadialBlurImage</a> | <a href="#MagickRadialBlurImageChannel">MagickRadialBlurImageChannel</a> | <a href="#MagickRaiseImage">MagickRaiseImage</a> | <a href="#MagickReadImage">MagickReadImage</a> | <a href="#MagickReadImageBlob">MagickReadImageBlob</a> | <a href="#MagickReadImageFile">MagickReadImageFile</a> | <a href="#MagickReduceNoiseImage">MagickReduceNoiseImage</a> | <a href="#MagickRemoveImage">MagickRemoveImage</a> | <a href="#MagickRemoveImageProfile">MagickRemoveImageProfile</a> | <a href="#MagickResampleImage">MagickResampleImage</a> | <a href="#MagickResizeImage">MagickResizeImage</a> | <a href="#MagickRollImage">MagickRollImage</a> | <a href="#MagickRotateImage">MagickRotateImage</a> | <a href="#MagickSampleImage">MagickSampleImage</a> | <a href="#MagickScaleImage">MagickScaleImage</a> | <a href="#MagickChannelImage">MagickChannelImage</a> | <a href="#MagickSolarizeImage">MagickSolarizeImage</a> | <a href="#MagickSetImage">MagickSetImage</a> | <a href="#MagickSetImageAttribute">MagickSetImageAttribute</a> | <a href="#MagickSetImageBackgroundColor">MagickSetImageBackgroundColor</a> | <a href="#MagickSetImageBias">MagickSetImageBias</a> | <a href="#MagickSetImageBluePrimary">MagickSetImageBluePrimary</a> | <a href="#MagickSetImageBorderColor">MagickSetImageBorderColor</a> | <a href="#MagickSetImageChannelDepth">MagickSetImageChannelDepth</a> | <a href="#MagickSetImageColormapColor">MagickSetImageColormapColor</a> | <a href="#MagickSetImageColorspace">MagickSetImageColorspace</a> | <a href="#MagickSetImageCompose">MagickSetImageCompose</a> | <a href="#MagickSetImageCompression">MagickSetImageCompression</a> | <a href="#MagickSetImageCompressionQuality">MagickSetImageCompressionQuality</a> | <a href="#MagickSetImageDelay">MagickSetImageDelay</a> | <a href="#MagickSetImageDepth">MagickSetImageDepth</a> | <a href="#MagickSetImageDispose">MagickSetImageDispose</a> | <a href="#MagickSetImageExtent">MagickSetImageExtent</a> | <a href="#MagickSetImageFilename">MagickSetImageFilename</a> | <a href="#MagickSetImageFormat">MagickSetImageFormat</a> | <a href="#MagickSetImageGamma">MagickSetImageGamma</a> | <a href="#MagickSetImageGreenPrimary">MagickSetImageGreenPrimary</a> | <a href="#MagickSetImageIndex">MagickSetImageIndex</a> | <a href="#MagickSetImageInterlaceScheme">MagickSetImageInterlaceScheme</a> | <a href="#MagickSetImageIterations">MagickSetImageIterations</a> | <a href="#MagickSetImageMatteColor">MagickSetImageMatteColor</a> | <a href="#MagickSetImagePage">MagickSetImagePage</a> | <a href="#MagickSetImagePixels">MagickSetImagePixels</a> | <a href="#MagickSetImageProfile">MagickSetImageProfile</a> | <a href="#MagickSetImageProgressMonitor">MagickSetImageProgressMonitor</a> | <a href="#MagickSetImageRedPrimary">MagickSetImageRedPrimary</a> | <a href="#MagickSetImageRenderingIntent">MagickSetImageRenderingIntent</a> | <a href="#MagickSetImageResolution">MagickSetImageResolution</a> | <a href="#MagickSetImageScene">MagickSetImageScene</a> | <a href="#MagickSetImageTicksPerSecond">MagickSetImageTicksPerSecond</a> | <a href="#MagickSetImageType">MagickSetImageType</a> | <a href="#MagickSetImageUnits">MagickSetImageUnits</a> | <a href="#MagickSetImageVirtualPixelMethod">MagickSetImageVirtualPixelMethod</a> | <a href="#MagickSetImageWhitePoint">MagickSetImageWhitePoint</a> | <a href="#MagickShadowImage">MagickShadowImage</a> | <a href="#MagickSharpenImage">MagickSharpenImage</a> | <a href="#MagickSharpenImageChannel">MagickSharpenImageChannel</a> | <a href="#MagickShaveImage">MagickShaveImage</a> | <a href="#MagickShearImage">MagickShearImage</a> | <a href="#MagickSigmoidalContrastImage">MagickSigmoidalContrastImage</a> | <a href="#MagickSigmoidalContrastImageChannel">MagickSigmoidalContrastImageChannel</a> | <a href="#MagickSolarizeImage">MagickSolarizeImage</a> | <a href="#MagickSpliceImage">MagickSpliceImage</a> | <a href="#MagickSpreadImage">MagickSpreadImage</a> | <a href="#MagickSteganoImage">MagickSteganoImage</a> | <a href="#MagickStereoImage">MagickStereoImage</a> | <a href="#MagickStripImage">MagickStripImage</a> | <a href="#MagickSwirlImage">MagickSwirlImage</a> | <a href="#MagickTextureImage">MagickTextureImage</a> | <a href="#MagickThresholdImage">MagickThresholdImage</a> | <a href="#MagickThresholdImageChannel">MagickThresholdImageChannel</a> | <a href="#MagickThumbnailImage">MagickThumbnailImage</a> | <a href="#MagickTintImage">MagickTintImage</a> | <a href="#MagickTransformImage">MagickTransformImage</a> | <a href="#MagickTrimImage">MagickTrimImage</a> | <a href="#MagickUnsharpMaskImage">MagickUnsharpMaskImage</a> | <a href="#MagickUnsharpMaskImageChannel">MagickUnsharpMaskImageChannel</a> | <a href="#MagickWaveImage">MagickWaveImage</a> | <a href="#MagickWhiteThresholdImage">MagickWhiteThresholdImage</a> | <a href="#MagickWriteImage">MagickWriteImage</a> | <a href="#MagickWriteImageFile">MagickWriteImageFile</a> | <a href="#MagickWriteImages">MagickWriteImages</a> | <a href="#MagickWriteImagesFile">MagickWriteImagesFile</a> ]</p>
+
+<div style="margin: auto;">
+  <h2><a name="GetImageFromMagickWand">GetImageFromMagickWand</a></h2>
+</div>
+
+<p>GetImageFromMagickWand() returns the current image from the magick wand.</p>
+
+<p>The format of the GetImageFromMagickWand method is:</p>
+
+<pre class="code">
+  Image *GetImageFromMagickWand(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickAdaptiveThresholdImage">MagickAdaptiveThresholdImage</a></h2>
+</div>
+
+<p>MagickAdaptiveThresholdImage() selects an individual threshold for each pixel based on the range of intensity values in its local neighborhood.  This allows for thresholding of an image whose global intensity histogram doesn't contain distinctive peaks.</p>
+
+<p>The format of the AdaptiveThresholdImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickAdaptiveThresholdImage(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long offset)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The width of the local neighborhood.</p>
+
+<h4>height</h4>
+<p>The height of the local neighborhood.</p>
+
+<h4>offset</h4>
+<p>The mean offset.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickAddImage">MagickAddImage</a></h2>
+</div>
+
+<p>MagickAddImage() adds the specified images at the current image location.</p>
+
+<p>The format of the MagickAddImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickAddImage(MagickWand *wand,
+    const MagickWand *add_wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>insert</h4>
+<p>The splice wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickAddNoiseImage">MagickAddNoiseImage</a></h2>
+</div>
+
+<p>MagickAddNoiseImage() adds random noise to the image.</p>
+
+<p>The format of the MagickAddNoiseImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickAddNoiseImage(MagickWand *wand,
+    const NoiseType noise_type)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>noise_type</h4>
+<p>The type of noise: Uniform, Gaussian, Multiplicative, Impulse, Laplacian, or Poisson.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickAffineTransformImage">MagickAffineTransformImage</a></h2>
+</div>
+
+<p>MagickAffineTransformImage() transforms an image as dictated by the affine matrix of the drawing wand.</p>
+
+<p>The format of the MagickAffineTransformImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickAffineTransformImage(MagickWand *wand,
+    const DrawingWand *drawing_wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>drawing_wand</h4>
+<p>The draw wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickAnnotateImage">MagickAnnotateImage</a></h2>
+</div>
+
+<p>MagickAnnotateImage() annotates an image with text.</p>
+
+<p>The format of the MagickAnnotateImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickAnnotateImage(MagickWand *wand,
+    const DrawingWand *drawing_wand,const double x,const double y,
+    const double angle,const char *text)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>drawing_wand</h4>
+<p>The draw wand.</p>
+
+<h4>x</h4>
+<p>x ordinate to left of text</p>
+
+<h4>y</h4>
+<p>y ordinate to text baseline</p>
+
+<h4>angle</h4>
+<p>rotate text relative to this angle.</p>
+
+<h4>text</h4>
+<p>text to draw</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickAnimateImages">MagickAnimateImages</a></h2>
+</div>
+
+<p>MagickAnimateImages() animates an image or image sequence.</p>
+
+<p>The format of the MagickAnimateImages method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickAnimateImages(MagickWand *wand,
+    const char *server_name)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>server_name</h4>
+<p>The X server name.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickAppendImages">MagickAppendImages</a></h2>
+</div>
+
+<p>MagickAppendImages() append a set of images.</p>
+
+<p>The format of the MagickAppendImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickAppendImages(MagickWand *wand,
+    const MagickBooleanType stack)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>stack</h4>
+<p>By default, images are stacked left-to-right. Set stack to MagickTrue to stack them top-to-bottom.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickAverageImages">MagickAverageImages</a></h2>
+</div>
+
+<p>MagickAverageImages() average a set of images.</p>
+
+<p>The format of the MagickAverageImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickAverageImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickBlackThresholdImage">MagickBlackThresholdImage</a></h2>
+</div>
+
+<p>MagickBlackThresholdImage() is like MagickThresholdImage() but  forces all pixels below the threshold into black while leaving all pixels above the threshold unchanged.</p>
+
+<p>The format of the MagickBlackThresholdImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickBlackThresholdImage(MagickWand *wand,
+    const PixelWand *threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>threshold</h4>
+<p>The pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickBlurImage">MagickBlurImage</a></h2>
+</div>
+
+<p>MagickBlurImage() blurs an image.  We convolve the image with a gaussian operator of the given radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma.  Use a radius of 0 and BlurImage() selects a suitable radius for you.</p>
+
+<p>The format of the MagickBlurImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickBlurImage(MagickWand *wand,const double radius,
+    const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the , in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the , in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickBlurImageChannel">MagickBlurImageChannel</a></h2>
+</div>
+
+<p>MagickBlurImageChannel() blurs one or more image channels.  We convolve the image channel with a gaussian operator of the given radius and standard deviation (sigma).  For reasonable results, the radius should be larger than sigma.  Use a radius of 0 and GaussinBlurImageChannel() selects a suitable radius for you.</p>
+
+<p>The format of the MagickBlurImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickBlurImageChannel(MagickWand *wand,
+    const ChannelType channel,const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>radius</h4>
+<p>The radius of the , in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the , in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickBorderImage">MagickBorderImage</a></h2>
+</div>
+
+<p>MagickBorderImage() surrounds the image with a border of the color defined by the bordercolor pixel wand.</p>
+
+<p>The format of the MagickBorderImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickBorderImage(MagickWand *wand,
+    const PixelWand *bordercolor,const unsigned long width,
+    const unsigned long height)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>bordercolor</h4>
+<p>The border color pixel wand.</p>
+
+<h4>width</h4>
+<p>The border width.</p>
+
+<h4>height</h4>
+<p>The border height.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCharcoalImage">MagickCharcoalImage</a></h2>
+</div>
+
+<p>MagickCharcoalImage() simulates a charcoal drawing.</p>
+
+<p>The format of the MagickCharcoalImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickCharcoalImage(MagickWand *wand,
+    const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickChopImage">MagickChopImage</a></h2>
+</div>
+
+<p>MagickChopImage() removes a region of an image and collapses the image to occupy the removed portion</p>
+
+<p>The format of the MagickChopImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickChopImage(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long x,
+    const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The region width.</p>
+
+<h4>height</h4>
+<p>The region height.</p>
+
+<h4>x</h4>
+<p>The region x offset.</p>
+
+<h4>y</h4>
+<p>The region y offset.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickClipImage">MagickClipImage</a></h2>
+</div>
+
+<p>MagickClipImage() clips along the first path from the 8BIM profile, if present.</p>
+
+<p>The format of the MagickClipImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickClipImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickClipPathImage">MagickClipPathImage</a></h2>
+</div>
+
+<p>MagickClipPathImage() clips along the named paths from the 8BIM profile, if present. Later operations take effect inside the path.  Id may be a number if preceded with #, to work on a numbered path, e.g., "#1" to use the first path.</p>
+
+<p>The format of the MagickClipPathImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickClipPathImage(MagickWand *wand,
+    const char *pathname,const MagickBooleanType inside)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>pathname</h4>
+<p>name of clipping path resource. If name is preceded by #, use clipping path numbered by name.</p>
+
+<h4>inside</h4>
+<p>if non-zero, later operations take effect inside clipping path. Otherwise later operations take effect outside clipping path.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCoalesceImages">MagickCoalesceImages</a></h2>
+</div>
+
+<p>MagickCoalesceImages() composites a set of images while respecting any page offsets and disposal methods.  GIF, MIFF, and MNG animation sequences typically start with an image background and each subsequent image varies in size and offset.  MagickCoalesceImages() returns a new sequence where each image in the sequence is the same size as the first and composited with the next image in the sequence.</p>
+
+<p>The format of the MagickCoalesceImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickCoalesceImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickColorFloodfillImage">MagickColorFloodfillImage</a></h2>
+</div>
+
+<p>MagickColorFloodfillImage() changes the color value of any pixel that matches target and is an immediate neighbor.  If the method FillToBorderMethod is specified, the color value is changed for any neighbor pixel that does not match the bordercolor member of image.</p>
+
+<p>The format of the MagickColorFloodfillImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickColorFloodfillImage(MagickWand *wand,
+    const PixelWand *fill,const double fuzz,const PixelWand *bordercolor,
+    const long x,const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>fill</h4>
+<p>The floodfill color pixel wand.</p>
+
+<h4>fuzz</h4>
+<p>By default target must match a particular pixel color exactly.  However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same.  For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.</p>
+
+<h4>bordercolor</h4>
+<p>The border color pixel wand.</p>
+
+<h4>x,y</h4>
+<p>The starting location of the operation.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickColorizeImage">MagickColorizeImage</a></h2>
+</div>
+
+<p>MagickColorizeImage() blends the fill color with each pixel in the image.</p>
+
+<p>The format of the MagickColorizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickColorizeImage(MagickWand *wand,
+    const PixelWand *colorize,const PixelWand *opacity)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>colorize</h4>
+<p>The colorize pixel wand.</p>
+
+<h4>opacity</h4>
+<p>The opacity pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCombineImages">MagickCombineImages</a></h2>
+</div>
+
+<p>MagickCombineImages() combines one or more images into a single image.  The grayscale value of the pixels of each image in the sequence is assigned in order to the specified  hannels of the combined image.   The typical ordering would be image 1 => Red, 2 => Green, 3 => Blue, etc.</p>
+
+
+<p>The format of the MagickCombineImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickCombineImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCommentImage">MagickCommentImage</a></h2>
+</div>
+
+<p>MagickCommentImage() adds a comment to your image.</p>
+
+<p>The format of the MagickCommentImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickCommentImage(MagickWand *wand,
+    const char *comment)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>comment</h4>
+<p>The image comment.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCompareImageChannels">MagickCompareImageChannels</a></h2>
+</div>
+
+<p>MagickCompareImageChannels() compares one or more image channels of an image to a reconstructed image and returns the difference image.</p>
+
+<p>The format of the MagickCompareImageChannels method is:</p>
+
+<pre class="code">
+  MagickWand *MagickCompareImageChannels(MagickWand *wand,
+    const MagickWand *reference,const ChannelType channel,
+    const MetricType metric,double *distortion)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>reference</h4>
+<p>The reference wand.</p>
+
+<h4>channel</h4>
+<p>The channel.</p>
+
+<h4>metric</h4>
+<p>The metric.</p>
+
+<h4>distortion</h4>
+<p>The computed distortion between the images.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCompareImage">MagickCompareImage</a></h2>
+</div>
+
+<p>MagickCompareImage() compares an image to a reconstructed image and returns the specified difference image.</p>
+
+<p>The format of the MagickCompareImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickCompareImages(MagickWand *wand,
+    const MagickWand *reference,const MetricType metric,
+    double *distortion)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>reference</h4>
+<p>The reference wand.</p>
+
+<h4>metric</h4>
+<p>The metric.</p>
+
+<h4>distortion</h4>
+<p>The computed distortion between the images.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCompositeImage">MagickCompositeImage</a></h2>
+</div>
+
+<p>MagickCompositeImage() composite one image onto another at the specified offset.</p>
+
+<p>The format of the MagickCompositeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickCompositeImage(MagickWand *wand,
+    const MagickWand *composite_wand,const CompositeOperator compose,
+    const long x,const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>composite_image</h4>
+<p>The composite image.</p>
+
+<h4>compose</h4>
+<p>This operator affects how the composite is applied to the image.  The default is Over.  Choose from these operators:</p>
+
+<pre class="text">
+    OverCompositeOp       InCompositeOp         OutCompositeOP
+    AtopCompositeOP       XorCompositeOP        PlusCompositeOP
+    MinusCompositeOP      AddCompositeOP        SubtractCompositeOP
+    DifferenceCompositeOP BumpmapCompositeOP    CopyCompositeOP
+    DisplaceCompositeOP
+</pre>
+
+<h4>x</h4>
+<p>The column offset of the composited image.</p>
+
+<h4>y</h4>
+<p>The row offset of the composited image.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickEvaluateImage">MagickEvaluateImage</a></h2>
+</div>
+
+<p>MagickEvaluateImage() applies  an arithmetic, relational, or logical operator to an image. These operations can be used to lighten or darken an image, to increase or decrease contrast in an image, or to produce the "negative" of an image.</p>
+
+<p>The format of the MagickEvaluateImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickEvaluateImageChannel(MagickWand *wand,
+    const MagickEvaluateOperator op,const double constant)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>The channel.</p>
+
+<h4>op</h4>
+<p>A channel operator.</p>
+
+<h4>constant</h4>
+<p>A constant value.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickContrastImage">MagickContrastImage</a></h2>
+</div>
+
+<p>MagickContrastImage() enhances the intensity differences between the lighter and darker elements of the image.  Set sharpen to a value other than 0 to increase the image contrast otherwise the contrast is reduced.</p>
+
+<p>The format of the MagickContrastImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickContrastImage(MagickWand *wand,
+    const MagickBooleanType sharpen)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>sharpen</h4>
+<p>Increase or decrease image contrast.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickConvolveImage">MagickConvolveImage</a></h2>
+</div>
+
+<p>MagickConvolveImage() applies a custom convolution kernel to the image.</p>
+
+<p>The format of the MagickConvolveImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickConvolveImage(MagickWand *wand,
+    const unsigned long order,const double *kernel)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>order</h4>
+<p>The number of columns and rows in the filter kernel.</p>
+
+<h4>kernel</h4>
+<p>An array of doubles representing the convolution kernel.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickConvolveImageChannel">MagickConvolveImageChannel</a></h2>
+</div>
+
+<p>MagickConvolveImageChannel() applies a custom convolution kernel to one or more image channels.</p>
+
+<p>The format of the MagickConvolveImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickConvolveImageChannel(MagickWand *wand,
+    const ChannelType channel,const unsigned long order,
+    const double *kernel)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>The channel.</p>
+
+<h4>order</h4>
+<p>The number of columns and rows in the filter kernel.</p>
+
+<h4>kernel</h4>
+<p>An array of doubles representing the convolution kernel.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCropImage">MagickCropImage</a></h2>
+</div>
+
+<p>MagickCropImage() extracts a region of the image.</p>
+
+<p>The format of the MagickCropImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickCropImage(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long x,
+    const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The region width.</p>
+
+<h4>height</h4>
+<p>The region height.</p>
+
+<h4>x</h4>
+<p>The region x-offset.</p>
+
+<h4>y</h4>
+<p>The region y-offset.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickCycleColormapImage">MagickCycleColormapImage</a></h2>
+</div>
+
+<p>MagickCycleColormapImage() displaces an image's colormap by a given number of positions.  If you cycle the colormap a number of times you can produce a psychodelic effect.</p>
+
+<p>The format of the MagickCycleColormapImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickCycleColormapImage(MagickWand *wand,
+    const long displace)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>pixel_wand</h4>
+<p>The pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickConstituteImage">MagickConstituteImage</a></h2>
+</div>
+
+<p>MagickConstituteImage() adds an image to the wand comprised of the the pixel data you supply.  The pixel data must be in scanline order top-to-bottom. The data can be char, short int, int, float, or double.  Float and double require the pixels to be normalized [0..1], otherwise [0..Max],  where Max is the maximum value the type can accomodate (e.g. 255 for char).  For example, to create a 640x480 image from unsigned red-green-blue character data, use</p>
+
+<p>MagickConstituteImage(wand,640,640,"RGB",CharPixel,pixels);</p>
+
+<p>The format of the MagickConstituteImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickConstituteImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows,const char *map,
+    const StorageType storage,void *pixels)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>width in pixels of the image.</p>
+
+<h4>rows</h4>
+<p>height in pixels of the image.</p>
+
+<h4>map</h4>
+<p>This string reflects the expected ordering of the pixel array. It can be any combination or order of R = red, G = green, B = blue, A = alpha (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.</p>
+
+<h4>storage</h4>
+<p>Define the data type of the pixels.  Float and double types are expected to be normalized [0..1] otherwise [0..QuantumRange].  Choose from these types: CharPixel, DoublePixel, FloatPixel, IntegerPixel, LongPixel, QuantumPixel, or ShortPixel.</p>
+
+<h4>pixels</h4>
+<p>This array of values contain the pixel components as defined by map and type.  You must preallocate this array where the expected length varies depending on the values of width, height, map, and type.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickDeconstructImages">MagickDeconstructImages</a></h2>
+</div>
+
+<p>MagickDeconstructImages() compares each image with the next in a sequence and returns the maximum bounding region of any pixel differences it discovers.</p>
+
+<p>The format of the MagickDeconstructImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickDeconstructImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickDespeckleImage">MagickDespeckleImage</a></h2>
+</div>
+
+<p>MagickDespeckleImage() reduces the speckle noise in an image while perserving the edges of the original image.</p>
+
+<p>The format of the MagickDespeckleImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickDespeckleImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickDisplayImage">MagickDisplayImage</a></h2>
+</div>
+
+<p>MagickDisplayImage() displays an image.</p>
+
+<p>The format of the MagickDisplayImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickDisplayImage(MagickWand *wand,
+    const char *server_name)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>server_name</h4>
+<p>The X server name.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickDisplayImages">MagickDisplayImages</a></h2>
+</div>
+
+<p>MagickDisplayImages() displays an image or image sequence.</p>
+
+<p>The format of the MagickDisplayImages method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickDisplayImages(MagickWand *wand,
+    const char *server_name)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>server_name</h4>
+<p>The X server name.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickDrawImage">MagickDrawImage</a></h2>
+</div>
+
+<p>MagickDrawImage() renders the drawing wand on the current image.</p>
+
+<p>The format of the MagickDrawImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickDrawImage(MagickWand *wand,
+    const DrawingWand *drawing_wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>drawing_wand</h4>
+<p>The draw wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickEdgeImage">MagickEdgeImage</a></h2>
+</div>
+
+<p>MagickEdgeImage() enhance edges within the image with a convolution filter of the given radius.  Use a radius of 0 and Edge() selects a suitable radius for you.</p>
+
+<p>The format of the MagickEdgeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickEdgeImage(MagickWand *wand,const double radius)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>the radius of the pixel neighborhood.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickEmbossImage">MagickEmbossImage</a></h2>
+</div>
+
+<p>MagickEmbossImage() returns a grayscale image with a three-dimensional effect.  We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma).  For reasonable results, radius should be larger than sigma.  Use a radius of 0 and Emboss() selects a suitable radius for you.</p>
+
+<p>The format of the MagickEmbossImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickEmbossImage(MagickWand *wand,const double radius,
+    const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickEnhanceImage">MagickEnhanceImage</a></h2>
+</div>
+
+<p>MagickEnhanceImage() applies a digital filter that improves the quality of a noisy image.</p>
+
+<p>The format of the MagickEnhanceImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickEnhanceImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickEqualizeImage">MagickEqualizeImage</a></h2>
+</div>
+
+<p>MagickEqualizeImage() equalizes the image histogram.</p>
+
+<p>The format of the MagickEqualizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickEqualizeImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickEvaluateImage">MagickEvaluateImage</a></h2>
+</div>
+
+<p>MagickEvaluateImage() applys an arithmetic, relational, or logical expression to an image.  Use these operators to lighten or darken an image, to increase or decrease contrast in an image, or to produce the "negative" of an image.</p>
+
+<p>The format of the MagickEvaluateImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickEvaluateImage(MagickWand *wand,
+    const MagickEvaluateOperator op,const double constant)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>op</h4>
+<p>A channel operator.</p>
+
+<h4>constant</h4>
+<p>A constant value.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickFlattenImages">MagickFlattenImages</a></h2>
+</div>
+
+<p>MagickFlattenImages() merges a sequence of images.  This is useful for combining Photoshop layers into a single image.</p>
+
+<p>The format of the MagickFlattenImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickFlattenImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickFlipImage">MagickFlipImage</a></h2>
+</div>
+
+<p>MagickFlipImage() creates a vertical mirror image by reflecting the pixels around the central x-axis.</p>
+
+<p>The format of the MagickFlipImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickFlipImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickFlopImage">MagickFlopImage</a></h2>
+</div>
+
+<p>MagickFlopImage() creates a horizontal mirror image by reflecting the pixels around the central y-axis.</p>
+
+<p>The format of the MagickFlopImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickFlopImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickFrameImage">MagickFrameImage</a></h2>
+</div>
+
+<p>MagickFrameImage() adds a simulated three-dimensional border around the image.  The width and height specify the border width of the vertical and horizontal sides of the frame.  The inner and outer bevels indicate the width of the inner and outer shadows of the frame.</p>
+
+<p>The format of the MagickFrameImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickFrameImage(MagickWand *wand,
+    const PixelWand *matte_color,const unsigned long width,
+    const unsigned long height,const long inner_bevel,
+    const long outer_bevel)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>matte_color</h4>
+<p>The frame color pixel wand.</p>
+
+<h4>width</h4>
+<p>The border width.</p>
+
+<h4>height</h4>
+<p>The border height.</p>
+
+<h4>inner_bevel</h4>
+<p>The inner bevel width.</p>
+
+<h4>outer_bevel</h4>
+<p>The outer bevel width.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickFxImage">MagickFxImage</a></h2>
+</div>
+
+<p>MagickFxImage() evaluate expression for each pixel in the image.</p>
+
+<p>The format of the MagickFxImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickFxImage(MagickWand *wand,const char *expression)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>expression</h4>
+<p>The expression.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickFxImageChannel">MagickFxImageChannel</a></h2>
+</div>
+
+<p>MagickFxImageChannel() evaluate expression for each pixel in the specified channel.</p>
+
+<p>The format of the MagickFxImageChannel method is:</p>
+
+<pre class="code">
+  MagickWand *MagickFxImageChannel(MagickWand *wand,
+    const ChannelType channel,const char *expression)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to level: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>expression</h4>
+<p>The expression.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGammaImage">MagickGammaImage</a></h2>
+</div>
+
+<p>MagickGammaImage() gamma-corrects an image.  The same image viewed on different devices will have perceptual differences in the way the image's intensities are represented on the screen.  Specify individual gamma levels for the red, green, and blue channels, or adjust all three with the gamma parameter.  Values typically range from 0.8 to 2.3.</p>
+
+<p>You can also reduce the influence of a particular channel with a gamma value of 0.</p>
+
+<p>The format of the MagickGammaImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGammaImage(MagickWand *wand,const double gamma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>gamma</h4>
+<p>Define the level of gamma correction.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGammaImageChannel">MagickGammaImageChannel</a></h2>
+</div>
+
+<p>MagickGammaImageChannel() gamma-corrects a particular image channel. The same image viewed on different devices will have perceptual differences in the way the image's intensities are represented on the screen.  Specify individual gamma levels for the red, green, and blue channels, or adjust all three with the gamma parameter.  Values typically range from 0.8 to 2.3.</p>
+
+<p>You can also reduce the influence of a particular channel with a gamma value of 0.</p>
+
+<p>The format of the MagickGammaImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGammaImageChannel(MagickWand *wand,
+    const ChannelType channel,const double gamma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>The channel.</p>
+
+<h4>level</h4>
+<p>Define the level of gamma correction.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGaussianBlurImage">MagickGaussianBlurImage</a></h2>
+</div>
+
+<p>MagickGaussianBlurImage() blurs an image.  We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma.  Use a radius of 0 and MagickGaussianBlurImage() selects a suitable radius for you.</p>
+
+<p>The format of the MagickGaussianBlurImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGaussianBlurImage(MagickWand *wand,
+    const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGaussianBlurImageChannel">MagickGaussianBlurImageChannel</a></h2>
+</div>
+
+<p>MagickGaussianBlurImageChannel() blurs one or more image channels.  We convolve the image cnannel with a Gaussian operator of the given radius and standard deviation (sigma).  For reasonable results, the radius should be larger than sigma.  Use a radius of 0 and MagickGaussianBlurImageChannel() selects a suitable radius for you.</p>
+
+<p>The format of the MagickGaussianBlurImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGaussianBlurImageChannel(MagickWand *wand,
+    const ChannelType channel,const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImage">MagickGetImage</a></h2>
+</div>
+
+<p>MagickGetImage() gets the image at the current image index.</p>
+
+<p>The format of the MagickGetImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickGetImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageRegion">MagickGetImageRegion</a></h2>
+</div>
+
+<p>MagickGetImageRegion() extracts a region of the image and returns it as a a new wand.</p>
+
+<p>The format of the MagickGetImageRegion method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageRegion(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long x,
+    const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The region width.</p>
+
+<h4>height</h4>
+<p>The region height.</p>
+
+<h4>x</h4>
+<p>The region x offset.</p>
+
+<h4>y</h4>
+<p>The region y offset.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageBackgroundColor">MagickGetImageBackgroundColor</a></h2>
+</div>
+
+<p>MagickGetImageBackgroundColor() returns the image background color.</p>
+
+<p>The format of the MagickGetImageBackgroundColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageBackgroundColor(MagickWand *wand,
+    PixelWand *background_color)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>background_color</h4>
+<p>Return the background color.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageBlob">MagickGetImageBlob</a></h2>
+</div>
+
+<p>MagickGetImageBlob() implements direct to memory image formats.  It returns the image as a blob and its length.  The format of the image determines the format of the returned blob (GIF, JPEG,  PNG, etc.).  To return a different image format, use MagickSetImageFormat().</p>
+
+<p>Use MagickRelinquishMemory() to free the blob when you are done with it.</p>
+
+<p>The format of the MagickGetImageBlob method is:</p>
+
+<pre class="code">
+  unsigned char *MagickGetImageBlob(MagickWand *wand,size_t *length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>length</h4>
+<p>The length of the blob.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageBlob">MagickGetImageBlob</a></h2>
+</div>
+
+<p>MagickGetImageBlob() implements direct to memory image formats.  It returns the image sequence as a blob and its length.  The format of the image determines the format of the returned blob (GIF, JPEG,  PNG, etc.).  To return a different image format, use MagickSetImageFormat().</p>
+
+<p>Note, some image formats do not permit multiple images to the same image stream (e.g. JPEG).  in this instance, just the first image of the sequence is returned as a blob.</p>
+
+<p>The format of the MagickGetImagesBlob method is:</p>
+
+<pre class="code">
+  unsigned char *MagickGetImagesBlob(MagickWand *wand,size_t *length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>length</h4>
+<p>The length of the blob.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageBluePrimary">MagickGetImageBluePrimary</a></h2>
+</div>
+
+<p>MagickGetImageBluePrimary() returns the chromaticy blue primary point for the image.</p>
+
+<p>The format of the MagickGetImageBluePrimary method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageBluePrimary(MagickWand *wand,double *x,
+    double *y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The chromaticity blue primary x-point.</p>
+
+<h4>y</h4>
+<p>The chromaticity blue primary y-point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageBorderColor">MagickGetImageBorderColor</a></h2>
+</div>
+
+<p>MagickGetImageBorderColor() returns the image border color.</p>
+
+<p>The format of the MagickGetImageBorderColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageBorderColor(MagickWand *wand,
+    PixelWand *border_color)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>border_color</h4>
+<p>Return the border color.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageChannelDepth">MagickGetImageChannelDepth</a></h2>
+</div>
+
+<p>MagickGetImageChannelDepth() gets the depth for a particular image channel.</p>
+
+<p>The format of the MagickGetImageChannelDepth method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageChannelDepth(MagickWand *wand,
+    const ChannelType channel)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageChannelDistortion">MagickGetImageChannelDistortion</a></h2>
+</div>
+
+<p>MagickGetImageChannelDistortion() compares one or more image channels of an image to a reconstructed image and returns the specified distortion metric.</p>
+
+<p>The format of the MagickGetImageChannelDistortion method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageChannelDistortion(MagickWand *wand,
+    const MagickWand *reference,const ChannelType channel,
+    const MetricType metric,double *distortion)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>reference</h4>
+<p>The reference wand.</p>
+
+<h4>channel</h4>
+<p>The channel.</p>
+
+<h4>metric</h4>
+<p>The metric.</p>
+
+<h4>distortion</h4>
+<p>The computed distortion between the images.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageChannelExtrema">MagickGetImageChannelExtrema</a></h2>
+</div>
+
+<p>MagickGetImageChannelExtrema() gets the extrema for one or more image channels.</p>
+
+<p>The format of the MagickGetImageChannelExtrema method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageChannelExtrema(MagickWand *wand,
+    const ChannelType channel,unsigned long *minima,unsigned long *maxima)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>minima</h4>
+<p>The minimum pixel value for the specified channel(s).</p>
+
+<h4>maxima</h4>
+<p>The maximum pixel value for the specified channel(s).</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageChannelMean">MagickGetImageChannelMean</a></h2>
+</div>
+
+<p>MagickGetImageChannelMean() gets the mean and standard deviation of one or more image channels.</p>
+
+<p>The format of the MagickGetImageChannelMean method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageChannelMean(MagickWand *wand,
+    const ChannelType channel,double *mean,double *standard_deviation)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>mean</h4>
+<p>The mean pixel value for the specified channel(s).</p>
+
+<h4>standard_deviation</h4>
+<p>The standard deviation for the specified channel(s).</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageChannelStatistics">MagickGetImageChannelStatistics</a></h2>
+</div>
+
+<p>MagickGetImageChannelStatistics() returns statistics for each channel in the image.  The statistics incude the channel depth, its minima and maxima, the mean, and the standard deviation.  You can access the red channel mean, for example, like this:</p>
+
+<pre class="text">
+  channel_statistics=MagickGetImageChannelStatistics(image,excepton);
+  red_mean=channel_statistics[RedChannel].mean;
+</pre>
+
+<p>Use MagickRelinquishMemory() to free the statistics buffer.</p>
+
+<p>The format of the MagickGetImageChannelStatistics method is:</p>
+
+<pre class="code">
+  ChannelStatistics *MagickGetImageChannelStatistics(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageColormapColor">MagickGetImageColormapColor</a></h2>
+</div>
+
+<p>MagickGetImageColormapColor() returns the color of the specified colormap index.</p>
+
+<p>The format of the MagickGetImageColormapColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageColormapColor(MagickWand *wand,
+    const unsigned long index,PixelWand *color)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>index</h4>
+<p>The offset into the image colormap.</p>
+
+<h4>color</h4>
+<p>Return the colormap color in this wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageColors">MagickGetImageColors</a></h2>
+</div>
+
+<p>MagickGetImageColors() gets the number of unique colors in the image.</p>
+
+<p>The format of the MagickGetImageColors method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageColors(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageColorspace">MagickGetImageColorspace</a></h2>
+</div>
+
+<p>MagickGetImageColorspace() gets the image colorspace.</p>
+
+<p>The format of the MagickGetImageColorspace method is:</p>
+
+<pre class="code">
+  ColorspaceType MagickGetImageColorspace(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageCompose">MagickGetImageCompose</a></h2>
+</div>
+
+<p>MagickGetImageCompose() returns the composite operator associated with the image.</p>
+
+<p>The format of the MagickGetImageCompose method is:</p>
+
+<pre class="code">
+  CompositeOperator MagickGetImageCompose(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageCompression">MagickGetImageCompression</a></h2>
+</div>
+
+<p>MagickGetImageCompression() gets the image compression.</p>
+
+<p>The format of the MagickGetImageCompression method is:</p>
+
+<pre class="code">
+  CompressionType MagickGetImageCompression(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageCompression">MagickGetImageCompression</a></h2>
+</div>
+
+<p>MagickGetImageCompression() gets the image compression quality.</p>
+
+<p>The format of the MagickGetImageCompression method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageCompression(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageDelay">MagickGetImageDelay</a></h2>
+</div>
+
+<p>MagickGetImageDelay() gets the image delay.</p>
+
+<p>The format of the MagickGetImageDelay method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageDelay(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageDepth">MagickGetImageDepth</a></h2>
+</div>
+
+<p>MagickGetImageDepth() gets the image depth.</p>
+
+<p>The format of the MagickGetImageDepth method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageDepth(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageDistortion">MagickGetImageDistortion</a></h2>
+</div>
+
+<p>MagickGetImageDistortion() compares an image to a reconstructed image and returns the specified distortion metric.</p>
+
+<p>The format of the MagickGetImageDistortion method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageDistortion(MagickWand *wand,
+    const MagickWand *reference,const MetricType metric,
+    double *distortion)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>reference</h4>
+<p>The reference wand.</p>
+
+<h4>metric</h4>
+<p>The metric.</p>
+
+<h4>distortion</h4>
+<p>The computed distortion between the images.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageExtrema">MagickGetImageExtrema</a></h2>
+</div>
+
+<p>MagickGetImageExtrema() gets the extrema for the image.</p>
+
+<p>The format of the MagickGetImageExtrema method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageExtrema(MagickWand *wand,
+    unsigned long *min,unsigned long *max)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>min</h4>
+<p>The minimum pixel value for the specified channel(s).</p>
+
+<h4>max</h4>
+<p>The maximum pixel value for the specified channel(s).</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageDispose">MagickGetImageDispose</a></h2>
+</div>
+
+<p>MagickGetImageDispose() gets the image disposal method.</p>
+
+<p>The format of the MagickGetImageDispose method is:</p>
+
+<pre class="code">
+  DisposeType MagickGetImageDispose(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageAttribute">MagickGetImageAttribute</a></h2>
+</div>
+
+<p>MagickGetImageAttribute() returns a value associated with the specified key.  Use MagickRelinquishMemory() to free the value when you are finished with it.</p>
+
+<p>The format of the MagickGetImageAttribute method is:</p>
+
+<pre class="code">
+  char *MagickGetImageAttribute(MagickWand *wand,const char *key)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>key</h4>
+<p>The key.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageFilename">MagickGetImageFilename</a></h2>
+</div>
+
+<p>MagickGetImageFilename() returns the filename of a particular image in a sequence.</p>
+
+<p>The format of the MagickGetImageFilename method is:</p>
+
+<pre class="code">
+  char *MagickGetImageFilename(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageFormat">MagickGetImageFormat</a></h2>
+</div>
+
+<p>MagickGetImageFormat() returns the format of a particular image in a sequence.</p>
+
+<p>The format of the MagickGetImageFormat method is:</p>
+
+<pre class="code">
+  const char MagickGetImageFormat(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageGamma">MagickGetImageGamma</a></h2>
+</div>
+
+<p>MagickGetImageGamma() gets the image gamma.</p>
+
+<p>The format of the MagickGetImageGamma method is:</p>
+
+<pre class="code">
+  double MagickGetImageGamma(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageGreenPrimary">MagickGetImageGreenPrimary</a></h2>
+</div>
+
+<p>MagickGetImageGreenPrimary() returns the chromaticy green primary point.</p>
+
+<p>The format of the MagickGetImageGreenPrimary method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageGreenPrimary(MagickWand *wand,double *x,
+    double *y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The chromaticity green primary x-point.</p>
+
+<h4>y</h4>
+<p>The chromaticity green primary y-point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageHeight">MagickGetImageHeight</a></h2>
+</div>
+
+<p>MagickGetImageHeight() returns the image height.</p>
+
+<p>The format of the MagickGetImageHeight method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageHeight(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageHistogram">MagickGetImageHistogram</a></h2>
+</div>
+
+<p>MagickGetImageHistogram() returns the image histogram as an array of PixelWand wands.</p>
+
+<p>The format of the MagickGetImageHistogram method is:</p>
+
+<pre class="code">
+  PixelWand *MagickGetImageHistogram(MagickWand *wand,
+    unsigned long *number_colors)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>number_colors</h4>
+<p>The number of unique colors in the image and the number of pixel wands returned.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageIndex">MagickGetImageIndex</a></h2>
+</div>
+
+<p>MagickGetImageIndex() returns the index of the current image.</p>
+
+<p>The format of the MagickGetImageIndex method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageIndex(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageInterlaceScheme">MagickGetImageInterlaceScheme</a></h2>
+</div>
+
+<p>MagickGetImageInterlaceScheme() gets the image interlace scheme.</p>
+
+<p>The format of the MagickGetImageInterlaceScheme method is:</p>
+
+<pre class="code">
+  InterlaceType MagickGetImageInterlaceScheme(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageIterations">MagickGetImageIterations</a></h2>
+</div>
+
+<p>MagickGetImageIterations() gets the image iterations.</p>
+
+<p>The format of the MagickGetImageIterations method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageIterations(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageMatteColor">MagickGetImageMatteColor</a></h2>
+</div>
+
+<p>MagickGetImageMatteColor() returns the image matte color.</p>
+
+<p>The format of the MagickGetImageMatteColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImagematteColor(MagickWand *wand,
+    PixelWand *matte_color)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>matte_color</h4>
+<p>Return the matte color.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImagePage">MagickGetImagePage</a></h2>
+</div>
+
+<p>MagickGetImagePage() returns the page geometry associated with the image.</p>
+
+<p>The format of the MagickGetImagePage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImagePage(MagickWand *wand,
+    unsigned long *width,unsigned long *height,long *x,long *y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The page width.</p>
+
+<h4>height</h4>
+<p>The page height.</p>
+
+<h4>x</h4>
+<p>The page x-offset.</p>
+
+<h4>y</h4>
+<p>The page y-offset.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImagePixelColor">MagickGetImagePixelColor</a></h2>
+</div>
+
+<p>MagickGetImagePixelColor() returns the color of the specified pixel.</p>
+
+<p>The format of the MagickGetImagePixelColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImagePixelColor(MagickWand *wand,
+    const long x,const long y,PixelWand *color)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x,y</h4>
+<p>The pixel offset into the image.</p>
+
+<h4>color</h4>
+<p>Return the colormap color in this wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImagePixels">MagickGetImagePixels</a></h2>
+</div>
+
+<p>MagickGetImagePixels() extracts pixel data from an image and returns it to you.  The method returns MagickTrue on success otherwise MagickFalse if an error is encountered.  The data is returned as char, short int, int, long, float, or double in the order specified by map.</p>
+
+<p>Suppose you want to extract the first scanline of a 640x480 image as character data in red-green-blue order:</p>
+
+<pre class="text">
+  MagickGetImagePixels(wand,0,0,640,1,"RGB",CharPixel,pixels);
+</pre>
+
+<p>The format of the MagickGetImagePixels method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImagePixels(MagickWand *wand,
+    const long x,const long y,const unsigned long columns,
+    const unsigned long rows,const char *map,const StorageType storage,
+    void *pixels)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x, y, columns, rows</h4>
+<p>These values define the perimeter of a region of pixels you want to extract.</p>
+
+<h4>map</h4>
+<p>This string reflects the expected ordering of the pixel array. It can be any combination or order of R = red, G = green, B = blue, A = alpha (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.</p>
+
+<h4>storage</h4>
+<p>Define the data type of the pixels.  Float and double types are expected to be normalized [0..1] otherwise [0..QuantumRange].  Choose from these types: CharPixel, DoublePixel, FloatPixel, IntegerPixel, LongPixel, QuantumPixel, or ShortPixel.</p>
+
+<h4>pixels</h4>
+<p>This array of values contain the pixel components as defined by map and type.  You must preallocate this array where the expected length varies depending on the values of width, height, map, and type.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageProfile">MagickGetImageProfile</a></h2>
+</div>
+
+<p>MagickGetImageProfile() returns the named image profile.</p>
+
+<p>The format of the MagickGetImageProfile method is:</p>
+
+<pre class="code">
+  unsigned char *MagickGetImageProfile(MagickWand *wand,const char *name,
+    unsigned long *length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>name</h4>
+<p>Name of profile to return: ICC, IPTC, or generic profile.</p>
+
+<h4>length</h4>
+<p>The length of the profile.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageRedPrimary">MagickGetImageRedPrimary</a></h2>
+</div>
+
+<p>MagickGetImageRedPrimary() returns the chromaticy red primary point.</p>
+
+<p>The format of the MagickGetImageRedPrimary method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageRedPrimary(MagickWand *wand,double *x,
+    double *y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The chromaticity red primary x-point.</p>
+
+<h4>y</h4>
+<p>The chromaticity red primary y-point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageRenderingIntent">MagickGetImageRenderingIntent</a></h2>
+</div>
+
+<p>MagickGetImageRenderingIntent() gets the image rendering intent.</p>
+
+<p>The format of the MagickGetImageRenderingIntent method is:</p>
+
+<pre class="code">
+  RenderingIntent MagickGetImageRenderingIntent(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageResolution">MagickGetImageResolution</a></h2>
+</div>
+
+<p>MagickGetImageResolution() gets the image X and Y resolution.</p>
+
+<p>The format of the MagickGetImageResolution method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageResolution(MagickWand *wand,double *x,
+    double *y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The image x-resolution.</p>
+
+<h4>y</h4>
+<p>The image y-resolution.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageScene">MagickGetImageScene</a></h2>
+</div>
+
+<p>MagickGetImageScene() gets the image scene.</p>
+
+<p>The format of the MagickGetImageScene method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageScene(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageSignature">MagickGetImageSignature</a></h2>
+</div>
+
+<p>MagickGetImageSignature() generates an SHA-256 message digest for the image pixel stream.</p>
+
+<p>The format of the MagickGetImageSignature method is:</p>
+
+<pre class="code">
+  const char MagickGetImageSignature(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageSize">MagickGetImageSize</a></h2>
+</div>
+
+<p>MagickGetImageSize() returns the image size.</p>
+
+<p>The format of the MagickGetImageSize method is:</p>
+
+<pre class="code">
+  MagickSizeType MagickGetImageSize(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageTicksPerSecond">MagickGetImageTicksPerSecond</a></h2>
+</div>
+
+<p>MagickGetImageTicksPerSecond() gets the image ticks-per-second.</p>
+
+<p>The format of the MagickGetImageTicksPerSecond method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageTicksPerSecond(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageType">MagickGetImageType</a></h2>
+</div>
+
+<p>MagickGetImageType() gets the potential image type:</p>
+
+<p>Bilevel        Grayscale       GrayscaleMatte Palette        PaletteMatte    TrueColor TrueColorMatte ColorSeparation ColorSeparationMatte</p>
+
+<p>To ensure the image type matches its potential, use MagickSetImageType():</p>
+
+<pre class="text">
+      (void) MagickSetImageType(wand,MagickGetImageType(wand));
+</pre>
+
+<p>The format of the MagickGetImageType method is:</p>
+
+<pre class="code">
+  ImageType MagickGetImageType(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageUnits">MagickGetImageUnits</a></h2>
+</div>
+
+<p>MagickGetImageUnits() gets the image units of resolution.</p>
+
+<p>The format of the MagickGetImageUnits method is:</p>
+
+<pre class="code">
+  ResolutionType MagickGetImageUnits(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageVirtualPixelMethod">MagickGetImageVirtualPixelMethod</a></h2>
+</div>
+
+<p>MagickGetImageVirtualPixelMethod() returns the virtual pixel method for the sepcified image.</p>
+
+<p>The format of the MagickGetImageVirtualPixelMethod method is:</p>
+
+<pre class="code">
+  VirtualPixelMethod MagickGetImageVirtualPixelMethod(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageWhitePoint">MagickGetImageWhitePoint</a></h2>
+</div>
+
+<p>MagickGetImageWhitePoint() returns the chromaticy white point.</p>
+
+<p>The format of the MagickGetImageWhitePoint method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickGetImageWhitePoint(MagickWand *wand,double *x,
+    double *y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The chromaticity white x-point.</p>
+
+<h4>y</h4>
+<p>The chromaticity white y-point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageWidth">MagickGetImageWidth</a></h2>
+</div>
+
+<p>MagickGetImageWidth() returns the image width.</p>
+
+<p>The format of the MagickGetImageWidth method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetImageWidth(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetNumberImages">MagickGetNumberImages</a></h2>
+</div>
+
+<p>MagickGetNumberImages() returns the number of images associated with a magick wand.</p>
+
+<p>The format of the MagickGetNumberImages method is:</p>
+
+<pre class="code">
+  unsigned long MagickGetNumberImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickGetImageTotalInkDensity">MagickGetImageTotalInkDensity</a></h2>
+</div>
+
+<p>MagickGetImageTotalInkDensity() gets the image total ink density.</p>
+
+<p>The format of the MagickGetImageTotalInkDensity method is:</p>
+
+<pre class="code">
+  double MagickGetImageTotalInkDensity(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickHasNextImage">MagickHasNextImage</a></h2>
+</div>
+
+<p>MagickHasNextImage() returns MagickTrue if the wand has more images when traversing the list in the forward direction</p>
+
+<p>The format of the MagickHasNextImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickHasNextImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickHasPreviousImage">MagickHasPreviousImage</a></h2>
+</div>
+
+<p>MagickHasPreviousImage() returns MagickTrue if the wand has more images when traversing the list in the reverse direction</p>
+
+<p>The format of the MagickHasPreviousImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickHasPreviousImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickIdentifyImage">MagickIdentifyImage</a></h2>
+</div>
+
+<p>MagickIdentifyImage() identifies an image by printing its attributes to the file.  Attributes include the image width, height, size, and others.</p>
+
+<p>The format of the MagickIdentifyImage method is:</p>
+
+<pre class="code">
+  const char *MagickIdentifyImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickImplodeImage">MagickImplodeImage</a></h2>
+</div>
+
+<p>MagickImplodeImage() creates a new image that is a copy of an existing one with the image pixels "implode" by the specified percentage.  It allocates the memory necessary for the new Image structure and returns a pointer to the new image.</p>
+
+<p>The format of the MagickImplodeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickImplodeImage(MagickWand *wand,
+    const double radius)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>amount</h4>
+<p>Define the extent of the implosion.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickLabelImage">MagickLabelImage</a></h2>
+</div>
+
+<p>MagickLabelImage() adds a label to your image.</p>
+
+<p>The format of the MagickLabelImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickLabelImage(MagickWand *wand,const char *label)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>label</h4>
+<p>The image label.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickLevelImage">MagickLevelImage</a></h2>
+</div>
+
+<p>MagickLevelImage() adjusts the levels of an image by scaling the colors falling between specified white and black points to the full available quantum range. The parameters provided represent the black, mid, and white points. The black point specifies the darkest color in the image. Colors darker than the black point are set to zero. Mid point specifies a gamma correction to apply to the image.  White point specifies the lightest color in the image. Colors brighter than the white point are set to the maximum quantum value.</p>
+
+<p>The format of the MagickLevelImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickLevelImage(MagickWand *wand,
+    const double black_point,const double gamma,const double white_point)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>black_point</h4>
+<p>The black point.</p>
+
+<h4>gamma</h4>
+<p>The gamma.</p>
+
+<h4>white_point</h4>
+<p>The white point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickLevelImageChannel">MagickLevelImageChannel</a></h2>
+</div>
+
+<p>MagickLevelImageChannel() adjusts the levels of the specified channel of the reference image by scaling the colors falling between specified white and black points to the full available quantum range. The parameters provided represent the black, mid, and white points. The black point specifies the darkest color in the image. Colors darker than the black point are set to zero.  Mid point specifies a gamma correction to apply to the image.  White point specifies the lightest color in the image. Colors brighter than the white point are set to the maximum quantum value.</p>
+
+<p>The format of the MagickLevelImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickLevelImageChannel(MagickWand *wand,
+    const ChannelType channel,const double black_point,const double gamma,
+    const double white_point)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to level: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>black_point</h4>
+<p>The black point.</p>
+
+<h4>gamma</h4>
+<p>The gamma.</p>
+
+<h4>white_point</h4>
+<p>The white point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMagnifyImage">MagickMagnifyImage</a></h2>
+</div>
+
+<p>MagickMagnifyImage() is a convenience method that scales an image proportionally to twice its original size.</p>
+
+<p>The format of the MagickMagnifyImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickMagnifyImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMapImage">MagickMapImage</a></h2>
+</div>
+
+<p>MagickMapImage() replaces the colors of an image with the closest color from a reference image.</p>
+
+<p>The format of the MagickMapImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickMapImage(MagickWand *wand,
+    const MagickWand *map_wand,const MagickBooleanType dither)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>map</h4>
+<p>The map wand.</p>
+
+<h4>dither</h4>
+<p>Set this integer value to something other than zero to dither the mapped image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMatteFloodfillImage">MagickMatteFloodfillImage</a></h2>
+</div>
+
+<p>MagickMatteFloodfillImage() changes the transparency value of any pixel that matches target and is an immediate neighbor.  If the method FillToBorderMethod is specified, the transparency value is changed for any neighbor pixel that does not match the bordercolor member of image.</p>
+
+<p>The format of the MagickMatteFloodfillImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickMatteFloodfillImage(MagickWand *wand,
+    const Quantum opacity,const double fuzz,const PixelWand *bordercolor,
+    const long x,const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>opacity</h4>
+<p>The opacity.</p>
+
+<h4>fuzz</h4>
+<p>By default target must match a particular pixel color exactly.  However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same.  For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.</p>
+
+<h4>bordercolor</h4>
+<p>The border color pixel wand.</p>
+
+<h4>x,y</h4>
+<p>The starting location of the operation.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMedianFilterImage">MagickMedianFilterImage</a></h2>
+</div>
+
+<p>MagickMedianFilterImage() applies a digital filter that improves the quality of a noisy image.  Each pixel is replaced by the median in a set of neighboring pixels as defined by radius.</p>
+
+<p>The format of the MagickMedianFilterImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickMedianFilterImage(MagickWand *wand,
+    const double radius)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the pixel neighborhood.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMinifyImage">MagickMinifyImage</a></h2>
+</div>
+
+<p>MagickMinifyImage() is a convenience method that scales an image proportionally to one-half its original size</p>
+
+<p>The format of the MagickMinifyImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickMinifyImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickModulateImage">MagickModulateImage</a></h2>
+</div>
+
+<p>MagickModulateImage() lets you control the brightness, saturation, and hue of an image.  Hue is the percentage of absolute rotation from the current position.  For example 50 results in a counter-clockwise rotation of 90 degrees, 150 results in a clockwise rotation of 90 degrees, with 0 and 200 both resulting in a rotation of 180 degrees.</p>
+
+<p>To increase the color brightness by 20 and decrease the color saturation by 10 and leave the hue unchanged, use: 120,90,100.</p>
+
+<p>The format of the MagickModulateImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickModulateImage(MagickWand *wand,
+    const double brightness,const double saturation,const double hue)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>brightness</h4>
+<p>The percent change in brighness.</p>
+
+<h4>saturation</h4>
+<p>The percent change in saturation.</p>
+
+<h4>hue</h4>
+<p>The percent change in hue.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMontageImage">MagickMontageImage</a></h2>
+</div>
+
+<p>MagickMontageImage() creates a composite image by combining several separate images. The images are tiled on the composite image with the name of the image optionally appearing just below the individual tile.</p>
+
+<p>The format of the MagickMontageImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickMontageImage(MagickWand *wand,
+    const DrawingWand drawing_wand,const char *tile_geometry,
+    const char *thumbnail_geometry,const MontageMode mode,
+    const char *frame)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>drawing_wand</h4>
+<p>The drawing wand.  The font name, size, and color are obtained from this wand.</p>
+
+<h4>tile_geometry</h4>
+<p>the number of tiles per row and page (e.g. 6x4+0+0).</p>
+
+<h4>thumbnail_geometry</h4>
+<p>Preferred image size and border size of each thumbnail (e.g. 120x120+4+3>).</p>
+
+<h4>mode</h4>
+<p>Thumbnail framing mode: Frame, Unframe, or Concatenate.</p>
+
+<h4>frame</h4>
+<p>Surround the image with an ornamental border (e.g. 15x15+3+3). The frame color is that of the thumbnail's matte color.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMorphImages">MagickMorphImages</a></h2>
+</div>
+
+<p>MagickMorphImages() method morphs a set of images.  Both the image pixels and size are linearly interpolated to give the appearance of a meta-morphosis from one image to the next.</p>
+
+<p>The format of the MagickMorphImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickMorphImages(MagickWand *wand,
+    const unsigned long number_frames)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>number_frames</h4>
+<p>The number of in-between images to generate.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMosaicImages">MagickMosaicImages</a></h2>
+</div>
+
+<p>MagickMosaicImages() inlays an image sequence to form a single coherent picture.  It returns a wand with each image in the sequence composited at the location defined by the page offset of the image.</p>
+
+<p>The format of the MagickMosaicImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickMosaicImages(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickMotionBlurImage">MagickMotionBlurImage</a></h2>
+</div>
+
+<p>MagickMotionBlurImage() simulates motion blur.  We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma.  Use a radius of 0 and MotionBlurImage() selects a suitable radius for you. Angle gives the angle of the blurring motion.</p>
+
+<p>The format of the MagickMotionBlurImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickMotionBlurImage(MagickWand *wand,
+    const double radius,const double sigma,const double angle)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<h4>angle</h4>
+<p>Apply the effect along this angle.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickNegateImage">MagickNegateImage</a></h2>
+</div>
+
+<p>MagickNegateImage() negates the colors in the reference image.  The Grayscale option means that only grayscale values within the image are negated.</p>
+
+<p>You can also reduce the influence of a particular channel with a gamma value of 0.</p>
+
+<p>The format of the MagickNegateImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickNegateImage(MagickWand *wand,
+    const MagickBooleanType gray)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>gray</h4>
+<p>If MagickTrue, only negate grayscale pixels within the image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickNegateImage">MagickNegateImage</a></h2>
+</div>
+
+<p>MagickNegateImage() negates the colors in the specified channel of the reference image.  The Grayscale option means that only grayscale values within the image are negated.</p>
+
+<p>You can also reduce the influence of a particular channel with a gamma value of 0.</p>
+
+<p>The format of the MagickNegateImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickNegateImage(MagickWand *wand,
+    const ChannelType channel,const MagickBooleanType gray)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>gray</h4>
+<p>If MagickTrue, only negate grayscale pixels within the image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickNewImage">MagickNewImage</a></h2>
+</div>
+
+<p>MagickNewImage() adds a blank image canvas of the specified size and background color to the wand.</p>
+
+<p>The format of the MagickNewImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickNewImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows,
+    const PixelWand *background)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The image width.</p>
+
+<h4>height</h4>
+<p>The image height.</p>
+
+<h4>background</h4>
+<p>The image color.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickNextImage">MagickNextImage</a></h2>
+</div>
+
+<p>MagickNextImage() associates the next image in the image list with a magick wand.</p>
+
+<p>The format of the MagickNextImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickNextImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickNormalizeImage">MagickNormalizeImage</a></h2>
+</div>
+
+<p>MagickNormalizeImage() enhances the contrast of a color image by adjusting the pixels color to span the entire range of colors available</p>
+
+<p>You can also reduce the influence of a particular channel with a gamma value of 0.</p>
+
+<p>The format of the MagickNormalizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickNormalizeImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickOilPaintImage">MagickOilPaintImage</a></h2>
+</div>
+
+<p>MagickOilPaintImage() applies a special effect filter that simulates an oil painting.  Each pixel is replaced by the most frequent color occurring in a circular region defined by radius.</p>
+
+<p>The format of the MagickOilPaintImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickOilPaintImage(MagickWand *wand,
+    const double radius)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the circular neighborhood.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickPaintOpaqueImage">MagickPaintOpaqueImage</a></h2>
+</div>
+
+<p>MagickPaintOpaqueImage() changes any pixel that matches color with the color defined by fill.</p>
+
+<p>The format of the MagickPaintOpaqueImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickPaintOpaqueImage(MagickWand *wand,
+    const PixelWand *target,const PixelWand *fill,const double fuzz)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>target</h4>
+<p>Change this target color to the fill color within the image.</p>
+
+<h4>fill</h4>
+<p>The fill pixel wand.</p>
+
+<h4>fuzz</h4>
+<p>By default target must match a particular pixel color exactly.  However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same.  For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickPaintTransparentImage">MagickPaintTransparentImage</a></h2>
+</div>
+
+<p>MagickPaintTransparentImage() changes any pixel that matches color with the color defined by fill.</p>
+
+<p>The format of the MagickPaintTransparentImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickPaintTransparentImage(MagickWand *wand,
+    const PixelWand *target,const Quantum opacity,const double fuzz)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>target</h4>
+<p>Change this target color to specified opacity value within the image.</p>
+
+<h4>opacity</h4>
+<p>The replacement opacity value.</p>
+
+<h4>fuzz</h4>
+<p>By default target must match a particular pixel color exactly.  However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same.  For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickPingImage">MagickPingImage</a></h2>
+</div>
+
+<p>MagickPingImage() is like MagickReadImage() except the only valid information returned is the image width, height, size, and format.  It is designed to efficiently obtain this information from a file without reading the entire image sequence into memory.</p>
+
+<p>The format of the MagickPingImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickPingImage(MagickWand *wand,const char *filename)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>filename</h4>
+<p>The image filename.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickPosterizeImage">MagickPosterizeImage</a></h2>
+</div>
+
+<p>MagickPosterizeImage() reduces the image to a limited number of color level.</p>
+
+<p>The format of the MagickPosterizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickPosterizeImage(MagickWand *wand,
+    const unsigned levels,const MagickBooleanType dither)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>levels</h4>
+<p>Number of color levels allowed in each channel.  Very low values (2, 3, or 4) have the most visible effect.</p>
+
+<h4>dither</h4>
+<p>Set this integer value to something other than zero to dither the mapped image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickPreviewImages">MagickPreviewImages</a></h2>
+</div>
+
+<p>MagickPreviewImages() tiles 9 thumbnails of the specified image with an image processing operation applied at varying strengths.  This is helpful to quickly pin-point an appropriate parameter for an image processing operation.</p>
+
+<p>The format of the MagickPreviewImages method is:</p>
+
+<pre class="code">
+  MagickWand *MagickPreviewImages(MagickWand *wand,
+    const PreviewType preview)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>preview</h4>
+<p>The preview type.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickPreviousImage">MagickPreviousImage</a></h2>
+</div>
+
+<p>MagickPreviousImage() assocates the previous image in an image list with the magick wand.</p>
+
+<p>The format of the MagickPreviousImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickPreviousImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickProfileImage">MagickProfileImage</a></h2>
+</div>
+
+<p>MagickProfileImage() adds or removes a ICC, IPTC, or generic profile from an image.  If the profile is NULL, it is removed from the image otherwise added.  Use a name of '*' and a profile of NULL to remove all profiles from the image.</p>
+
+<p>The format of the MagickProfileImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickProfileImage(MagickWand *wand,const char *name,
+    const void *profile,const unsigned long length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>name</h4>
+<p>Name of profile to add or remove: ICC, IPTC, or generic profile.</p>
+
+<h4>profile</h4>
+<p>The profile.</p>
+
+<h4>length</h4>
+<p>The length of the profile.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickQuantizeImage">MagickQuantizeImage</a></h2>
+</div>
+
+<p>MagickQuantizeImage() analyzes the colors within a reference image and chooses a fixed number of colors to represent the image.  The goal of the algorithm is to minimize the color difference between the input and output image while minimizing the processing time.</p>
+
+<p>The format of the MagickQuantizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickQuantizeImage(MagickWand *wand,
+    const unsigned long number_colors,const ColorspaceType colorspace,
+    const unsigned long treedepth,const MagickBooleanType dither,
+    const MagickBooleanType measure_error)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>number_colors</h4>
+<p>The number of colors.</p>
+
+<h4>colorspace</h4>
+<p>Perform color reduction in this colorspace, typically RGBColorspace.</p>
+
+<h4>treedepth</h4>
+<p>Normally, this integer value is zero or one.  A zero or one tells Quantize to choose a optimal tree depth of Log4(number_colors).      A tree of this depth generally allows the best representation of the reference image with the least amount of memory and the fastest computational speed.  In some cases, such as an image with low color dispersion (a few number of colors), a value other than Log4(number_colors) is required.  To expand the color tree completely, use a value of 8.</p>
+
+<h4>dither</h4>
+<p>A value other than zero distributes the difference between an original image and the corresponding color reduced image to neighboring pixels along a Hilbert curve.</p>
+
+<h4>measure_error</h4>
+<p>A value other than zero measures the difference between the original and quantized images.  This difference is the total quantization error.  The error is computed by summing over all pixels in an image the distance squared in RGB space between each reference pixel value and its quantized value.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickQuantizeImages">MagickQuantizeImages</a></h2>
+</div>
+
+<p>MagickQuantizeImages() analyzes the colors within a sequence of images and chooses a fixed number of colors to represent the image.  The goal of the algorithm is to minimize the color difference between the input and output image while minimizing the processing time.</p>
+
+<p>The format of the MagickQuantizeImages method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickQuantizeImages(MagickWand *wand,
+    const unsigned long number_colors,const ColorspaceType colorspace,
+    const unsigned long treedepth,const MagickBooleanType dither,
+    const MagickBooleanType measure_error)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>number_colors</h4>
+<p>The number of colors.</p>
+
+<h4>colorspace</h4>
+<p>Perform color reduction in this colorspace, typically RGBColorspace.</p>
+
+<h4>treedepth</h4>
+<p>Normally, this integer value is zero or one.  A zero or one tells Quantize to choose a optimal tree depth of Log4(number_colors).      A tree of this depth generally allows the best representation of the reference image with the least amount of memory and the fastest computational speed.  In some cases, such as an image with low color dispersion (a few number of colors), a value other than Log4(number_colors) is required.  To expand the color tree completely, use a value of 8.</p>
+
+<h4>dither</h4>
+<p>A value other than zero distributes the difference between an original image and the corresponding color reduced algorithm to neighboring pixels along a Hilbert curve.</p>
+
+<h4>measure_error</h4>
+<p>A value other than zero measures the difference between the original and quantized images.  This difference is the total quantization error.  The error is computed by summing over all pixels in an image the distance squared in RGB space between each reference pixel value and its quantized value.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickRadialBlurImage">MagickRadialBlurImage</a></h2>
+</div>
+
+<p>MagickRadialBlurImage() radial blurs an image.</p>
+
+<p>The format of the MagickRadialBlurImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickRadialBlurImage(MagickWand *wand,
+    const double angle)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>angle</h4>
+<p>The angle of the blur in degrees.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickRadialBlurImageChannel">MagickRadialBlurImageChannel</a></h2>
+</div>
+
+<p>MagickRadialBlurImageChannel() radial blurs an image channel.</p>
+
+<p>The format of the MagickRadialBlurImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickRadialBlurImageChannel(MagickWand *wand,
+    const ChannelType channel,const double angle)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>angle</h4>
+<p>The angle of the blur in degrees.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickRaiseImage">MagickRaiseImage</a></h2>
+</div>
+
+<p>MagickRaiseImage() creates a simulated three-dimensional button-like effect by lightening and darkening the edges of the image.  Members width and height of raise_info define the width of the vertical and horizontal edge of the effect.</p>
+
+<p>The format of the MagickRaiseImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickRaiseImage(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long x,
+    const long y,const MagickBooleanType raise)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width,height,x,y</h4>
+<p>Define the dimensions of the area to raise.</p>
+
+<h4>raise</h4>
+<p>A value other than zero creates a 3-D raise effect, otherwise it has a lowered effect.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickReadImage">MagickReadImage</a></h2>
+</div>
+
+<p>MagickReadImage() reads an image or image sequence.</p>
+
+<p>The format of the MagickReadImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickReadImage(MagickWand *wand,const char *filename)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>filename</h4>
+<p>The image filename.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickReadImageBlob">MagickReadImageBlob</a></h2>
+</div>
+
+<p>MagickReadImageBlob() reads an image or image sequence from a blob.</p>
+
+<p>The format of the MagickReadImageBlob method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickReadImageBlob(MagickWand *wand,
+    const void *blob,const size_t length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>blob</h4>
+<p>The blob.</p>
+
+<h4>length</h4>
+<p>The blob length.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickReadImageFile">MagickReadImageFile</a></h2>
+</div>
+
+<p>MagickReadImageFile() reads an image or image sequence from an open file descriptor.</p>
+
+<p>The format of the MagickReadImageFile method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickReadImageFile(MagickWand *wand,FILE *file)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>file</h4>
+<p>The file descriptor.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickReduceNoiseImage">MagickReduceNoiseImage</a></h2>
+</div>
+
+<p>MagickReduceNoiseImage() smooths the contours of an image while still preserving edge information.  The algorithm works by replacing each pixel with its neighbor closest in value.  A neighbor is defined by radius.  Use a radius of 0 and ReduceNoise() selects a suitable radius for you.</p>
+
+<p>The format of the MagickReduceNoiseImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickReduceNoiseImage(MagickWand *wand,
+    const double radius)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the pixel neighborhood.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickRemoveImage">MagickRemoveImage</a></h2>
+</div>
+
+<p>MagickRemoveImage() removes an image from the image list.</p>
+
+<p>The format of the MagickRemoveImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickRemoveImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>insert</h4>
+<p>The splice wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickRemoveImageProfile">MagickRemoveImageProfile</a></h2>
+</div>
+
+<p>MagickRemoveImageProfile() removes the named image profile and returns it.</p>
+
+<p>The format of the MagickRemoveImageProfile method is:</p>
+
+<pre class="code">
+  unsigned char *MagickRemoveImageProfile(MagickWand *wand,
+    const char *name,unsigned long *length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>name</h4>
+<p>Name of profile to return: ICC, IPTC, or generic profile.</p>
+
+<h4>length</h4>
+<p>The length of the profile.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickResampleImage">MagickResampleImage</a></h2>
+</div>
+
+<p>MagickResampleImage() resample image to desired resolution.</p>
+
+<p>Bessel   Blackman   Box Catrom   Cubic      Gaussian Hanning  Hermite    Lanczos Mitchell Point      Quandratic Sinc     Triangle</p>
+
+<p>Most of the filters are FIR (finite impulse response), however, Bessel, Gaussian, and Sinc are IIR (infinite impulse response).  Bessel and Sinc are windowed (brought down to zero) with the Blackman filter.</p>
+
+<p>The format of the MagickResampleImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickResampleImage(MagickWand *wand,
+    const double x_resolution,const double y_resolution,
+    const FilterTypes filter,const double blur)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x_resolution</h4>
+<p>The new image x resolution.</p>
+
+<h4>y_resolution</h4>
+<p>The new image y resolution.</p>
+
+<h4>filter</h4>
+<p>Image filter to use.</p>
+
+<h4>blur</h4>
+<p>The blur factor where > 1 is blurry, < 1 is sharp.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickResizeImage">MagickResizeImage</a></h2>
+</div>
+
+<p>MagickResizeImage() scales an image to the desired dimensions with one of these filters:</p>
+
+<pre class="text">
+      Bessel   Blackman   Box
+      Catrom   CubicGaussian
+      Hanning  Hermite    Lanczos
+      Mitchell PointQuandratic
+      Sinc     Triangle
+</pre>
+
+<p>Most of the filters are FIR (finite impulse response), however, Bessel, Gaussian, and Sinc are IIR (infinite impulse response).  Bessel and Sinc are windowed (brought down to zero) with the Blackman filter.</p>
+
+<p>The format of the MagickResizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickResizeImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows,
+    const FilterTypes filter,const double blur)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>The number of columns in the scaled image.</p>
+
+<h4>rows</h4>
+<p>The number of rows in the scaled image.</p>
+
+<h4>filter</h4>
+<p>Image filter to use.</p>
+
+<h4>blur</h4>
+<p>The blur factor where > 1 is blurry, < 1 is sharp.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickRollImage">MagickRollImage</a></h2>
+</div>
+
+<p>MagickRollImage() offsets an image as defined by x and y.</p>
+
+<p>The format of the MagickRollImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickRollImage(MagickWand *wand,const long x,
+    const unsigned long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The x offset.</p>
+
+<h4>y</h4>
+<p>The y offset.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickRotateImage">MagickRotateImage</a></h2>
+</div>
+
+<p>MagickRotateImage() rotates an image the specified number of degrees. Empty triangles left over from rotating the image are filled with the background color.</p>
+
+<p>The format of the MagickRotateImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickRotateImage(MagickWand *wand,
+    const PixelWand *background,const double degrees)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>background</h4>
+<p>The background pixel wand.</p>
+
+<h4>degrees</h4>
+<p>The number of degrees to rotate the image.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSampleImage">MagickSampleImage</a></h2>
+</div>
+
+<p>MagickSampleImage() scales an image to the desired dimensions with pixel sampling.  Unlike other scaling methods, this method does not introduce any additional color into the scaled image.</p>
+
+<p>The format of the MagickSampleImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSampleImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>The number of columns in the scaled image.</p>
+
+<h4>rows</h4>
+<p>The number of rows in the scaled image.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickScaleImage">MagickScaleImage</a></h2>
+</div>
+
+<p>MagickScaleImage() scales the size of an image to the given dimensions.</p>
+
+<p>The format of the MagickScaleImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickScaleImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>The number of columns in the scaled image.</p>
+
+<h4>rows</h4>
+<p>The number of rows in the scaled image.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickChannelImage">MagickChannelImage</a></h2>
+</div>
+
+<p>MagickChannelImage() separates a channel from the image and returns a grayscale image.  A channel is a particular color component of each pixel in the image.</p>
+
+<p>The format of the MagickChannelImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSeparateImageChannel(MagickWand *wand,
+    const ChannelType channel)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSolarizeImage">MagickSolarizeImage</a></h2>
+</div>
+
+<p>MagickSolarizeImage() applies a special effect to the image, similar to the effect achieved in a photo darkroom by sepia toning.  Threshold ranges from 0 to QuantumRange and is a measure of the extent of the sepia toning.  A threshold of 80 is a good starting point for a reasonable tone.</p>
+
+<p>The format of the MagickSolarizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSolarizeImage(MagickWand *wand,
+    const double threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>threshold</h4>
+<p>Define the extent of the sepia toning.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImage">MagickSetImage</a></h2>
+</div>
+
+<p>MagickSetImage() replaces the last image returned by MagickSetImageIndex(), MagickNextImage(), MagickPreviousImage() with the images from the specified wand.</p>
+
+<p>The format of the MagickSetImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImage(MagickWand *wand,
+    const MagickWand *set_wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>set_wand</h4>
+<p>The set_wand wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageAttribute">MagickSetImageAttribute</a></h2>
+</div>
+
+<p>MagickSetImageAttribute() associates an attribute with an image.</p>
+
+<p>The format of the MagickSetImageAttribute method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageAttribute(MagickWand *wand,
+    const char *key,const char *attribute)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>key</h4>
+<p>The key.</p>
+
+<h4>value</h4>
+<p>The value.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageBackgroundColor">MagickSetImageBackgroundColor</a></h2>
+</div>
+
+<p>MagickSetImageBackgroundColor() sets the image background color.</p>
+
+<p>The format of the MagickSetImageBackgroundColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageBackgroundColor(MagickWand *wand,
+    const PixelWand *background)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>background</h4>
+<p>The background pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageBias">MagickSetImageBias</a></h2>
+</div>
+
+<p>MagickSetImageBias() sets the image bias for any method that convolves an image (e.g. MagickConvolveImage()).</p>
+
+<p>The format of the MagickSetImageBias method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageBias(MagickWand *wand,
+    const double bias)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>bias</h4>
+<p>The image bias.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageBluePrimary">MagickSetImageBluePrimary</a></h2>
+</div>
+
+<p>MagickSetImageBluePrimary() sets the image chromaticity blue primary point.</p>
+
+<p>The format of the MagickSetImageBluePrimary method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageBluePrimary(MagickWand *wand,
+    const double x,const double y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The blue primary x-point.</p>
+
+<h4>y</h4>
+<p>The blue primary y-point.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageBorderColor">MagickSetImageBorderColor</a></h2>
+</div>
+
+<p>MagickSetImageBorderColor() sets the image border color.</p>
+
+<p>The format of the MagickSetImageBorderColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageBorderColor(MagickWand *wand,
+    const PixelWand *border)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>border</h4>
+<p>The border pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageChannelDepth">MagickSetImageChannelDepth</a></h2>
+</div>
+
+<p>MagickSetImageChannelDepth() sets the depth of a particular image channel.</p>
+
+<p>The format of the MagickSetImageChannelDepth method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageChannelDepth(MagickWand *wand,
+    const ChannelType channel,const unsigned long depth)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>depth</h4>
+<p>The image depth in bits.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageColormapColor">MagickSetImageColormapColor</a></h2>
+</div>
+
+<p>MagickSetImageColormapColor() sets the color of the specified colormap index.</p>
+
+<p>The format of the MagickSetImageColormapColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageColormapColor(MagickWand *wand,
+    const unsigned long index,const PixelWand *color)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>index</h4>
+<p>The offset into the image colormap.</p>
+
+<h4>color</h4>
+<p>Return the colormap color in this wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageColorspace">MagickSetImageColorspace</a></h2>
+</div>
+
+<p>MagickSetImageColorspace() sets the image colorspace.</p>
+
+<p>The format of the MagickSetImageColorspace method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageColorspace(MagickWand *wand,
+    const ColorspaceType colorspace)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>colorspace</h4>
+<p>The image colorspace:   UndefinedColorspace, RGBColorspace, GRAYColorspace, TransparentColorspace, OHTAColorspace, XYZColorspace, YCbCrColorspace, YCCColorspace, YIQColorspace, YPbPrColorspace, YPbPrColorspace, YUVColorspace, CMYKColorspace, sRGBColorspace, HSLColorspace, or HWBColorspace.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageCompose">MagickSetImageCompose</a></h2>
+</div>
+
+<p>MagickSetImageCompose() sets the image composite operator, useful for specifying how to composite the image thumbnail when using the MagickMontageImage() method.</p>
+
+<p>The format of the MagickSetImageCompose method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageCompose(MagickWand *wand,
+    const CompositeOperator compose)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>compose</h4>
+<p>The image composite operator.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageCompression">MagickSetImageCompression</a></h2>
+</div>
+
+<p>MagickSetImageCompression() sets the image compression.</p>
+
+<p>The format of the MagickSetImageCompression method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageCompression(MagickWand *wand,
+    const CompressionType compression)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>compression</h4>
+<p>The image compression type.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageCompressionQuality">MagickSetImageCompressionQuality</a></h2>
+</div>
+
+<p>MagickSetImageCompressionQuality() sets the image compression quality.</p>
+
+<p>The format of the MagickSetImageCompressionQuality method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageCompressionQuality(MagickWand *wand,
+    const unsigned long quality)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>quality</h4>
+<p>The image compression tlityype.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageDelay">MagickSetImageDelay</a></h2>
+</div>
+
+<p>MagickSetImageDelay() sets the image delay.</p>
+
+<p>The format of the MagickSetImageDelay method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageDelay(MagickWand *wand,
+    const unsigned long delay)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>delay</h4>
+<p>The image delay in ticks-per-second units.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageDepth">MagickSetImageDepth</a></h2>
+</div>
+
+<p>MagickSetImageDepth() sets the image depth.</p>
+
+<p>The format of the MagickSetImageDepth method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageDepth(MagickWand *wand,
+    const unsigned long depth)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>depth</h4>
+<p>The image depth in bits: 8, 16, or 32.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageDispose">MagickSetImageDispose</a></h2>
+</div>
+
+<p>MagickSetImageDispose() sets the image disposal method.</p>
+
+<p>The format of the MagickSetImageDispose method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageDispose(MagickWand *wand,
+    const DisposeType dispose)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>dispose</h4>
+<p>The image disposeal type.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageExtent">MagickSetImageExtent</a></h2>
+</div>
+
+<p>MagickSetImageExtent() sets the image size (i.e. columns & rows).</p>
+
+<p>The format of the MagickSetImageExtent method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageExtent(MagickWand *wand,
+    const unsigned long columns,const unsigned rows)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>The image width in pixels.</p>
+
+<h4>rows</h4>
+<p>The image height in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageFilename">MagickSetImageFilename</a></h2>
+</div>
+
+<p>MagickSetImageFilename() sets the filename of a particular image in a sequence.</p>
+
+<p>The format of the MagickSetImageFilename method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageFilename(MagickWand *wand,
+    const char *filename)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>filename</h4>
+<p>The image filename.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageFormat">MagickSetImageFormat</a></h2>
+</div>
+
+<p>MagickSetImageFormat() sets the format of a particular image in a sequence.</p>
+
+<p>The format of the MagickSetImageFormat method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageFormat(MagickWand *wand,
+    const char *format)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>format</h4>
+<p>The image format.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageGamma">MagickSetImageGamma</a></h2>
+</div>
+
+<p>MagickSetImageGamma() sets the image gamma.</p>
+
+<p>The format of the MagickSetImageGamma method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageGamma(MagickWand *wand,
+    const double gamma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>gamma</h4>
+<p>The image gamma.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageGreenPrimary">MagickSetImageGreenPrimary</a></h2>
+</div>
+
+<p>MagickSetImageGreenPrimary() sets the image chromaticity green primary point.</p>
+
+<p>The format of the MagickSetImageGreenPrimary method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageGreenPrimary(MagickWand *wand,
+    const double x,const double y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The green primary x-point.</p>
+
+<h4>y</h4>
+<p>The green primary y-point.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageIndex">MagickSetImageIndex</a></h2>
+</div>
+
+<p>MagickSetImageIndex() set the current image to the position of the list specified with the index parameter.</p>
+
+<p>The format of the MagickSetImageIndex method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageIndex(MagickWand *wand,const long index)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>index</h4>
+<p>The scene number.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageInterlaceScheme">MagickSetImageInterlaceScheme</a></h2>
+</div>
+
+<p>MagickSetImageInterlaceScheme() sets the image compression.</p>
+
+<p>The format of the MagickSetImageInterlaceScheme method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageInterlaceScheme(MagickWand *wand,
+    const InterlaceType interlace_scheme)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>interlace_scheme</h4>
+<p>The image interlace scheme: NoInterlace, LineInterlace, PlaneInterlace, PartitionInterlace.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageIterations">MagickSetImageIterations</a></h2>
+</div>
+
+<p>MagickSetImageIterations() sets the image iterations.</p>
+
+<p>The format of the MagickSetImageIterations method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageIterations(MagickWand *wand,
+    const unsigned long iterations)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>delay</h4>
+<p>The image delay in 1/100th of a second.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageMatteColor">MagickSetImageMatteColor</a></h2>
+</div>
+
+<p>MagickSetImageMatteColor() sets the image matte color.</p>
+
+<p>The format of the MagickSetImageMatteColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageMatteColor(MagickWand *wand,
+    const PixelWand *matte)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>matte</h4>
+<p>The matte pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImagePage">MagickSetImagePage</a></h2>
+</div>
+
+<p>MagickSetImagePage() sets the page geometry of the image.</p>
+
+<p>The format of the MagickSetImagePage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImagePage(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long x,
+    const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The page width.</p>
+
+<h4>height</h4>
+<p>The page height.</p>
+
+<h4>x</h4>
+<p>The page x-offset.</p>
+
+<h4>y</h4>
+<p>The page y-offset.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImagePixels">MagickSetImagePixels</a></h2>
+</div>
+
+<p>MagickSetImagePixels() accepts pixel data and stores it in the image at the location you specify.  The method returns MagickFalse on success otherwise MagickTrue if an error is encountered.  The pixel data can be either char, short int, int, long, float, or double in the order specified by map.</p>
+
+<p>Suppose your want want to upload the first scanline of a 640x480 image from character data in red-green-blue order:</p>
+
+<pre class="text">
+  MagickSetImagePixels(wand,0,0,0,640,1,"RGB",CharPixel,pixels);
+</pre>
+
+<p>The format of the MagickSetImagePixels method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImagePixels(MagickWand *wand,
+    const long x,const long y,const unsigned long columns,
+    const unsigned long rows,const char *map,const StorageType storage,
+    const void *pixels)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x, y, columns, rows</h4>
+<p>These values define the perimeter of a region of pixels you want to define.</p>
+
+<h4>map</h4>
+<p>This string reflects the expected ordering of the pixel array. It can be any combination or order of R = red, G = green, B = blue, A = alpha (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.</p>
+
+<h4>storage</h4>
+<p>Define the data type of the pixels.  Float and double types are expected to be normalized [0..1] otherwise [0..QuantumRange].  Choose from these types: CharPixel, ShortPixel, IntegerPixel, LongPixel, FloatPixel, or DoublePixel.</p>
+
+<h4>pixels</h4>
+<p>This array of values contain the pixel components as defined by map and type.  You must preallocate this array where the expected length varies depending on the values of width, height, map, and type.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageProfile">MagickSetImageProfile</a></h2>
+</div>
+
+<p>MagickSetImageProfile() adds a named profile to the magick wand.  If a profile with the same name already exists, it is replaced.  This method differs from the MagickProfileImage() method in that it does not apply any CMS color profiles.</p>
+
+<p>The format of the MagickSetImageProfile method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageProfile(MagickWand *wand,
+    const char *name,const void *profile,const unsigned long length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>name</h4>
+<p>Name of profile to add or remove: ICC, IPTC, or generic profile.</p>
+
+<h4>profile</h4>
+<p>The profile.</p>
+
+<h4>length</h4>
+<p>The length of the profile.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageProgressMonitor">MagickSetImageProgressMonitor</a></h2>
+</div>
+
+<p>MagickSetImageProgressMonitor() sets the wand image progress monitor to the specified method and returns the previous progress monitor if any.  The progress monitor method looks like this:</p>
+
+<pre class="text">
+      MagickBooleanType MagickProgressMonitor(const char *text,
+  const MagickOffsetType offset,const MagickSizeType span,
+  void *client_data)
+</pre>
+
+<p>If the progress monitor returns MagickFalse, the current operation is interrupted.</p>
+
+<p>The format of the MagickSetImageProgressMonitor method is:</p>
+
+<pre class="code">
+  MagickProgressMonitor MagickSetImageProgressMonitor(MagickWand *wand
+    const MagickProgressMonitor progress_monitor,void *client_data)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>progress_monitor</h4>
+<p>Specifies a pointer to a method to monitor progress of an image operation.</p>
+
+<h4>client_data</h4>
+<p>Specifies a pointer to any client data.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageRedPrimary">MagickSetImageRedPrimary</a></h2>
+</div>
+
+<p>MagickSetImageRedPrimary() sets the image chromaticity red primary point.</p>
+
+<p>The format of the MagickSetImageRedPrimary method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageRedPrimary(MagickWand *wand,
+    const double x,const double y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The red primary x-point.</p>
+
+<h4>y</h4>
+<p>The red primary y-point.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageRenderingIntent">MagickSetImageRenderingIntent</a></h2>
+</div>
+
+<p>MagickSetImageRenderingIntent() sets the image rendering intent.</p>
+
+<p>The format of the MagickSetImageRenderingIntent method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageRenderingIntent(MagickWand *wand,
+    const RenderingIntent rendering_intent)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>rendering_intent</h4>
+<p>The image rendering intent: UndefinedIntent, SaturationIntent, PerceptualIntent, AbsoluteIntent, or RelativeIntent.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageResolution">MagickSetImageResolution</a></h2>
+</div>
+
+<p>MagickSetImageResolution() sets the image resolution.</p>
+
+<p>The format of the MagickSetImageResolution method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageResolution(MagickWand *wand,
+    const double x_resolution,const doubtl y_resolution)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x_resolution</h4>
+<p>The image x resolution.</p>
+
+<h4>y_resolution</h4>
+<p>The image y resolution.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageScene">MagickSetImageScene</a></h2>
+</div>
+
+<p>MagickSetImageScene() sets the image scene.</p>
+
+<p>The format of the MagickSetImageScene method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageScene(MagickWand *wand,
+    const unsigned long scene)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>delay</h4>
+<p>The image scene number.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageTicksPerSecond">MagickSetImageTicksPerSecond</a></h2>
+</div>
+
+<p>MagickSetImageTicksPerSecond() sets the image ticks-per-second.</p>
+
+<p>The format of the MagickSetImageTicksPerSecond method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageTicksPerSecond(MagickWand *wand,
+    const unsigned long ticks_per-second)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>ticks_per_second</h4>
+<p>The units to use for the image delay.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageType">MagickSetImageType</a></h2>
+</div>
+
+<p>MagickSetImageType() sets the image type.</p>
+
+<p>The format of the MagickSetImageType method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageType(MagickWand *wand,
+    const ImageType image_type)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>image_type</h4>
+<p>The image type:   UndefinedType, BilevelType, GrayscaleType, GrayscaleMatteType, PaletteType, PaletteMatteType, TrueColorType, TrueColorMatteType, ColorSeparationType, ColorSeparationMatteType, or OptimizeType.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageUnits">MagickSetImageUnits</a></h2>
+</div>
+
+<p>MagickSetImageUnits() sets the image units of resolution.</p>
+
+<p>The format of the MagickSetImageUnits method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageUnits(MagickWand *wand,
+    const ResolutionType units)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>units</h4>
+<p>The image units of resolution : UndefinedResolution, PixelsPerInchResolution, or PixelsPerCentimeterResolution.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageVirtualPixelMethod">MagickSetImageVirtualPixelMethod</a></h2>
+</div>
+
+<p>MagickSetImageVirtualPixelMethod() sets the image virtual pixel method.</p>
+
+<p>The format of the MagickSetImageVirtualPixelMethod method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageVirtualPixelMethod(MagickWand *wand,
+    const VirtualPixelMethod method)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>method</h4>
+<p>The image virtual pixel method : UndefinedVirtualPixelMethod, ConstantVirtualPixelMethod,  EdgeVirtualPixelMethod, MirrorVirtualPixelMethod, or TileVirtualPixelMethod.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetImageWhitePoint">MagickSetImageWhitePoint</a></h2>
+</div>
+
+<p>MagickSetImageWhitePoint() sets the image chromaticity white point.</p>
+
+<p>The format of the MagickSetImageWhitePoint method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSetImageWhitePoint(MagickWand *wand,
+    const double x,const double y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>x</h4>
+<p>The white x-point.</p>
+
+<h4>y</h4>
+<p>The white y-point.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickShadowImage">MagickShadowImage</a></h2>
+</div>
+
+<p>MagickShadowImage() simulates an image shadow.</p>
+
+<p>The format of the MagickShadowImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickShadowImage(MagickWand *wand,
+    const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSharpenImage">MagickSharpenImage</a></h2>
+</div>
+
+<p>MagickSharpenImage() sharpens an image.  We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma.  Use a radius of 0 and SharpenImage() selects a suitable radius for you.</p>
+
+<p>The format of the MagickSharpenImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSharpenImage(MagickWand *wand,
+    const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSharpenImageChannel">MagickSharpenImageChannel</a></h2>
+</div>
+
+<p>MagickSharpenImageChannel() sharpens one or more image channels.  We convolve the image cnannel with a gaussian operator of the given radius and standard deviation (sigma).  For reasonable results, the radius should be larger than sigma.  Use a radius of 0 and GaussinSharpenImageChannel() selects a suitable radius for you.</p>
+
+<p>The format of the MagickSharpenImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSharpenImageChannel(MagickWand *wand,
+    const ChannelType channel,const double radius,const double sigma)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>radius</h4>
+<p>The radius of the , in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the , in pixels.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickShaveImage">MagickShaveImage</a></h2>
+</div>
+
+<p>MagickShaveImage() shaves pixels from the image edges.  It allocates the memory necessary for the new Image structure and returns a pointer to the new image.</p>
+
+<p>The format of the MagickShaveImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickShaveImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>The number of columns in the scaled image.</p>
+
+<h4>rows</h4>
+<p>The number of rows in the scaled image.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickShearImage">MagickShearImage</a></h2>
+</div>
+
+<p>MagickShearImage() slides one edge of an image along the X or Y axis, creating a parallelogram.  An X direction shear slides an edge along the X axis, while a Y direction shear slides an edge along the Y axis.  The amount of the shear is controlled by a shear angle.  For X direction shears, x_shear is measured relative to the Y axis, and similarly, for Y direction shears y_shear is measured relative to the X axis.  Empty triangles left over from shearing the image are filled with the background color.</p>
+
+<p>The format of the MagickShearImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickShearImage(MagickWand *wand,
+    const PixelWand *background,const double x_shear,onst double y_shear)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>background</h4>
+<p>The background pixel wand.</p>
+
+<h4>x_shear</h4>
+<p>The number of degrees to shear the image.</p>
+
+<h4>y_shear</h4>
+<p>The number of degrees to shear the image.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSigmoidalContrastImage">MagickSigmoidalContrastImage</a></h2>
+</div>
+
+<p>MagickSigmoidalContrastImage() adjusts the contrast of an image with a non-linear sigmoidal contrast algorithm.  Increase the contrast of the image using a sigmoidal transfer function without saturating highlights or shadows.  Contrast indicates how much to increase the contrast (0 is none; 3 is typical; 20 is pushing it); mid-point indicates where midtones fall in the resultant image (0 is white; 50 is middle-gray; 100 is black).  Set sharpen to MagickTrue to increase the image contrast otherwise the contrast is reduced.</p>
+
+<p>The format of the MagickSigmoidalContrastImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSigmoidalContrastImage(MagickWand *wand,
+    const MagickBooleanType sharpen,const double contrast,
+    const double midpoint)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>sharpen</h4>
+<p>Increase or decrease image contrast.</p>
+
+<h4>contrast</h4>
+<p>control the "shoulder" of the contast curve.</p>
+
+<h4>midpoint</h4>
+<p>control the "toe" of the contast curve.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSigmoidalContrastImageChannel">MagickSigmoidalContrastImageChannel</a></h2>
+</div>
+
+<p>MagickSigmoidalContrastImageChannel() adjusts the contrast of an image channel with a non-linear sigmoidal contrast algorithm.  Increase the contrast of the image using a sigmoidal transfer function without saturating highlights or shadows.  Contrast indicates how much to increase the contrast (0 is none; 3 is typical; 20 is pushing it); mid-point indicates where midtones fall in the resultant image (0 is white; 50 is middle-gray; 100 is black).  Set sharpen to MagickTrue to increase the image contrast otherwise the contrast is reduced.</p>
+
+<p>The format of the MagickSigmoidalContrastImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSigmoidalContrastImageChannel(MagickWand *wand,
+    const ChannelType channel,const MagickBooleanType sharpen,
+    const double alpha,const double beta)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to level: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>sharpen</h4>
+<p>Increase or decrease image contrast.</p>
+
+<h4>alpha</h4>
+<p>control the "shoulder" of the contast curve.</p>
+
+<h4>beta</h4>
+<p>control the "toe" of the contast curve.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSolarizeImage">MagickSolarizeImage</a></h2>
+</div>
+
+<p>MagickSolarizeImage() applies a special effect to the image, similar to the effect achieved in a photo darkroom by selectively exposing areas of photo sensitive paper to light.  Threshold ranges from 0 to QuantumRange and is a measure of the extent of the solarization.</p>
+
+<p>The format of the MagickSolarizeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSolarizeImage(MagickWand *wand,
+    const double threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>threshold</h4>
+<p>Define the extent of the solarization.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSpliceImage">MagickSpliceImage</a></h2>
+</div>
+
+<p>MagickSpliceImage() splices a solid color intop the image.</p>
+
+<p>The format of the MagickSpliceImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSpliceImage(MagickWand *wand,
+    const unsigned long width,const unsigned long height,const long x,
+    const long y)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>width</h4>
+<p>The region width.</p>
+
+<h4>height</h4>
+<p>The region height.</p>
+
+<h4>x</h4>
+<p>The region x offset.</p>
+
+<h4>y</h4>
+<p>The region y offset.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickSpreadImage">MagickSpreadImage</a></h2>
+</div>
+
+<p>MagickSpreadImage() is a special effects method that randomly displaces each pixel in a block defined by the radius parameter.</p>
+
+<p>The format of the MagickSpreadImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSpreadImage(MagickWand *wand,const double radius)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>Choose a random pixel in a neighborhood of this extent.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSteganoImage">MagickSteganoImage</a></h2>
+</div>
+
+<p>MagickSteganoImage() hides a digital watermark within the image. Recover the hidden watermark later to prove that the authenticity of an image.  Offset defines the start position within the image to hide the watermark.</p>
+
+<p>The format of the MagickSteganoImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickSteganoImage(MagickWand *wand,
+    const MagickWand *watermark_wand,const long offset)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>watermark_wand</h4>
+<p>The watermark wand.</p>
+
+<h4>offset</h4>
+<p>Start hiding at this offset into the image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickStereoImage">MagickStereoImage</a></h2>
+</div>
+
+<p>MagickStereoImage() composites two images and produces a single image that is the composite of a left and right image of a stereo pair</p>
+
+<p>The format of the MagickStereoImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickStereoImage(MagickWand *wand,
+    const MagickWand *offset_wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>offset_wand</h4>
+<p>Another image wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickStripImage">MagickStripImage</a></h2>
+</div>
+
+<p>MagickStripImage() strips an image of all profiles and comments.</p>
+
+<p>The format of the MagickStripImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickStripImage(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSwirlImage">MagickSwirlImage</a></h2>
+</div>
+
+<p>MagickSwirlImage() swirls the pixels about the center of the image, where degrees indicates the sweep of the arc through which each pixel is moved. You get a more dramatic effect as the degrees move from 1 to 360.</p>
+
+<p>The format of the MagickSwirlImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickSwirlImage(MagickWand *wand,const double degrees)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>degrees</h4>
+<p>Define the tightness of the swirling effect.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickTextureImage">MagickTextureImage</a></h2>
+</div>
+
+<p>MagickTextureImage() repeatedly tiles the texture image across and down the image canvas.</p>
+
+<p>The format of the MagickTextureImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickTextureImage(MagickWand *wand,
+    const MagickWand *texture_wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>texture_wand</h4>
+<p>The texture wand</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickThresholdImage">MagickThresholdImage</a></h2>
+</div>
+
+<p>MagickThresholdImage() changes the value of individual pixels based on the intensity of each pixel compared to threshold.  The result is a high-contrast, two color image.</p>
+
+<p>The format of the MagickThresholdImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickThresholdImage(MagickWand *wand,
+    const double threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>threshold</h4>
+<p>Define the threshold value.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickThresholdImageChannel">MagickThresholdImageChannel</a></h2>
+</div>
+
+<p>MagickThresholdImageChannel() changes the value of individual pixel component based on the intensity of each pixel compared to threshold.  The result is a high-contrast, two color image.</p>
+
+<p>The format of the MagickThresholdImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickThresholdImageChannel(MagickWand *wand,
+    const ChannelType channel,const double threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>The channel.</p>
+
+<h4>threshold</h4>
+<p>Define the threshold value.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickThumbnailImage">MagickThumbnailImage</a></h2>
+</div>
+
+<p>MagickThumbnailImage()  changes the size of an image to the given dimensions and removes any associated profiles.  The goal is to produce small low cost thumbnail images suited for display on the Web.</p>
+
+<p>The format of the MagickThumbnailImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickThumbnailImage(MagickWand *wand,
+    const unsigned long columns,const unsigned long rows)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>columns</h4>
+<p>The number of columns in the scaled image.</p>
+
+<h4>rows</h4>
+<p>The number of rows in the scaled image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickTintImage">MagickTintImage</a></h2>
+</div>
+
+<p>MagickTintImage() applies a color vector to each pixel in the image.  The length of the vector is 0 for black and white and at its maximum for the midtones.  The vector weighting function is f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).</p>
+
+<p>The format of the MagickTintImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickTintImage(MagickWand *wand,
+    const PixelWand *tint,const PixelWand *opacity)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>tint</h4>
+<p>The tint pixel wand.</p>
+
+<h4>opacity</h4>
+<p>The opacity pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickTransformImage">MagickTransformImage</a></h2>
+</div>
+
+<p>MagickTransformImage() is a convenience method that behaves like MagickResizeImage() or MagickCropImage() but accepts scaling and/or cropping information as a region geometry specification.  If the operation fails, the original image handle is returned.</p>
+
+<p>The format of the MagickTransformImage method is:</p>
+
+<pre class="code">
+  MagickWand *MagickTransformImage(MagickWand *wand,const char *crop,
+    const char *geometry)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>crop</h4>
+<p>A crop geometry string.  This geometry defines a subregion of the image to crop.</p>
+
+<h4>geometry</h4>
+<p>An image geometry string.  This geometry defines the final size of the image.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickTrimImage">MagickTrimImage</a></h2>
+</div>
+
+<p>MagickTrimImage() remove edges that are the background color from the image.</p>
+
+<p>The format of the MagickTrimImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickTrimImage(MagickWand *wand,const double fuzz)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>fuzz</h4>
+<p>By default target must match a particular pixel color exactly.  However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same.  For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickUnsharpMaskImage">MagickUnsharpMaskImage</a></h2>
+</div>
+
+<p>MagickUnsharpMaskImage() sharpens an image.  We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma.  Use a radius of 0 and UnsharpMaskImage() selects a suitable radius for you.</p>
+
+<p>The format of the MagickUnsharpMaskImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickUnsharpMaskImage(MagickWand *wand,
+    const double radius,const double sigma,const double amount,
+    const double threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<h4>amount</h4>
+<p>The percentage of the difference between the original and the blur image that is added back into the original.</p>
+
+<h4>threshold</h4>
+<p>The threshold in pixels needed to apply the diffence amount.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickUnsharpMaskImageChannel">MagickUnsharpMaskImageChannel</a></h2>
+</div>
+
+<p>MagickUnsharpMaskImageChannel() sharpens one or more image channels.  We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma).  For reasonable results, radius should be larger than sigma.  Use a radius of 0 and UnsharpMaskImage() selects a suitable radius for you.</p>
+
+<p>The format of the MagickUnsharpMaskImageChannel method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickUnsharpMaskImageChannel(MagickWand *wand,
+    const ChannelType channel,const double radius,const double sigma,
+    const double amount,const double threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>channel</h4>
+<p>Identify which channel to extract: RedChannel, GreenChannel, BlueChannel, OpacityChannel, CyanChannel, MagentaChannel, YellowChannel, BlackChannel, or IndexChannel.</p>
+
+<h4>radius</h4>
+<p>The radius of the Gaussian, in pixels, not counting the center pixel.</p>
+
+<h4>sigma</h4>
+<p>The standard deviation of the Gaussian, in pixels.</p>
+
+<h4>amount</h4>
+<p>The percentage of the difference between the original and the blur image that is added back into the original.</p>
+
+<h4>threshold</h4>
+<p>The threshold in pixels needed to apply the diffence amount.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickWaveImage">MagickWaveImage</a></h2>
+</div>
+
+<p>MagickWaveImage()  creates a "ripple" effect in the image by shifting the pixels vertically along a sine wave whose amplitude and wavelength is specified by the given parameters.</p>
+
+<p>The format of the MagickWaveImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickWaveImage(MagickWand *wand,const double amplitude,
+    const double wave_length)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>amplitude, wave_length</h4>
+<p>Define the amplitude and wave length of the sine wave.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickWhiteThresholdImage">MagickWhiteThresholdImage</a></h2>
+</div>
+
+<p>MagickWhiteThresholdImage() is like ThresholdImage() but  forces all pixels above the threshold into white while leaving all pixels below the threshold unchanged.</p>
+
+<p>The format of the MagickWhiteThresholdImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickWhiteThresholdImage(MagickWand *wand,
+    const PixelWand *threshold)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>threshold</h4>
+<p>The pixel wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickWriteImage">MagickWriteImage</a></h2>
+</div>
+
+<p>MagickWriteImage() writes an image to the specified filename.  If the filename parameter is NULL, the image is written to the filename set by MagickReadImage() or MagickSetImageFilename().</p>
+
+<p>The format of the MagickWriteImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickWriteImage(MagickWand *wand,
+    const char *filename)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>filename</h4>
+<p>The image filename.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickWriteImageFile">MagickWriteImageFile</a></h2>
+</div>
+
+<p>MagickWriteImageFile() writes an image to an open file descriptor.</p>
+
+<p>The format of the MagickWriteImageFile method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickWriteImageFile(MagickWand *wand,FILE *file)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>file</h4>
+<p>The file descriptor.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickWriteImages">MagickWriteImages</a></h2>
+</div>
+
+<p>MagickWriteImages() writes an image or image sequence.</p>
+
+<p>The format of the MagickWriteImages method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickWriteImages(MagickWand *wand,
+    const char *filename,const MagickBooleanType adjoin)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>filename</h4>
+<p>The image filename.</p>
+
+<h4>adjoin</h4>
+<p>join images into a single multi-image file.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickWriteImagesFile">MagickWriteImagesFile</a></h2>
+</div>
+
+<p>MagickWriteImagesFile() writes an image sequence to an open file descriptor.</p>
+
+<p>The format of the MagickWriteImagesFile method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickWriteImagesFile(MagickWand *wand,FILE *file)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<h4>file</h4>
+<p>The file descriptor.</p>
+
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="577694759">Discourse Server</a> |
+    <a href="../../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="579112406">Image Gallery</a> |
+    <a href="http://redux.imagemagick.org/MagickStudio/scripts/MagickStudio.cgi" target="972125315">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+.TH BPLAY 1 "20 September 1999"
+.SH NAME
+bplay, brec \- buffered sound recording/playing
+.SH SYNOPSIS
+.B bplay
+[\-d device] [\-B buffersize] [\-S] [\-s speed] [\-b bits] [[\-t secs] | [\-T samples]]
+[[\-j secs] | [\-J samples]] [\-D level] [file]
+.sp
+.B brec
+[\-d device] [\-B buffersize] [\-S] [\-s speed] [\-b bits] [[\-t secs]
+| [\-T samples]] [\-r|\-v|\-w] [\-D level] [file]
+.SH DESCRIPTION
+.B bplay
+copies data from the named sound file (or the standard input if no filename
+is given) to the audio device.
+.PP
+.B brec
+copies data from the audio device to the named sound file (or the
+standard output if no filename is present).
+.PP
+These programs are intended to be drop\-in replacements for the
+.B vplay
+and
+.B vrec
+programs by Michael Beck (beck@informatik.hu-berlin.de).
+.SS OPTIONS
+.TP
+.I "\-B buffersize"
+Use the supplied audio buffer size instead of the default.
+.TP
+.I "\-d device"
+Use the supplied audio device instead of the default.
+.TP
+.I "\-S"
+Sound file is stereo.
+.TP
+.I "\-s speed"
+The speed in samples per second.
+.TP
+.I "\-b bits"
+The number of bits per sample. Only 8 and 16 are currently supported.
+.TP
+.I "\-t secs"
+The number of seconds to be played or recorded.
+.TP
+.I "\-T samples"
+The number of samples to be played or recorded.
+.TP
+.I "\-j secs"
+When playing, the number of seconds to skip at the beginning of the input before
+playing.
+.TP
+.I "\-J samples"
+When playing, the number of samples to skip at the beginning of the input before
+playing.
+.TP
+.I "\-r"
+When recording, write raw sound file.
+.TP
+.I "\-v"
+When recording, write Creative Labs VOC sound file.
+.TP
+.I "\-w"
+When recording write Microsoft Wave sound file. Note that the WAVE file format is limited to 4GiB filesize. Recording more data is possible, but the length info won't be consistent.
+.TP
+.I "\-q"
+Quiet mode.  No messages are displayed.
+.TP
+.I "\-D level"
+Print debug information to stderr. Debug level ranges from 0 to 2,
+where 0 is no debug information.
+.SH FILES
+.I /dev/dsp
+The audio device.
+.SH BUGS
+.PP
+The \-t, \-T, \-j and \-J options may do strange things when playing VOC
+files.
+.PP
+There are limitations on recording VOC format files - specifically VOC
+files are only recorded in the 1.20 version of the format, which some
+player programs may choke on. There is also currently a limit of around
+16M on the size of a VOC file which will be recorded. This is probably
+not a problem since I don't think anybody really uses VOC files anymore.
+.PP
+This program prefers to run setuid root. This is because it wants to use
+setpriority() to run at the highest possible priority, and also locks
+down the buffers it uses to avoid them being swapped out.
+.SH AUTHOR
+David Monro (davidm@amberdata.demon.co.uk or davidm@cs.usyd.edu.au)
+.PP
+The option parsing code was originally taken from
+.B vplay
+to maintain
+compatability.

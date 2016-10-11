@@ -1,0 +1,8 @@
+::sysinit:/etc/init.d/rc
+
+::respawn:/sbin/getty -L 115200 ttyAM0 vt102
+::respawn:/sbin/getty -L 115200 ttyAM1 vt102
+::respawn:/sbin/getty 38400 tty1
+
+::shutdown:/etc/init.d/reboot
+::ctrlaltdel:/sbin/reboot

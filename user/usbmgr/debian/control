@@ -1,0 +1,21 @@
+Source: usbmgr
+Section: admin
+Priority: extra
+Maintainer: Rudy Godoy <rudy@kernel-panik.org>
+Build-Depends: cdbs (>> 0.4.27), debhelper (>> 4.1.0)
+Standards-Version: 3.6.2.1
+
+Package: usbmgr
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: hotplug
+Description: user-mode daemon which loads/unloads USB kernel modules
+ When USB devices connect into or disconnect from a USB hub,
+ the usbmgr works as follows, according to configuration:
+ .
+   a) Load and unload Linux kernel modules.
+   b) Execute scripts to setup USB devices.
+ .
+ usbmgr is available under linux kernels having "/proc/bus/usb" and it is
+ suitable for specific needs regarding USB devices. For wider and
+ modern support of plugable devices you may want to use hotplug.

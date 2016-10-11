@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# udhcpc script edited by Tim Riker <Tim@Rikers.org>
+
+[ -z "$1" ] && echo "Error: should be called from udhcpc" && exit 1
+
+RESOLV_CONF="/etc/resolv.conf"
+[ -n "$broadcast" ] && BROADCAST="broadcast $broadcast"
+[ -n "$subnet" ] && NETMASK="netmask $subnet"
+
+case "$1" in
+	leasefail)
+		if [ -x /sbin/zcip ] ; then
+			killall zcip
+			route add default dev $interface metric 99
+			/sbin/zcip ${interface} /etc/zcip.script
+		fi
+		;;
+
+	deconfig)
+		/sbin/ifconfig $interface 0.0.0.0
+		echo -n > $RESOLV_CONF
+		;;
+
+	renew|bound)
+		/sbin/ifconfig $interface $ip $BROADCAST $NETMASK
+
+		if [ -n "$router" ] ; then
+			while route del default gw 0.0.0.0 dev $interface 2> /dev/null ; do
+				:
+			done
+
+			metric=0
+			for i in $router ; do
+				route add default gw $i dev $interface metric $((metric++))
+			done
+		fi
+
+		route del -net 169.254.0.0 netmask 255.255.0.0 dev $interface 2> /dev/null;
+		route add -net 169.254.0.0 netmask 255.255.0.0 dev $interface metric 99
+
+		# Only replace resolv.conf is we have at least one DNS server
+		if [ -n "$dns" ]; then
+			echo -n > $RESOLV_CONF
+			[ -n "$domain" ] && echo search $domain >> $RESOLV_CONF
+			for i in $dns ; do
+				echo nameserver $i >> $RESOLV_CONF
+			done
+		fi
+		;;
+esac
+
+exit 0

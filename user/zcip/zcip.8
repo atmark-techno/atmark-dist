@@ -1,0 +1,56 @@
+.TH ZCIP 8 "13 March 2002" "" ""
+.SH NAME
+zcip \- zero configure network interface 
+.SH SYNOPSIS
+.B "zcip [-hsv] [-i interface]"
+.br
+.SH DESCRIPTION
+.B zcip
+does the ad-hoc link-local IPv4 auto-configuration trick, as
+described in the IETF Internet Draft 'Dynamic Configuration of IPv4
+Link-Local Addresses'.
+.SH OPTIONS
+.TP
+.B "[--help]", "[-h]"
+Provide brief help and usage information, and exit.
+.TP
+.B "[--syslog]", "[-s]"
+Send all information to syslog, instead of standard output
+.TP
+.B "[--version]", "[-v]"
+Provide version information, and exit
+.TP
+.B "[-i interface_name]", "[--interface=interface_name]
+Specifies the interface to configure. If this option is not used, zcip
+defaults to the eth0 device.
+.TP
+.B "[-r]", "[--randseed]
+Seeds the random number generator that is used to create the interface's 
+new IP address with a true random number rather than the MAC address of 
+the device.
+.TP
+.B "[-d]", "[--default]
+Add a default route to this interface in addition to the standard network
+route.
+.SH FILES
+None yet, but maybe a configuration file will be added. We probably
+also need one or more files to store the \"last known good\" zeroconf
+IP for each interface.
+.SH BUGS
+zcip currently assumes that the target interface is down and
+reconfigures it. The IETF draft seems to suggest using multi-homing,
+which we don't do yet.
+.LP
+There should be a configuration option to work the same way Windows
+2000 does, so we don't get beaten up so much.
+.LP
+Doesn't work if packet filtering is not enabled in the kernel
+(CONFIG_FILTER). You get infinite looping through a lot of IPs in a hurry.
+.SH SEE ALSO
+dhcpcd(8), pump(8)
+.SH AUTHORS
+Sebastian Kuzminsky wrote zcip.
+.br
+Brad Hards (bradh@frogmouth.net) wrote this manpage and did  minor
+hacks on zcip.
+.br

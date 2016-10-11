@@ -1,0 +1,6 @@
+#!/bin/sh
+
+logger -p user.info "thermal state passive."
+logger -p user.info "start 3G connect."
+
+ifup umts0

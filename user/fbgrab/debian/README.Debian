@@ -1,0 +1,7 @@
+fbgrab for Debian
+-----------------
+
+ Make sure you have framebuffer support enabled in the kernel.
+ See <http://www.tldp.org/HOWTO/Framebuffer-HOWTO.html> for details.
+
+ -- Florian Ernst <florian@debian.org>,  Tue,  9 Aug 2005 15:57:16 +0200

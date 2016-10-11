@@ -1,0 +1,267 @@
+	USB Manager(usbmgr) 1.0.0
+
+			Shuu Yamaguchi <shuu@dotAster.com>
+			Special Helper: Philipp Thomas
+
+When USB devices connect to or disconnect from a USB hub,
+the usbmgr works as the following according to configuration.
+	a) It loads and unloads files Linux kernel modules.
+	b) It execute file to setup USB devices.
+
+[Contents]
+---------------------------------
+1 Requirements
+2 Files
+  2.1 Binaries
+  2.2 Configuration
+3 How to setup
+  3.1 How to build
+  3.2 How to install
+  3.3 How to run
+  3.4 How to write usbmgr.conf
+  3.5 How to write preload.conf
+  3.6 How to write script file
+---------------------------------
+
+1 Requirements
+	* Requirements for kernel USB support configuration.
+		- USB support
+		- Preliminary USB device filesystem
+		- kernel modules you need
+	* Others
+		- You have to add the configuration of your USB devices
+		  to usbmgr.conf.
+
+	If all of USB option you want are built in, usbmgr has no job.
+	"Preliminary USB device filesystem" can't be a module.
+	So make it built into the kernel.
+
+2 Files
+2.1 Binaries
+	* usbmgr
+	    Daemon to load/unload some modules
+	    Usage: usbmgr [-Vdnph] [-D #n] [-c file] [-t time]	
+		-V: print version
+		-d: debug & no daemon mode
+		-n: no daemon mode
+		-p: no pid file
+		-h: print usage
+		-b: no beep
+		-D: debug mode
+			#n: debug number
+		-c: specify configuration file
+			file: configuration file
+		-t: specify polling time
+			time: micro second
+	* dump_usbdev
+	    Command to aid in configuring connected USB devices
+	    Usage: dump_usbdev [-Vvds] [file]
+		-V: print version
+		-v: verbose 
+		-d: print device data in detail
+		-s: print simply
+		file: format as struct "usb_device_descriptor" in linux/usb.h
+	* update_usbdb
+	    Command to update the data which usbmgr uses.
+	    Usage: update_usbdb [-dfhs]
+		-d: debug mode
+		-f: force to create data
+		-h: print usage
+		-s: output message using syslogd
+	All files are installed into /usr/sbin.
+
+2.2 Configuration 
+	There are 2 kinds in them. One is original data, another is actually
+	used by usbmgr.  Usbmgr(update_usbdb) creates simple data file which
+	has only module names from original data file(it named usbmgr.conf).
+	* usbmgr.conf
+	   It is main configration file which have many data to load and
+	   unload kernel modules. For how to write data, please look at
+	   [3.4 How to write usbmgr.conf].
+	* preload.conf
+	   Module names loaded by usbmgr when it starts.
+	   They are in this.
+	* host
+	   Module names of USB host controller in this. update_usbdb create
+	   this according to host line in usbmgr.conf.
+	* nobeep
+	   when usbmgr starts, usbmgr doesn't make a beep if this exists
+	* vendor[/vendor-ID[/product-ID]/module]
+	* class[/class-ID[/subclass-ID[/protocol-ID]]/module]
+	* vendor[/vendor-ID[/product-ID]/script]
+	* class[/class-ID[/subclass-ID[/protocol-ID]]/script]
+	   Update_usbdb creates these in the basis of usbmgr.conf.
+	   The file "module" has needed module names.
+	   The file "script" has file name to execute after loading or
+	    unloading modules.
+	All files are under /etc/usbmgr.
+
+3 How to
+3.1 How to build
+	1) build the binaries from sources.
+		$ configure --sbindir=/sbin --sysconfdir=/etc
+		$ make
+
+3.2 How to install
+	1) Become root user
+		$ su
+	2) Install files 
+		# make install
+	3) If you'd like to use a USB mouse on X,
+		you should install preload.conf.
+		# make use_mouse
+
+3.3 How to run
+	RC script file "rcscript" is able to be used on any distribution.
+	[Redhat series]
+		If the directory "/etc/rc.d/init.d" exists,"make install"
+		copies "rcscript" into "/etc/rc.d/init.d/usbmgr" and link to
+		"/etc/rc.d/rc5.d/S46usbmgr".
+	[Others]
+		You should copy "scripts/rcscript" to a directory and modify
+		a RC file(ex.rc.local) to call "rcscript".
+	And then You run "/etc/rc.d/init.d/usbmgr start" as user root
+	or reboot your machine.
+
+3.4 How to write usbmgr.conf
+	* Comments start with the '#' character, and end in a line break.
+	* The separators are one or more space or tab characters.
+	* Argument must follow keywords. 
+	* Two or more arguments are continued with ","(comma).
+
+    <keyword>
+	"host" <host-controller>
+		When USB host controller is a module, it is specified 
+		after "host". You can select from "usb-uhci" , "usb-ohci"
+		or "uhci".
+
+	"beep" <on|off>
+		You can select whether "off" or "on". If you select "off",
+		usbmgr doesn't make a beep.
+
+	"vendor" <vendor-id>
+		<vendor-id> means the vendor ID of USB device.
+
+	"procuct" <product-id>
+		<product-id> means the product ID of USB device.
+
+	"class" <class-id>
+		<class-id> means the class ID of USB device.
+
+	"subclass" <subclass-id>
+		<subclass-id> means the subclass ID of USB device.
+
+	"protocol" <protocol-id>
+		<protocol-id> means the protocol ID of USB device.
+
+	"module" <module_name> [, <module_name> [...]]
+		<module_name> means a name of the kernel module. 
+		If there are two and more modules , <module_name> is added
+		after ","(comma). 
+		If "none" as <module_name> is specified , the usbmgr
+		 loads nothing.
+		The "module" keywoard must be the last keyword in the
+		configuration block for a given USB device.
+
+	"script" <script_name>
+		<script_name> means a script name.
+		<script_name> is executed after modules are loaded or removed.
+		When modules are loaded, <script_name> is executed with the
+		first argument "start". Also when modules are removed, 
+		<script_name> is executed with the first argument "stop".
+
+	ex) In the case of Let's Note mini(CF-M32)
+-------------------------------------------------------------
+host usb-uhci
+vendor 0x056a product 0x0010 module evdev , mousedev , wacom
+vendor 0x056e product 0x0004 module hid , mousedev
+class 9 module none
+-------------------------------------------------------------
+	1st Line: Specifies the type of the USB Controller. In this case the
+		  Chipset is Intel PIIX4, so "usb-uhci" is specified as
+		  USB controller(UHCI).
+	2nd Line: This is "Graphire" graphic tablet made by Wacom. 
+		  In Japan it's called "FAVO".
+	3rd Line: This is "Cypress USB Mouse" made by Cypress Sem.
+	4th Line: Class 9 means that no module is to be loaded.
+
+[How to write usbmgr.conf using dump_usbdev]
+	dump_usbdev aids you in writing usbmgr.conf. After usbmgr has been
+	started, running dump_usbdev will dump infomation about all
+	attatched devices in a format suitable for usbmgr.conf.
+	If you connect USB devices to your USB HUB, you'll see a line
+	like the following.
+
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+-------------------------------------------------------------
+
+	"class 0x9" means USB HUB. If no USB devices are connected,
+	only the root HUB will appear. Modifying "<module_name>"
+	would make the configuration for this device(HUB) complete.
+	In the case of a HUB, you should change "module_name" to "none"
+	because the HUB driver is included in usbcore.
+
+	After a USB mouse has been connected to the HUB, running 
+	dump_usbdev will give you the following.
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+vendor 0x56e product 0x4 module <module_name>
+-------------------------------------------------------------
+
+	The 2nd line is new. This is the infomation about the USB 
+	mouse. The USB mouse requires the "hid" and "mousedev" drivers.
+	So, "<module>" should be changed to "hid , mousedev".
+
+	So the complete usbmgr.conf would look like this:
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module none
+vendor 0x56e product 0x4 module hid , mousedev
+-------------------------------------------------------------
+
+	You should copy this into /etc/usbmgr/usbmgr.conf,
+	and then run update_usbdb to create the configuration data.
+
+3.5 How to write preload.conf
+	You can write a module name per line. And then You copy it to 
+	/etc/usbmgr directory.
+
+	ex) This is my preload file.
+-------------------------------------------------------------
+hid
+mousedev
+-------------------------------------------------------------
+
+3.6 How to write script file
+	Script file is executed after the modules matched configuration
+	are loaded/unloaded.
+	You can put scripts with executable permission on /etc/usbmgr directory.
+	You can use following environment valiables.
+	"ACTION"
+		You can use the environment "ACTION" to know if modules are
+		loadded or unloaded.
+		"add": modules are loaded
+		"remove": modules are unloaded
+	"DEVICE"
+		The environment "DEVICE" show /proc file for the module.
+	[NOTICE]
+		Don't forget specifing the interpretor.
+	
+	ex)
+-------------------------------------------------------------
+#!/bin/sh
+
+case $ACTION in
+add)
+	echo start > /tmp/log
+	chmod 666 $DEVICE
+	;;
+remove)
+	echo stop > /tmp/log
+	chmod 644 $DEVICE
+	;;
+esac
+-------------------------------------------------------------
+
+If you have any problems, please let me know by E-mail
+(shuu@dotAster.com).

@@ -1,0 +1,344 @@
+# translation of fi.po to Finnish
+# openssh translation
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+# Matti Pöllä <mpo@iki.fi>, 2004-2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: openssh\n"
+"Report-Msgid-Bugs-To: matthew@debian.org\n"
+"POT-Creation-Date: 2006-10-04 22:14+0100\n"
+"PO-Revision-Date: 2005-04-08 22:15+0300\n"
+"Last-Translator: Matti Pöllä <mpo@iki.fi>\n"
+"Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+#, fuzzy
+msgid "Generate new configuration file?"
+msgstr "Luo uusi asetustiedosto"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+#, fuzzy
+msgid ""
+"This version of OpenSSH has a considerably changed configuration file from "
+"the version shipped in Debian 'Potato', which you appear to be upgrading "
+"from. This package can now generate a new configuration file (/etc/ssh/sshd."
+"config), which will work with the new server version, but will not contain "
+"any customisations you made with the old version."
+msgstr ""
+"Tämän OpenSSH-version käyttämän asetustiedoston muoto poikkeaa \n"
+"huomattavasti Debian \"Potato\":n mukana toimitetusta versiosta, jota olet \n"
+"päivittämässä. Uusi asetustiedosto (/etc/ssh/sshd.config) voidaan \n"
+"luoda nyt. Uudet asetukset toimivat uuden palvelinversion kanssa, mutta \n"
+"vanhaan versioon itse tehdyt mukautukset menetetään."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+msgid ""
+"Please note that this new configuration file will set the value of "
+"'PermitRootLogin' to yes (meaning that anyone knowing the root password can "
+"ssh directly in as root). It is the opinion of the maintainer that this is "
+"the correct default (see README.Debian for more details), but you can always "
+"edit sshd_config and set it to no if you wish."
+msgstr ""
+"Huomaa, että uudessa asetustiedostossa muuttujalla \"PermitRootLogin\" \n"
+"on arvo \"yes\" (tarkoittaen, että kuka tahansa pääkäyttäjän salasanan "
+"tietävä \n"
+"voi kirjautua suoraan ssh:n avulla pääkäyttäjänä). Paketin ylläpitäjän "
+"mielestä \n"
+"tämä on sopiva oletusarvo (lisätietoa tiedostossa README.Debian), mutta "
+"tämän \n"
+"voi halutessaan muuttaa arvoon \"no\" muokkaamalla tiedostoa sshd_config."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+#, fuzzy
+msgid ""
+"It is strongly recommended that you let this package generate a new "
+"configuration file now."
+msgstr "Uuden asetustiedoston luominen on erittäin suositeltavaa."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:2001
+msgid "Do you want to continue (and risk killing active ssh sessions)?"
+msgstr "Haluatko jatkaa (ja mahdollisesti lopettaa aktiiviset ssh-istunnot)?"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:2001
+msgid ""
+"The version of /etc/init.d/ssh that you have installed, is likely to kill "
+"all running sshd instances.  If you are doing this upgrade via an ssh "
+"session, that would be a Bad Thing(tm)."
+msgstr ""
+"Asennettu versio tiedostosta /etc/init.d/ssh lopettaa todennäköisesti "
+"kaikki \n"
+"käynnissä olevat sshd-prosessit. Jos teet tätä päivitystä ssh-yhteyden "
+"yli, \n"
+"tämä on Huono Juttu(tm)."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:2001
+msgid ""
+"You can fix this by adding \"--pidfile /var/run/sshd.pid\" to the start-stop-"
+"daemon line in the stop section of the file."
+msgstr ""
+"Voit korjata tämän lisäämällä \"--pidfile /var/run/sshd.pid\" tiedoston \n"
+"stop-osion start-stop-daemon -riville."
+
+#. Type: note
+#. Description
+#: ../openssh-server.templates.master:3001
+msgid "Warning: you must create a new host key"
+msgstr "Varoitus: sinun tulee luoda uusi konekohtainen avain (host key)"
+
+#. Type: note
+#. Description
+#: ../openssh-server.templates.master:3001
+#, fuzzy
+msgid ""
+"There is an old /etc/ssh/ssh_host_key, which is IDEA encrypted. OpenSSH can "
+"not handle this host key file, and the ssh-keygen utility from the old (non-"
+"free) SSH installation does not appear to be available."
+msgstr ""
+"Olemassa oleva tiedosto /etc/ssh/ssh_host_key on salattu \n"
+"IDEA-algoritmilla. OpenSSH ei voi käsitellä tätä konekohtaista "
+"avaintiedostoa, \n"
+"eikä vanhan (ei-vapaan) SSH-asennuksen ssh-keygen-ohjelmaa löydy."
+
+#. Type: note
+#. Description
+#: ../openssh-server.templates.master:3001
+msgid "You will need to generate a new host key."
+msgstr "Uuden konekohtaisen avaimen (host key) luominen on tarpeen."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:4001
+msgid "Disable challenge-response authentication?"
+msgstr "Poista käytöstä haaste-vaste -autentikointi"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:4001
+msgid ""
+"Password authentication appears to be disabled in your current OpenSSH "
+"server configuration. In order to prevent users from logging in using "
+"passwords (perhaps using only public key authentication instead) with recent "
+"versions of OpenSSH, you must disable challenge-response authentication, or "
+"else ensure that your PAM configuration does not allow Unix password file "
+"authentication."
+msgstr ""
+"Käytössä olevassa OpenSSH-konfiguraatiossa salasana-autentikointi\n"
+"näyttää olevan poissa käytöstä. Estääksesi kirjautumiset salasanaa\n"
+"käyttäen (esim. salliaksesi kirjautumisen vain julkista avainta\n"
+"käyttäen), uusissa OpenSSH-versioissa haaste-vaste -autentikointi\n"
+"tulee poistaa käytöstä, tai muutoin varmistaa, että PAM-konfiguraatio\n"
+"ei salli Unix-salasanatiedostoon perustuvaa autentikointia."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:4001
+msgid ""
+"If you disable challenge-response authentication, then users will not be "
+"able to log in using passwords. If you leave it enabled (the default "
+"answer), then the 'PasswordAuthentication no' option will have no useful "
+"effect unless you also adjust your PAM configuration in /etc/pam.d/ssh."
+msgstr ""
+"Jos poistat käytöstä haaste-vaste -pohjaisen autentikoinnin, käyttäjät\n"
+"eivät voi kirjautua salasanaa käyttäen. Jos jätät sen päälle (oletus),\n"
+"asetuksella \"PasswordAuthentication no\" ei ole vaikutusta, ellet muuta\n"
+"myös PAM-asetuksia tiedostossa /etc/pam.d/ssh."
+
+#~ msgid "Warning: telnetd is installed --- probably not a good idea"
+#~ msgstr "Varoitus: telnetd on asennettu --- tämä ei liene hyvä idea"
+
+#~ msgid ""
+#~ "I'd advise you to either remove the telnetd package (if you don't "
+#~ "actually need to offer telnet access) or install telnetd-ssl so that "
+#~ "there is at least some chance that telnet sessions will not be sending "
+#~ "unencrypted login/password and session information over the network."
+#~ msgstr ""
+#~ "On suositeltavaa joko poistaa telnetd-paketti (jos telnet-yhteyksien "
+#~ "tarjoaminen \n"
+#~ "ei ole tarpeellista) tai asentaa paketti telnetd-ssl, jotta "
+#~ "salaamattomia \n"
+#~ "käyttäjätunnuksia/salasanoja ja istunnon tietoja ei lähetettäisi verkon "
+#~ "yli."
+
+#~ msgid "Warning: rsh-server is installed --- probably not a good idea"
+#~ msgstr "Varoitus: rsh-palvelin on asennettu --- tämä ei liene hyvä idea"
+
+#~ msgid ""
+#~ "having rsh-server installed undermines the security that you were "
+#~ "probably wanting to obtain by installing ssh.  I'd advise you to remove "
+#~ "that package."
+#~ msgstr ""
+#~ "Rsh-palvelimen pitäminen vie pohjan turvallisuudelta, jota "
+#~ "todennäköisesti \n"
+#~ "halusit asentamalla ssh:n. Paketin poistaminen on suositeltavaa."
+
+#~ msgid "Do you want ssh-keysign to be installed SUID root?"
+#~ msgstr "Haluatko, että ssh-keysign asennetaan SUID root -oikeuksin?"
+
+#~ msgid ""
+#~ "You have the option of installing the ssh-keysign helper with the SUID "
+#~ "bit set."
+#~ msgstr "Voit valinnaisesti asentaa ssh-keysign-apuohjelman SUID-bitillä."
+
+#~ msgid ""
+#~ "If you make ssh-keysign SUID, you will be able to use SSH's Protocol 2 "
+#~ "host-based authentication."
+#~ msgstr ""
+#~ "Jos SUID on päällä, voit käyttää SSH-protokollan version 2 "
+#~ "konekohtaista \n"
+#~ "todennusta."
+
+#~ msgid ""
+#~ "If in doubt, I suggest you install it with SUID.  If it causes problems "
+#~ "you can change your mind later by running:   dpkg-reconfigure ssh"
+#~ msgstr ""
+#~ "Jos olet epävarma, SUID-bitin käyttämistä suositellaan. Jos se "
+#~ "aiheuttaa \n"
+#~ "ongelmia, voit myöhemmin muuttaa mielesi komennolla \"dpkg-reconfigure ssh"
+#~ "\"."
+
+#~ msgid "Allow SSH protocol 2 only"
+#~ msgstr "Salli ainoastaan SSH-protokollan versio 2"
+
+#~ msgid ""
+#~ "This version of OpenSSH supports version 2 of the ssh protocol, which is "
+#~ "much more secure.  Disabling ssh 1 is encouraged, however this will slow "
+#~ "things down on low end machines and might prevent older clients from "
+#~ "connecting (the ssh client shipped with \"potato\" is affected)."
+#~ msgstr ""
+#~ "Tämä OpenSSH:n versio tukee ssh-protokollan versiota 2, joka on "
+#~ "huomattavasti \n"
+#~ "turvallisempi. Protokollan ykkösversion käytöstä poistamista "
+#~ "suositellaan, mutta \n"
+#~ "se voi aiheuttaa toiminnan hitautta pienitehoisissa koneissa ja estää "
+#~ "yhteyden \n"
+#~ "ottamisen vanhemmilla asiakasohjelmilla. (Tämä koskee mm. Debian \"potaton"
+#~ "\":n \n"
+#~ "mukana toimitettua ssh-asiakasohjelmaa.)"
+
+#~ msgid ""
+#~ "Also please note that keys used for protocol 1 are different so you will "
+#~ "not be able to use them if you only allow protocol 2 connections."
+#~ msgstr ""
+#~ "Huomaa myös, että version 1 kanssa käytetyt avaimet ovat erilaisia, "
+#~ "joten \n"
+#~ "et voi käyttää niitä, jos sallit yhteydet vain versiolla 2."
+
+#~ msgid ""
+#~ "If you later change your mind about this setting, README.Debian has "
+#~ "instructions on what to do to your sshd_config file."
+#~ msgstr ""
+#~ "Jos muutat myöhemmin mielesi tämän asetuksen suhteen, tiedostossa \n"
+#~ "README.Debian on ohjeet tiedoston sshd_config muokkaamiseen."
+
+#~ msgid "ssh2 keys merged in configuration files"
+#~ msgstr "ssh2-avaimet yhdistetty asetustiedostoissa"
+
+#~ msgid ""
+#~ "As of version 3 OpenSSH no longer uses separate files for ssh1 and ssh2 "
+#~ "keys. This means the authorized_keys2 and known_hosts2 files are no "
+#~ "longer needed. They will still be read in order to maintain backwards "
+#~ "compatibility"
+#~ msgstr ""
+#~ "OpenSSH:n versio 3 ei enää käytä erillisiä tiedostoja ssh1- ja ssh2-"
+#~ "avaimille. \n"
+#~ "Tästä johtuen tiedostoja authorized_keys2 ja known_hosts2 ei enää "
+#~ "tarvita. \n"
+#~ "Tiedostot silti luetaan, jotta yhteensopivuus vanhempiin versioihin "
+#~ "säilyy."
+
+#~ msgid "NOTE: Forwarding of X11 and Authorization disabled by default."
+#~ msgstr ""
+#~ "HUOMAA: X11:n ja valtuuksien (Authorization) edelleenlähettäminen on \n"
+#~ "oletusarvoisesti pois käytöstä."
+
+#~ msgid ""
+#~ "For security reasons, the Debian version of ssh has ForwardX11 and "
+#~ "ForwardAgent set to ``off'' by default."
+#~ msgstr ""
+#~ "Turvallisuussyistä Debianin ssh:ssa muuttujilla ForwardX11 ja \n"
+#~ "ForwardAgent on oletuksena arvo \"off\"."
+
+#~ msgid ""
+#~ "You can enable it for servers you trust, either in one of the "
+#~ "configuration files, or with the -X command line option."
+#~ msgstr ""
+#~ "Voit sallia sen luotetuille palvelimille joko asetustiedostossa tai\n"
+#~ "komentorivillä käyttämällä -X -valitsinta."
+
+#~ msgid "More details can be found in /usr/share/doc/ssh/README.Debian"
+#~ msgstr "Lisätietoja tiedostossa /usr/share/doc/ssh/README.Debian"
+
+#~ msgid "Do you want to run the sshd server?"
+#~ msgstr "Haluatko ajaa sshd-palvelinta?"
+
+#~ msgid "This package contains both the ssh client, and the sshd server."
+#~ msgstr "Tämä paketti sisältää ssh-asiakasohjelman ja sshd-palvelimen."
+
+#~ msgid ""
+#~ "Normally the sshd Secure Shell Server will be run to allow remote logins "
+#~ "via ssh."
+#~ msgstr ""
+#~ "Normaalisti sshd-palvelinta käytetään ssh-etäyhteyksien tarjoamiseen."
+
+#~ msgid ""
+#~ "If you are only interested in using the ssh client for outbound "
+#~ "connections on this machine, and don't want to log into it at all using "
+#~ "ssh, then you can disable sshd here."
+#~ msgstr ""
+#~ "Jos haluat ottaa ssh-yhteyksiä vain ulos tältä koneelta etkä halua "
+#~ "ottaa \n"
+#~ "tähän koneeseen ssh-yhteyksiä muualta, voit poistaa sshd:n käytöstä."
+
+#~ msgid "Environment options on keys have been deprecated"
+#~ msgstr "Avaimien ympäristövalitsimia ei enää käytetä"
+
+#~ msgid ""
+#~ "This version of OpenSSH disables the environment option for public keys "
+#~ "by default, in order to avoid certain attacks (for example, LD_PRELOAD). "
+#~ "If you are using this option in an authorized_keys file, beware that the "
+#~ "keys in question will no longer work until the option is removed."
+#~ msgstr ""
+#~ "Tässä OpenSSH-versiossa julkisten avaimien ympäristövalitsin on poissa \n"
+#~ "käytöstä, jotta tietynlaisilta hyökkäyksiltä vältyttäisiin (esim. "
+#~ "LD_PRELOAD). \n"
+#~ "Jos käytät tätä valitsinta authorized_keys-tiedostossa, huomioi, että \n"
+#~ "nämä avaimet eivät toimi niin kauan kuin valitsinta ei poisteta."
+
+#~ msgid ""
+#~ "To re-enable this option, set \"PermitUserEnvironment yes\" in /etc/ssh/"
+#~ "sshd_config after the upgrade is complete, taking note of the warning in "
+#~ "the sshd_config(5) manual page."
+#~ msgstr ""
+#~ "Ottaaksesi tämän toiminnon uudelleen käyttöön, lisää tiedostoon \n"
+#~ "/etc/ssh/sshd_config rivi \"PermitUserEnvironment yes\" kun päivitys on "
+#~ "valmis. \n"
+#~ "Huomioi varoitus man-ohjesivuilla sshd_config(5)."

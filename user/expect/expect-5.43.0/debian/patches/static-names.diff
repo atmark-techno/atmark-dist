@@ -1,0 +1,17 @@
+## static-names.patch by Niko Tyni <ntyni@iki.fi>
+##
+## DP: Fixes name of the static library on alpha, mips and mipsel
+## DP: (Closes: #390366)
+
+diff -Naur expect-5.43.orig/configure expect-5.43/configure
+--- expect-5.43.orig/configure	2005-02-08 02:01:27.000000000 +0000
++++ expect-5.43/configure	2006-10-01 20:13:26.000000000 +0000
+@@ -6342,7 +6342,7 @@
+ else
+   ac_tmpdirs='/tmp /var/tmp /usr/tmp'
+ fi
+-for ac_dir in  . $ac_tmpdirs `eval echo $prefix/lib $exec_prefix/lib` ; do
++for ac_dir in  . $ac_tmpdirs ; do
+   test -d $ac_dir || continue
+   test -w $ac_dir || continue # It is less confusing to not echo anything here.
+   (echo 1 > $ac_dir/conftest9012345) 2>/dev/null

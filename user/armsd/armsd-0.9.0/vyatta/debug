@@ -1,0 +1,8 @@
+#!/bin/sh
+
+id=$1
+out=$2
+
+echo debug script invoked: $0 $*
+
+echo "debug script" >$out

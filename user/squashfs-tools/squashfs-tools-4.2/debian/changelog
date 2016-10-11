@@ -1,0 +1,626 @@
+squashfs-tools (1:4.2-5) unstable; urgency=low
+
+  * Marking binary architecture-dependend packages as linux and kfreebsd
+    only.
+  * Using compression level 9 also for binary packages.
+  * Switching to xz compression.
+  * Updating to debhelper version 9.
+  * Updating to standards version 3.9.3.
+  * Updating copyright file to format version 1.0.
+  * Adding patch from Matthieu Castet <matthieu.castet@parrot.com> to
+    make using the Pseudo operations to change the mode/uid/gid of
+    existing files with subdirectories work (Closes: #662616).
+  * Updating mksquashfs manpage (Closes: #661815).
+  * Updating unsquashfs manpage.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 30 Jun 2012 13:48:39 +0200
+
+squashfs-tools (1:4.2-4) unstable; urgency=low
+
+  * Compacting copyright file.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sun, 10 Jul 2011 17:14:11 +0200
+
+squashfs-tools (1:4.2-3) unstable; urgency=low
+
+  * Updating standards version to 3.9.2.
+  * Correcting two typos in the manpages, thanks to Yury V. Zaytsev
+    <yury@shurup.com> (Closes: #627401).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Tue, 24 May 2011 19:00:31 +0200
+
+squashfs-tools (1:4.2-2) unstable; urgency=low
+
+  * Updating kfreebsd.patch, thanks to Jérémy Bobbio <lunar@debian.org>
+    (Closes: #623967).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Thu, 28 Apr 2011 15:32:19 +0200
+
+squashfs-tools (1:4.2-1) unstable; urgency=low
+
+  * Merging upstream version 4.2.
+  * Updating debhelper docs file for new upstream.
+  * Updating year in copyright file.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Thu, 17 Mar 2011 15:04:48 +0100
+
+squashfs-tools (1:4.1-3) unstable; urgency=low
+
+  * Making reference to licenses in copyright distribution neutral.
+  * Improving previous changelog entries.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 22 Jan 2011 21:40:48 +0100
+
+squashfs-tools (1:4.1-2) unstable; urgency=low
+
+  * Updating maintainer and uploaders fields.
+  * Removing vcs fields.
+  * Removing references to my old email address.
+  * Makeing packaging distribution neutral.
+  * Switching to source format 3.0 (quilt).
+  * Updating to debhelper version 8.
+  * Rediffing kfreebsd.patch.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sun, 16 Jan 2011 19:28:31 +0100
+
+squashfs-tools (1:4.1-1) experimental; urgency=low
+
+  * Updating standards version to 3.9.0.
+  * Merging upstream version 4.1.
+  * Updating standards version to 3.9.1.
+  * Removing return.patch, merged upstream.
+  * Removing div-by-zero.patch, merged upstream.
+  * Rediffing cflags.patch.
+  * Adding build-depends to libattr1-dev.
+  * Updating debhelper docs file for new upstream.
+  * Including pseudo-file.example.
+  * Building with xz support (Closes: #594595).
+  * Building with lzo support.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 25 Sep 2010 18:29:29 +0200
+
+squashfs-tools (1:4.0-8) unstable; urgency=low
+
+  * Replacing manpages with simple ones that are actually maintainable.
+  * Sorting dh call in rules to more common order.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sun, 14 Mar 2010 15:56:28 +0100
+
+squashfs-tools (1:4.0-7) unstable; urgency=low
+
+  * Adding explicit source version 1.0 until switch to 3.0.
+  * Updating year in copyright file.
+  * Updating to standards 3.8.4.
+  * Applying patch from Emmet Hikory <persia@ubuntu.com> to build with -
+    marm on arm to avoid using Thumb2 instructions that older kernels
+    don't support.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sun, 21 Feb 2010 18:09:41 +0100
+
+squashfs-tools (1:4.0-6) unstable; urgency=low
+
+  * Adding README.source.
+  * Adding patches from Nicolas Dufresne <nicolas.dufresne@gmail.com> to
+    fix some bugs in unsquashfs (Closes: #557542).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Fri, 04 Dec 2009 08:24:09 +0100
+
+squashfs-tools (1:4.0-5) unstable; urgency=low
+
+  * Correcting wrong vcs-browser field.
+  * Adding patch from Cyril Brulebois <kibi@debian.org> to fix FTBFS on
+    kfreebsd (Closes: #557174).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 21 Nov 2009 13:08:37 +0100
+
+squashfs-tools (1:4.0-4) unstable; urgency=low
+
+  * Renaming source package to squashfs-tools for consistency.
+  * Adding debug package.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Fri, 02 Oct 2009 19:35:57 +0200
+
+squashfs (1:4.0-3) unstable; urgency=low
+
+  * Updating maintainer field.
+  * Updating vcs fields.
+  * Sorting depends.
+  * Adding maintainer homepage in copyright.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Fri, 02 Oct 2009 19:17:18 +0200
+
+squashfs (1:4.0-2) unstable; urgency=low
+
+  * Updating section.
+  * Using correct rfc-2822 date formats in changelog.
+  * Removing hppa specific gcc build-depends as requested, no idea about
+    the consequences (Closes: #533788).
+  * Minimizing rules file.
+  * Updating package to standards version 3.8.3.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 19 Sep 2009 15:20:31 +0200
+
+squashfs (1:4.0-1) unstable; urgency=low
+
+  * Merging upstream version 4.0.
+  * Installing new upstream documentation into the package.
+  * Updating make calls in rules file to cope with new upstream source layout.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Mon, 06 Apr 2009 12:42:00 +0200
+
+squashfs (1:4.0~20090405-1) unstable; urgency=low
+
+  * New upstream snapshot of squashfs-tools only, squashfs-modules are
+    mainlined as of 2.6.29.
+  * Redoing packaging from scratch (Closes: #485154).
+  * Removing Roland from uploaders in agreement with him.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sun, 05 Apr 2009 15:01:00 +0200
+
+squashfs (1:3.3-7) unstable; urgency=low
+
+  * Enabling patch for 2.6.25 now.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Tue, 06 May 2008 11:44:00 +0200
+
+squashfs (1:3.3-6) unstable; urgency=medium
+
+  [ Otavio Salvador ]
+  * Applied patch required due 2.6.25 API changes. Thanks to Phillip
+    Lougher <phillip@lougher.demon.co.uk> for the patch.
+  * Update po and pot files
+
+  [ Daniel Baumann ]
+  * Taking over squashfs maintenance from Arnaud Fontaine, with thanks
+    for his past contributions.
+  * Disabling 2.6.25 patch temporarily, as this is another upload
+    targeted for 2.6.24.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Thu, 10 Apr 2008 21:11:00 +0200
+
+squashfs (1:3.3-5) unstable; urgency=high
+
+  * Readding patch from squashfs cvs to fix mksquashfs error on >1.5GB image
+    creation. This patch was accidentally dropped by me as it was hidden
+    within the squashfs-lzma patches and not broken out (Closes: #455589).
+  * Applying two other patches from squashfs cvs:
+    - Fixing progessbar for hardlinked files.
+    - Fixing dangling symbolic links.
+    Thanks to Stefan Lippers-Hollmann <s.L-H@gmx.de>.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 29 Mar 2008 09:48:00 +0100
+
+squashfs (1:3.3-4) unstable; urgency=medium
+
+  * Removing squashfs-lzma support in agreement with Otavio: too broken and un-
+    maintained (Closes: #465183, #465874, #466242, #456489, #468457).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Fri, 21 Mar 2008 20:37:00 +0100
+
+squashfs (1:3.3-3) unstable; urgency=medium
+
+  [ Daniel Baumann ]
+  * Applied patch from Tollef Fog Heen <tfheen@ubuntu.com>:
+    - Add -lzma switch to enable lzma support.
+    - Don't use lzma by default.
+    Both patches are very important. We cannot use lzma by default on for two
+    reasons: first, it is broken and produces corrupted images at the moment,
+    and second, we would not have an upgrade path from etch to lenny with it.
+  * Build-depending on gcc-4.2-hppa64 now (Closes: #463293).
+  * Removed useless whitespaces at EOF and EOL.
+  * Applied patch from upstream to fix hang of mksquashfs, thanks to
+    Stefan Lippers-Hollmann <s.L-H@gmx.de> (Closes: #455589).
+  * Bumped package to debhelper 5, no other changes required.
+  * Updated Vcs fields in control, they are official now.
+  * Adding override link for module-assistant.
+  * Prefixing docs with the package name they belong to for consistency reasons.
+  * Since it is unavoidable to have the EXTRA_FLAGS in the linux-2.6/Makefile,
+    it is not required to duplicate them in rules.modules.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Mon, 04 Feb 2008 22:57:00 +0100
+
+squashfs (1:3.3-2) unstable; urgency=medium
+
+  [ Daniel Baumann ]
+  * Reverting 'Remove EXTRA_CFLAGS patches against module Makefile in favor of
+    rules' commit and adding EXTRA_FLAGS back to the Makefile. This has
+    broken linux-modules-extra-2.6 integration (Closes: #463628).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Mon, 04 Feb 2008 22:26:00 +0100
+
+squashfs (1:3.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * New email address.
+  * Use quilt patch system instead of dpatch and reorganized patches.
+  * debian/docs:
+    + Remove README-3.2 in favor of README-3.3.
+  * debian/patches:
+    + Remove deprecated 03-remove-slab.
+    + 01-kernel-compat now allows to build for both 2.6.22 and 2.6.23.
+  * debian/copyright:
+    + Update GPL path.
+  * debian/rules:
+    + Update CFLAGS from squashfs-tools/Makefile.
+  * debian/control*:
+    + Add Build-Depends against zlib1g-dev.
+    + Add Depends against zlib1g-dev for squashfs-source.
+    + Update Standards-Version to 3.7.3. No changes needed.
+
+ -- Arnaud Fontaine <arnau@debian.org>  Sat, 08 Dec 2007 16:45:08 +0000
+
+squashfs (1:3.2r2-9exp1) experimental; urgency=low
+
+  * debian/NEWS:
+    + Add informations about LZMA support.
+  * debian/copyright:
+    + Update GPL path.
+  * debian/control:
+    + Remove useless depends of squashfs-source on dpatch.
+  * Add lzma support. Closes: #414563.
+    + Add lzma-source to squashfs-tools Suggests field in debian/control.
+    + Add squashfs lzma headers.
+    + Add lzma support to kernel module.
+    + Add lzma support for squashfs tools.
+    + Add ``-nolzma'' options to mksquashfs help and also in its manpage.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Thu, 18 Oct 2007 13:11:35 +0100
+
+squashfs (1:3.2r2-9) unstable; urgency=low
+
+  * Add 04-kcompat-2.6.23.dpatch for building the kernel module on kernel
+    2.6.23. Thanks to Stefan Lippers-Hollmann <s.L-H@gmx.de>. Closes: #445417.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Thu, 18 Oct 2007 13:03:25 +0100
+
+squashfs (1:3.2r2-8) unstable; urgency=low
+
+  [ Arnaud Fontaine ]
+  * Fix FTBFS with linux-modules-extra by removing linux-2.6/ directory in
+    squashfs-source package. Closes: #442906.
+  * Add debian/patches/01-module-makefile which allows to build the
+    kernel module by hand.
+  * Move Homepage field from binaries to source package in debian/control*.
+  * debian/changelog:
+    + Fix doubly-encoded utf8 garbage.
+  * debian/control:
+    + Policy doesn't permit Uploaders field on several lines.
+  * debian/control.modules.in:
+    + Update Standards-Version to 3.7.2.
+    + Add XS-VCS-* fields.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Wed, 26 Sep 2007 00:33:16 +0100
+
+squashfs (1:3.2r2-7) unstable; urgency=low
+
+  [ Arnaud Fontaine ]
+  * debian/patches/01-includes.dpatch:
+    + Add missing include against ``sched.h'' kernel header.
+      Closes: #442906.
+  * debian/doc/mksquashfs.dbk:
+    + Remove ``-2.0'' option as it doesn't exist anymore. Closes: #443128.
+
+  [ Otavio Salvador ]
+  * debian/rules:
+    + Remove $(DOC_DIR)/*.1 files on clean.
+  * debian/control:
+    + Fix typo in extended description of squashfs-source package.
+      Closes: #439110.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Wed, 19 Sep 2007 11:39:20 +0100
+
+squashfs (1:3.2r2-6) unstable; urgency=low
+
+  * debian/patches/03-remove-slab.patch:
+    + Fix target of the patch. Closes: #433805.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Thu, 09 Aug 2007 21:39:18 +0200
+
+squashfs (1:3.2r2-5) unstable; urgency=low
+
+  [ Arnaud Fontaine ]
+  * Fix manpage section from 8 to 1. Closes: #433858.
+  * debian/doc/en/mksquashfs.dbk:
+    + Add ``-no-progress'' and ``-no-exports'' options.
+      Closes: #420159.
+  * debian/patches/03-remove-slab.dpatch:
+    + Improve the patch which makes it compatible with kernel version
+      < 2.6.22.
+
+  [ Otavio Salvador ]
+  * debian/control:
+    + Add myself as uploader.
+    + Add XS-VCS-{Git,Browser} control's fields.
+    + Wrap build-depends.
+  * debian/control.in: removed.
+  * debian/watch:
+    + Use git-import-orig instead of uupdate so it integrates better with
+      our git repository.
+    + Fix upstream version handling to remove the dash from it.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Wed, 08 Aug 2007 15:02:05 -0300
+
+squashfs (1:3.2r2-4) unstable; urgency=low
+
+  * Fix FTBFS with 2.6.22 due SLAB removal. Thanks to Mario Izquierdo
+    <mariodebian@gmail.com> for the patch. Closes: #433805.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Tue, 07 Aug 2007 21:44:02 -0300
+
+squashfs (1:3.2r2-3) unstable; urgency=low
+
+  * Move squashfs-tools binaries to /usr/bin since they can be used by
+    normal users and are useful to embedded systems. Closes: #422041.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Wed, 11 Jul 2007 10:33:15 -0300
+
+squashfs (1:3.2r2-2) unstable; urgency=low
+
+  * Upload to unstable.
+    + squashfs module 3.2 now build on kernel >= 2.6.20. Closes:
+      #418762.
+  * Acknowledge NMU. Closes: #416773.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sun, 15 Apr 2007 11:44:35 +0200
+
+squashfs (1:3.2r2-1) experimental; urgency=low
+
+  * New upstream release.
+    + Remove 03-progress-mksquashfs patch included upstream.
+    + Update 01-includes patch.
+  * debian/rules:
+    + Update the kernel patch path for squashfs-module and use 2.6.20
+      kernel patch.
+  * debian/control.modules.in:
+    + Add depends against linux-modules or linux-image.
+      Closes: #408863.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sat, 20 Jan 2007 15:52:31 +0100
+
+squashfs (1:3.1r2-6.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Added patch from upstream to linux-2.6.18/squashfs3.1-patch to fix kernel
+    crash on special crafted squashfs file systems CVE-2006-5701
+    (Closes: #415530).
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Fri, 30 Mar 2007 08:52:00 +0200
+
+squashfs (1:3.1r2-6) unstable; urgency=low
+
+  * Add manpage for unsquashfs command.
+  * Re-add the progress patch. Thanks to Tollef Fog Heen
+    <tfheen@ubuntu.com>. Closes: #389487.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sat, 02 Dec 2006 12:11:02 +0100
+
+squashfs (1:3.1r2-5) unstable; urgency=low
+
+  * debian/changelog:
+    + Convert changelog to UTF-8.
+  * debian/control.in:
+    + Remove zlibg1-dev because it is automatically handled by cdbs
+      for debian/control.
+  * debian/rules:
+    + Remove bashisms. Closes: #400753.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Tue, 28 Nov 2006 18:33:53 +0100
+
+squashfs (1:3.1r2-4) unstable; urgency=low
+
+  * debian/rules:
+    +  Fix  manpages by  adding  'man.charmap.use.subset' to  xsltproc
+       parameter. Closes: #395412.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sun, 29 Oct 2006 09:10:21 +0100
+
+squashfs (1:3.1r2-3) unstable; urgency=low
+
+  * Replace gcc-4.0-hppa by gcc-4.1-hppa in Depends. Closes: #391274.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Fri, 06 Oct 2006 01:41:06 +0200
+
+squashfs (1:3.1r2-2) unstable; urgency=low
+
+  * Update the squashfs-source package for kernel 2.6.18.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Thu, 21 Sep 2006 16:53:29 +0200
+
+squashfs (1:3.1r2-1) unstable; urgency=low
+
+  * New upstream relase.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Tue, 05 Sep 2006 15:49:53 +0200
+
+squashfs (1:3.1-1) unstable; urgency=low
+
+  * New upstream release. Closes: #384414.
+  * Remove  the squashfs-modules-*  packages which  is now  handled by
+    linux-modules-extra-2.6. Closes: #384440.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Mon, 28 Aug 2006 16:23:44 +0200
+
+squashfs (1:3.0-8) unstable; urgency=low
+
+  * Bumped kernel-abi to 2.6.17-2. Closes: #383137.
+  * Fix progress information patch when generating a FS > 4GB. Thanks
+    to Mike Kasick <mkasick@club.cc.cmu.edu>. Closes: #382714.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Tue, 15 Aug 2006 10:51:16 +0200
+
+squashfs (1:3.0-7) unstable; urgency=low
+
+  * Patch for  appending files to  an existing filesystem  larger than
+    2GB.  Thanks  to Pierre  ReniÃ©  <archlinuxien@gmail.com> and  Ming
+    Zhang. Closes: #378615.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sun, 06 Aug 2006 18:20:04 +0200
+
+squashfs (1:3.0-6) unstable; urgency=low
+
+  * Acknowledge NMU. Closes: #377831.
+  * debian/control.in:
+    + Add a minimum version on po4a (0.21) in Build-Depends. Closes: #377797.
+    + Remove s390-tape flavour which has no kernel headers.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sun, 16 Jul 2006 14:44:56 +0200
+
+squashfs (1:3.0-5.1) unstable; urgency=low
+
+  * NMU in agreement with Arnaud.
+  * Bumped kernel-abi.
+  * Updated flavours as of 2.6.17-2.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sun, 09 Jul 2006 16:22:00 +0200
+
+squashfs (1:3.0-5) unstable; urgency=low
+
+  * debian/control* and debian/rules:
+    + Bumped linux kernel version number to 2.6.16-2.
+      Closes: #369522.
+
+  * debian/patches/03-mksquashfs.dpatch:
+    + Fix rounding error which causes generation of invalid
+      filesystems.  Thanks to Scott James Remnant
+      <scott@ubuntu.com>. Closes: #368969.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Wed, 31 May 2006 18:16:18 +0200
+
+squashfs (1:3.0-4) unstable; urgency=low
+
+  * debian/rules:
+    + Fix FTBFS on powerpc64.  Thanks to Julien Louis
+      <ptitlouis@sysif.net>.
+
+  * debian/control*:
+    + Update Standards-Version to 3.7.2.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sun, 07 May 2006 09:59:10 +0200
+
+squashfs (1:3.0-3) unstable; urgency=low
+
+  * debian/control*:
+    + Fix incorrect package name for module
+      squashfs-modules-2.6*-powerpc64.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sat, 29 Apr 2006 12:27:06 +0200
+
+squashfs (1:3.0-2) unstable; urgency=low
+
+  * debian/patches/03-mksquashfs.dpatch:
+    + Add patch showing the progress of mksquashfs. Thanks to Tollef
+      Fog Heen <tfheen@ubuntu.com>. Closes: #364089.
+
+  * debian/control*:
+    + Add complete description for every squashfs-* packages.  Thanks
+      to Tomas Pospisek <tpo_deb@sourcepole.ch>. Closes: #364743.
+    + Add Homepage to the descriptions.
+    + Suggests on squashfs-source instead of kernel-patch-squashfs for
+      squashfs-tools.
+    + Conflicts and Replaces on kernel-patch-squashfs concerning
+      squashfs-source. Thanks to Bastian Kleineidam
+      <calvin@debian.org>. Closes: #364768.
+    + Add docbook-xml to Build-Depends for manpages.
+    + Add binutils-hppa64 and gcc-4.0-hppa64 Build-Depends for hppa.
+
+  * debian/control.modules.in:
+    + Remove Daniel Baumann from Uploaders.
+
+  * debian/docs:
+    + Add README-3.0.
+
+  * debian/rules:
+    + Add unsquashfs to build program.
+    + Add upstream changelog to the packages (CHANGES).
+    + Fix  FTBFS for hppa64*  and sparc64* by  specifying respectively
+      CROSS_COMPILE and ARCH for building the modules.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Wed, 26 Apr 2006 18:38:20 +0200
+
+squashfs (1:3.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Building module out-of-tree, thanks to Daniel Baumann
+   <daniel.baumann@panthera-systems.net>. Closes: #355554.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Sun, 02 Apr 2006 11:47:00 +0200
+
+squashfs (1:2.2r2-3) unstable; urgency=low
+
+  * debian/kernel-patch-squashfs.kpatches and
+    debian/kernel-patch-squashfs.k_patches.commented updated to support
+    Linux 2.6.14 and later.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Tue, 31 Jan 2006 12:52:18 +0100
+
+squashfs (1:2.2r2-2) unstable; urgency=low
+
+  * Removed source root debian Makefile (not upstream) in favor of
+    CDBS (so modified debian/rules), added debian/control.in.
+  * Added debian/cdbs/1/class/makefile.mk in order to fix bug #338625.
+  * Added french translation by Frédéric Boiteux and Olivier Trichet.
+    Moved mksquashfs.dbk from debian/ to debian/doc/en/.
+  * Switch to po4a. Thanks to Nicolas François.
+  * Updated debian/watch.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Thu, 10 Nov 2005 15:22:28 +0100
+
+squashfs (1:2.2r2-1) unstable; urgency=low
+
+  * New upstream release. Closes: #317795.
+  * Suggested 'kernel-source | linux-source' instead of 'kernel-source'
+    in debian/control. Thanks to Marco Bodrato. Closes: #329623.
+  * Updated debian/kernel-patch-squashfs.kpatches and
+    debian/kernel-patch-squashfs.k_patches.commented due to new
+    upstream patches. Closes: #303032.
+  * Updated FSF address in debian/copyright.
+  * Updated Standards-Version to 3.6.2.1 (no changes needed).
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Tue, 11 Oct 2005 20:12:55 +0200
+
+squashfs (1:2.1r2-0.1) unstable; urgency=low
+
+  * NMU: build also a kernel-patch-squashfs module.
+  * New upstream release. Closes: #287919.
+  * Change Debian helper from yada to Debhelper.
+  * change mksquashfs install directory from /usr/bin/ to /usr/sbin/.
+
+ -- Frédéric Boiteux <fboiteux@calistel.com>  Mon, 20 Dec 2004 12:47:46 +0100
+
+squashfs (1:2.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Fixes for build script. It can be called debian/rules build after
+    interrupt.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Thu, 05 Aug 2004 18:57:15 +0200
+
+squashfs (2.0-ALPHA-1) unstable; urgency=low
+
+  * New upstream release. Closes: #255470.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Mon, 21 Jun 2004 13:06:46 +0200
+
+squashfs (1.3r3-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Thu, 11 Mar 2004 21:29:32 +0100
+
+squashfs (1.3r2-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Tue, 18 Nov 2003 12:48:13 +0100
+
+squashfs (1.3-2) unstable; urgency=low
+
+  * Fixed missing build-depends on libz-dev, closes: #215338.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Mon, 13 Oct 2003 12:35:38 +0200
+
+squashfs (1.3-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Wed, 01 Oct 2003 14:28:30 +0200

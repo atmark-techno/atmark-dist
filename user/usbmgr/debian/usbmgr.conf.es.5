@@ -1,0 +1,59 @@
+.TH "usbmgr.conf" "5" "1.0.0" "Shuu Yamaguchi" "Herramientas USB"
+.SH "NOMBRE"
+.LP 
+usbmgr.conf \- Fichero de configuración para usbmgr
+.SH "DESCRIPCIÓN"
+.PP 
+\fIusbmgr.conf\fR es el fichero de configuración principal para el demonio \fBusbmgr\fR, éste tiene las entradas apropiadas para soportar un amplio número de dispositivos USB así como el módulo de núcleo requerido para que trabaje.
+.PP 
+La distribución estándar de \fBusbmgr\fR ya viene con una lista de dispositivos conocidos y sus entradas adecuadas, de modo que usted no necesita editarlo para que éste funcione.
+.PP 
+En caso usted desee o necesite añadir un nuevo dispositivo, usted puede hacerlo con la ayuda de \fBdump_usbdev\fR, éste le ayuda a escribir la entrada en \fIusbmgr.conf\fR. Después de iniciar \fBusbmgr\fR, al ejecutar \fBdump_usbdev\fR éste volcará la información de todos los dispositivos conectados en un formato adecuado para \fIusbmgr.conf\fR.
+.PP
+Si usted conecta dispositivos USB a su concentrador USB, usted verá una línea como la siguiente.
+
+.nf
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+-------------------------------------------------------------
+.fi
+.PP
+"class 0x9" significa concentrador USB. Si no se conecta ningún dispositivo USB, solamente aparecerá el concentrador USB. Al modificar "<module_name>" se finalizará la configuración para este dispositivo (concentrador). En el caso de un concentrador USB, usted debe cambiar "module_name" a "none" porque el controlador del concentrador esta incluido en usbcore.
+.PP
+Luego de que se ha conectado un ratón USB al concentrador, ejecutar \fBdump_usbdev\fR mostrará la siguiente información.
+
+.nf
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+vendor 0x56e product 0x4 module <module_name>
+-------------------------------------------------------------
+.fi
+
+.PP
+La segunda línea es nueva. Esta es la información sobre el ratón USB. Los ratones USB requieren los controladores "hid" y "mousedev". Por lo tanto, "<module_name>" deberá ser cambiado a "hid , mousedev". De este modo la entrada completa para \fIusbmgr.conf\fR deberá quedar como sigue:
+
+.nf
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module none
+vendor 0x56e product 0x4 module hid , mousedev
+-------------------------------------------------------------
+.fi
+
+.PP					        
+Usted debe copiar esto en \fI/etc/usbmgr/usbmgr.conf\fR, y luego ejecutar \fBupdate_usbdb\fR para crear los datos de configuración.
+.SH "VARIABLES DE ENTORNO"
+.PP 
+Ninguna.
+.SH "AUTOR"
+.PP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.PP 
+Esta página de manual ha sido escrita por Rudy Godoy <rudy@kernel-panik.org>, para el sistema Debian GNU/Linux (pero podría ser usada por otros).
+.SH "TRADUCTOR"
+.PP
+Rudy Godoy <rudy@kernel\-panik.org>
+.SH "VÉASE TAMBIÉN"
+.BR dump_usbdev (8),
+.BR update_usbdb (8),
+.BR usbmgr (5)
+

@@ -1,0 +1,20 @@
+001) [O] If removing devices, their data is removed.
+002) [O] The id member is created and class,subclass,... are put into them.
+003) [-] If finding new device, it is specified its parent device.
+	The current impliment doesn't depend on parent device,
+	so I'll do when the time come
+004) [O] To observe multiple USB bus
+005) [O] To create pid file 
+006) [O] To add "script" token in configuration file.
+007) [O] To output messages using syslog
+008) [O] To use signal
+009) [O] To enable HUB configuration info.
+010) [O] The module loader(modprobe) can load multiple modules at one time.
+011) [O] To load modules in one file on starting 
+012) [O] To start on OS booting
+013) [O] Add "start" as the first argument for script when device connect,
+		and add "stop" to script when device disconnect.
+014) [ ] To create script which make the configration for usbmgr			
+015) [O] To unmount /proc/bus/usb when SIGTERM come
+016) [O] To add behavior for each class
+017) [o] To create useful document

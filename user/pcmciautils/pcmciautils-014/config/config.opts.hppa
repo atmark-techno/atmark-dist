@@ -1,0 +1,29 @@
+#
+# Local PCMCIA Configuration File
+#
+#----------------------------------------------------------------------
+#
+# System resources available for PCMCIA cards
+#
+# NOTE: these settings have no effect on resources assigned to a
+# CardBus bridge device itself; this file only affects resources
+# assigned to cards.  Also, interrupt settings here will only affect
+# ISA bus interrupts assigned to 16-bit cards.  PCI interrupts
+# generally can't be reconfigured.
+#
+# With the kernel PCMCIA subsystem, these settings also have no effect
+# at all on resources used for 32-bit CardBus cards.  Those are set by
+# the PCI hotplug subsystem.
+#
+
+# Allow all the dino/cujo port ranges (usually we get the first one)
+# NOTE: the address range for this is a signed short (hence the upper
+# limit is 0x7fff).  If the PCMCIA card isn't on the dino/cujo bus
+# which has been assigned this range, you're out of luck.  In
+# particular, PCMCIA won't work in a box with an EISA subsystem
+# because that claims 0-0xffff.
+include port 0x0-0x7fff
+
+# Allow all parisc I/O space
+include memory 0xf0000000-0xffffffff
+

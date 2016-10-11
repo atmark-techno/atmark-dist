@@ -1,0 +1,4 @@
+config.linux-3.x
+!config.arch
+!etc/init.d
+!etc/udev/rules.d

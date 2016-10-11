@@ -1,0 +1,1682 @@
+                                                         Stuart Cheshire
+Document: draft-ietf-zeroconf-ipv4-linklocal-07.txt       Apple Computer
+Expires 23rd February 2003                                 Bernard Aboba
+                                                               Microsoft
+                                                            Erik Guttman
+                                                        Sun Microsystems
+                                                        23rd August 2002
+
+
+            Dynamic Configuration of IPv4 Link-Local Addresses
+               <draft-ietf-zeroconf-ipv4-linklocal-07.txt>
+
+
+Status of this Memo
+
+   This document is an Internet-Draft and is in full conformance with
+   all provisions of Section 10 of RFC2026. Internet-Drafts are
+   working documents of the Internet Engineering Task Force (IETF),
+   its areas, and its working groups. Note that other groups may
+   also distribute working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six
+   months and may be updated, replaced, or obsoleted by other documents
+   at any time. It is inappropriate to use Internet-Drafts as
+   reference material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html
+
+   Distribution of this memo is unlimited.
+
+
+Abstract
+
+   In general, to participate in wide-area IP networking, a host needs
+   configuration information, either entered manually by the user, or
+   received automatically from an information source on the network such
+   as a DHCP server. However, such external configuration information
+   may not always be available. It would be beneficial for a host to
+   have some useful subset of IP networking that it can depend upon to
+   be always functional, even when no configuration information is
+   available to the host, or the configuration information the host has
+   is incorrect. This document describes a method by which a host may
+   automatically configure an interface with an IPv4 address in the
+   169.254/16 prefix that is valid for link-local communication on that
+   interface.
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 1]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+Table of Contents
+
+   1.  Introduction..................................................3
+   1.1 Conventions and Terminology Used in this Document.............4
+   1.2 Applicability.................................................5
+   1.3 Issues with Autoconfiguration.................................6
+   1.4 169.254/16 Not To Be Used for Other Purposes..................6
+   1.5 Supporting Multiple Addresses per Interface...................6
+   1.6 Supporting Multiple Interfaces................................7
+   1.7 Communication Between Link-Local and Routable Addresses.......7
+   2.  IPv4 Link-Local Address Selection, Defense and Delivery.......8
+   2.1 Selecting a Link-Local Address................................8
+   2.2 Claiming a Link-Local Address.................................9
+   2.3 Shorter Timeouts on Appropriate Network Technologies.........10
+   2.4 Announcing an Address........................................10
+   2.5 Ongoing Address Conflict Detection and Address Defense.......10
+   2.6 Source Address Selection.....................................12
+   2.7 Link-Local Packets Are Not Forwarded.........................12
+   2.8 Devices may Assume Link-Local Packets are Local..............13
+   2.9 Higher-Layer Protocol Considerations.........................14
+   2.10 Privacy Concerns............................................14
+   3.  Considerations for Multiple Interfaces.......................15
+   3.1 Link-Local Addressing on Only One Interface..................15
+   3.2 Single Shared Link-Local Address.............................15
+   3.3 Different Link-Local Address for Each Interface..............16
+   3.3.1 Example Illustrating (Incorrect) Ambiguous Address Re-Use..17
+   3.3.2 Example Illustrating Acceptable Address Re-Use.............18
+   3.4 Collision Detection for Multi-Homed Hosts....................19
+   4.  Considerations for Joining of Previously Separate Networks...20
+   5.  Security Considerations......................................21
+   6.  IANA Considerations..........................................21
+   7.  Application Programming Considerations.......................22
+   7.1 Address Changes, Failure and Recovery........................22
+   7.2 Limited Forwarding of Locators...............................22
+   7.3 Address Ambiguity............................................22
+   8.  Acknowledgements.............................................23
+   9.  Intellectual Property........................................23
+   10. Copyright....................................................23
+   11. References...................................................24
+   12. Authors' Addresses...........................................25
+   Appendix. Prior Implementations..................................26
+   A.1 Apple Mac OS 8.x and 9.x.....................................26
+   A.2 Apple Mac OS X Version 10.2..................................27
+   A.3 Microsoft Windows 98/98SE....................................28
+   A.4 Windows 2000 and Windows ME..................................29
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 2]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+1. Introduction
+
+   As the Internet Protocol continues to grow in popularity, it becomes
+   increasingly valuable to be able to use familiar IP tools such as ftp
+   not only for global communication, but for local communication as
+   well. For example, two people with laptop computers with built-in
+   wireless Ethernet may meet and wish to exchange files. It is
+   desirable for these people to be able to use IP application software
+   without the inconvenience of having to manually configure static IP
+   addresses or set up a DHCP server [RFC 2131].
+
+   This document describes a method by which a host may automatically
+   configure an interface with an IPv4 address in the 169.254/16 prefix
+   that is valid for link-local communication on that interface. This
+   is especially valuable in environments where no other configuration
+   mechanism is available. The IPv4 network 169.254/16 is registered
+   with the IANA for this purpose. Allocation of link-local IPv6
+   addresses is described in "IPv6 Stateless Address Autoconfiguration"
+   [RFC 2462].
+
+   Microsoft Windows 98 (and later) and Mac OS 8.5 (and later) already
+   implement versions of this functionality. This document standardizes
+   this protocol and simplifies it in one important way -- in previous
+   implementations, link-local addresses were only available after a
+   host had tried and failed to contact a DHCP server. This standard
+   removes that restriction, making link-local addresses available all
+   the time, independent of DHCP. A host need not implement a DHCP
+   client in order to use a link-local address. Even for hosts that
+   do implement a DHCP client, information received from DHCP servers
+   has no bearing on a host's link-local address configuration.
+
+   This document prescribes rules for how IPv4 link-local addresses
+   MUST be treated by hosts and routers. In particular, it describes
+   how routers MUST behave when receiving packets with IPv4 link-local
+   addresses in the source or destination address. With respects to
+   hosts, it discusses claiming and defending addresses, maintaining
+   a link-local address and routable addresses on the same interface,
+   and multihoming issues.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 3]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+1.1. Conventions and Terminology Used in this Document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in "Key words for use in
+   RFCs to Indicate Requirement Levels" [RFC 2119].
+
+   This document describes link-local addressing, for IP communication
+   between two hosts on a single link. A set of hosts is considered to
+   be "on the same link", if:
+
+   - when any host A from that set sends a packet to any other
+     host B in that set, using unicast, multicast, or broadcast,
+     the entire link-layer packet payload arrives unmodified,
+     and
+
+   - a broadcast sent over that link by any host from that set
+     of hosts can be received by every other host in that set
+
+   The link-layer *header* may be modified, such as in Token Ring Source
+   Routing [802.5], but not the link-layer *payload*. In particular, if
+   any device forwarding a packet modifies any part of the IP header or
+   IP payload then the packet is no longer considered to be on the same
+   link. This means that the packet may pass through devices such as
+   Ethernet repeaters, bridges, hubs or switches and still be considered
+   to be on the same link for the purpose of this document, but not
+   through any device like an IP router that decrements the TTL or
+   otherwise modifies the IP header.
+
+   This document uses the term "routable address" to refer to all
+   unicast addresses outside the 169.254/16 prefix, including global
+   addresses and private addresses such as Net 10/8 [RFC 1918], all of
+   which may be forwarded via routers.
+
+   Wherever this document uses the term "host" when describing use of
+   link-local addresses, the text applies equally to routers using
+   link-local addresses on any or all interfaces.
+
+   Wherever this document uses the term "sender IP address" or "target
+   IP address" in the context of an ARP packet, it is referring to the
+   fields of the ARP packet identified in the ARP specification [RFC
+   826] as "ar$spa" (Sender Protocol Address) and "ar$tpa" (Target
+   Protocol Address) respectively. For the usage of ARP described in
+   this document, each of these fields always contains an IP address.
+
+   In this document, the term "ARP Probe" is used to refer to an ARP
+   request packet, broadcast on the local link, with an all-zero 'sender
+   IP address'. The 'sender hardware address' MUST contain the hardware
+   address of the interface sending the packet. The 'target hardware
+   address' field is ignored and SHOULD be set to all zeroes. The
+   'target IP address' field MUST be set to the address being probed.
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 4]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   In this document, the term "ARP Announcement" is used to refer to
+   an ARP request packet, broadcast on the local link, identical to
+   the ARP probe described above, except that both the sender and
+   target IP address fields contain the IP address being announced.
+
+
+1.2. Applicability
+
+   The specifications in this document apply to any IEEE 802 media [802]
+   including Ethernet [802.3], and other similar link-layer network
+   technologies that operate at data rates of at least 1Mb/s, have a
+   round-trip latency of at most one second, and support ARP [RFC 826].
+   Wherever this document uses the term "Ethernet", the text applies
+   equally to any of these network technologies.
+
+   Link-layer network technologies that support ARP but operate at rates
+   below 1Mb/s or latencies above one second may need to specify
+   different values for the following parameters described in Sections
+   2.2, 2.3 and 2.4:
+   (a) the number of, and interval between, ARP probes,
+   (b) the number of, and interval between, ARP announcements,
+   (c) the maximum rate at which address claiming may be attempted, and
+   (d) the time interval between conflicting ARPs below which a host
+       MUST reconfigure instead of attempting to defend its address.
+
+   Link-layer network technologies that do not support ARP may be able
+   to use other techniques for determining whether a particular IP
+   address is currently in use. However, the application of claim-and-
+   defend mechanisms to such networks is left to a future document.
+
+   This protocol is intended for small ad-hoc networks -- a single link
+   containing only a few hosts. Although there are in principle 65024
+   available link-local addresses, attempting to use all those addresses
+   on a single link would result in it taking an inordinate length of
+   time for a host to find an available address. The precise definition
+   of "a few hosts" may vary depending on the situation, but it is
+   reasonable to say that it should not be more than 1300 hosts. A host
+   connecting to a link that already has 1300 hosts, selecting a
+   link-local address at random, has a 98% chance of selecting an unused
+   link-local address on the first try. A host has a 99.96% chance of
+   selecting an unused link-local address within two tries. The
+   probability that it will have to try more than ten times is about 1
+   in 10^17. This does not mean that a host should attempt to count the
+   number of other hosts on the link and refuse to operate if it finds
+   there are more than 1300. It does mean that network operators with
+   more than 1300 hosts on a single link may want to consider dividing
+   that single link into two or more subnets.
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 5]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+1.3. Issues with Autoconfiguration
+
+   Implementations of IPv4 link-local address autoconfiguration MUST
+   expect address collisions, and MUST be prepared to handle them
+   gracefully by automatically selecting a new address whenever a
+   collision is detected, as described in Section 2. This requirement to
+   detect and handle address collisions applies during the entire period
+   that a host is using a 169.254/16 link-local address, not just during
+   initial interface configuration. For example, address collisions can
+   occur well after a host has completed booting if two previously
+   separate networks are joined, as described in Section 4.
+
+
+1.4. 169.254/16 Not To Be Used for Other Purposes
+
+   Note that addresses in the 169.254/16 prefix SHOULD NOT be configured
+   manually or by a DHCP server. Manual or DHCP configuration may cause
+   a host to use an address in the 169.254/16 prefix without following
+   the special rules regarding duplicate detection and automatic
+   configuration that pertain to addresses in this prefix. While RFC
+   2131 indicates that a DHCP client SHOULD probe a newly received
+   address with ARP, this is not mandatory. Similarly, while RFC 2131
+   recommends that a DHCP server SHOULD probe an address using an ICMP
+   Echo Request before allocating it, this is also not mandatory, and
+   even if the server does this, link-local addresses are not routable,
+   so a DHCP server not directly connected to a link cannot detect
+   whether a host on that link is already using the desired IPv4
+   link-local address.
+
+   Administrators wishing to configure their own local addresses
+   (using manual configuration, a DHCP server, or any other mechanism
+   not described in this document) should use one of the existing
+   private address prefixes [RFC 1918], not the 169.254/16 prefix.
+
+
+1.5. Supporting Multiple Addresses per Interface
+
+   IPv4 link-local addresses are independent from any other IPv4
+   addresses that a host may have. Each interface on a host may have
+   a link-local address in addition to zero or more other addresses
+   configured by other means (e.g. manually or via a DHCP server).
+   Under normal circumstances, there is no reason to configure more
+   than one link-local address on any given physical interface.
+
+   There are several reasons why it is beneficial for hosts to maintain
+   a link-local address in addition to any other addresses they may
+   have. For example, a DHCP server may appear on a network where hosts
+   are already communicating using link-local addresses, and it is
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 6]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   beneficial for already-established link-local TCP connections to
+   continue working even after the hosts have contacted the DHCP server
+   and configured additional routable addresses.
+
+   Another example of why it is beneficial for hosts to maintain a link-
+   local address in addition to other addresses is that there may be
+   situations where two portable devices such as laptop computers are
+   brought together from two different networks. Each device may have
+   its own incompatible configuration parameters (subnet mask, default
+   router, etc.) that were previously assigned manually or by DHCP, and
+   even though connected to the same physical link they would be unable
+   to communicate successfully using these incompatible configuration
+   parameters. If each host also configures a link-local address, this
+   will allow them to communicate.
+
+   This does not necessarily require that a host implement an arbitrary
+   number of addresses per interface. A simple host may implement just
+   the special case of a single link-local address and a single 'other'
+   address. (Note that any host running IPv6 is already required to have
+   the ability to maintain multiple IPv6 addresses per interface.)
+
+
+1.6. Supporting Multiple Interfaces
+
+   Hosts that support multi-homing have additional considerations if
+   they wish to use IPv4 link-local addresses on more than one interface
+   at a time. These are discussed in Section 3.
+
+
+1.7. Communication Between Link-Local and Routable Addresses
+
+   For some devices, engineering constraints may mean that it is only
+   possible to implement a single address per interface, either link-
+   local, or routable, but not both at the same time. For this reason,
+   the rules in Section 2.6 allow communication from a routable source
+   address to a link-local destination address on the same physical
+   link, and vice versa. This allows, for example, a laptop computer
+   with only a routable address to communicate with web servers world-
+   wide using its globally-routable address while at the same time
+   printing those web pages on a local printer that has only a link-
+   local address.
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 7]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+2. IPv4 Link-Local Address Selection, Defense and Delivery
+
+   The following section explains the link-local address selection
+   algorithm, how link-local addresses are defended, and how IPv4
+   packets with link-local addresses are delivered.
+
+   Windows and Mac OS hosts that already implement IPv4 address auto-
+   configuration are compatible with the rules presented in this
+   section. However, should any interoperability problem be discovered,
+   this document, not any prior implementation, defines the standard.
+
+
+2.1 Selecting a Link-Local Address
+
+   When a host wishes to configure a link-local address, it selects
+   an address using a pseudo-random number generator with a uniform
+   distribution in the range from 169.254.1.0 to 169.254.254.255. The
+   IPv4 network 169.254/16 is registered with the IANA for this purpose.
+   The first 256 and last 256 addresses in the 169.254/16 network are
+   reserved for use by future IETF-Standard protocols and MUST NOT be
+   selected by a host using this dynamic configuration mechanism.
+
+   The pseudo-random number generation algorithm MUST be chosen so that
+   different hosts do not generate the same sequence of numbers. If the
+   host has access to persistent information that is different for each
+   host, such as its burned-in Ethernet hardware address, then the
+   pseudo-random number generator SHOULD be seeded using a value derived
+   from this information. This means that even without using any other
+   persistent storage, a host will usually select the same link-local
+   address each time it is booted, which can be convenient for debugging
+   and other operational reasons. Seeding the pseudo-random number
+   generator using the real-time clock or any other information which is
+   (or may be) identical in every host is NOT suitable for this purpose,
+   because a group of hosts that are all powered on at the same time
+   might then all generate the same sequence, resulting in a never-
+   ending series of conflicts as the hosts move in lock-step though
+   exactly the same pseudo-random sequence, conflicting on every address
+   they probe.
+
+   Hosts that are equipped with persistent storage MAY, for each
+   interface, record the IP address they have selected. On booting,
+   hosts with a previously recorded address SHOULD use that address as
+   their first candidate when probing. This increases the stability of
+   addresses. For example, if a group of hosts are powered off at night,
+   then when they are powered on the next morning they will all resume
+   using the same addresses, instead of picking different addresses and
+   potentially having to resolve conflicts that arise.
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 8]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+2.2 Claiming a Link-Local Address
+
+   After it has selected an address, a host MUST test to see if the
+   address is already in use before beginning to use it. On a network
+   such as Ethernet that supports ARP, this test is done using ARP
+   probes. On link-layer network technologies that do not support ARP
+   other techniques may be available for determining whether a
+   particular IP address is currently in use. However, the application
+   of claim-and-defend mechanisms to such networks is left to a future
+   document.
+
+   A host probes to see if an address is already in use by broadcasting
+   an ARP request for the desired address. The client MUST fill in the
+   'sender hardware address' field of the ARP packet with the hardware
+   address of the interface through which it is sending the packet.
+   The 'sender IP address' field MUST be set to all zeroes, to avoid
+   polluting ARP caches in other hosts on the same link in the case
+   where the address turns out to be already in use by another host.
+   The 'target hardware address' field is ignored and SHOULD be set to
+   all zeroes. The 'target IP address' field MUST be set to the address
+   being probed. An ARP request constructed this way with an all-zero
+   'sender IP address' is referred to as an "ARP probe".
+
+   When ready to begin probing, the host should then wait for a
+   random time interval selected uniformly in the range zero to two
+   seconds, and should then send four probe packets, spaced two
+   seconds apart. This initial random delay helps ensure that a
+   large number of hosts powered on at the same time do not all send
+   their initial probe packets simultaneously.
+
+   If during this period, from the beginning of the probing process
+   until two seconds after the last probe packet is sent, the host
+   receives any ARP packet (request *or* reply) where the packet's
+   'sender IP address' is the address being probed for, then the host
+   MUST treat this address as being in use by some other host, and MUST
+   select a new pseudo-random address and repeat the process. In
+   addition, if during this period the host receives any ARP probe where
+   the packet's 'target IP address' is the address being probed for, and
+   the packet's 'sender hardware address' is not the hardware address of
+   any of the host's interfaces, then the host MUST similarly treat this
+   as an address collision and select a new address as above. This can
+   occur if two (or more) hosts attempt to configure the same link-
+   local address at the same time.
+
+   A host should maintain a counter of the number of address collisions
+   it has experienced in the process of trying to acquire an address,
+   and if the number of collisions exceeds ten then the host MUST limit
+   the rate at which it probes for new addresses to no more than one new
+   address per minute. This is to prevent catastrophic ARP storms in
+   pathological failure cases, such as a rogue host that answers all
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman      [Page 9]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   ARP probes, causing legitimate hosts to go into an infinite loop
+   attempting to select a usable address.
+
+   If, by two seconds after the transmission of the last ARP probe
+   no conflicting ARP reply has been received, then the host has
+   successfully claimed the desired link-local address.
+
+
+2.3 Shorter Timeouts on Appropriate Network Technologies
+
+   The time values specified above are intended for use on technologies
+   such as Ethernet, where switches that implement Spanning Tree
+   [802.1d] often silently discard all packets for several seconds. The
+   time values specified above result in a delay of 8-10 seconds before
+   a chosen IP address may be used. For a desktop machine on Ethernet,
+   this may not be a great problem, but for other types of device,
+   particularly portable hand-held wireless devices, a ten-second delay
+   before networking services becomes available may not be acceptable.
+   For this reason, shorter time values may be used on network
+   technologies that allow the device to determine when the link has
+   become active and can be reasonably trusted to deliver packets
+   reliably. On these network technologies the recommended time values
+   are: The host should first wait for a random time interval selected
+   uniformly in the range 0-200 milliseconds, and then send four probe
+   packets, waiting 200 milliseconds after each probe, making a total
+   delay of 800-1000 milliseconds before a chosen IP address may be
+   used.
+
+   Should future versions of the IEEE Spanning Tree Protocol be enhanced
+   to inform clients when the link is ready to begin forwarding packets,
+   then the shorter time values may be used on these networks too.
+
+
+2.4 Announcing an Address
+
+   The host MUST then announce its claimed address by broadcasting two
+   ARP announcements, spaced two seconds apart. This time interval is
+   not modified by the shorter timeouts described above in Section 2.3.
+   An ARP announcement is identical to the ARP probe described above,
+   except that now the sender and target IP addresses are both set to
+   the host's newly selected IP address. The purpose of these ARP
+   announcements is to make sure that other hosts on the link do not
+   have stale ARP cache entries left over from some other host that may
+   previously have been using the same address.
+
+
+2.5 Ongoing Address Conflict Detection and Address Defense
+
+   Address collision detection is not limited to the address selection
+   phase, when a host is sending ARP probes. Address collision detection
+   is an ongoing process that is in effect for as long as a host is
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 10]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   using a link-local IPv4 address. At any time, if a host receives an
+   ARP packet (request *or* reply) where the 'sender IP address' is the
+   host's own IP address, but the 'sender hardware address' does not
+   match any of the host's own interface addresses, then this is a
+   conflicting ARP packet, indicating an address collision. A host MUST
+   respond to a conflicting ARP packet as described in either (a) or (b)
+   below:
+
+   (a) Upon receiving a conflicting ARP packet, a host MAY elect to
+   immediately configure a new link-local IP address as described above,
+   or
+
+   (b) If a host currently has active TCP connections or other reasons
+   to prefer to keep the same IP address, and it has not seen any other
+   conflicting ARP packets recently (for Ethernet, within the last ten
+   seconds) then it MAY elect to attempt to defend its address, by
+   recording the time that the conflicting ARP packet was received,
+   and then broadcasting one single ARP announcement, giving its own
+   IP and hardware addresses as the sender addresses of the ARP. Having
+   done this, the host can then continue to use the address normally
+   without any further special action. However, if this is not the first
+   conflicting ARP packet the host has seen, and the time recorded for
+   the previous conflicting ARP packet is recent (within ten seconds for
+   Ethernet) then the host MUST immediately cease using this address and
+   configure a new link-local IP address as described above. This is
+   necessary to ensure that two hosts do not get stuck in an endless
+   loop with both hosts trying to defend the same address.
+
+   A host MUST respond to conflicting ARP packets as described in either
+   (a) or (b) above. A host MUST NOT ignore conflicting ARP packets.
+
+   Forced address reconfiguration may be disruptive, causing TCP
+   connections to be broken. However, it is expected that such
+   disruptions will be rare, and if inadvertent address duplication
+   happens, then disruption of communication is inevitable, no matter
+   how the addresses were assigned. It is not possible for two different
+   hosts using the same IP address on the same network to operate
+   reliably.
+
+   Immediately configuring a new address as soon as the conflict is
+   detected is the best way to restore useful communication as quickly
+   as possible. The mechanism described above of broadcasting a single
+   ARP announcement to defend the address mitigates the problem
+   somewhat, by helping to improve the chance that one of the two
+   conflicting hosts may be able to retain its address.
+
+   All ARP packets (*replies* as well as requests) that contain a link-
+   local 'sender IP address' MUST be sent using link-level broadcast
+   instead of link-level unicast. This aids timely detection of
+   duplicate addresses. An example illustrating how this helps is
+   given in Section 4.
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 11]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+2.6 Source Address Selection
+
+   Since each interface on a host may have a link-local address in
+   addition to zero or more other addresses configured by other means
+   (e.g. manually or via a DHCP server), a host may have to make a
+   choice about what source address to use when it sends a packet or
+   initiates a TCP connection.
+
+   If the destination address is in the 169.254/16 prefix (including the
+   169.254.255.255 broadcast address), the host SHOULD use its link-
+   local source address, if it has one. If the host does not have a
+   link-local source address, then it MAY choose to ARP for the
+   destination address and then send its packet, with a routable source
+   IP address and a link-local destination IP address, directly to its
+   destination on the same physical link. The host MUST NOT send the
+   packet to any router for forwarding.
+
+   If the destination address is the 255.255.255.255 broadcast address
+   or a multicast address, then the host may use either its link-local
+   source address or a routable address, as appropriate.
+
+   If the destination address is a unicast address outside the
+   169.254/16 prefix, then the host SHOULD use an appropriate routable
+   source address, if it has one. If the host does not have a routable
+   source address, then it MAY choose to ARP for the destination address
+   and then send its packet, with a link-local source IP address and a
+   routable destination IP address, directly to its destination on the
+   same physical link. The host MUST NOT send the packet to any router
+   for forwarding.
+
+   In the case where two hosts on the same link each have both a link-
+   local address and another address configured via some other means,
+   the host may use either its link-local source address or a routable
+   address, depending on which is expected to be more likely to remain
+   stable for the expected lifetime of the connection. Note that link-
+   local addresses may be forced to change over time, as described in
+   Section 2.5.
+
+
+2.7 Link-Local Packets Are Not Forwarded
+
+   Any host sending an IPv4 packet with a source and/or destination
+   address in the 169.254/16 prefix MUST set the TTL in the IP header
+   to 255. This includes multicast and broadcast packets with a source
+   address in the 169.254/16 prefix.
+
+   This allows hosts to guard against misconfigured routers, which may
+   allow packets to leak in from outside the local link. Since even the
+   most dysfunctional router will decrement the TTL in the IP header, a
+   host can know with reasonable certainty that any packet received with
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 12]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   a TTL of 255 did come from another host on the local link. A host
+   receiving a packet with a source and/or destination address in the
+   169.254/16 prefix and a TTL less than 255, MAY choose to consider
+   such packets as potentially having been generated by a malicious
+   attacker outside the local link, and MAY choose to silently discard
+   such packets. [See Appendix for details of current implementations.]
+
+   An IPv4 packet whose source and/or destination address is in the
+   169.254/16 prefix MUST NOT be sent to any router for forwarding, and
+   any network device receiving such a packet MUST NOT forward it,
+   regardless of the TTL in the IP header. Similarly, a router or other
+   host MUST NOT indiscriminately answer all ARP requests for addresses
+   in the 169.254/16 prefix. A router may of course answer ARP requests
+   for the one (or more) own link-local address(es) that it has
+   legitimately claimed for its own use according to the claim-and-
+   defend protocol described in this document.
+
+   This restriction also applies to multicast packets. IP packets with
+   a link-local source address MUST NOT be forwarded off the local link
+   even if they have a multicast destination address.
+
+
+2.8 Devices may Assume Link-Local Packets are Local
+
+   The non-forwarding rule means that hosts may assume that all
+   169.254/16 destination addresses are "on-link" and directly
+   reachable. The 169.254/16 address prefix MUST NOT be subnetted.
+   This specification utilizes ARP-based address collision detection,
+   which functions by broadcasting on the local subnet. Since such
+   broadcasts are not forwarded, were subnetting to be allowed then
+   address conflicts could remain undetected.
+
+   The non-forwarding rule is important because it is expected that
+   many link-local-only devices will be extremely simple devices of
+   the kind that currently use X10 [X10], USB [USB] or FireWire [1394].
+
+   The designers of these devices currently assume that they will
+   communicate only with other local devices, and this allows them to
+   produce cost-effective devices by implementing a degree of security
+   appropriate for that expected environment. Any network gateway device
+   that blindly forwards the contents of link-local IP packets off the
+   local link (or onto the local link) exposes simple link-local-only
+   devices to a much greater degree of risk than their designers may
+   have planned for.
+
+   This does not mean that link-local devices are forbidden from any
+   communication outside the local link. IP hosts that implement both
+   link-local and conventional routable IP addresses may still use
+   their routable addresses without restriction as they do today.
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 13]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   Extremely simple IP devices that implement only a link-local address
+   may also communicate with hosts outside the local link, provided
+   that such communication is mediated through a device capable of
+   enforcing appropriate security controls. For example, a home heating
+   thermostat that implements only a link-local address could be
+   controlled from a remote Web browser, by having an intermediary
+   on the local network which accepts incoming HTTP connections, uses
+   appropriate cryptographic methods to verify the authority of the
+   remote user, and then uses link-local packets to communicate with
+   the thermostat to get status and issue commands.
+
+   It should be understood that this mediated communication is not
+   mandatory; it is an option afforded to designers of extremely simple
+   devices. Any designer of a device desiring unmediated communication
+   outside the local link need only implement today's conventional IP
+   host software (e.g. a DHCP client) in order to enjoy the same degree
+   of global addressability available to other conventional IP hosts.
+   Such networked devices should of course implement a degree of
+   security appropriate to being connected to a global public network.
+
+
+2.9 Higher-Layer Protocol Considerations
+
+   Similar considerations apply at layers above IP.
+
+   For example, designers of Web pages (including automatically
+   generated web pages) SHOULD NOT contain links with embedded
+   link-local addresses if those pages are viewable from hosts outside
+   the local link where the addresses are valid.
+
+   As link-local addresses may change at any time and have limited
+   scope, storing link-local addresses in the DNS is not well
+   understood and it is NOT RECOMMENDED.
+
+
+2.10 Privacy Concerns
+
+   Another reason to restrict leakage of link-local addresses outside
+   the local link is privacy concerns. If link-local addresses are
+   derived from a hash of the hardware address, some argue that they
+   could be indirectly associated with an individual, and thereby used
+   to track that individual's activities. Within the local link the
+   hardware addresses in the packets are all directly observable, so as
+   long as link-local addresses don't leave the local link they provide
+   no more information to an intruder than could be gained by direct
+   observation of hardware addresses.
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 14]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+3. Considerations for Multiple Interfaces
+
+   This section does not specify protocol requirements; it offers
+   implementation advice. Implementers of multi-homed hosts have three
+   basic choices: (1) configure a link-local address on only one active
+   interface at a time, (2) adopt networking APIs that include interface
+   identifiers, and configure a single shared link-local address used by
+   all active interfaces, or (3) provide networking APIs that identify
+   interfaces by IP address (the norm) and maintain some additional
+   address uniqueness properties in order to support the use of IP
+   addresses as unambiguous interface identifiers. This section
+   discusses these three choices.
+
+   For applications that send packets (or initiate outgoing
+   connections) without identifying a desired source interface, by
+   interface identifier, source IP address, or any other means, an
+   operating system that configures link-local addresses on multiple
+   interfaces has two choices. It can either restrict such
+   applications to using link-local addresses on only one default
+   interface, or it can ARP for the given destination address on all
+   interfaces, and use the first reply it gets. While clearly sub-
+   optimal, in most cases this heuristic approach will successfully
+   establish communication with the desired correspondent host.
+
+
+3.1 Link-Local Addressing on Only One Interface
+
+   A multi-homed host may elect to configure an IPv4 link-local address
+   on only one of its active interfaces. In some situations this will
+   be adequate. Implementers who are not planning to support IPv4 link-
+   local addresses simultaneously on multiple interfaces may skip the
+   remainder of Section 3.
+
+
+3.2 Single Shared Link-Local Address
+
+   Some operating systems have networking APIs that allow applications
+   to specify network interfaces by name, index value, or other local
+   identifier, and to identify interfaces this way both for incoming
+   and outgoing packets/connections. For operating systems that have
+   this capability (and have application software that makes use of it)
+   it is sufficient to configure all interfaces with a single common
+   IPv4 link-local address, and defend that address on all interfaces.
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 15]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+3.3 Different Link-Local Address for Each Interface
+
+   Many operating systems have networking APIs that allow applications
+   to bind endpoints only to a desired source IP address, or similarly
+   when a packet is received, identify the interface on which it arrived
+   only by its IP address, not by its name or other identifier. A multi-
+   homed host in this situation should ensure that each of its
+   interfaces is configured with a different link-local address, to
+   enable use of the source address as an unambiguous interface
+   identifier. To provide this property, if the selection algorithm
+   chooses an address that is already in use on one of the host's other
+   interfaces, then the process should be repeated until a unique
+   address is selected.
+
+   In addition, this kind of host should probe for, and defend, all of
+   its link-local addresses on all of its active interfaces that are
+   using link-local addresses.
+
+   When bringing up a new interface, the host SHOULD first probe for all
+   of its existing link-local addresses on that new interface. If any of
+   the addresses are found to be already in use by some other host on
+   that new link, then the interfaces in question MUST be reconfigured
+   to select new unique link-local addresses. The host should then
+   select a link-local address for the new interface, and probe on all
+   of its active interfaces to verify that this new address is unique
+   on all the links that the host has connections to.
+
+   This uniqueness requirement simplifies host software layers above
+   IP (application software and transport protocols) by allowing them
+   to identify connections using only the source and destination IP
+   addresses, without also needing interface identifiers. Since link-
+   local addresses are only unique per-link, hosts on different links
+   could be using the same link-local address. Uniqueness of source
+   addresses on the multi-homed host allows connections to the same
+   destination address on different links to be disambiguated by their
+   different source addresses.
+
+   Note that this also requires that the multi-homed host using
+   different link-local addresses on multiple interfaces MUST
+   implement the "strong end system" model [RFC 1122] for packets
+   from link-local source addresses, so that packets are only sent out
+   from the interface that matches the source address in the packet.
+   (The "weak end system" model may still be used for other packets.)
+
+   When bringing up multiple interfaces simultaneously (e.g. at system
+   boot time) the process can be streamlined by configuring all
+   interfaces concurrently. First all interfaces should be brought up in
+   an un-numbered state. Once this is done, all interfaces can then
+   concurrently go through the process of selecting a locally unique
+   address and probing for that address simultaneously on all active
+   interfaces (including all other interfaces that are themselves
+   currently in the process of selecting and probing for an address).
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 16]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+3.3.1 Example Illustrating (Incorrect) Ambiguous Address Re-Use
+
+   Figure 1 shows a network topology where host A has an interface on
+   link X with link-local address P, and host B, also on link X, has
+   address Q. If we allow host A to have another interface on a
+   different link that also has address Q, then although there are
+   no conflicts strictly within the scope of either link, there is
+   potential for confusion. When host A sends a UDP packet from source
+   address P to destination address Q without specifying an explicit
+   outgoing interface identifier, it is ambiguous whether A intends
+   to talk to itself, or to host B. By ensuring that all of a host's
+   link-local addresses are distinct not only from each other, but also
+   from all addresses currently active on all links that the host is
+   connected to, we remove this ambiguity.
+
+
+                  |               |
+                  |   P ----- Q?  |
+                  |-----| A |-----|
+                  |     -----     |
+                  |               |
+                  |               |
+                 X|               |Y
+                  |               |
+                  |               |
+        -----     |               |
+        | B |-----|               |
+        ----- Q   |               |
+                  |               |
+
+        Figure 1. (Incorrect) Ambiguous Re-Use of Address Q
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 17]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+3.3.2 Example Illustrating Acceptable Address Re-Use
+
+   Note that it is acceptable for different hosts on separate links to
+   be using the same link-local address on their respective separate
+   links. Figure 2 shows a network topology where host B on link X is
+   using address Q, while at the same time, host C on link Y is also
+   using address Q. This is entirely in keeping with the concept of
+   link-local addresses. Link-local addresses are only unique amongst
+   the member hosts of a single link. Hosts B and C are not on the same
+   link, hence there is no requirement for them to have distinct
+   addresses. Note that in this case, host A is still able to
+   communicate with both hosts B and C, because a packet sent from
+   source address P to destination address Q travels on link X to host
+   B, and a packet sent from source address R to destination address Q
+   travels on link Y to host C. TCP connections are uniquely identified
+   by the source and destination addresses and port numbers, not just by
+   the destination address and port number alone. To support link-local
+   addressing on multiple interfaces simultaneously, the network
+   software API must allow applications to bind endpoints to a desired
+   source interface as well as specifying the desired destination
+   address for a TCP connection. Networking implementations that only
+   allow the destination address to be specified should limit themselves
+   to configuring only one interface for link-local addressing.
+
+
+                  |               |
+                  |   P ----- R   |
+                  |-----| A |-----|
+                  |     -----     |
+                  |               |
+                  |               |
+                 X|               |Y
+                  |               |
+                  |               |
+        -----     |               |     -----
+        | B |-----|               |-----| C |
+        ----- Q   |               |   Q -----
+                  |               |
+
+        Figure 2. Acceptable Re-Use of Address Q
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 18]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+3.4 Collision Detection for Multi-Homed Hosts
+
+   If a host receives an ARP packet (request *or* reply) on an interface
+   that's using a link-local address, where the 'sender IP address' in
+   the ARP packet is equal to *any* of the host's current link-local
+   addresses, and the 'sender hardware address' in the ARP packet
+   matches *none* of the host's active interfaces, then this is
+   a conflicting ARP packet and must be handled as such.
+
+   If a host receives an ARP packet (request *or* reply) where the
+   'sender hardware address' is not the hardware address of the
+   interface on which the packet was received, but *is* the hardware
+   address of one of the host's other interfaces, then this indicates
+   that the host has two or more interfaces connected to the same
+   network link. This can happen if the user of a multi-homed host with
+   two Ethernet interfaces connects both interfaces to the same Ethernet
+   hub. It can also occur less obviously, such as a host with both wired
+   and wireless Ethernet interfaces, in an environment where a wireless
+   gateway is available, and (perhaps unknown to the user) happens to be
+   bridged onto the same wired Ethernet.
+
+   If a host implementing a single shared link-local address (Section
+   3.2) receives such an ARP packet, it should cease using its link-
+   local address on one of the two interfaces in question. If there is a
+   performance difference between the two interfaces (e.g. Gigabit wired
+   Ethernet and 11Mb/s wireless), then the host should generally cease
+   using its link-local address on the lower performance interface.
+
+   If a host implementing a different link-local address for each
+   interface (Section 3.3) receives such an ARP packet, it should
+   silently discard it and not treat it as a conflict. Such a host
+   should not shut down either interface's link-local address, because
+   to do so would break existing connections established to the
+   discontinued IP address.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 19]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+4. Considerations for Joining of Previously Separate Networks
+
+   Hosts on disjoint network links may configure the same link-local
+   address. If these separate network links are later joined or
+   bridged together, then there may be two hosts which are now on the
+   same link, trying to use the same address. When either host attempts
+   to communicate with any other host on the network, it will at some
+   point broadcast an ARP packet which will enable the hosts in question
+   to detect that there is an address conflict.
+
+   When these address conflicts are detected, the subsequent forced
+   reconfiguration may be disruptive, causing TCP connections to be
+   broken. However, it is expected that such disruptions will be rare.
+   It should be relatively uncommon for networks to be joined while
+   hosts on those networks are active. Also, 65024 addresses are
+   available for link-local use, so even when two small networks are
+   joined, the chance of collision for any given host is fairly small.
+
+   When joining two large networks (defined as networks with a
+   substantial number of hosts per segment) there is a greater chance
+   of collision. In such networks, it is likely that the joining of
+   previously separated segments will result in one or more hosts
+   needing to change their IPv4 link-local address, with subsequent
+   loss of TCP connections. In cases where separation and re-joining
+   is frequent, as in remotely bridged networks, this could prove
+   disruptive. However, unless the number of hosts on the joined
+   segments is very large, the traffic resulting from the join and
+   subsequent address conflict resolution will be small.
+
+   Sending ARP replies that have link-local sender IP addresses via
+   broadcast instead of unicast ensures that these conflicts can be
+   detected as soon as they become potential problems, but no sooner.
+   For example, if two disjoint network links are joined, where hosts
+   A and B have both configured the same link-local address, X, they
+   can remain in this state until A, B or some other host attempts to
+   initiate communication. If some other host C now sends an ARP request
+   for address X, and hosts A and B were to both reply with conventional
+   unicast ARP replies, then host C might be confused, but A and B still
+   wouldn't know there is a problem because neither would have seen the
+   other's packet. Sending these replies via broadcast allows A and B
+   see each other's conflicting ARP packets and respond accordingly.
+
+   Note that sending periodic gratuitous ARPs in an attempt to detect
+   these conflicts sooner is not necessary, wastes network bandwidth,
+   and may actually be detrimental. For example, if the network links
+   were joined only briefly, and were separated again before any new
+   communication involving A or B were initiated, then the temporary
+   conflict would have been benign and no forced reconfiguration would
+   have been required. Triggering an unnecessary forced reconfiguration
+   in this case would not serve any useful purpose. Hosts SHOULD NOT
+   send periodic gratuitous ARPs.
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 20]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+5. Security Considerations
+
+   The use of IPv4 Link-Local Addresses may open a network host to new
+   attacks. In particular, a host that previously did not have an IP
+   address, and no IP stack running, was not susceptible to IP-based
+   attacks. By configuring a working address, the host may now be
+   vulnerable to IP-based attacks.
+
+   The ARP protocol [RFC 826] is insecure. A malicious host may send
+   fraudulent ARP packets on the network, interfering with the correct
+   operation of other hosts. For example, it is easy for a host to
+   answer all ARP requests with replies giving its own hardware address,
+   thereby claiming ownership of every address on the network.
+
+   Implementers are advised that the Internet Protocol architecture
+   expects every networked device or host must implement security
+   which is adequate to protect the resources to which the device
+   or host has access, including the network itself, against known
+   or credible threats. Even though use of link-local addresses
+   may reduce the number of threats to which a device is exposed,
+   implementers of devices supporting the Internet Protocol must
+   not assume that a customer's local network is free from security
+   risks.
+
+   While there may be particular kinds of devices, or particular
+   environments, for which the security provided by the network is
+   adequate to protect the resources that are accessible by the
+   device, it would be misleading to make a general statement to
+   the effect that the requirement to provide security is reduced
+   for devices using link-local addresses as a sole means of access.
+
+   In all cases, whether or not link-local addresses are used, it
+   is necessary for implementers of devices supporting the Internet
+   Protocol to analyze the known and credible threats to which a
+   specific host or device might be subjected, and to the extent
+   that it is feasible, to provide security mechanisms which
+   ameliorate or reduce the risks associated with such threats.
+
+
+6. IANA Considerations
+
+   The IANA has allocated the network prefix 169.254/16 for the use
+   described in this document. The first and last 256 addresses in this
+   range (169.254.0.x and 169.254.255.x) are reserved for future IETF
+   Standards actions. No other IANA services are required by this
+   document.
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 21]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+7. Application Programming Considerations
+
+   Use of IPv4 link-local autoconfigured addresses presents additional
+   challenges to writers of applications and may result in existing
+   application software failing.
+
+7.1 Address Changes, Failure and Recovery
+
+   IPv4 link-local addresses used by an application may change over
+   time. Some application software encountering an address change
+   will completely fail. For example, client TCP connections will fail,
+   servers whose addresses change will have to be rediscovered, blocked
+   reads and writes will exit with an error condition, and so on.
+
+   Vendors producing application software which will be used on IP
+   implementations supporting IPv4 link-local address configuration
+   SHOULD detect and cope with address change events. Vendors
+   producing IP implementations supporting IPv4 link-local address
+   configuration SHOULD expose address change events to applications.
+
+7.2 Limited Forwarding of Locators
+
+   IPv4 link-local addresses MUST NOT be forwarded via an application
+   protocol (for example in a URL), to a destination which is not
+   link-local, on the same link. This is discussed further in Section
+   2.9 and 3.
+
+   Existing distributed application software which forwards address
+   information may fail. For example, FTP [RFC 959] passive mode
+   transmits the IP address of the client. Assume a client starts up
+   and obtains its *passive* IP configuration at a time when the host
+   has only a link-local address. Later, the host gets a global IP
+   address configuration (for one of its interfaces). The client uses
+   this global IP address to contact an FTP server off of the local
+   link for which it had (or still has) a link-local address
+   configured. If the ftp client transmits its passive IP
+   configuration to the FTP server, the FTP server will be unable to
+   reach the FTP client. The passive FTP operation will fail.
+
+7.3 Address Ambiguity
+
+   Application software run on a multihomed IP host which supports
+   IPv4 link-local address configuration on more than one interface
+   may fail. This is because application software assumes that an IP
+   address is unambiguous, that it can refer to only one host. IPv4
+   link-local addresses are unique only on a single link. A host
+   attached to multiple links can easily encounter a situation where
+   the same address is present on more than one interface, or first on
+   one interface, later on another; in any case associated with more
+   than one host. Most existing software is not prepared for this
+   ambiguity. In the future, application programming interfaces could
+   be developed to prevent this problem. This issue is discussed in
+   Section 3.
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 22]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+8. Acknowledgements
+
+   We would like to thank (in alphabetical order) Jim Busse,
+   Pavani Diwanji, Donald Eastlake 3rd, Peter Ford, Spencer Giacalone,
+   Josh Graessley, Myron Hattig, Hugh Holbrook, Richard Johnson,
+   Kim Yong-Woon, Rod Lopez, Keith Moore, Satish Mundra, Thomas Narten,
+   Erik Nordmark, Howard Ridenour, Daniel Senie, Dieter Siegmund,
+   Valery Smyslov and Ryan Troll for their contributions.
+
+9. Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   intellectual property or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; neither does it represent that it
+   has made any effort to identify any such rights. Information on the
+   IETF's procedures with respect to rights in standards-track and
+   standards-related documentation can be found in BCP-11. Copies of
+   claims of rights made available for publication and any assurances of
+   licenses to be made available, or the result of an attempt made to
+   obtain a general license or permission for the use of such
+   proprietary rights by implementers or users of this specification
+   can be obtained from the IETF Secretariat.
+
+   The IETF has been notified of intellectual property rights claimed
+   in regard to some or all of the specification contained in this
+   document. For more information consult the online list of claimed
+   rights.
+
+10. Copyright
+
+   Copyright (C) The Internet Society 23rd August 2002.
+   All Rights Reserved.
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works. However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 23]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+11. References
+
+   [802]      IEEE Standards for Local and Metropolitan Area Networks:
+              Overview and Architecture.
+              Institute of Electrical and Electronic Engineers,
+              IEEE Standard 802, 1990.
+
+   [802.1d]   ISO/IEC 10038, ANSI/IEEE Std 802.1D-1993 "MAC Bridges".
+
+   [802.3]    Local Area Networks Standard, 802.3 Carrier Sense
+              Multiple Access. ANSI/IEEE Standard, October 1985.
+
+   [802.5]    Local Area Networks Standard, 802.5 Token Ring Access
+              Method. ANSI/IEEE Standard; October 1985.
+
+   [1394]     Standard for a High Performance Serial Bus.
+              Institute of Electrical and Electronic Engineers,
+              IEEE Standard 1394-1995, 1995.
+
+   [RFC 826]  D. Plummer, "An Ethernet Address Resolution Protocol -or-
+              Converting Network Addresses to 48-bit Ethernet Address
+              for Transmission on Ethernet Hardware", STD 37, RFC 826,
+              November 1982.
+
+   [RFC 1122] R. Braden, "Requirements for Internet Hosts --
+              Communication Layers", RFC 1122, October 1989.
+
+   [RFC 1918] Y. Rekhter et.al., "Address Allocation for Private
+              Internets", RFC 1918, February 1996.
+
+   [RFC 2119] S. Bradner, "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+   [RFC 2131] R. Droms, "Dynamic Host Configuration Protocol",
+              RFC 2131, March 1997.
+
+   [RFC 2181] R. Elz and R. Bush, "Clarifications to the DNS
+              Specification", RFC 2181, July 1997.
+
+   [RFC 2462] S. Thomson and T. Narten, "IPv6 Stateless Address
+              Autoconfiguration", RFC 2462, December 1998.
+
+   [USB]      Universal Serial Bus Implementers Forum
+              <http://www.usb.org/>
+
+   [X10]      X10 Ltd. <http://www.x10.com/>
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 24]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+12. Authors' Addresses
+
+   Stuart Cheshire
+   Apple Computer, Inc.
+   1 Infinite Loop
+   Cupertino
+   California 95014, USA
+   Phone: +1 408 974 3207
+   EMail: rfc@stuartcheshire.org
+
+   Bernard Aboba
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA 98052, USA
+   Phone: +1 425 936 6605
+   Fax: +1 425 936 7329
+   EMail: bernarda@microsoft.com
+
+   Erik Guttman
+   Sun Microsystems
+   Eichhoelzelstr. 7
+   74915 Waibstadt Germany
+   Phone: +49 7263 911 701
+   Fax:   +49 7263 911 700
+   Email: erik.guttman@sun.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 25]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+Appendix. Behavior of Legacy Implementations
+
+A.1. Apple Mac OS 8.x and 9.x.
+
+   Mac OS chooses the IP address on a pseudo-random basis. The selected
+   address is saved in persistent storage for continued use after
+   reboot, when possible.
+
+   Mac OS sends nine DHCPDISCOVER packets, with an interval of two
+   seconds between packets. If no response is received from any of
+   these requests (18 seconds), it will autoconfigure.
+
+   Upon finding that a selected address is in use, Mac OS will select a
+   new random address and try again, at a rate limited to no more than
+   one attempt every two seconds.
+
+   Autoconfigured Mac OS systems check for the presence of a DHCP
+   server every five minutes. If a DHCP server is found but Mac OS
+   is not successful in obtaining a new lease, it keeps the existing
+   autoconfigured IP address. If Mac OS is successful at obtaining a
+   new lease, it drops all existing connections without warning. This
+   may cause users to lose sessions in progress. Once a new lease is
+   obtained, Mac OS will not allocate further connections using the
+   autoconfigured IP address.
+
+   Mac OS systems do not send packets addressed to a link-local address
+   to the default gateway if one is present; these addresses are always
+   resolved on the local segment.
+
+   Mac OS systems by default send all outgoing unicast packets with a
+   TTL of 255. All multicast and broadcast packets are also sent with a
+   TTL of 255 if they have a source address in the 169.254/16 prefix.
+
+   Mac OS implements media sense where the hardware (and driver
+   software) supports this. As soon as network connectivity is detected,
+   a DHCPDISCOVER will be sent on the interface. This means that systems
+   will immediately transition out of autoconfigured mode as soon as
+   connectivity is restored.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 26]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+A.2. Apple Mac OS X Version 10.2
+
+   Mac OS X chooses the IP address on a pseudo-random basis. The
+   selected address is saved in memory so that it can be re-used during
+   subsequent autoconfiguration attempts during a single boot of the
+   system.
+
+   Autoconfiguration of a link-local address depends on the results of
+   the DHCP process. DHCP sends two packets, with timeouts of one and
+   two seconds. If no response is received (three seconds), it begins
+   autoconfiguration. DHCP continues sending packets in parallel for
+   a total time of 60 seconds.
+
+   At the start of autoconfiguration, it generates 10 unique random
+   IP addresses, and probes each one in turn for 2 seconds. It stops
+   probing after finding an address that is not in use, or the list
+   of addresses is exhausted.
+
+   If DHCP is not successful, it waits five minutes before starting
+   over again. Once DHCP is successful, the autoconfigured link-local
+   address is given up. The link-local subnet, however, remains
+   configured.
+
+   Autoconfiguration is only attempted on a single interface at any
+   given moment in time.
+
+   Mac OS X ensures that the connected interface with the highest
+   priority is associated with the link-local subnet. Packets
+   addressed to a link-local address are never sent to the default
+   gateway, if one is present. Link-local addresses are always
+   resolved on the local segment.
+
+   Mac OS X implements media sense where the hardware and driver support
+   it. When the network media indicates that it has been connected,
+   the autoconfiguration process begins again, and attempts to re-use
+   the previously assigned link-local address. When the network media
+   indicates that it has been disconnected, the system waits four
+   seconds before de-configuring the link-local address and subnet.
+   If the connection is restored before that time, the autoconfiguration
+   process begins again. If the connection is not restored before that
+   time, the system chooses another interface to autoconfigure.
+
+   Mac OS X by default sends all outgoing unicast packets with a TTL
+   of 255. All multicast and broadcast packets are also sent with a
+   TTL of 255 if they have a source address in the 169.254/16 prefix.
+
+
+
+
+
+
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 27]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+A.3. Microsoft Windows 98/98SE
+
+   Windows 98/98SE systems choose their IP address on a pseudo-
+   random basis. This ensures that systems rebooting will obtain the
+   same autoconfigured address, unless a conflict is detected. The
+   address selection algorithm is based on computing a hash on the
+   interface's MAC address, so that a large collection of hosts should
+   obey the uniform probability distribution in choosing addresses
+   within the 169.254/16 address space.
+
+   The Windows 98/98SE DHCP Client sends out a total of 4 DHCPDISCOVERs,
+   with an inter-packet interval of 6 seconds. When no response is
+   received after all 4 packets (24 seconds), it will autoconfigure an
+   address.
+
+   The autoconfigure retry count for Windows 98/98SE systems is 10.
+   After trying 10 autoconfigured IP addresses, and finding all are
+   taken, the host will boot without an IP address.
+
+   Autoconfigured Windows 98/98SE systems check for the presence of a
+   DHCP server every five minutes. If a DHCP server is found but Windows
+   98 is not successful in obtaining a new lease, it keeps the existing
+   autoconfigured IP address. If Windows 98/98SE is successful at
+   obtaining a new lease, it drops all existing connections without
+   warning. This may cause users to lose sessions in progress. Once
+   a new lease is obtained, Windows 98/98SE will not allocate further
+   connections using the autoconfigured IP address.
+
+   Windows 98/98SE systems do not send packets addressed to a link-local
+   address to the default gateway if one is present; these addresses are
+   always resolved on the local segment.
+
+   Windows 98/98SE systems by default send all outgoing unicast packets
+   with a TTL of 128, so a host implementing the TTL check described in
+   Section 2.7 will also discard packets from these hosts. There is no
+   way a host can distinguish between packets generated locally with a
+   TTL of 128, and packets generated by a remote attacker, deliberately
+   constructed with a spoof source address in the 169.254/16 prefix, and
+   a TTL higher than 128, such that after passing through one or more
+   misconfigured routers, the TTL will have decremented to 128 by the
+   time it reaches the victim network. Hosts that require compatibility
+   with these Windows systems MAY choose to forego the protection of the
+   TTL check described above, by providing a user-settable option to
+   allow the user to choose between performing the TTL check (more
+   secure) or omitting the TTL check (more compatible but less secure).
+   Alternatively, if Windows compatibility is desired without
+   sacrificing protection against malicious off-link packets, this can
+   be achieved by configuring the Windows machines to use a default TTL
+   of 255, thereby allowing the use of the TTL check as a reliable
+   determination of whether the packet originated locally. This
+   configuration is performed by setting the Windows Registry Key
+   HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services:\Tcpip\
+   Parameters\DefaultTTL of type REG_DWORD to value 255.]
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 28]
+
+Internet Draft         IPv4 Link-Local Addresses       23rd August 2002
+
+
+   Windows 98/98SE systems do not implement media sense. This means that
+   network connectivity issues (such as a loose cable) may prevent a
+   system from contacting the DHCP server, thereby causing it to auto-
+   configure. When the connectivity problem is fixed (such as when the
+   cable is re-connected) the situation will not immediately correct
+   itself. Since the system will not sense the re-connection, it will
+   remain in autoconfigured mode until an attempt is made to reach the
+   DHCP server.
+
+   The mini-DHCP server included with Windows 98SE Internet Connection
+   Sharing (ICS), which functions as a NAT, allocates out of the
+   192.168/16 private address space by default.
+
+   However, it is possible to change the allocation prefix via a
+   registry key, and no checks are made to prevent allocation out of the
+   link-local prefix. When configured to do so, Windows 98SE ICS will
+   NAT packets from the link-local prefix off the local link. Windows
+   98SE ICS does not automatically route for the link-local prefix, so
+   that hosts obtaining addresses via DHCP cannot communicate with
+   autoconfigured-only devices.
+
+   Other home gateways exist that allocate addresses out of the link-
+   local prefix by default. Windows 98/98SE systems can use a 169.254/16
+   link-local address as the source address when communicating with
+   non-link-local hosts. However, Windows 98/98SE does not support
+   router solicitation/advertisement. This means that Windows 98/98SE
+   systems will typically not be able to discover a default gateway when
+   in autoconfigured mode.
+
+
+A.4. Windows 2000 and Windows ME
+
+   The autoconfiguration behavior of Windows 2000 and Windows ME systems
+   is identical to Windows 98/98SE except in the following respects:
+
+   Media Sense
+   Router Discovery
+   Silent RIP
+
+   Windows 2000 and ME implement media sense. As soon as network
+   connectivity is detected, a DHCPDISCOVER will be sent on the
+   interface. This means that systems will immediately transition
+   out of autoconfigured mode as soon as connectivity is restored.
+
+   Windows 2000 and ME also support router discovery, although it is
+   turned off by default. Windows 2000 also supports a RIP listener.
+   This means that it is possible to discover a default gateway while
+   in autoconfigured mode.
+
+   ICS on Windows 2000/ME behaves identically to Windows 98SE with
+   respect to address allocation and NATing of link-local prefixes.
+
+
+Expires 23rd February 2003       Cheshire, Aboba, Guttman     [Page 29]

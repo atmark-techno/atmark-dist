@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../../www/magick.css");
+  //--></style>
+  <title>ImageMagick: MagickWand, C API for ImageMagick: Magick Wand Methods</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="magickwc, api, for, imagemagick:, magick, wmethods, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../../index.html"><img id="titlebar-west" src="../../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="1211077733"><img id="titlebar-west" src="../../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img src="../../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img id="titlebar-east" src="../../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../../index.html">About ImageMagick</a>
+      <a href="../../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/install-source.html">Install from Source</a>
+      <a href="../../www/binary-releases.html">Binary Releases</a>
+      <a href="../../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../../www/sponsors.html">Sponsors</a>
+  <a href="http://www.webservertalk.com" class="sponsor" target="sponsor">Server Administration<br />Support Forum</a><!-- 20050515 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[ <a href="#ClearMagickWand">ClearMagickWand</a> | <a href="#CloneMagickWand">CloneMagickWand</a> | <a href="#DestroyMagickWand">DestroyMagickWand</a> | <a href="#IsMagickWand">IsMagickWand</a> | <a href="#MagickClearException">MagickClearException</a> | <a href="#MagickQueryConfigureOption">MagickQueryConfigureOption</a> | <a href="#MagickQueryConfigureOptions">MagickQueryConfigureOptions</a> | <a href="#MagickQueryFontMetrics">MagickQueryFontMetrics</a> | <a href="#MagickQueryMultilineFontMetrics">MagickQueryMultilineFontMetrics</a> | <a href="#MagickQueryFonts">MagickQueryFonts</a> | <a href="#MagickQueryFonts">MagickQueryFonts</a> | <a href="#MagickRelinquishMemory">MagickRelinquishMemory</a> | <a href="#MagickResetIterator">MagickResetIterator</a> | <a href="#MagickSetFirstIterator">MagickSetFirstIterator</a> | <a href="#MagickSetLastIterator">MagickSetLastIterator</a> | <a href="#MagickWandGenesis">MagickWandGenesis</a> | <a href="#MagickWandTerminus">MagickWandTerminus</a> | <a href="#NewMagickWand">NewMagickWand</a> | <a href="#NewMagickWandWithImage">NewMagickWandWithImage</a> ]</p>
+
+<div style="margin: auto;">
+  <h2><a name="ClearMagickWand">ClearMagickWand</a></h2>
+</div>
+
+<p>ClearMagickWand() clears resources associated with the wand.</p>
+
+<p>The format of the ClearMagickWand method is:</p>
+
+<pre class="code">
+  void ClearMagickWand(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="CloneMagickWand">CloneMagickWand</a></h2>
+</div>
+
+<p>CloneMagickWand() makes an exact copy of the specified wand.</p>
+
+<p>The format of the CloneMagickWand method is:</p>
+
+<pre class="code">
+  MagickWand *CloneMagickWand(const MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="DestroyMagickWand">DestroyMagickWand</a></h2>
+</div>
+
+<p>DestroyMagickWand() deallocates memory associated with an MagickWand.</p>
+
+<p>The format of the DestroyMagickWand method is:</p>
+
+<pre class="code">
+  MagickWand *DestroyMagickWand(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="IsMagickWand">IsMagickWand</a></h2>
+</div>
+
+<p>IsMagickWand() returns MagickTrue if the wand is verified as a magick wand.</p>
+
+<p>The format of the IsMagickWand method is:</p>
+
+<pre class="code">
+  MagickBooleanType IsMagickWand(const MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickClearException">MagickClearException</a></h2>
+</div>
+
+<p>MagickClearException() clear any exceptions associated with the wand.</p>
+
+<p>The format of the MagickClearException method is:</p>
+
+<pre class="code">
+  MagickBooleanType MagickClearException(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickQueryConfigureOption">MagickQueryConfigureOption</a></h2>
+</div>
+
+<p>MagickQueryConfigureOption() returns the value associated with the specified configure option.</p>
+
+<p>The format of the MagickQueryConfigureOption function is:</p>
+
+<pre class="text">
+  char *MagickQueryConfigureOption(const char *option)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>option</h4>
+<p>The option name.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickQueryConfigureOptions">MagickQueryConfigureOptions</a></h2>
+</div>
+
+<p>MagickQueryConfigureOptions() returns any configure options that match the specified pattern (e.g.  "*" for all).  Options include NAME, VERSION, LIB_VERSION, etc.</p>
+
+<p>The format of the MagickQueryConfigureOptions function is:</p>
+
+<pre class="text">
+  char **MagickQueryConfigureOptions(const char *pattern,
+    unsigned long *number_options)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>pattern</h4>
+<p>Specifies a pointer to a text string containing a pattern.</p>
+
+<h4>number_options</h4>
+<p>Returns the number of configure options in the list.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickQueryFontMetrics">MagickQueryFontMetrics</a></h2>
+</div>
+
+<p>MagickQueryFontMetrics() returns a 7 element array representing the following font metrics:</p>
+
+<pre class="text">
+      Element Description
+      -------------------------------------------------
+      0 character width
+      1 character height
+      2 ascender
+      3 descender
+      4 text width
+      5 text height
+      6 maximum horizontal advance
+</pre>
+
+<p>The format of the MagickQueryFontMetrics method is:</p>
+
+<pre class="code">
+  double *MagickQueryFontMetrics(MagickWand *wand,
+    const DrawingWand *drawing_wand,const char *text)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The Magick wand.</p>
+
+<h4>drawing_wand</h4>
+<p>The drawing wand.</p>
+
+<h4>text</h4>
+<p>The text.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickQueryMultilineFontMetrics">MagickQueryMultilineFontMetrics</a></h2>
+</div>
+
+<p>MagickQueryMultilineFontMetrics() returns a 7 element array representing the following font metrics:</p>
+
+<pre class="text">
+      Element Description
+      -------------------------------------------------
+      0 character width
+      1 character height
+      2 ascender
+      3 descender
+      4 text width
+      5 text height
+      6 maximum horizontal advance
+</pre>
+
+<p>This method is like MagickQueryFontMetrics() but it returns the maximum text width and height for multiple lines of text.</p>
+
+<p>The format of the MagickQueryFontMetrics method is:</p>
+
+<pre class="code">
+  double *MagickQueryMultilineFontMetrics(MagickWand *wand,
+    const DrawingWand *drawing_wand,const char *text)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The Magick wand.</p>
+
+<h4>drawing_wand</h4>
+<p>The drawing wand.</p>
+
+<h4>text</h4>
+<p>The text.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickQueryFonts">MagickQueryFonts</a></h2>
+</div>
+
+<p>MagickQueryFonts() returns any font that match the specified pattern (e.g. "*" for all).</p>
+
+<p>The format of the MagickQueryFonts function is:</p>
+
+<pre class="text">
+  char **MagickQueryFonts(const char *pattern,unsigned long *number_fonts)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>pattern</h4>
+<p>Specifies a pointer to a text string containing a pattern.</p>
+
+<h4>number_fonts</h4>
+<p>Returns the number of fonts in the list.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickQueryFonts">MagickQueryFonts</a></h2>
+</div>
+
+<p>MagickQueryFonts() returns any image formats that match the specified pattern (e.g.  "*" for all).</p>
+
+<p>The format of the MagickQueryFonts function is:</p>
+
+<pre class="text">
+  char **MagickQueryFonts(const char *pattern,
+    unsigned long *number_formats)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>pattern</h4>
+<p>Specifies a pointer to a text string containing a pattern.</p>
+
+<h4>number_formats</h4>
+<p>This integer returns the number of image formats in the list.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickRelinquishMemory">MagickRelinquishMemory</a></h2>
+</div>
+
+<p>MagickRelinquishMemory() relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc.</p>
+
+<p>The format of the MagickRelinquishMemory method is:</p>
+
+<pre class="code">
+  void *MagickRelinquishMemory(void *resource)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>resource</h4>
+<p>Relinquish the memory associated with this resource.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="MagickResetIterator">MagickResetIterator</a></h2>
+</div>
+
+<p>MagickResetIterator() resets the wand iterator.  Use it in conjunction with MagickNextImage() to iterate over all the images in a wand container.</p>
+
+<p>The format of the MagickResetIterator method is:</p>
+
+<pre class="code">
+  void MagickResetIterator(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetFirstIterator">MagickSetFirstIterator</a></h2>
+</div>
+
+<p>MagickSetFirstIterator() sets the wand iterator to the first image.</p>
+
+<p>The format of the MagickSetFirstIterator method is:</p>
+
+<pre class="code">
+  void MagickSetFirstIterator(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickSetLastIterator">MagickSetLastIterator</a></h2>
+</div>
+
+<p>MagickSetLastIterator() sets the wand iterator to the last image.</p>
+
+<p>The format of the MagickSetLastIterator method is:</p>
+
+<pre class="code">
+  void MagickSetLastIterator(MagickWand *wand)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>wand</h4>
+<p>The magick wand.</p>
+
+<div style="margin: auto;">
+  <h2><a name="MagickWandGenesis">MagickWandGenesis</a></h2>
+</div>
+
+<p>MagickWandGenesis() initializes the MagickWand environment.</p>
+
+<p>The format of the MaickWandGenesis method is:</p>
+
+<pre class="code">
+  void MaickWandGenesis(void)
+</pre>
+
+<div style="margin: auto;">
+  <h2><a name="MagickWandTerminus">MagickWandTerminus</a></h2>
+</div>
+
+<p>MagickWandTerminus() initializes the MagickWand environment.</p>
+
+<p>The format of the MaickWandTerminus method is:</p>
+
+<pre class="code">
+  void MaickWandTerminus(void)
+</pre>
+
+<div style="margin: auto;">
+  <h2><a name="NewMagickWand">NewMagickWand</a></h2>
+</div>
+
+<p>NewMagickWand() returns a wand required for all other methods in the API.</p>
+
+<p>The format of the NewMagickWand method is:</p>
+
+<pre class="code">
+  MagickWand *NewMagickWand(void)
+</pre>
+
+<div style="margin: auto;">
+  <h2><a name="NewMagickWandWithImage">NewMagickWandWithImage</a></h2>
+</div>
+
+<p>NewMagickWandWithImage() returns a wand with an image.</p>
+
+<p>The format of the NewMagickWandWithImage method is:</p>
+
+<pre class="code">
+  MagickWand NewMagickWandWithImage(const Image *image)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="950933864">Discourse Server</a> |
+    <a href="../../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="600017557">Image Gallery</a> |
+    <a href="http://redux.imagemagick.org/MagickStudio/scripts/MagickStudio.cgi" target="388189830">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+.TH "usbmgr.conf" "5" "1.0.0" "Shuu Yamaguchi" "USB Utilities"
+.SH "NAME"
+.LP 
+usbmgr.conf \- Config file for usbmgr
+.SH "DESCRIPTION"
+.PP 
+\fIusbmgr.conf\fR is the main configuration file for \fBusbmgr\fR daemon, it has the proper entries to support a wide list of USB devices and the required usb kernel module to make them work.
+.PP 
+Standard \fBusbmgr\fR distribution already has a list of well known devices and their proper entries, so you don't need to edit it to have it working.
+.PP 
+In case you want or need to add a new device, you can do it with the help of \fBdump_usbdev\fR, it aids you in writing \fIusbmgr.conf\fR. After usbmgr has been started, running \fBdump_usbdev\fR will dump infomation about all attached devices in a format suitable for \fIusbmgr.conf\fR.
+.PP
+If you connect USB devices to your USB HUB, you'll see a line like the following.
+
+.nf
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+-------------------------------------------------------------
+.fi
+.PP
+"class 0x9" means USB HUB. If no USB devices are connected, only the root HUB will appear. Modifying "<module_name>" would make the configuration for this device(HUB) complete. In the case of a HUB, you should change "module_name" to "none" because the HUB driver is included in usbcore.
+.PP
+After a USB mouse has been connected to the HUB, running \fBdump_usbdev\fR will give you the following.
+
+.nf
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module <module_name>
+vendor 0x56e product 0x4 module <module_name>
+-------------------------------------------------------------
+.fi
+
+.PP
+The 2nd line is new. This is the infomation about the USB mouse. The USB mouse requires the "hid" and "mousedev" drivers. So, "<module_name>" should be changed to "hid , mousedev". So the complete \fIusbmgr.conf\fR entry would look like this:
+
+.nf
+-------------------------------------------------------------
+class 0x9 subclass 0x0 protocol 0x0 module none
+vendor 0x56e product 0x4 module hid , mousedev
+-------------------------------------------------------------
+.fi
+
+.PP					        
+You should copy this into \fI/etc/usbmgr/usbmgr.conf\fR, and then run \fBupdate_usbdb\fR to create the configuration data.
+.SH "ENVIRONMENT VARIABLES"
+.LP 
+None.
+.SH "AUTHOR"
+.LP 
+Shuu Yamaguchi <shuu@wondernetworkresources.com>
+.LP 
+This manual page was written by Rudy Godoy <rudy@kernel-panik.org>, for the Debian GNU/Linux system (but may be used by others).
+.SH "SEE ALSO"
+.BR dump_usbdev (8),
+.BR update_usbdb (8),
+.BR usbmgr (5)
+

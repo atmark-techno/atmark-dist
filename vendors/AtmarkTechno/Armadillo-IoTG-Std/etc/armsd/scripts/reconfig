@@ -1,0 +1,29 @@
+#!/bin/sh
+
+id=$1
+version=$2
+info=$3
+config=$4
+
+echo "configure module: $id ($version)"
+
+case $id in
+0)
+	echo "TODO: configure line"
+	exit 1
+	;;
+1)
+	cp "$config" /etc/lighttpd.conf
+	/usr/bin/killall lighttpd
+	sleep 1
+	/usr/sbin/lighttpd -f /etc/lighttpd.conf
+	;;
+2)
+	mkdir -p ~root/.ssh
+	chmod 700 ~root/.ssh
+	cp "$config" ~root/.ssh/authorized_keys
+	;;
+*)
+	echo unknown module: $id
+	;;
+esac

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+. /usr/share/3g/3g-common.sh
+
+if [ $# -lt 3 ]; then
+	echo "usage: $0 [apn] [user] [passwd] [auth_type] [pdp_type]"
+	echo "   apn       ... access point name"
+	echo "   user      ... user name"
+	echo "   passwd    ... pass word"
+	echo "   auth_type ... NON/PAP/CHAP(default)"
+	echo "   pdp_type  ... IP(default)/PPP"
+	exit 1
+fi
+
+auth_type="2"
+if [ $# -ge 4 ]; then
+	if [ ${4} = "NON" ]; then
+		auth_type="0"
+	elif [ ${4} = "PAP" ]; then
+		auth_type="1"
+	elif [ ${4} = "CHAP" ]; then
+		auth_type="2"
+	else
+		echo "Error: $4 is not support auth_type"
+		exit 1
+	fi
+fi
+
+pdp_type="IP"
+if [ $# -ge 5 ]; then
+	if [ ${5} = "IP" ] || [ ${5} = "PPP" ]; then
+		pdp_type=$5
+	else
+		echo "Error: $5 is not support pdp_type"
+		exit 1
+	fi
+fi
+
+restore_stty_setting_handler
+flock $SERIAL_3G_LOCK expect /usr/share/3g/3g-set-ap.exp $PID_3G $1 $2 $3 $auth_type $pdp_type

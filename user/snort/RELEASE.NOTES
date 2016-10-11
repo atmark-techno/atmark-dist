@@ -1,0 +1,80 @@
+2006-01-19 - Snort 2.6.0 Released
+[*] New Additions
+    * Changes to autoconf and make.  If building and installing
+      Snort on SunOS, Mac OSX, OpenBSD, FreeBSD (and many other
+      platforms), please reference the "Platform Specific Notes"
+      section of doc/INSTALL. 
+
+    * Use libtool for building of libraries and shared libraries. 
+      libtool version 1.4 or later must be installed.
+
+    * Added Performance Profiling Measurements for rules & preprocessors.
+      Enabled via --enable-perfprofiling.
+
+    * Added support for dynamically loadable preprocessors, detection
+      engine and rules.  Enabled via --enable-dynamicplugin.  Provides
+      ability to write "blackbox" rules in C.  Provides for quicker
+      development/release of new preprocessors and smaller snort binary.
+      Added 'gid' and 'metadata' fields to rules.  
+
+    * Addition of dynamically loadable SMTP preprocessor.  Deprecates
+      xlink2state minipreprocessor.
+
+    * Addition of dynamically loadable FTP/Telnet preprocessor.  Deprecates
+      telnet_decode preprocessor.
+
+    * Preprocessor configuration validation.  Verifies a preprocessor
+      configuration, when one preprocessor depends on another preprocessor
+      being enabled (HttpInspect depends on Stream).  Also handles 2 part
+      configurations (Frag3 requires at least one policy/engine configuration).
+
+    * Longname option support.  See README for new options.
+
+    * Stream API to simplify transition to next generation Stream module.
+      Flowbits now stored as part of stream, updates to output plugins for
+      logging of reassembled packets.  Updates to other preprocessors to
+      provide per stream state data.
+
+    * Logging of Generator ID to MySQL database.  Updated database
+      schema to add this field.  Requires update to BASE.  See
+      http://sourceforge.net/projects/secureideas for the latest.
+
+[*] Improvements
+    * Changed default pattern matcher to Aho-Corasick.  Wu-Manbher will be
+      deprecated in the next release.  This may result in an increase
+      in snort's memory consumption.  Other pattern matchers are available
+      that utilize smaller amounts of memory (Keyword Trie, Aho-Corasick
+      Sparse, etc).  Refer to the Snort manual on how to configure snort
+      to use an alternate pattern matcher.
+
+    * Inline drop modified to alwyas set flag when packets are blocked.
+      Useful with logging.
+
+    * Inline drop correctly handles config stateless and non-content rules.
+
+    * Better exception handling and restart/exit cleanup of preprocessors,
+      rules and pattern matcher memory.  Removed reentrant issue with
+      syslog on exit via signal.
+
+    * Updates to Stream4 enforce_state keywork to better handle
+      sessions that are picked up midstream, asynchronous traffic, etc.
+
+    * Stream4 performance improvements and changes to help reduce false
+      positives on reassembled data.
+
+    * Fix to Wu-Manbher pattern matcher for repeating content checks.
+
+    * Compiler warning cleanup for Win32
+
+    * Frag3 memory leak fix.
+
+    * Portscan changes to address buffer overrun issue.
+
+    * Fix rules parsing when DNS is not available.
+
+    * Handle perf-stats 32bit int wrapping on 64bit platforms.
+
+    * Update the daemonization code to parse the entire configuration
+      file before daemonization.  Addresses a number of issues relating
+      to opening wrong PCAP device prior to reading it from the conf
+      file and the use of -T flag.

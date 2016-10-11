@@ -1,0 +1,86 @@
+This is version 0.991 of my buffered audio play/record program for Linux.
+Note that this is BETA software and may not work for you.
+Please mail me with any bugs/feature enhancements etc.
+
+This version is purely a maintenance release; all new work is going
+into bplay2 which I would like to release soonish, but real life keeps
+getting in the way.
+
+If you receive a BINARY version of this software and it doesn't work, I
+advise you to get the source and rebuild it. Certain interfaces to the
+kernel sound driver have evolved over the life of the Linux kernel and a
+program compiled for one version may not work correctly with another
+kernel version. Recompiling fixes this problem. Please note that this
+code originally dates from 1994!
+
+Features:
+Handles the following file types:
+Raw sound files (no header)
+Micro$oft WAV files
+Creative Labs Voc files (including the 16bit stereo variants and with
+support for loops).
+
+There are a couple of limitations with the VOC recording; in particular
+only the v1.20 format files are produced, which won't work on really old
+player programs. In addition there is an upper limit of about 16M on the
+size of a VOC file.
+
+Details
+The program uses two processes and a large block of shared memory to
+allow asynchronous reading and writing of the file and the device. It
+also runs at the highest possible priority. Using this method it is
+possible to record at full speed (44.1kHz 16 bit stereo, or about
+176Kb/s) without overruns on 486DX/33 using 8bit DMA with a slow IDE
+disk in multiuser mode until the disk gets very close to full (ie the
+head is seeking all over the disk to find free blocks and can't keep
+up).
+
+Building
+Basically, type make.
+Note that there are two commented options on the CFLAGS command line
+Adding -DDEBUG just causes lots of debugging messages to be printed to
+the screen. Adding -DUSEBUFFLOCK compiles in some code that causes the
+shared memory to be locked down in memory. Although this seems to be a
+good idea, on older Linux versions it caused lockups (I think a deadlock
+in the kernel) and I haven't tested it for about a year, so use at own
+risk.
+
+Installing
+bplay/brec should be installed suid root. This is so that the program
+can renice itself to a higer priority. As far as I am aware there are no
+security holes in this program (it only uses the root privs when it has
+to and then immediately drops them again). Check the code and see what
+you think if you are worried. Make a link (symbolic or hard, doesn't
+matter) from brec to bplay.
+
+Install the man pages somewhere sensible. You will have to edit the brec
+manpage if you don't install it in ...../man1/brec.1
+
+CHANGES
+0.991	Added patch from Peter Makholm <peter@makholm.net> to fix
+	endian problems with wav files.
+	Added patch from Nick Andrew <nick@think.zeta.org.au> to allow
+	Ctrl-C to do the right thing when recording.
+
+CREDITS
+Thanks to Huba Gaspar <huba@unixoft.hu> for finding a locking bug.
+Thanks to various debian people for debianizing it and makeing various
+improvements - I think they are Wichert Akkerman
+<wakkerma@wi.leidenuniv.nl>, Peter Makholm <peter@makholm.net>, Ian
+Jackson <ijackson@gnu.ai.mit.edu>, and Norbert Veber
+<nveber@debian.org>.
+
+TODO
+Tidy up and generalize the code.
+Improve the Makefile and add an installation target.
+Improve the documentation.
+Add support for the realtime scheduling extensions in the new Linux
+kernels.
+Fix the recording limits on WAV and VOC files.
+Add support for other formats (IRCAM floating point etc).
+Merge in the SunOS/Ariel version.
+Provide a Tk front end.
+
+David Monro
+davidm@amberdata.demon.co.uk
+davidm@cs.usyd.edu.au

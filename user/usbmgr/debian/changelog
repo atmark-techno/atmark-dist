@@ -1,0 +1,225 @@
+usbmgr (1.0.0-4) unstable; urgency=low
+
+  * Switched to cdbs for package building.
+  * Added patch to loader.c for proper handling SCSI subsystem when 
+    kernel has CONFIG_SCSI set to Y and a mass storage device it's
+    plugged. (Closes: #239255)
+  * Added mention to hotplug and an advice explaining who might want to run
+    usbmgr instead of hotplug. (Closes: #290677)
+  * Applied patch on node.c to properly build on amd64, thanks to
+    Andreas Jochens <aj@andaco.de> (Closes: #297943)
+  * Changed priority to extra in favour of hotplug (Closes: #296718)
+  * Standards version update
+  * Improved support for 2.6 kernel modules, which names have changed.
+    Also add checking for kernel version on init script. So this will use
+    the usbmgr-2.6.conf config file.
+
+ -- Rudy Godoy <rudy@kernel-panik.org>  Sun, 31 Jul 2005 14:12:23 -0500
+
+usbmgr (1.0.0-3) unstable; urgency=low
+
+  * Add conflict with hotplug (Closes #235232)
+  * Add usbmgr.conf manpage with spanish translation (Closes #234483)
+  * Fixes invalid buffer line, pointer bug. Thanks Peter Gillich
+    <pgillich@freemail.hu> (Closes #233167)
+  * Added a patch in loader.c to modprobe param to only simulate unloading.
+    This deals well, but not clean (since application has modprobe hardcoded
+    for modules management), with common modules unload. (Closes #175847)
+  * Use debian/compat instead of DH_COMPAT=4
+  * Uses dh_installman and debian/usbmgr.manpages instead of dh_installmanpages
+
+ -- Rudy Godoy <rudy@kernel-panik.org>  Sat,  3 Jul 2004 20:10:41 -0500
+
+usbmgr (1.0.0-2) unstable; urgency=low
+
+  * Add spanish translated manpages
+  * Bug fix: "usbmgr: doesn't start in single user mode", thanks to
+    avdd@flow.com.au (Closes #201814)
+
+ -- Rudy Godoy <rudy@kernel-panik.org>  Sun,  1 Feb 2004 23:55:31 -0500
+
+usbmgr (1.0.0-1) unstable; urgency=low
+
+  * Lets do a QA Release, changing Maintainer to QA Group.
+    Hopefully the guy that wrote the ITA still takes this package.
+  * debian/control:
+    - Update Standards-Version
+    - Update Build-Depends
+  * debian/conffiles - remove
+  * Remove obsolete Emacs Variables from changelog.
+  * debian/copyright:
+    - New Download Location
+    - Add short paragraph about GPL license
+  * debian/rules:
+    - clean up
+    - use DH_COMPAT=4
+    - drop dh_undocumented call.
+  * debian/README.Debian removed. (Closes: #171192).
+  * New upstream release
+  * Bug fix: "usbmgr: missing manpages". (Closes: #127791).
+    Thanks to  Esteban  Manchado  Velázquez <zoso@debian.org> for the
+    manpages.
+  * Bug fix: "usbmgr: FTBFS: PAGE_SIZE undeclared", thanks to Frodo Looijaard
+    <frodol@dds.nl> for the Patch (Closes: #223219).
+  * Bug fix: "usbmgr: entry for vendor 0x03f0 product 0x0605", thanks to
+    Marco Bodrato (Closes: #191972).
+  * Bug fix: "usbmgr: New entry for EPSON Perfection 1260 scanner", thanks
+    to Damyan Ivanov \(at work\) (Closes: #204680).
+  * Bug fix: "usbmgr: Canon CanoScan N650U entry", thanks to Christian
+    Luijten (Closes: #213999).
+  * Bug fix: "update_usbdb: should check timestamp of
+    /etc/usbmgr/.update", thanks to Wouter Verhelst (Closes: #135724).
+  * Bug fix: "usbmgr: Inconsistency between /etc/usbmgr/usbmgr.conf and HP
+    Photosmart S20", thanks to Ajay Shah (Closes: #135209).
+  * "usbmgr: script path cannot be absolute" - this is documented and upstream.
+    (In README, 3.6 there is "put them in /etc/usbmgr).
+  * Bug fix: "usbmgr: init script cannot stop usbmgr daemon", thanks to
+    Kiss Gabor (Closes: #175848). (--pidfile /var/run/$NAME.pid is used and works
+    for me.)
+  * Bug fix: "usbmgr: incorrect module in usbmgr.conf", thanks to Hiroyuki
+    YAMAMORI (Closes: #222400).
+  * Bug fix: "usbmgr: description in startup/shutdown script", thanks to
+    Lee Maguire (Closes: #169237).
+  * Bug fix: "usbmgr: configuration error //etc/usbmgr/usbmgr.conf",
+    thanks to Bert Lange (Closes: #199551).
+
+ -- Joerg Jaspert <joerg@debian.org>  Sat, 31 Jan 2004 02:58:31 +0100
+
+usbmgr (0.4.8-8) unstable; urgency=low
+
+  * Typo in previous version's changeglog (Closes: #161770)
+  * Fixed the typo in usbmgr.conf (vender) (Closes: #175845)
+  * Added new divices to usbmgr.conf.
+    - Motorola Corporation SurfBoard 4100 USB Cable Modem (Closes: #187318)
+    - Deluo USB GPS and other pl2303 serial adapters (Closes: #178751)
+    - Wacom Graphire2 USB Tablet (Closes: #174814)
+    - Image Tank 1.5 USB Storage (Closes: #170324)
+    - Prolific IEEE-1284 Controller (Closes: #161771)
+    - Coolpix 995 [Nikon] (Closes: #190931)
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Wed, 30 Apr 2003 12:29:48 +0900
+
+usbmgr (0.4.8-7) unstable; urgency=low
+
+  * Typo in usbmgr.conf (Closes: $16770) 
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue,  8 Oct 2002 23:02:58 +0900
+
+usbmgr (0.4.8-6) unstable; urgency=low
+
+  * Maintainer Release.
+  * New usbmgr.conf (merged with 5.1's usbmgr.conf)
+  * Add new devices to usbmgr.conf: (Closes: #161770)
+    - Agfa SnapScan 40E
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Fri,  4 Oct 2002 12:56:26 +0900
+
+usbmgr (0.4.8-5.1) unstable; urgency=low
+
+  * NMU.
+  * The "OK, now I'm sick waiting" release.
+  * Removed syntax errors from usbmgr.conf (Closes: #135722).
+  * Updated database with information about new hardware, and corrected some
+    incorrect information (Closes: #134808, #136043, #137048, #139798, #149253).
+  * Bogus bug: the information is already in usbmgr.conf, but #135722 was
+    preventing it from working correctly (Closes: #153672).
+  * Rewrote the description slightly (Closes: #147108).
+  * Made sure usbmgr is not being restarted on upgrade (Closes: #134771)
+    and raised its priority to 15 (Closes: #152687).
+  * Added an invocation of 'update_usbdb -f usbmgr.conf' to postinst.
+  * Hope the maintainer is not as MIA as I think he is.
+
+ -- Wouter Verhelst <wouter@debian.org>  Wed, 24 Jul 2002 21:36:08 +0200
+
+usbmgr (0.4.8-5) unstable; urgency=low
+
+  * New usbmgr.conf (2002/01/22 version) (Closes: #127449)
+  * Added new devices to usbmgr.conf: (Closes: #120714,#127194,#134505)
+    - Webcam Vesta [Philips]
+    - Webcam Vesta Pro [Philips]
+    - Other Philips products (Please teach me the produt names)
+    - Philips OEM products
+    - IBM USB CD-ROM
+  * Delete dh_make template files.
+  * Delete /etc/usbmgr directory when you purge this package (Closes: #120671)
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue, 19 Feb 2002 11:43:07 +0900
+
+usbmgr (0.4.8-4) unstable; urgency=low
+
+  * New usbmgr.conf
+    - Logitech Optical iFeel Mouse. 
+      (Thanks Leland Olds <olds@eskimo.com>)
+    - IBM USM Memory Key (M-system DiskOnKey)
+    - Melco BUFFALO LUA-TX
+    - Linksys USB10T
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Fri, 22 Jun 2001 14:03:41 +0900
+
+usbmgr (0.4.8-3) unstable; urgency=low
+
+  * Don't test "/proc/bus/usb" from init script. (Closes: #97634)
+  * New usbmgr.conf. 
+    - Added Olympus C-2040ZOOM.
+    - Added IBM Externel USB Floppy Disk Drive.
+      (Thanks Wei Deng <wdeng@davy>)
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Wed,  6 Jun 2001 11:24:10 +0900
+
+usbmgr (0.4.8-2) unstable; urgency=high
+
+  * Deleted the kernel version check from init script.
+    usbmgr is available under the linux kernel have 
+    "/proc/bus/usb". (Closes: #95549, #95971)
+  * New usbmgr.conf. Thanks Barak Pearlmutter. (Closes: #95671) 
+  * Added /etc/init.d/usbmgr to debian/conffiles.
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue,  8 May 2001 00:29:53 +0900
+
+usbmgr (0.4.8-1) unstable; urgency=low
+
+  * New upstream release
+  * Added to check kernel version in init script.
+  * Added the warning message to debian/control:
+     "Usbmgr is for Linux-2.2.x kernel only"
+  * Changed init script number: 50->45. (Closes: #94927)
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Thu, 26 Apr 2001 15:53:05 +0900
+
+usbmgr (0.4.7-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue, 17 Apr 2001 12:13:13 +0900
+usbmgr (0.4.6-2) unstable; urgency=low
+
+  * ReBuild with glibc-2.2.2. 
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue, 20 Feb 2001 16:21:35 +0900
+
+usbmgr (0.4.6-1) unstable; urgency=low
+
+  * New upstream release
+  * BugFix: file 'config.cache' is in source package. (Closes: #84510)
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Mon, 19 Feb 2001 14:24:10 +0900
+
+usbmgr (0.4.5-3) unstable; urgency=low
+
+  * BugFix: Can't purge this package. (Closes: #84286) 
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Mon,  5 Feb 2001 13:17:42 +0900
+
+usbmgr (0.4.5-2) unstable; urgency=low
+
+  * BugFix: Can't build source package. Closes Bug#83112
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue, 23 Jan 2001 18:55:39 +0900
+
+usbmgr (0.4.5-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Yoshiaki Yanagihara <yochi@debian.org>  Tue, 16 Jan 2001 14:58:20 +0900
+
+

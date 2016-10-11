@@ -1,0 +1,11 @@
+--- node.orig.c	2001-01-04 16:14:53.000000000 +0100
++++ node.c	2005-03-03 18:53:02.099186014 +0100
+@@ -31,7 +31,7 @@
+ 	INIT_NODE(np);
+ 	link_node(base,np);
+ 	if (size > 0) {
+-		(char *)np->data = (char *)(&(np->data)+1);
++		np->data = (char *)(&(np->data)+1);
+ 		memcpy((char *)np->data,(char *)data,size);
+ 	} else {
+ 		np->data = data;

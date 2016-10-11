@@ -1,0 +1,6 @@
+"git submodule init"
+Submodule 'http-parser' () registered for path 'ext/ruby_http_parser/vendor/http-parser'
+Submodule 'http-parser-java' () registered for path 'ext/ruby_http_parser/vendor/http-parser-java'
+"git submodule update"
+Submodule path 'ext/ruby_http_parser/vendor/http-parser': checked out '62110efe7ae268d6e6435ac0e7e7690c0e998655'
+Submodule path 'ext/ruby_http_parser/vendor/http-parser-java': checked out '1d6cef028e4c074f6d59d9f57e974e2d39406503'

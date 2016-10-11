@@ -1,0 +1,94 @@
+#
+# Firewall data store for at-cgi
+#
+
+# PRE - Always executed first
+# POLICY-<chain> - Chain policy definition
+# DEFAULT-ACCEPT-RULE-<chain> - An accept rule to always apply first
+# USER-ACCEPT-RULE-<chain> - A user defined accept rule
+# OPTION-<option> - A specific option
+
+OPTION-IPT:/bin/iptables
+OPTION-IP_FORWARD:yes
+
+INTERFACE-MATCH:eth
+INTERFACE-MATCH:wlan
+
+PRE:# Enable/disable IP forading
+PRE:if [ "$IP_FORWARD" = "yes" ] ; then
+PRE:  echo "1" > /proc/sys/net/ipv4/ip_forward
+PRE:else
+PRE:  echo "0" > /proc/sys/net/ipv4/ip_forward
+PRE:fi
+PRE:
+PRE:# Disable Source Routed Packets
+PRE:for f in /proc/sys/net/ipv4/conf/*/accept_source_route
+PRE:do
+PRE:  echo 0 > $f
+PRE:done
+PRE:
+PRE:# Drop spoofed packets coming in on an interface, where responses
+PRE:# would result in the reply going out a different interface.
+PRE:for f in /proc/sys/net/ipv4/conf/*/rp_filter
+PRE:do
+PRE:  echo 1 > $f
+PRE:done
+PRE:
+PRE:# Disable ICMP redirect acceptance
+PRE:for f in /proc/sys/net/ipv4/conf/*/accept_redirects
+PRE:do
+PRE:  echo 0 > $f
+PRE:done
+PRE:
+PRE:# Accept ICMP redirect messages only for gateways,
+PRE:# listed in default gateway list
+PRE:for f in /proc/sys/net/ipv4/conf/*/secure_redirects
+PRE:do
+PRE:  echo 1 > $f
+PRE:done
+PRE:
+PRE:# Don't send redirect messages
+PRE:for f in /proc/sys/net/ipv4/conf/*/send_redirects
+PRE:do
+PRE:  echo 0 > $f
+PRE:done
+PRE:
+PRE:# Log packets with impossible addresses
+PRE:for f in /proc/sys/net/ipv4/conf/*/log_martians
+PRE:do
+PRE:  echo 1 > $f
+PRE:done
+PRE:
+PRE:# Ignore echo broadcasts
+PRE:echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+PRE:
+PRE:# Ignore ICMP errors
+PRE:echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses
+PRE:
+PRE:# Enable TCP SYN sookies
+PRE:# echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+PRE:
+PRE:$IPT -F INPUT
+PRE:$IPT -F OUTPUT
+PRE:$IPT -F FORWARD
+PRE:$IPT -X
+PRE:
+PRE:$IPT -A INPUT -i lo -j ACCEPT
+PRE:$IPT -A OUTPUT -o lo -j ACCEPT
+
+POLICY-INPUT:DROP
+POLICY-OUTPUT:ACCEPT
+POLICY-FORWARD:ACCEPT
+
+DEFAULT-RULE-INPUT:<-p,tcp><--dport,http><port-sel-typ,wk><-j,ACCEPT>
+DEFAULT-RULE-INPUT:<-p,tcp><--dport,ssh><port-sel-typ,wk><-j,ACCEPT>
+DEFAULT-RULE-INPUT:<-p,udp><--dport,ssh><port-sel-typ,wk><-j,ACCEPT>
+
+USER-RULE-INPUT:<-p,tcp><--dport,ftp-data><port-sel-typ,wk><-j,ACCEPT>
+USER-RULE-INPUT:<-p,tcp><--dport,ftp><port-sel-typ,wk><-j,ACCEPT>
+USER-RULE-INPUT:<-p,tcp><--dport,1024:65535><port-sel-typ,direct><-j,ACCEPT>
+USER-RULE-INPUT:<-p,icmp><-j,ACCEPT>
+
+DEFAULT-RULE-OUTPUT:<-p,udp><port-sel-typ,direct><--dport,53><-j,ACCEPT>
+DEFAULT-RULE-OUTPUT:<-p,tcp><port-sel-typ,direct><--dport,1024:65535><-j,ACCEPT>
+DEFAULT-RULE-OUTPUT:<-p,udp><port-sel-typ,direct><--dport,1024:65535><-j,ACCEPT>

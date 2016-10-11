@@ -1,0 +1,216 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+TZ=JST-9
+export PATH TZ
+
+# Ignore CTRL-C only in this shell, so we can interrupt subprocesses.
+trap ":" INT QUIT TSTP
+
+###############################################################################
+# leds
+###############################################################################
+ledctrl --green=on
+ledctrl --red=on
+
+###############################################################################
+# remount /
+###############################################################################
+echo "Remounting root rw: "
+mount -n -o remount,rw /
+
+###############################################################################
+# mount proc
+###############################################################################
+echo "Mounting proc: "
+mount -n /proc
+
+echo "Mounting sysfs: "
+mount sysfs
+
+echo "Mounting tmpfs: "
+mount tmpfs
+
+###############################################################################
+# cleaning up
+###############################################################################
+echo "Cleaning up system: "
+cleanup_dirs="/tmp /var/lock /var/run"
+rm -rf $cleanup_dirs
+mkdir $cleanup_dirs
+
+###############################################################################
+# setting keepalive
+###############################################################################
+echo 600 > /proc/sys/net/ipv4/tcp_keepalive_time
+echo 60 > /proc/sys/net/ipv4/tcp_keepalive_intvl
+echo 5 > /proc/sys/net/ipv4/tcp_keepalive_probes
+
+###############################################################################
+# flatfsd
+###############################################################################
+echo "Loading /etc/config: "
+flatfsd -r > /dev/null 2>&1
+
+mkdir -p /tmp/config >/dev/null 2>&1
+cp -a /etc/default/* /etc/default/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /etc/config/* /etc/config/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /tmp/config/* /tmp/config/.[A-z]* /etc/config >/dev/null 2>&1
+rm -rf /tmp/config
+
+###############################################################################
+# sshd preparation (keys)
+###############################################################################
+FLAG=n
+
+if [ ! -f /etc/config/ssh_host_key ] ; then
+    echo "generating rsa1 key..."
+    ledctrl --red=blinkon
+    ssh-keygen -t rsa1 -f /etc/config/ssh_host_key -N '' >/dev/null
+    FLAG=y
+fi
+
+if [ ! -f /etc/config/ssh_host_dsa_key ] ; then
+    echo "generating dsa key..."
+    ledctrl --red=blinkon
+    ssh-keygen -t dsa -f /etc/config/ssh_host_dsa_key -N '' >/dev/null
+    FLAG=y
+fi
+
+if [ ! -f /etc/config/ssh_host_rsa_key ] ; then
+    echo "generating rsa key..."
+    ledctrl --red=blinkon
+    ssh-keygen -t rsa -f /etc/config/ssh_host_rsa_key -N '' >/dev/null
+    FLAG=y
+fi
+
+if [ "$FLAG" = "y" ]; then
+    flatfsd -s >/dev/null 2>&1
+    ledctrl --red=blinkoff
+fi
+
+adduser -DH sshd >/dev/null 2>&1
+mkdir -p /var/empty
+
+###############################################################################
+# source primary configuration
+###############################################################################
+. /etc/config/at-admin
+
+###############################################################################
+# bridge
+###############################################################################
+. /etc/config/bridges
+if [ $CREATE_BRIDGE = 1 ]; then
+  /etc/init.d/bridges create
+fi
+
+###############################################################################
+# hostname
+###############################################################################
+echo "Setting hostname: "
+hostname -F /etc/config/HOSTNAME
+
+###############################################################################
+# create issue
+###############################################################################
+echo "`cat /etc/DISTNAME`" > /etc/issue
+echo "`cat /etc/DISTNAME`" > /etc/issue.net
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue.net
+echo >> /etc/issue
+echo >> /etc/issue.net
+
+###############################################################################
+# change permissions
+###############################################################################
+echo "Changing file permissions: "
+/etc/init.d/checkftp
+chmod 640 /etc/shadow
+chmod 640 /etc/gshadow
+chmod 440 /etc/sudoers
+chmod 600 /etc/busybox.conf
+chmod 6775 /bin/busybox
+chown -R guest:guest /home/guest
+chown -R 33:33 /home/www-data
+mkdir -p /tmp/at-admin
+chown -R 33:33 /tmp/at-admin
+chmod 600 /etc/config/.htpasswd-at-admin
+
+###############################################################################
+# setting firewall
+###############################################################################
+echo "Setting firewall: "
+/etc/init.d/firewall
+
+###############################################################################
+# network
+###############################################################################
+echo "Configuring network interfaces: "
+ifup lo 1> /dev/null
+ifup $PRIMARY_IF 1> /dev/null
+
+###############################################################################
+# ntpdate
+###############################################################################
+. /etc/config/ntpdate
+if [ "$SYNC_CLOCK" = "yes" ] ; then
+  echo "Synchronizing clock to $NTPSERVER: "
+  /bin/ntpdate -b -u $NTPSERVER >/dev/null 2>&1
+fi
+
+###############################################################################
+# sshd
+###############################################################################
+echo "Starting sshd: "
+/sbin/sshd -f /etc/ssh/sshd_config
+
+###############################################################################
+# syslogd
+###############################################################################
+echo "Starting syslogd: "
+/sbin/syslogd -L
+
+###############################################################################
+# thttpd
+###############################################################################
+echo "Starting thttpd: "
+thttpd -C /etc/thttpd.conf
+
+###############################################################################
+# snort
+###############################################################################
+/etc/init.d/snort start $PRIMARY_IF
+
+###############################################################################
+# avahi-services
+###############################################################################
+/etc/init.d/avahi-services $PRIMARY_IF
+
+###############################################################################
+# avahi-daemon
+###############################################################################
+/etc/init.d/avahi-daemon start
+
+###############################################################################
+# cron 
+###############################################################################
+echo "Starting crond: "
+cp /etc/config/root.crontab /var/spool/cron/crontabs/root
+crond
+
+###############################################################################
+# rc.local
+###############################################################################
+LOCAL_SCRIPT=/etc/config/rc.local
+
+if [ -x ${LOCAL_SCRIPT} ]; then
+    echo "Running local start script (${LOCAL_SCRIPT})."
+    ${LOCAL_SCRIPT}
+fi
+
+###############################################################################
+
+/bin/ledctrl --red=off
+
+###############################################################################

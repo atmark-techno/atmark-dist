@@ -1,0 +1,86 @@
+# this device table should match with DEVICES in Makefile
+# there are many place in kernel/userland that assume some of the files
+# listed here are just simply exists, so be carefull when you modify.
+#
+# see user/mtd-utils/device_table.txt for syntax of this file.
+#
+# Masahiro Nakai <nakai@atmark-techno.com>
+#
+#<name>            <type> <mode> <uid> <gid> <major> <minor> <start> <inc> <count>
+/dev               d      755    0     0     -       -       -       -     -
+/dev/mem           c      640    0     0     1       1       0       0     -
+/dev/kmem          c      640    0     0     1       2       0       0     -
+/dev/null          c      640    0     0     1       3       0       0     -
+/dev/zero          c      640    0     0     1       5       0       0     -
+/dev/random        c      640    0     0     1       8       0       0     -
+/dev/urandom       c      640    0     0     1       9       0       0     -
+/dev/ptyp          c      660    0     0     2       0       0       1     16
+/dev/ttyp          c      666    0     0     3       0       0       1     16
+/dev/tty           c      660    0     0     5       0       0       0     -
+/dev/tty           c      660    0     0     4       0       0       1     6
+/dev/ttyS          c      666    0     0     204     16      0       1     2
+/dev/ttyAM         c      666    0     0     204     16      0       1     2
+/dev/console       c      640    0     0     5       1       0       0     -
+/dev/ram           b      640    0     0     1       1       0       0     -
+/dev/ram           b      640    0     0     1       0       0       1     4
+/dev/loop          b      640    0     0     7       0       0       1     8
+/dev/ptmx          c      666    0     0     5       2       0       0     -
+#
+# Misc
+/dev/usbmouse      c      660    0     0     10      32      0       0     -
+/dev/watchdog      c      660    0     0     10      130     0       0     -
+/dev/rtc           c      660    0     0     10      135     0       0     -
+/dev/gpio          c      660    0     0     10      185     0       0     -
+/dev/led           c      660    0     0     10      215     0       0     -
+#
+#
+# IDE Devices
+/dev/hda           b      640    0     0     3       0       0       0     -
+/dev/hda           b      640    0     0     3       1       1       1     16
+/dev/hdb           b      640    0     0     3       64      0       0     -
+/dev/hdb           b      640    0     0     3       65      1       1     16
+/dev/hdc           b      640    0     0     22      0       0       0     -
+/dev/hdc           b      640    0     0     22      1       1       1     16
+/dev/hdd           b      640    0     0     22      64      0       0     -
+/dev/hdd           b      640    0     0     22      65      1       1     16
+#
+# SCSI Devices
+/dev/sda           b      640    0     0     8       0       0       0     -
+/dev/sda           b      640    0     0     8       1       1       1     16
+/dev/sdb           b      640    0     0     8       16      0       0     -
+/dev/sdb           b      640    0     0     8       17      1       1     16
+/dev/sg            c      640    0     0     21      0       0       1     16
+/dev/scd           b      640    0     0     11      0       0       1     16
+#
+# Framebuffer
+/dev/fb0           c      660    0     0     29      0       0       0     -
+/dev/fb0current    c      640    0     0     29      0       0       0     -
+/dev/fb0autodetect c      640    0     0     29      1       0       0     -
+#
+# MTD Devices
+/dev/mtdblock      b      660    0     0     31      0       0       1     8
+/dev/mtd           c      660    0     0     90      0       0       2     8
+/dev/mtdr          c      660    0     0     90      1       0       2     8
+/dev/flash/bootloader c   660    0     0     90      0       0       0     -
+/dev/flash/kernel     c   660    0     0     90      2       0       0     -
+/dev/flash/userland   c   660    0     0     90      4       0       0     -
+/dev/flash/config     c   660    0     0     90      6       0       0     -
+#
+# Audio
+/dev/mixer         c      660    0     0     14      0       0       0     -
+/dev/mixer         c      660    0     0     14      0       0       16    4
+/dev/sequencer     c      660    0     0     14      1       0       0     -
+/dev/midi0         c      660    0     0     14      2       0       16    4
+/dev/dsp           c      660    0     0     14      3       0       0     -
+/dev/dsp           c      660    0     0     14      3       0       16    4
+/dev/audio         c      660    0     0     14      4       0       0     -
+/dev/audio         c      660    0     0     14      4       0       16    4
+/dev/sndstat       c      660    0     0     14      6       0       0     -
+/dev/audioctl      c      660    0     0     14      7       0       0     -
+/dev/music         c      660    0     0     14      8       0       0     -
+/dev/dmmidi        c      660    0     0     14      9       0       16    4
+/dev/midi          c      660    0     0     35      0       0       1     4
+#
+# USB
+/dev/ttyUSB        c      660    0     0     188     0       0       1     2
+

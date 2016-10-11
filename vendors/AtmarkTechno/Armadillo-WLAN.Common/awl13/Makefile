@@ -1,0 +1,26 @@
+AWL13DIR = $(ROOTDIR)/awl13
+ifeq ($(CONFIG_VENDOR_AWL13_AWL13_SDIO),y)
+DEVICE = SDIO
+MODULE = $(AWL13DIR)/src/awl13_sdio.ko
+endif
+ifeq ($(CONFIG_VENDOR_AWL13_AWL13_USB),y)
+DEVICE = USB
+MODULE = $(AWL13DIR)/src/awl13_usb.ko
+endif
+
+all: $(MODULE)
+
+$(MODULE): $(AWL13DIR)
+	AWL13_DEVICE=$(DEVICE) TARGET=$(AWL13_TARGET) \
+	make -C $(AWL13DIR) KERNELDIR=$(ROOTDIR)/$(LINUXDIR)
+
+$(AWL13DIR):
+	@echo 'Please place $(AWL13DIR) directory for Armadillo-WLAN (AWL13).'; \
+	exit 1;
+
+romfs: $(MODULE)
+	AWL13_DEVICE=$(DEVICE) TARGET=$(AWL13_TARGET) \
+	make -C $(AWL13DIR) KERNELDIR=$(ROOTDIR)/$(LINUXDIR) INSTALL_MOD_PATH=$(ROMFSDIR) install
+
+clean:
+	-make -C $(AWL13DIR) KERNELDIR=$(ROOTDIR)/$(LINUXDIR) clean

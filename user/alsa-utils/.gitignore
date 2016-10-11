@@ -1,0 +1,5 @@
+alsa-utils/include/aconfig.h*
+alsa-utils/include/version.h
+aplay
+arecord
+amixer

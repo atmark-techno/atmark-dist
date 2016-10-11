@@ -1,0 +1,50 @@
+Source: expect
+Section: interpreters
+Priority: optional
+Maintainer: Daniel Baumann <daniel@debian.org>
+Build-Depends: debhelper (>= 7), dpatch, autotools-dev, autoconf2.13, tcl8.4-dev, tk8.4-dev
+Standards-Version: 3.8.0
+Homepage: http://expect.nist.gov/
+Vcs-Browser: http://git.debian.net/?p=expect.git
+Vcs-Git: git://git.debian.net/git/expect.git
+
+Package: expect
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: expectk
+Description: A program that can automate interactive applications
+ Expect is a tool for automating interactive applications according to a script.
+ Following the script, Expect knows what can be expected from a program and what
+ the correct response should be. Expect is also useful for testing these same
+ applications. And by adding Tk, you can also wrap interactive applications in
+ X11 GUIs. An interpreted language provides branching and high-level control
+ structures to direct the dialogue. In addition, the user can take control and
+ interact directly when desired, afterward returning control to the script.
+
+Package: expectk
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A program that can automate interactive applications (Tk hooks)
+ Expect is a tool for automating interactive applications according to a script.
+ Following the script, Expect knows what can be expected from a program and what
+ the correct response should be. Expect is also useful for testing these same
+ applications. And by adding Tk, you can also wrap interactive applications in
+ X11 GUIs. An interpreted language provides branching and high-level control
+ structures to direct the dialogue. In addition, the user can take control and
+ interact directly when desired, afterward returning control to the script.
+ .
+ This package contains the Tk hooks.
+
+Package: expect-dev
+Architecture: any
+Depends: expect (= ${binary:Version}), tcl8.4-dev, tk8.4-dev
+Description: A program that can automate interactive applications (development)
+ Expect is a tool for automating interactive applications according to a script.
+ Following the script, Expect knows what can be expected from a program and what
+ the correct response should be. Expect is also useful for testing these same
+ applications. And by adding Tk, you can also wrap interactive applications in
+ X11 GUIs. An interpreted language provides branching and high-level control
+ structures to direct the dialogue. In addition, the user can take control and
+ interact directly when desired, afterward returning control to the script.
+ .
+ This package contains the development files and examples.

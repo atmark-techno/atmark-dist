@@ -1,0 +1,45 @@
+AT-CGI 1.6.4
+============
+
+ * CIDR private IP address configuation support
+
+AT-CGI 1.6.3
+============
+
+ * System firmware bug fixes
+ * Slight system firmware display refactoring
+
+AT-CGI 1.6.2
+============
+
+ * Cleaned up the system interface a little
+
+AT-CGI 1.6.0
+============
+
+ * Added simple packet scanning functionality
+ * Moved bridge control to under the system menu
+
+AT-CGI 1.5.0
+============
+
+A lot of structual and functional changes in this release.
+
+ * Added bridge control function (single bridge, variable number of
+   interfaces)
+ * Added firewall control function
+ * Split the project up into three parts, simple-cgi as a basic cgi
+   interface library, simple-cgi-app for a convenience library for
+   c web apps, and at-cgi for the control cgi for Atmark Techno
+   products.
+   
+AT-CGI 1.0.0
+============
+
+First release. Has the following functions:
+
+ * Top overview page
+ * USB data (directory display)
+ * System control (stats, network settings, password, firmware, save, 
+   reboot)
+

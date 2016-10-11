@@ -1,0 +1,6 @@
+KERNEL=="fb0", SUBSYSTEM=="graphics", ACTION=="add", \
+	RUN+="/etc/config/configure-fbmode.sh add %k"
+KERNEL=="fb0", SUBSYSTEM=="graphics", ACTION=="change", ENV{HOTPLUG}=="[01]", \
+	RUN+="/etc/config/configure-fbmode.sh change %k HOTPLUG=%E{HOTPLUG}"
+KERNEL=="fb0", SUBSYSTEM=="graphics", ACTION=="change", ENV{MODELIST}=="1", \
+	RUN+="/etc/config/configure-fbmode.sh change %k MODELIST=1"

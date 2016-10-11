@@ -1,0 +1,73 @@
+ImageMagick Studio LLC announces the release of ImageMagick 6.2.1.
+
+ImageMagick 6.2.1 is a robust collection of tools and libraries offered under
+a usage license to read, write, and manipulate an image in many image formats
+(over 89 major formats) including popular formats like TIFF, JPEG, PNG,
+PDF, PhotoCD, and GIF. With ImageMagick you can create images dynamically,
+making it suitable for Web applications. You can also resize, rotate, sharpen,
+color reduce, or add special effects to an image or image sequence and save
+your completed work in the same or differing image format. Image processing
+operations are available from the command line, or from the C, C++, Perl,
+Java, PHP, Python, Ruby, or Tcl programming languages.  A high-quality 2D
+renderer is included, which provides a subset of SVG capabilities.
+ImageMagick's focus is on performance, minimizing bugs, and providing stable
+APIs and ABIs.
+
+Here are just a few examples of what ImageMagick can do:
+
+    * Convert an image from one format to another (e.g. TIFF to JPEG)
+    * Resize, rotate, sharpen, color reduce, or add special effects to an image
+    * Create a montage of image thumbnails
+    * Create a transparent image suitable for use on the Web
+    * Turn a group of images into a GIF animation sequence
+    * Create a composite image by combining several separate images
+    * Draw shapes or text on an image
+    * Decorate an image with a border or frame
+    * Describe the format and characteristics of an image
+
+ImageMagick is copyrighted by ImageMagick Studio LLC, a nonprofit organization
+dedicated to making software imaging solutions freely available.  ImageMagick
+is available for free, may be used to support both open and proprietary
+applications, and may be redistributed without fee.
+
+Significant changes since the ImageMagick 6.0.2 release, include:
+
+  Bug fixes:
+
+  Performance improvements:
+
+  Utilities enhancements:
+
+  Coder additions/improvments:
+
+  Code/structure enhancements:
+
+  API enhancements:
+
+  MagickWand API enhancements:
+
+  PerlMagick fixes/improvements:
+
+  Build improvements:
+
+  Windows-specific improvements:
+
+  VMS-specific improvements:
+
+We would like to give special thanks to several people who have contributed
+to ImageMagick, including:
+
+Alexandra Christini   - Validation, packaging, and release of ImageMagick
+                        6.2.1 source and binaries.
+Chris Madison         - various bug fixes to core API.
+Glenn Randers-Pehrson - Utilities, PNG, MNG, test scripts, documentation
+                        enhancements, SourceForge project administrator.
+Kyle Shorter          - PerlMagick enhancements and bug fixes.
+Lars Skyum            - PS3 coder and image profile enhancements.
+Anthony Thyssen       - ImageMagick 6.0.? command line improvements and
+                        validation suite.
+
+Thanks to the folks at GraphicsMagick for numerous bug reports and fixes.
+
+And the many folks that contributed patches and enhancements as described
+in http://www.imagemagick.org/www/Changelog.html.

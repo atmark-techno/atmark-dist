@@ -1,0 +1,307 @@
+coders/magick_libMagick_la-avi.lo coders/magick_libMagick_la-avi.o:  \
+ coders/avi.c \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/setjmp.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/features.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/cdefs.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/gnu/stubs.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/setjmp.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigset.h \
+  ./magick/studio.h ./magick/magick-config.h \
+  /usr/lib/gcc/arm-linux/3.4.4/include/stdarg.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/stdio.h \
+  /usr/lib/gcc/arm-linux/3.4.4/include/stddef.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/types.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/wordsize.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/typesizes.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/libio.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/_G_config.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/wchar.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/wchar.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/gconv.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/stdio_lim.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sys_errlist.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/stdlib.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/types.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/time.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/endian.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/endian.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/select.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/select.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/time.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/sysmacros.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/pthreadtypes.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sched.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/alloca.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/unistd.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/posix_opt.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/confname.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/getopt.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/strings.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/string.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/ctype.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/locale.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/locale.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/errno.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/errno.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/linux/errno.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm/errno.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm-generic/errno.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm-generic/errno-base.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/fcntl.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/fcntl.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/math.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/huge_val.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/mathdef.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/mathcalls.h \
+  /usr/lib/gcc/arm-linux/3.4.4/include/limits.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/signal.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/signum.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/siginfo.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigaction.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigcontext.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm/sigcontext.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigstack.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigthread.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/assert.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/stat.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/stat.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/timeb.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/dirent.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/dirent.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/posix1_lim.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/local_lim.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/linux/limits.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/pwd.h \
+  ./magick/magick-type.h ./magick/semaphore.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/time.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/times.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/resource.h \
+  /usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/resource.h \
+  ./magick/attribute.h ./magick/blob.h ./magick/image.h ./magick/color.h \
+  ./magick/pixel.h ./magick/constitute.h ./magick/exception.h \
+  ./magick/stream.h ./magick/blob-private.h ./magick/color-private.h \
+  ./magick/image.h ./magick/exception-private.h ./magick/log.h \
+  ./magick/colorspace.h ./magick/geometry.h ./magick/image-private.h \
+  ./magick/list.h ./magick/log.h ./magick/magick.h ./magick/memory_.h \
+  ./magick/monitor.h ./magick/profile.h ./magick/string_.h \
+  ./magick/static.h ./magick/string_.h ./magick/utility.h \
+  ../../lib/libjpeg/jpeglib.h ../../lib/libjpeg/jconfig.h \
+  ../../lib/libjpeg/jmorecfg.h ../../lib/libjpeg/jerror.h
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/setjmp.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/features.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/cdefs.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/gnu/stubs.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/setjmp.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigset.h:
+
+./magick/studio.h:
+
+./magick/magick-config.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/include/stdarg.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/stdio.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/include/stddef.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/types.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/wordsize.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/typesizes.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/libio.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/_G_config.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/wchar.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/wchar.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/gconv.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/stdio_lim.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sys_errlist.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/stdlib.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/types.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/time.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/endian.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/endian.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/select.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/select.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/time.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/sysmacros.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/pthreadtypes.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sched.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/alloca.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/unistd.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/posix_opt.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/confname.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/getopt.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/strings.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/string.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/ctype.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/locale.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/locale.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/errno.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/errno.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/linux/errno.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm/errno.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm-generic/errno.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm-generic/errno-base.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/fcntl.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/fcntl.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/math.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/huge_val.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/mathdef.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/mathcalls.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/include/limits.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/signal.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/signum.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/siginfo.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigaction.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigcontext.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/asm/sigcontext.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigstack.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/sigthread.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/assert.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/stat.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/stat.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/timeb.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/dirent.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/dirent.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/posix1_lim.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/local_lim.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/linux/limits.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/pwd.h:
+
+./magick/magick-type.h:
+
+./magick/semaphore.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/time.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/times.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/sys/resource.h:
+
+/usr/lib/gcc/arm-linux/3.4.4/../../../../arm-linux/include/bits/resource.h:
+
+./magick/attribute.h:
+
+./magick/blob.h:
+
+./magick/image.h:
+
+./magick/color.h:
+
+./magick/pixel.h:
+
+./magick/constitute.h:
+
+./magick/exception.h:
+
+./magick/stream.h:
+
+./magick/blob-private.h:
+
+./magick/color-private.h:
+
+./magick/image.h:
+
+./magick/exception-private.h:
+
+./magick/log.h:
+
+./magick/colorspace.h:
+
+./magick/geometry.h:
+
+./magick/image-private.h:
+
+./magick/list.h:
+
+./magick/log.h:
+
+./magick/magick.h:
+
+./magick/memory_.h:
+
+./magick/monitor.h:
+
+./magick/profile.h:
+
+./magick/string_.h:
+
+./magick/static.h:
+
+./magick/string_.h:
+
+./magick/utility.h:
+
+../../lib/libjpeg/jpeglib.h:
+
+../../lib/libjpeg/jconfig.h:
+
+../../lib/libjpeg/jmorecfg.h:
+
+../../lib/libjpeg/jerror.h:

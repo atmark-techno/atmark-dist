@@ -1,0 +1,13 @@
+#!/bin/sh
+
+id=$1
+in=$2
+out=$3
+
+echo command script invoked: $0 $*
+
+echo --- input parameter ---
+cat -n $in
+echo --- end ---
+
+echo "command script: module-id=$id" >$out

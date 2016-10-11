@@ -1,0 +1,12 @@
+#!/bin/sh
+
+id=$1
+in=$2
+out=$3
+
+echo status script invoked: $0 $*
+
+echo module-id=$id
+echo status input: $in
+
+echo status output >$out

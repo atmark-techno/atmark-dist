@@ -1,0 +1,47 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+create_mtd_node() {
+    local major=$(grep -E "mtd$" /proc/devices | tr -cd '0-9')
+    local minor=0
+    local minor_step=2
+
+    mkdir -p /dev/flash
+    for i in `grep mtd /proc/mtd | sed -e "s/ .* //" -e "s/[:,\"]/ /g"`
+    do
+	if [ "mtd" = "${i%%[0-9]}" ]; then
+	    node="$i"
+	else
+	    ln -fs /dev/$node /dev/flash/$i
+	    ln -fs /dev/$node /dev/flash/`echo $i | sed "s/^nor.//"`
+	    [ ! -e /dev/$node ] && mknod /dev/$node c $major $minor
+	    minor=$(($minor + $minor_step))
+	fi
+    done
+}
+
+create_mtdblock_node() {
+    local major=$(grep -E "mtdblock" /proc/devices | tr -cd '0-9')
+    local minor=0
+    local minor_step=1
+
+    mkdir -p /dev/flashblk
+    for i in `grep mtd /proc/mtd | sed -e "s/ .* //" -e "s/[:,\"]/ /g"`
+    do
+	if [ "mtd" = "${i%%[0-9]}" ]; then
+	    node=`echo $i | sed "s/^mtd/mtdblock/"`
+	else
+	    ln -fs /dev/$node /dev/flashblk/$i
+	    [ ! -e /dev/$node ] && mknod /dev/$node b $major $minor
+	    minor=$(($minor + $minor_step))
+	fi
+    done
+}
+
+echo -n "Creating mtd devnode: "
+create_mtd_node
+create_mtdblock_node
+check_status

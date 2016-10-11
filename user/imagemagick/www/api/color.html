@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../../www/magick.css");
+  //--></style>
+  <title>ImageMagick: MagickCore, C API for ImageMagick: Count the Colors in an Image</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="magickcore, c, api, for, imagemagick:, count, the, colors, in, an, image, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../../index.html"><img id="titlebar-west" src="../../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="1739815306"><img id="titlebar-west" src="../../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img src="../../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../../index.html"><img id="titlebar-east" src="../../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../../index.html">About ImageMagick</a>
+      <a href="../../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/install-source.html">Install from Source</a>
+      <a href="../../www/binary-releases.html">Binary Releases</a>
+      <a href="../../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../../www/sponsors.html">Sponsors</a>
+  <a href="http://www.travelsur.net/" class="sponsor" target="sponsor">Trips to Argentina</a><!-- 20050621 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[ <a href="#GetColorInfoList">GetColorInfoList</a> | <a href="#GetColorList">GetColorList</a> | <a href="#GetImageHistogram">GetImageHistogram</a> | <a href="#GetMagickPixelPacket">GetMagickPixelPacket</a> | <a href="#GetNumberColors">GetNumberColors</a> | <a href="#IsGrayImage">IsGrayImage</a> | <a href="#IsMonochromeImage">IsMonochromeImage</a> | <a href="#IsOpaqueImage">IsOpaqueImage</a> | <a href="#IsPaletteImage">IsPaletteImage</a> | <a href="#ListColorInfo">ListColorInfo</a> | <a href="#LoadColorList">LoadColorList</a> | <a href="#QueryColorDatabase">QueryColorDatabase</a> | <a href="#QueryColorname">QueryColorname</a> | <a href="#QueryMagickColor">QueryMagickColor</a> ]</p>
+
+<div style="margin: auto;">
+  <h2><a name="GetColorInfoList">GetColorInfoList</a></h2>
+</div>
+
+<p>GetColorInfoList() returns any colors that match the specified pattern.</p>
+
+<p>The format of the GetColorInfoList function is:</p>
+
+<pre class="text">
+  const ColorInfo **GetColorInfoList(const char *pattern,
+    unsigned long *number_colors,ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>pattern</h4>
+<p>Specifies a pointer to a text string containing a pattern.</p>
+
+<h4>number_colors</h4>
+<p>This integer returns the number of colors in the list.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+<div style="margin: auto;">
+  <h2><a name="GetColorList">GetColorList</a></h2>
+</div>
+
+<p>GetColorList() returns any colors that match the specified pattern.</p>
+
+<p>The format of the GetColorList function is:</p>
+
+<pre class="text">
+  char **GetColorList(const char *pattern,unsigned long *number_colors,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>pattern</h4>
+<p>Specifies a pointer to a text string containing a pattern.</p>
+
+<h4>number_colors</h4>
+<p>This integer returns the number of colors in the list.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+<div style="margin: auto;">
+  <h2><a name="GetImageHistogram">GetImageHistogram</a></h2>
+</div>
+
+<p>GetImageHistogram() returns the unique colors in an image.</p>
+
+<p>The format of the GetImageHistogram method is:</p>
+
+<pre class="code">
+  unsigned long GetImageHistogram(const Image *image,
+    unsigned long *number_colors,ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows.</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>file</h4>
+<p>Write a histogram of the color distribution to this file handle.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="GetMagickPixelPacket">GetMagickPixelPacket</a></h2>
+</div>
+
+<p>GetMagickPixelPacket() initializes the MagickPixelPacket structure.</p>
+
+<p>The format of the GetMagickPixelPacket method is:</p>
+
+<pre class="code">
+  GetMagickPixelPacket(const Image *image,MagickPixelPacket *pixel)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>pixel</h4>
+<p>Specifies a pointer to a PixelPacket structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="GetNumberColors">GetNumberColors</a></h2>
+</div>
+
+<p>GetNumberColors() returns the number of unique colors in an image.</p>
+
+<p>The format of the GetNumberColors method is:</p>
+
+<pre class="code">
+  unsigned long GetNumberColors(const Image *image,FILE *file,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows.</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>file</h4>
+<p>Write a histogram of the color distribution to this file handle.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="IsGrayImage">IsGrayImage</a></h2>
+</div>
+
+<p>IsGrayImage() returns MagickTrue if all the pixels in the image have the same red, green, and blue intensities.</p>
+
+<p>The format of the IsGrayImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType IsGrayImage(const Image *image,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="IsMonochromeImage">IsMonochromeImage</a></h2>
+</div>
+
+<p>IsMonochromeImage() returns MagickTrue if all the pixels in the image have the same red, green, and blue intensities and the intensity is either 0 or QuantumRange.</p>
+
+<p>The format of the IsMonochromeImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType IsMonochromeImage(const Image *image,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="IsOpaqueImage">IsOpaqueImage</a></h2>
+</div>
+
+<p>IsOpaqueImage() returns MagickTrue if none of the pixels in the image have an opacity value other than opaque (0).</p>
+
+<p>The format of the IsOpaqueImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType IsOpaqueImage(const Image *image,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="IsPaletteImage">IsPaletteImage</a></h2>
+</div>
+
+<p>IsPaletteImage() returns MagickTrue if the image is PseudoClass and has 256 unique colors or less.</p>
+
+<p>The format of the IsPaletteImage method is:</p>
+
+<pre class="code">
+  MagickBooleanType IsPaletteImage(const Image *image,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows.</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="ListColorInfo">ListColorInfo</a></h2>
+</div>
+
+<p>ListColorInfo() lists color names to the specified file.  Color names are a convenience.  Rather than defining a color by its red, green, and blue intensities just use a color name such as white, blue, or yellow.</p>
+
+<p>The format of the ListColorInfo method is:</p>
+
+<pre class="code">
+  MagickBooleanType ListColorInfo(FILE *file,ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows.</p>
+
+<h4>file</h4>
+<p>List color names to this file handle.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="LoadColorList">LoadColorList</a></h2>
+</div>
+
+<p>LoadColorList() loads one or more color configuration file which provides a mapping between color attributes and a color name.</p>
+
+<p>The format of the LoadColorLists method is:</p>
+
+<pre class="code">
+  MagickBooleanType LoadColorLists(const char *filename,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>filename</h4>
+<p>The font file name.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="QueryColorDatabase">QueryColorDatabase</a></h2>
+</div>
+
+<p>QueryColorDatabase() returns the red, green, blue, and opacity intensities for a given color name.</p>
+
+<p>The format of the QueryColorDatabase method is:</p>
+
+<pre class="code">
+  MagickBooleanType QueryColorDatabase(const char *name,PixelPacket *color,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>name</h4>
+<p>The color name (e.g. white, blue, yellow).</p>
+
+<h4>color</h4>
+<p>The red, green, blue, and opacity intensities values of the named color in this structure.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="QueryColorname">QueryColorname</a></h2>
+</div>
+
+<p>QueryColorname() returns a named color for the given color intensity.  If an exact match is not found, a hex value is return instead.  For example an intensity of rgb:(0,0,0) returns black whereas rgb:(223,223,223) returns #dfdfdf.</p>
+
+<p>The format of the QueryColorname method is:</p>
+
+<pre class="code">
+  MagickBooleanType QueryColorname(const Image *image,
+    const PixelPacket *color,const ComplianceType compliance,char *name,
+    ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows.</p>
+
+<h4>image</h4>
+<p>The image.</p>
+
+<h4>color</h4>
+<p>The color intensities.</p>
+
+<h4>Compliance</h4>
+<p>Adhere to this color standard: SVG, X11, or XPM.</p>
+
+<h4>name</h4>
+<p>Return the color name or hex value.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+<div style="margin: auto;">
+  <h2><a name="QueryMagickColor">QueryMagickColor</a></h2>
+</div>
+
+<p>QueryMagickColor() returns the red, green, blue, and opacity intensities for a given color name.</p>
+
+<p>The format of the QueryMagickColor method is:</p>
+
+<pre class="code">
+  MagickBooleanType QueryMagickColor(const char *name,
+    MagickPixelPacket *color,ExceptionInfo *exception)
+</pre>
+
+<p>A description of each parameter follows:</p>
+
+<h4>name</h4>
+<p>The color name (e.g. white, blue, yellow).</p>
+
+<h4>color</h4>
+<p>The red, green, blue, and opacity intensities values of the named color in this structure.</p>
+
+<h4>exception</h4>
+<p>Return any errors or warnings in this structure.</p>
+
+
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="995510973">Discourse Server</a> |
+    <a href="../../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="374719361">Image Gallery</a> |
+    <a href="http://studio.webbyland.com/MagickStudio/scripts/MagickStudio.cgi" target="1889596895">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

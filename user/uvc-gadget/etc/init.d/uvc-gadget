@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting uvc-gadget: "
+
+for video_dev in $(find /sys/class/video4linux/video*); do
+    case $(cat ${video_dev}/name) in
+	sh_mobile_ceu.*) CAPTURE_DEV=$(basename ${video_dev});;
+	renesas_usbhs_udc) OUTPUT_DEV=$(basename ${video_dev});;
+    esac
+done
+
+if [ ! -z "${CAPTURE_DEV}" -a ! -z "${OUTPUT_DEV}" ]; then
+    uvc-gadget -c /dev/${CAPTURE_DEV} -o /dev/${OUTPUT_DEV};
+else
+    false;
+fi
+check_status

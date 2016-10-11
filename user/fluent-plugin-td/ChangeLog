@@ -1,0 +1,152 @@
+Release 0.10.23 - 2014/12/08
+
+  * Relax fluentd version restriction
+
+
+Release 0.10.22 - 2014/10/17
+
+  * Remove :time key from a record
+  * Show deperecated warning for <anonymize>
+  * Use Error#inspect to get error class in error log
+  * Update td-client to v0.8.66
+
+
+Release 0.10.21 - 2014/07/04
+
+  * Use Yajl for summarizing json
+  * Change key_num_limit to 512
+
+
+Release 0.10.20 - 2014/06/05
+
+  * Fix require order bug for td-client-ruby
+
+
+Release 0.10.19 - 2014/06/04
+
+  * Use treasuredata.com instead of treasure-data.com by default
+  * Update td-client to v0.8.61
+
+
+Release 0.10.18 - 2014/03/31
+
+  * use_ssl is true by default
+  * Support log_level option
+  * Add endpoint option to set treasuredata.com for the future
+  * Add experimental out_tditem plugin for item table
+  * Update td-client to v0.8.58
+
+
+Release 0.10.17 - 2013/12/05
+
+  * Change table create / check mechanizm
+  * Update td-client to v0.8.56
+
+
+Release 0.10.16 - 2013/09/25
+
+  * Add connect_timeout / read_timeout / send_timeout parameters
+  * Create table when 'database' and 'table' are specified with 'auto_create_table true'
+  * Update td-client to v0.8.55
+
+
+Release 0.10.15 - 2013/07/26
+
+  * Add user-agent header to upload request
+  * Change temporary directory to same as Ruby's Tempfile default
+  * Convert Bignum into String. Please use 'CAST(key AS DECIMAL)' in your query.
+  * Update td-client to v0.8.53
+
+
+Release 0.10.14 - 2013/04/22
+
+  * Use td-client v0.8.48 instead of td
+
+
+Release 0.10.13 - 2012/12/02
+
+  * Normalize invalid database/table names instead of raising errors
+
+
+Release 0.10.12 - 2012/10/15
+
+  * Overwrite buffer_chunk_limit to 32MB
+
+
+Release 0.10.11 - 2012/09/26
+
+  * Use unique_id supported by fluentd v0.10.27 and td-client v0.8.33
+
+
+Release 0.10.10 - 2012/09/25
+
+  * Added <anonymize> feature
+  * Added md5 anonymize method
+  * Added ip_xor anonymize method
+
+
+Release 0.10.9 - 2012/08/30
+
+  * Supports http_proxy parameter
+
+
+Release 0.10.7 - 2012/06/07
+
+  * Depends on td instead of td-client to install td command
+
+
+Release 0.10.6 - 2012/03/01
+
+  * Updated td-client to v0.8.11
+
+
+Release 0.10.5 - 2012/02/13
+
+  * Normalize invalid database/table names instead of raising errors
+
+
+Release 0.10.4 - 2012/02/09
+
+  * Disable Fluentd's transaction mechanism
+  * Include summary of invalid records in error messages
+
+
+Release 0.10.3 - 2012/02/02
+
+  * Support use_ssl parameter
+
+
+Release 0.10.2 - 2011/11/11
+
+  * Limit buffer_chunk_limit upto 32MB
+
+
+Release 0.10.1 - 2011/11/11
+
+  * Validate database name and table name on emit
+  * Include more information on error message
+
+
+Release 0.10.0 - 2011/10/16
+
+  * Use buf_file by default
+  * Updated to fluentd-0.10.0
+
+
+Release 0.9.10 - 2011/09/21
+
+  * Enabled auto_create_table by default
+  * Fixed to raise error if table/database is not specified but
+    auto_create_table is disabled
+
+
+Release 0.9.9 - 2011/09/07
+
+  * Upload logs every 5mins instead of 1min
+
+
+Release 0.9.8 - 2011/09/03
+
+  * supports auto_create_table option
+  * uses td-client gem
+

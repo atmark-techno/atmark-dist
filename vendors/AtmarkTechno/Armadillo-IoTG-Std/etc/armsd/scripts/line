@@ -1,0 +1,143 @@
+#!/bin/sh
+
+NEEDPOLL=128
+CONNECTED=129
+DISCONNECTED=130
+TIMEOUT=131
+
+action=$1
+type=$2
+ifindex=$3
+ppp_id=$4
+ppp_pass=$5
+mobile_telno=$6
+mobile_cid=$7
+mobile_apn=$8
+mobile_pdp=$9
+
+echo line-script: type=$type action=$action ifindex=$ifindex
+
+is_link_up() {
+	local ifname=$1
+	if [ -f "/sys/class/net/$ifname/carrier" ]; then
+		status=`cat "/sys/class/net/$ifname/carrier"`
+		if [ x"$status" = x"1" ]; then
+			return 0  # link up
+		fi
+	fi
+	return 1  # link down
+}
+
+connect_dhcp() {
+	ifconfig eth$ifindex up || exit $TIMEOUT  # no such device
+	sleep 3
+	if ! is_link_up eth$ifindex; then
+		echo "skip line(dhcp): link down"
+		exit $TIMEOUT
+	fi
+	cat > /etc/network/interfaces <<-EOF
+	auto lo
+	iface lo inet loopback
+	iface eth0 inet dhcp
+	EOF
+	ifup eth$ifindex
+	return 0
+}
+
+connect_mobile() {
+	# ignore passed account
+	. /etc/config/armsd.conf.secrets
+
+	if [ -z "$MOBILE_APN" ] || [ -z "$MOBILE_ID" ] || [ -z "$MOBILE_PASS" ]; then
+		echo "skip line(mobile): no config"
+		exit $TIMEOUT
+	fi
+
+	3g-set-ap "$MOBILE_APN" "$MOBILE_ID" "$MOBILE_PASS"
+	status=`3g-connect`
+	if [ x"$status" != x"success" ]; then
+		echo "skip line(mobile): sim error?"
+		exit $TIMEOUT
+	fi
+	cat > /etc/network/interfaces <<-EOF
+	auto lo
+	iface lo inet loopback
+	iface umts0 inet dhcp
+	EOF
+	ifup umts0
+	return 0
+}
+
+connect() {
+	case $type in
+	dhcp | mobile)
+		connect_$type || exit 1
+		exit $NEEDPOLL
+		;;
+	*)
+		echo unsupported line type: $type
+		exit $TIMEOUT
+		;;
+	esac
+}
+
+
+disconnect_dhcp() {
+	ifdown eth$ifindex
+}
+
+disconnect_mobile() {
+	ifdown umts0
+}
+
+disconnect() {
+	case $type in
+	dhcp | mobile)
+		disconnect_$type
+		;;
+	esac
+	exit $NEEDPOLL
+}
+
+
+status_dhcp() {
+	local defaultgw=`/sbin/route -nA inet | \
+	                 awk '$1 == "0.0.0.0" {print $8;}'`
+	if [ x"$defaultgw" = x"eth$ifindex" ]; then
+		exit $CONNECTED
+	else
+		exit $DISCONNECTED
+	fi
+}
+
+status_mobile() {
+	local defaultgw=`/sbin/route -nA inet | \
+	                 awk '$1 == "0.0.0.0" {print $8;}'`
+	if [ x"$defaultgw" = x"umts0" ]; then
+		exit $CONNECTED
+	else
+		exit $DISCONNECTED
+	fi
+}
+
+status() {
+	case $type in
+	dhcp | mobile)
+		status_$type
+		# NOTREACHED
+		;;
+	*)
+		exit $DISCONNECTED
+		;;
+	esac
+}
+
+case $action in
+connect | disconnect | status)
+	$action
+	;;
+*)
+	echo unknown action
+	exit 1
+	;;
+esac

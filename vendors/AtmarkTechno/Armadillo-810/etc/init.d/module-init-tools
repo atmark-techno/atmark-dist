@@ -1,0 +1,18 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+if [ ! -f /etc/modules ]; then
+    check_status
+    exit 1
+fi
+
+grep '^[^#]' /etc/modules | \
+while read module args; do
+    echo "Loading kernel module: $module"
+    modprobe $module $args > /dev/null
+done
+
+exit 0

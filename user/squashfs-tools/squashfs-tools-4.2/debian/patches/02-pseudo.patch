@@ -1,0 +1,17 @@
+Author: Matthieu Castet <matthieu.castet@parrot.com>
+Description:
+ Using the Pseudo operations to change the mode/uid/gid of existing files
+ doesn't work with subdirectories (Closes: #662616).
+
+diff -Naurp squashfs-tools.orig/squashfs-tools/pseudo.c squashfs-tools/squashfs-tools/pseudo.c
+--- squashfs-tools.orig/squashfs-tools/pseudo.c	2012-06-27 16:06:38.166976319 +0200
++++ squashfs-tools/squashfs-tools/pseudo.c	2012-06-30 13:15:48.301995302 +0200
+@@ -155,7 +155,7 @@ struct pseudo *add_pseudo(struct pseudo
+ 			 */
+ 			if(target[0] != '\0') {
+ 				/* entry must exist as a 'd' type pseudo file */
+-				if(pseudo->name[i].dev->type == 'd')
++				if(pseudo->name[i].dev->type == 'd' || pseudo->name[i].dev->type == 'm')
+ 					/* recurse adding child components */
+ 					pseudo->name[i].pseudo =
+ 						add_pseudo(NULL, pseudo_dev,

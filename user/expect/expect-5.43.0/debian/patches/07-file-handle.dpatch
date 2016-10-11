@@ -1,0 +1,30 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 07-file-handle.dpatch by Russell Coker <russell@coker.com.au>
+##
+## DP: Fixes file handle 3 to be left open when running programs
+## DP: (Closes: #166677).
+
+@DPATCH@
+
+diff -Naur expect-5.43.0.orig/exp_clib.c expect-5.43.0/exp_clib.c
+--- expect-5.43.0.orig/exp_clib.c	2003-05-05 21:34:18.000000000 +0000
++++ expect-5.43.0/exp_clib.c	2006-07-10 17:09:31.000000000 +0000
+@@ -2500,6 +2500,7 @@
+ 
+ 	/* save error fd while we're setting up new one */
+ 	errorfd = fcntl(2,F_DUPFD,3);
++	fcntl(3, F_SETFD, FD_CLOEXEC);
+ 	/* and here is the macro to restore it */
+ #define restore_error_fd {close(2);fcntl(errorfd,F_DUPFD,2);}
+ 
+diff -Naur expect-5.43.0.orig/exp_command.c expect-5.43.0/exp_command.c
+--- expect-5.43.0.orig/exp_command.c	2004-08-20 17:18:01.000000000 +0000
++++ expect-5.43.0/exp_command.c	2006-07-10 17:09:31.000000000 +0000
+@@ -1048,6 +1048,7 @@
+ 
+ 	/* save error fd while we're setting up new one */
+ 	errorfd = fcntl(2,F_DUPFD,3);
++	fcntl(3, F_SETFD, FD_CLOEXEC);
+ 	/* and here is the macro to restore it */
+ #define restore_error_fd {close(2);fcntl(errorfd,F_DUPFD,2);}
+ 

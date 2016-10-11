@@ -1,0 +1,11 @@
+<service-group>
+
+  <name replace-wildcards="yes">AT Admin on %h</name>
+
+  <service>
+    <type>_http._tcp</type>
+    <port>80</port>
+  </service>
+
+</service-group>
+

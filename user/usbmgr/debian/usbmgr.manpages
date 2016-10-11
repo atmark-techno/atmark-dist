@@ -1,0 +1,8 @@
+debian/dump_usbdev.8
+debian/dump_usbdev.es.8
+debian/update_usbdb.8
+debian/update_usbdb.es.8
+debian/usbmgr.8
+debian/usbmgr.es.8
+debian/usbmgr.conf.5
+debian/usbmgr.conf.es.5

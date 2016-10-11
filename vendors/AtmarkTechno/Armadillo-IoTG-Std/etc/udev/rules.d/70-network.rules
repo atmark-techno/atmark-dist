@@ -1,0 +1,11 @@
+ACTION=="remove", GOTO="net_end"
+SUBSYSTEM!="net", GOTO="net_end"
+
+SUBSYSTEMS=="usb", ATTRS{idVendor}!="", ATTRS{idProduct}!="", ENV{ID_VENDOR_ID}="$attr{idVendor}", ENV{ID_MODEL_ID}="$attr{idProduct}"
+SUBSYSTEMS=="usb", ENV{ID_USB_INTERFACE_NUM}="$attr{bInterfaceNumber}" 
+SUBSYSTEMS=="usb", KERNEL=="wwan*", DRIVERS=="sierra_net", ACTION=="add", ENV{ID_VENDOR_ID}=="1199", ENV{ID_MODEL_ID}=="68a3", KERNELS=="2-1:1.*", NAME="umts0"
+SUBSYSTEMS=="usb", KERNEL=="eth*", DRIVERS=="cdc_ether", ACTION=="add", ENV{ID_VENDOR_ID}=="1519", ENV{ID_MODEL_ID}=="0302", ENV{ID_USB_INTERFACE_NUM}=="06", KERNELS=="2-1:1.*", NAME="umts0"
+SUBSYSTEMS=="usb", KERNEL=="eth*", DRIVERS=="cdc_ether", ACTION=="add", ENV{ID_VENDOR_ID}=="1519", ENV{ID_MODEL_ID}=="0302", ENV{ID_USB_INTERFACE_NUM}=="08", KERNELS=="2-1:1.*", NAME="umts1"
+SUBSYSTEMS=="usb", KERNEL=="eth*", DRIVERS=="cdc_ether", ACTION=="add", ENV{ID_VENDOR_ID}=="1519", ENV{ID_MODEL_ID}=="0302", ENV{ID_USB_INTERFACE_NUM}=="0a", KERNELS=="2-1:1.*", NAME="umts2"
+
+LABEL="net_end"

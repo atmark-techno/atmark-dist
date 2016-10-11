@@ -1,0 +1,39 @@
+#
+# Vendor specific
+#
+
+define_bool CONFIG_VENDOR_AUTO_LIBINSTALLER y
+define_bool CONFIG_VENDOR_AUTO_STRIPPER y
+
+choice  'generate file-system option' 	"Auto CONFIG_VENDOR_GENFS_AUTO \
+					 Manual CONFIG_VENDOR_GENFS_MANUAL
+					" Auto
+if [ "$CONFIG_VENDOR_GENFS_MANUAL" = "y" ]; then
+	int '    Size of the image in blocks' CONFIG_VENDOR_GENFS_BLOCKS 6592
+	int '    Maximum number of inodes' CONFIG_VENDOR_GENFS_INODES 1024
+fi
+
+comment 'Armadillo-210 setup'
+
+choice  'Armadillo-210 type' "Base     CONFIG_VENDOR_A210_TYPE_BASE \
+                              Recover  CONFIG_VENDOR_A210_TYPE_RECOVER \
+                              Original CONFIG_VENDOR_A210_TYPE_ORIGINAL \
+                             " Base
+
+if [ "$CONFIG_VENDOR_A210_TYPE_BASE" = "y" ]; then
+	define_string CONFIG_VENDOR_A210_TYPE 'Base'
+fi
+if [ "$CONFIG_VENDOR_A210_TYPE_RECOVER" = "y" ]; then
+	define_string CONFIG_VENDOR_A210_TYPE 'Recover'
+fi
+if [ "$CONFIG_VENDOR_A210_TYPE_ORIGINAL" = "y" ]; then
+	string 'type name' CONFIG_VENDOR_A210_TYPE 'Original'
+fi
+
+string 'Armadillo-210 version' CONFIG_VENDOR_A210_VERSION '0.00'
+
+comment 'Applications'
+
+bool 'gpioctrl' CONFIG_VENDOR_GPIOCTRL_GPIOCTRL
+bool 'ledctrl' CONFIG_VENDOR_LEDCTRL_LEDCTRL
+

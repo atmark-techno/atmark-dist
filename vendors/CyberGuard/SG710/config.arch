@@ -1,0 +1,24 @@
+.EXPORT_ALL_VARIABLES:
+############################################################################
+
+ifeq ($(ROOTDIR)/boot,$(wildcard $(ROOTDIR)/boot))
+VENDOR_TOPDIRS = boot
+endif
+
+ENDIAN := big
+CPUCFLAGS := -mbig-endian
+CPULDFLAGS := -EB
+VENDOR_CFLAGS = -DCONFIG_SNAPGEAR
+
+BUILD_NETtel = 1
+LINUXTARGET = zImage
+VERSIONPKG = 2.0.0p1
+include $(ROOTDIR)/vendors/config/config.languages
+VERSIONSTR = $(CONFIG_VENDOR)/$(CONFIG_PRODUCT) Version $(VERSIONPKG)
+RELFILES = boot/boot.elf images/image.bin,.sgu $(LINUXDIR)/linux
+
+############################################################################
+
+include $(ROOTDIR)/vendors/config/arm/config.arch
+
+############################################################################

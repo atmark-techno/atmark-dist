@@ -1,0 +1,4 @@
+vendor_config.in
+!config.in
+.menuconfig.log
+

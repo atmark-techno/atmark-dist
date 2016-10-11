@@ -1,0 +1,37 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+#
+# for USB Gadget "UVC Composite with ACM and RNDIS"
+#   - activate UVC
+#
+USB_GADGET_IS_UVC_COMPOSITE=y
+if [ "${USB_GADGET_IS_UVC_COMPOSITE}" = "y" ]; then
+   /etc/init.d/uvc-gadget
+fi
+
+#
+# for AV Codec Midleware
+#   - load firmware
+#
+ACM_CODEC=encoder
+ACM_CODEC_SYSFS=/sys/devices/platform/acm.0/codec
+if [ -e $ACM_CODEC_SYSFS ]; then
+	if [ "${ACM_CODEC}" = "encoder" -o "${ACM_CODEC}" = "decoder" ]; then
+		echo -n "load ${ACM_CODEC} firmware: "
+		echo "${ACM_CODEC}" > $ACM_CODEC_SYSFS
+		for i in 1 2 3 4 5; do
+			sleep 1
+			grep "\[${ACM_CODEC}\]" $ACM_CODEC_SYSFS > /dev/null
+			if [ $? -eq 0 ]; then
+				break
+			else
+				false
+			fi
+		done
+		check_status
+	fi
+fi

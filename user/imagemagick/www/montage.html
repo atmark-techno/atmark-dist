@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <style type="text/css"><!--
+    @import url("../www/magick.css");
+  //--></style>
+  <title>ImageMagick: Command-line Tools: Montage</title>
+  <meta http-equiv="Content-Language" content="en-US" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Reply-to" content="magick-users@imagemagick.org" />
+  <meta name="Generator" content="PHP" />
+  <meta name="Keywords" content="command-line, tools:, montage, ImageMagick, PerlMagick, Magick++, Image, Magick" />
+  <meta name="Description" content="ImageMagick (TM) is a free software suite to create, edit and compose bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.  ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.  Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RubyMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.  ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF." />
+  <meta name="Rating" content="GENERAL" />
+  <meta name="Robots" content="ALL" />
+  <meta name="Generator" content="ImageMagick Studio LLC" />
+  <meta name="Author" content="ImageMagick Studio LLC" />
+  <meta name="Revisit-after" content="2 DAYS" />
+  <meta name="Resource-type" content="document" />
+  <meta name="Copyright" content="Copyright (c) 1999-2005 ImageMagick Studio LLC" />
+  <meta name="Distribution" content="Global" />
+  <link rel="shortcut icon" href="/../images/wand.ico"  type="image/x-icon" />
+</head>
+
+<body id="www-imagemagick-org">
+  <table width="100%" id="titlebar" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0" summary="ImageMagick">
+    <tbody>
+      <tr valign="top">
+        <td align="left"><a href="../index.html"><img id="titlebar-west" src="../images/script.png" alt="[ImageMagick]" width="202" height="118" border="0" name="titlebar-west" /></a></td>
+        <td width="35%"><br /></td>
+        <td align="left"><a href="http://www.imagemagick.org/" target="1927953788"><img id="titlebar-west" src="../images/sponsor.jpg" alt="[sponsor]" border="0" vspace="28" name="titlebar-west" /></a></td>
+        <td width="65%"><br /></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img src="../images/sprite.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+        <td bgcolor="white" align="right"><a href="../index.html"><img id="titlebar-east" src="../images/logo.jpg" alt="" width="114" height="118" border="0" name="titlebar-east" /></a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="">
+  <tbody>
+
+    <tr valign="top" style="height: 100%;">
+      <td id="menu" width="1%" height="100%">
+      <p><a href="#main">Skip to page contents</a></p>
+      <span>[</span>
+      <a href="../index.html">About ImageMagick</a>
+      <a href="../www/command-line-tools.html">Command-line Tools</a>
+      <a href="../www/api.html">Program Interfaces</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/install-source.html">Install from Source</a>
+      <a href="../www/binary-releases.html">Binary Releases</a>
+      <a href="../www/resources.html">Resources</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/download.html">Download</a>
+  <span>]</span><br /><span>[</span>
+      <a href="../www/links.html">Links</a>
+  <span>]</span><br /><br /><span>[</span>
+      <a href="../www/sponsors.html">Sponsors</a>
+  <a href="http://www.georeviews.com" class="sponsor" target="sponsor">Consumer Reviews<br />and Ratings</a><!-- 20050515 -->
+      <span>]</span>
+      </td>
+
+      <td id="main" valign="top">
+<p class="navigation-index">[<a href="#usage">Example Usage</a> | <a href="#options">Option Summary</a>]</p>
+
+<p>Use the <kbd>montage</kbd> program to create a composite image by combining several separate images.  The images are tiled on the composite image optionally adorned with a border, frame, image name, and more. See <a href="../www/command-line-processing.html">Command Line Processing</a> for advice on how to structure your <kbd>montage</kbd> command or see below for example usages of the command.</p>
+
+<div style="margin: auto;">
+  <h2><a name="usage"></a>Example Usage</h2>
+</div>
+
+<p>We list a few examples of the <kbd>montage</kbd> command here to illustrate its usefulness and ease of use.  To get started, lets montage two images into a single composite:</p>
+
+<pre class="text">
+  montage -background #336699 -geometry +4+4 rose.jpg red-ball.png montage.jpg
+</pre>
+
+<p class="image">
+  <a href="../images/rose.jpg"><img src="../images/rose.jpg" width="70" height="46" align="middle" alt="rose" /></a>
+  <a href="../images/red-ball.png"><img src="../images/red-ball.png" width="70" height="70" align="middle" alt="red ball" /></a>
+  <img src="../images/right.gif" width="20" height=20 align="middle" alt="==>" />
+  <a href="../images/montage.jpg"><img src="../images/montage.jpg" width="148" height="74" align="middle" alt="montage" /></a>
+</p>
+
+<p>Ok, lets add some decorations:<p>
+
+<pre class="text">
+  montage -label %f -frame 5 -background #336699 -geometry +4+4 rose.jpg red-ball.png frame.jpg
+</pre>
+
+<p class="image">
+  <a href="../images/rose.jpg"><img src="../images/rose.jpg" width="70" height="46" align="middle" alt="rose.jpg" /></a>
+  <a href="../images/red-ball.png"><img src="../images/red-ball.png" width="70" height="70" align="middle" alt="red ball" /></a>
+	<img src="../images/right.gif" width="20" height=20 align="middle" alt="==>" />
+  <a href="../images/frame.jpg"><img src="../images/frame.jpg" width="176" height="108" align="middle" alt="frame" /></a>
+</p>
+
+<p>You can find additional examples of using <kbd>montage</kbd> in <a href="http://www-106.ibm.com/developerworks/library/l-graf/?ca=dnt-428" target="1581216787">Graphics from the Command Line</a>.  Further discussion is available in  <a href="http://www-106.ibm.com/developerworks/library/l-graf2/?ca=dgr-lnxw15GraphicsLine" target="362048655">More Graphics from the Command Line</a> and <a href="http://www.cit.gu.edu.au/~anthony/graphics/imagick6" target="1031469732">Examples of ImageMagick Usage</a>.</p>
+
+<div style="margin: auto;">
+  <h2><a name="options"></a>Option Summary</h2>
+</div>
+
+<p>The <kbd>montage</kbd> command recognizes these options.  Click on an option to get more details about how that option works.</p>
+
+<table width="100%" id="table" cellpadding="2" cellspacing="0">
+  <tbody>
+  <tr>
+    <th align="left">Option</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#adjoin">-adjoin</a></td>
+    <td>join images into a single multi-image file</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#affine">-affine <em class="option">matrix</em></a></td>
+    <td>affine transform matrix</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#annotate" target="magick-options">-annotate <em class="option">geometry text</em></a></td>
+    <td>annotate the image with text</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#authenticate">-authenticate <em class="option">value</em></a></td>
+    <td>decrypt image with this password</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#blue-primary">-blue-primary <em class="option">point</em></a></td>
+    <td>chromaticity blue primary point</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#blur">-blur <em class="option">geometry</em></a></td>
+    <td>blur the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#border">-border <em class="option">geometry</em></a></td>
+    <td>surround image with a border of color</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#bordercolor">-bordercolor <em class="option">color</em></a></td>
+    <td>border color</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#channel">-channel <em class="option">type</em></a></td>
+    <td>apply option to select image channels</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#clone">-clone <em class="option">index</em></a></td>
+    <td>clone an image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#colors">-colors <em class="option">value</em></a></td>
+    <td>preferred number of colors in the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#colorspace">-colorspace <em class="option">type</em></a></td>
+    <td>alternate image colorspace</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#comment">-comment <em class="option">string</em></a></td>
+    <td>annotate image with comment</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#compose">-compose <em class="option">operator</em></a></td>
+    <td>set image composite operator</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#compress">-compress <em class="option">type</em></a></td>
+    <td>image compression type</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#crop">-crop <em class="option">geometry</em></a></td>
+    <td>preferred size and location of the cropped image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#debug">-debug <em class="option">events</em></a></td>
+    <td>display copious debugging information</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#define">-define <em class="option">format:option</em></a></td>
+    <td>define one or more image format options</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#density">-density <em class="option">geometry</em></a></td>
+    <td>horizontal and vertical density of the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#depth">-depth <em class="option">value</em></a></td>
+    <td>image depth</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#display">-display <em class="option">server</em></a></td>
+    <td>get image or font from this X server</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#dispose">-dispose <em class="option">method</em></a></td>
+    <td>GIF disposal method</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#dither">-dither</a></td>
+    <td>apply Floyd/Steinberg error diffusion to image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#draw">-draw <em class="option">string</em></a></td>
+    <td>annotate the image with a graphic primitive</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#endian">-endian <em class="option">type</em></a></td>
+    <td>endianness (MSB or LSB) of the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#extract">-extract <em class="option">geometry</em></a></td>
+    <td>extract area from image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#fill">-fill <em class="option">color</em></a></td>
+    <td>color to use when filling a graphic primitive</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#filter">-filter <em class="option">type</em></a></td>
+    <td>use this filter when resizing an image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#flip">-flip</a></td>
+    <td>flip image in the vertical direction</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#flop">-flop</a></td>
+    <td>flop image in the horizontal direction</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#font">-font <em class="option">name</em></a></td>
+    <td>render text with this font</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#frame">-frame <em class="option">geometry</em></a></td>
+    <td>surround image with an ornamental border</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#gamma">-gamma <em class="option">value</em></a></td>
+    <td>level of gamma correction</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#geometry">-geometry <em class="option">geometry</em></a></td>
+    <td>perferred size or location of the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#gravity">-gravity <em class="option">type</em></a></td>
+    <td>horizontal and vertical text placement</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#green-primary">-green-primary <em class="option">point</em></a></td>
+    <td>chromaticity green primary point</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#help">-help</a></td>
+    <td>print program options</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#interlace">-interlace <em class="option">type</em></a></td>
+    <td>type of image interlacing scheme</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#label">-label <em class="option">name</em></a></td>
+    <td>assign a label to an image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#limit">-limit <em class="option">type value</em></a></td>
+    <td>pixel cache resource limit</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#log">-log <em class="option">format</em></a></td>
+    <td>format of debugging information</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#matte">-matte</a></td>
+    <td>store matte channel if the image has one</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#mattecolor">-mattecolor <em class="option">color</em></a></td>
+    <td>frame color</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#mode">-mode <em class="option">type</em></a></td>
+    <td>framing style</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#monitor">-monitor</a></td>
+    <td>monitor progress</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#monochrome">-monochrome</a></td>
+    <td>transform image to black and white</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#page">-page <em class="option">geometry</em></a></td>
+    <td>size and location of an image canvas (setting)</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#pointsize">-pointsize <em class="option">value</em></a></td>
+    <td>font point size</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#profile">-profile <em class="option">filename</em></a></td>
+    <td>add, delete, or apply an image profile</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#quality">-quality <em class="option">value</em></a></td>
+    <td>JPEG/MIFF/PNG compression level</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#quiet">-quiet</a></td>
+    <td>suppress all error or warning messages</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#red-primary">-red-primary <em class="option">point</em></a></td>
+    <td>chromaticity red primary point</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#repage">-repage <em class="option">geometry</em></a></td>
+    <td>size and location of an image canvas</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#resize">-resize <em class="option">geometry</em></a></td>
+    <td>resize the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#rotate">-rotate <em class="option">degrees</em></a></td>
+    <td>apply Paeth rotation to the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#sampling-factor">-sampling-factor <em class="option">geometry</em></a></td>
+    <td>horizontal and vertical sampling factor</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#scenes">-scenes<em>range</em></a></td>
+    <td>image scene range</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#shadow">-shadow <em class="option">geometry</em></a></td>
+    <td>simulate an image shadow</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#size">-size <em class="option">geometry</em></a></td>
+    <td>width and height of image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#strip">-strip</a></td>
+    <td>strip image of all profiles and comments</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#stroke">-stroke <em class="option">color</em></a></td>
+    <td>graphic primitive stroke color</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#support">-support <em class="option">factor</em></a></td>
+    <td>resize support: > 1.0 is blurry, < 1.0 is sharp</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#texture">-texture <em class="option">filename</em></a></td>
+    <td>name of texture to tile onto the image background</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#tile">-tile <em class="option">filename</em></a></td>
+    <td>tile image when filling a graphic primitive</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#transform">-transform</a></td>
+    <td>affine transform image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#transparent">-transparent <em class="option">color</em></a></td>
+    <td>make this color transparent within the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#treedepth">-treedepth <em class="option">value</em></a></td>
+    <td>color tree depth</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#trim">-trim</a></td>
+    <td>trim image edges</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#type">-type <em class="option">type</em></a></td>
+    <td>image type</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#verbose">-verbose</a></td>
+    <td>print detailed information about the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#version">-version</a></td>
+    <td>print version information</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#view">-view</a></td>
+    <td>FlashPix viewing transforms</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#virtual-pixel">-virtual-pixel <em class="option">method</em></a></td>
+    <td>access method for pixels outside the boundaries of the image</td>
+  </tr>
+
+  <tr>
+    <td><a href="../www/command-line-options.html#white-point">-white-point <em class="option">point</em></a></td>
+    <td>chromaticity white point</td>
+  </tr>
+
+  </tbody>
+</table>
+      </td>
+      <td id="margin" width="1%" height="100%" valign="top" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+  </table>
+  <div id="linkbar">
+    <a href="http://redux.imagemagick.org/discussion-server" target="1406294031">Discourse Server</a> |
+    <a href="../www/mailing-list.html">Mailing Lists</a> |
+    <a href="http://redux.imagemagick.org/gallery" target="279596113">Image Gallery</a> |
+    <a href="http://net11.imagemagick.org/MagickStudio/scripts/MagickStudio.cgi" target="918058290">ImageMagick Studio</a>
+  </div>
+  <div>
+    <span id="footer-west">&copy; 1999-2005 ImageMagick Studio LLC</span>
+  </div>
+  <div style="clear: both; margin: 0; width: 100%; "></div>
+</body>
+</html>

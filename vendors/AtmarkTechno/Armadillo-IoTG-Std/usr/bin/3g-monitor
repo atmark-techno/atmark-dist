@@ -1,0 +1,26 @@
+#!/bin/sh
+
+LABEL_START="start"
+LABEL_STOP="stop"
+
+usage() {
+	echo "usage: $0 ${LABEL_START}|${LABEL_STOP}"
+	exit 1
+}
+
+if [ $# -ne 1 ]; then
+	usage
+fi
+
+MODE=${1}
+
+case "$MODE" in
+	${LABEL_START} )
+		ifplugd -i umts0 -p -q
+	;;
+	${LABEL_STOP} )
+		ifplugd -i umts0 -k
+	;;
+	* )
+		usage ;;
+esac

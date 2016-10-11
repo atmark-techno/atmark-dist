@@ -1,0 +1,121 @@
+#! /bin/sh -e
+## 20_kill.1.dpatch by Craig Small <csmall@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix kill.1 manual page
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argum
+ent"
+                exit 1;;
+esac
+
+exit 0
+@DPATCH@
+diff -urNad procps-3.2.7~/kill.1 procps-3.2.7/kill.1
+--- procps-3.2.7~/kill.1	2006-06-26 09:37:50.000000000 +1000
++++ procps-3.2.7/kill.1	2006-06-26 11:17:34.000000000 +1000
+@@ -10,23 +10,18 @@
+ kill \- send a signal to a process
+ 
+ .SH SYNOPSIS
+-.TS
+-l l.
+-kill pid ...	Send SIGTERM to every process listed.
+-kill -signal pid ...	Send a signal to every process listed.
+-kill -s signal pid ...	Send a signal to every process listed.
+-kill -l	List all signal names.
+-kill -L	List all signal names in a nice table.
+-kill -l signal	Convert a signal number into a name.
+-kill -V,--version	Show version of program
+-.TE
++\fBkill\fR [ \-\fBsignal\fR | \-s \fBsignal\fR ] \fBpid\fR ...
++.br
++\fBkill\fR [ \-L | -V, \-\-version ]
++.br
++\fBkill\fR \-l  [ \fBsignal\fR ]
+ 
+ .SH DESCRIPTION
+-The default signal for kill is TERM. Use -l or -L to list available signals.
++The default signal for kill is TERM. Use \-l or \-L to list available signals.
+ Particularly useful signals include HUP, INT, KILL, STOP, CONT, and 0.
+-Alternate signals may be specified in three ways: -9 -SIGKILL -KILL.
++Alternate signals may be specified in three ways: \-9 \-SIGKILL \-KILL.
+ Negative PID values may be used to choose whole process groups; see the
+-PGID column in ps command output. A PID of -1 is special; it indicates
++PGID column in ps command output. A PID of \-1 is special; it indicates
+ all processes except the kill process itself and init.
+ 
+ .SH SIGNALS
+@@ -37,7 +32,6 @@
+ lB rB lB lB
+ lfCW r l l.
+ Name	Num	Action	Description
+-.TH
+ 0	0	n/a	exit code indicates if a signal may be sent
+ ALRM	14	exit
+ HUP	1	exit
+@@ -79,36 +73,30 @@
+ the conflict.
+ 
+ .SH EXAMPLES
+-
+-.SS
+-.B "kill -9 -1"
+-.nf
++.TP
++.B kill \-9 \-1
+ Kill all processes you can kill.
+-.fi
+-.PP
+-.SS
+-.B "kill -l 11"
+-.nf
++.TP
++.B kill \-l 11
+ Translate number 11 into a signal name.
+-.fi
+-.PP
+-.SS
+-.B "kill -L"
+-.nf
++.TP
++.B kill -L
+ List the available signal choices in a nice table.
+-.fi
+-.PP
+-.SS
+-.B "kill 123 543 2341 3453"
+-.nf
++.TP
++.B kill 123 543 2341 3453
+ Send the default signal, SIGTERM, to all those processes.
+-.fi
+-.PP
++
+ .SH "SEE ALSO"
+-pkill(1) skill(1) kill(2) renice(1) nice(1) signal(7) killall(1)
++.BR pkill (1),
++.BR skill (1),
++.BR kill (2),
++.BR renice (1),
++.BR nice (1),
++.BR signal (7),
++.BR killall (1).
+ 
+ .SH STANDARDS
+-This command meets appropriate standards. The -L flag is Linux-specific.
++This command meets appropriate standards. The \-L flag is Linux-specific.
+ 
+ .SH AUTHOR
+ Albert Cahalan <albert@users.sf.net> wrote kill in 1999 to replace a

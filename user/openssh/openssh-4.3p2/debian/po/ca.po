@@ -1,0 +1,311 @@
+# openssh (debconf) translation to Catalan.
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# Aleix Badia i Bosch <abadia@ica.es>, 2004
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: openssh_1:3.8p1-3_templates\n"
+"Report-Msgid-Bugs-To: matthew@debian.org\n"
+"POT-Creation-Date: 2006-10-04 22:14+0100\n"
+"PO-Revision-Date: 2004-03-05 19:46GMT\n"
+"Last-Translator: Aleix Badia i Bosch <abadia@ica.es>\n"
+"Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+#, fuzzy
+msgid "Generate new configuration file?"
+msgstr "Genera un fitxer de configuració nou"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+#, fuzzy
+msgid ""
+"This version of OpenSSH has a considerably changed configuration file from "
+"the version shipped in Debian 'Potato', which you appear to be upgrading "
+"from. This package can now generate a new configuration file (/etc/ssh/sshd."
+"config), which will work with the new server version, but will not contain "
+"any customisations you made with the old version."
+msgstr ""
+"Els fitxers de configuració de l'Openssh s'han modificat considerablement "
+"respecte als de Debian 'Potato', de la qual sembla que esteu actualitzant. "
+"Podeu generar un fitxer de configuració nou (/etc/sshd/sshd.config), que "
+"funcionarà amb la nova versió del servidor però no tindrà els paràmetres de "
+"configuració personalitzats de la versió antiga."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+msgid ""
+"Please note that this new configuration file will set the value of "
+"'PermitRootLogin' to yes (meaning that anyone knowing the root password can "
+"ssh directly in as root). It is the opinion of the maintainer that this is "
+"the correct default (see README.Debian for more details), but you can always "
+"edit sshd_config and set it to no if you wish."
+msgstr ""
+"Recordeu que el valor de 'PermitRootLogin' del nou fitxer configuració serà "
+"yes (qualsevol persona que conegui la contrasenya del superadministrador "
+"podrà utilitzar l'ssh com a superadministrador). El valor predeterminat "
+"d'aquesta opció és una opinió personal del mantenidor (per a més informació "
+"vegeu el fitxer README.Debian), tot i això el podeu modificar editant el "
+"fitxer sshd_config i modificar definint com a no."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:1001
+#, fuzzy
+msgid ""
+"It is strongly recommended that you let this package generate a new "
+"configuration file now."
+msgstr ""
+"Es molt recomanable que deixeu que se us creï el nou fitxer de configuració."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:2001
+msgid "Do you want to continue (and risk killing active ssh sessions)?"
+msgstr ""
+"Esteu segur de voler continuar (tot i la possibilitat d'aturar les sessions "
+"d'ssh actives)?"
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:2001
+msgid ""
+"The version of /etc/init.d/ssh that you have installed, is likely to kill "
+"all running sshd instances.  If you are doing this upgrade via an ssh "
+"session, that would be a Bad Thing(tm)."
+msgstr ""
+"La versió de l'/etc/init.d/ssh que heu instal·lat probablement aturarà les "
+"instàncies de l'sshd que s'estan executant. Si esteu realitzant "
+"l'actualització de de d'una sessió d'ssh us podria penjar la connexió."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:2001
+msgid ""
+"You can fix this by adding \"--pidfile /var/run/sshd.pid\" to the start-stop-"
+"daemon line in the stop section of the file."
+msgstr ""
+"Ho podeu arreglar afegint la línia \"--pidfile /var/run/sshd.pid\" a la "
+"línia start-stop-daemon de la secció stop del fitxer."
+
+#. Type: note
+#. Description
+#: ../openssh-server.templates.master:3001
+msgid "Warning: you must create a new host key"
+msgstr "Avís: heu de crear una nova clau del servidor central"
+
+#. Type: note
+#. Description
+#: ../openssh-server.templates.master:3001
+#, fuzzy
+msgid ""
+"There is an old /etc/ssh/ssh_host_key, which is IDEA encrypted. OpenSSH can "
+"not handle this host key file, and the ssh-keygen utility from the old (non-"
+"free) SSH installation does not appear to be available."
+msgstr ""
+"Hi ha un fitxer antic /etc/ssh/ssh_host_key antic xifrat amb IDEA. L'OpenSSH "
+"no pot gestionar aquest fitxer de clau de l'ordinador central i no es pot "
+"trobar l'eina ssh-keygen de la instal·lació d'SSH anterior (non-free)."
+
+#. Type: note
+#. Description
+#: ../openssh-server.templates.master:3001
+msgid "You will need to generate a new host key."
+msgstr "Haureu de generar una nova clau de l'ordinador central."
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:4001
+msgid "Disable challenge-response authentication?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:4001
+msgid ""
+"Password authentication appears to be disabled in your current OpenSSH "
+"server configuration. In order to prevent users from logging in using "
+"passwords (perhaps using only public key authentication instead) with recent "
+"versions of OpenSSH, you must disable challenge-response authentication, or "
+"else ensure that your PAM configuration does not allow Unix password file "
+"authentication."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../openssh-server.templates.master:4001
+msgid ""
+"If you disable challenge-response authentication, then users will not be "
+"able to log in using passwords. If you leave it enabled (the default "
+"answer), then the 'PasswordAuthentication no' option will have no useful "
+"effect unless you also adjust your PAM configuration in /etc/pam.d/ssh."
+msgstr ""
+
+#~ msgid "Warning: telnetd is installed --- probably not a good idea"
+#~ msgstr ""
+#~ "Avís: el telnetd està instal·lat --- probablement no sigui una bona idea"
+
+#~ msgid ""
+#~ "I'd advise you to either remove the telnetd package (if you don't "
+#~ "actually need to offer telnet access) or install telnetd-ssl so that "
+#~ "there is at least some chance that telnet sessions will not be sending "
+#~ "unencrypted login/password and session information over the network."
+#~ msgstr ""
+#~ "Es aconsellable suprimir el paquet telnetd (si no heu d'oferir accés a "
+#~ "telnet) o torneu a instal·lar el paquet telnetd-ssl si més no per "
+#~ "assegurar que les sessions de telnet no enviaran les informació del nom "
+#~ "d'usuari i contrasenya sense xifrar a través de la xarxa."
+
+#~ msgid "Warning: rsh-server is installed --- probably not a good idea"
+#~ msgstr ""
+#~ "Avís: el servidor rsh-server està instal·lat --- probablement no sigui "
+#~ "una bona idea"
+
+#~ msgid ""
+#~ "having rsh-server installed undermines the security that you were "
+#~ "probably wanting to obtain by installing ssh.  I'd advise you to remove "
+#~ "that package."
+#~ msgstr ""
+#~ "si teniu instal·lat l'rsh-server perdreu la seguretat que esperaveu "
+#~ "obtenir instal·lant l'ssh. És aconsellable suprimir el paquet."
+
+#~ msgid "Do you want ssh-keysign to be installed SUID root?"
+#~ msgstr "Voleu que el fitxer ssh-keysign s'instal·li SUID root?"
+
+#~ msgid ""
+#~ "You have the option of installing the ssh-keysign helper with the SUID "
+#~ "bit set."
+#~ msgstr "Podeu instal·lar l'ajudant del ssh-keysign amb el bit SUID definit."
+
+#~ msgid ""
+#~ "If you make ssh-keysign SUID, you will be able to use SSH's Protocol 2 "
+#~ "host-based authentication."
+#~ msgstr ""
+#~ "Si definiu l'ssh-keysign SUID podreu utilitzat l'autenticació basada en "
+#~ "l'ordinador central del Protocol 2 de l'SSH."
+
+#~ msgid ""
+#~ "If in doubt, I suggest you install it with SUID.  If it causes problems "
+#~ "you can change your mind later by running:   dpkg-reconfigure ssh"
+#~ msgstr ""
+#~ "Si dubteu instal·leu-lo amb el SUID. Si us causa algun problema ho podeu "
+#~ "modificar posteriorment executant l'ordre:  dpkg-reconfigure ssh"
+
+#~ msgid "Allow SSH protocol 2 only"
+#~ msgstr "Permet únicament la versió 2 del protocol d'SSH"
+
+#~ msgid ""
+#~ "This version of OpenSSH supports version 2 of the ssh protocol, which is "
+#~ "much more secure.  Disabling ssh 1 is encouraged, however this will slow "
+#~ "things down on low end machines and might prevent older clients from "
+#~ "connecting (the ssh client shipped with \"potato\" is affected)."
+#~ msgstr ""
+#~ "Aquesta versió de l'OpenSSH suporta la versió 2 del protocol d'ssh, "
+#~ "aquesta versió és molt més segura. És recomanable inhabilitar la versió 1 "
+#~ "del protocol, tot i això relantitzà el funcionament dels ordinadors més "
+#~ "antics i no permetrà les connexions als clients antics (afectarà al "
+#~ "client proporcionat per la \"potato\")."
+
+#~ msgid ""
+#~ "Also please note that keys used for protocol 1 are different so you will "
+#~ "not be able to use them if you only allow protocol 2 connections."
+#~ msgstr ""
+#~ "Recordeu que les claus que utilitza la versió 1 del protocol són "
+#~ "diferents i no les podreu utilitzar si habiliteu únicament les connexions "
+#~ "de la versió 2 del protocol."
+
+#~ msgid ""
+#~ "If you later change your mind about this setting, README.Debian has "
+#~ "instructions on what to do to your sshd_config file."
+#~ msgstr ""
+#~ "Si posteriorment canvieu d'opinió respecte a la configuració, podeu "
+#~ "trobar les instruccions per modificar el fitxer sshd_config a README."
+#~ "Debian."
+
+#~ msgid "NOTE: Forwarding of X11 and Authorization disabled by default."
+#~ msgstr ""
+#~ "Nota: les opcions de reenviament de les X11 i autorització estan "
+#~ "inhabilitades per defecte."
+
+#~ msgid ""
+#~ "For security reasons, the Debian version of ssh has ForwardX11 and "
+#~ "ForwardAgent set to ``off'' by default."
+#~ msgstr ""
+#~ "Per raons de seguretat  i de forma predeterminada la versió d'ssh de "
+#~ "Debian té les opcions ForwardX11 i ForwardAgent definides a \"off\"."
+
+#~ msgid ""
+#~ "You can enable it for servers you trust, either in one of the "
+#~ "configuration files, or with the -X command line option."
+#~ msgstr ""
+#~ "Ho podeu habilitar pels servidors de confiança, ja sigui en un dels "
+#~ "fitxers de configuració o a través de l'opció de la línia d'ordre -X."
+
+#~ msgid "More details can be found in /usr/share/doc/ssh/README.Debian"
+#~ msgstr ""
+#~ "Podeu trobar més informació al fitxer /usr/share/doc/ssh/README.Debian"
+
+#~ msgid "ssh2 keys merged in configuration files"
+#~ msgstr "S'han combinat les claus de l'ssh2 als fitxers de configuració"
+
+#~ msgid ""
+#~ "As of version 3 OpenSSH no longer uses separate files for ssh1 and ssh2 "
+#~ "keys. This means the authorized_keys2 and known_hosts2 files are no "
+#~ "longer needed. They will still be read in order to maintain backwards "
+#~ "compatibility"
+#~ msgstr ""
+#~ "Des de la versió 3 de l'OpenSSH ja no s'utilitzaran fitxers separats per "
+#~ "les claus de l'ssh1 i ssg2. Ja no caldran els fitxer authorized_keys2 i "
+#~ "known_hosts2. Es continuaran llegint per mantenir la compatibilitat amb "
+#~ "les versions anteriors."
+
+#~ msgid "Do you want to run the sshd server?"
+#~ msgstr "Voleu executar el servidor d'sshd?"
+
+#~ msgid "This package contains both the ssh client, and the sshd server."
+#~ msgstr "El paquet conté el client i el servidor d'ssh."
+
+#~ msgid ""
+#~ "Normally the sshd Secure Shell Server will be run to allow remote logins "
+#~ "via ssh."
+#~ msgstr ""
+#~ "L'sshd (servidor de l'intèrpret d'ordres segur) s'executarà, normalment, "
+#~ "per permetre l'entrada remota a través de l'ssh."
+
+#~ msgid ""
+#~ "If you are only interested in using the ssh client for outbound "
+#~ "connections on this machine, and don't want to log into it at all using "
+#~ "ssh, then you can disable sshd here."
+#~ msgstr ""
+#~ "Podeu inhabilitar l'sshd si voleu utilitzar el client d'ssh únicament per "
+#~ "connexions a l'exterior i no per acceptar connexions remotes."
+
+#~ msgid "Environment options on keys have been deprecated"
+#~ msgstr "S'ha prohibit les opcions d'entorn a les claus."
+
+#~ msgid ""
+#~ "This version of OpenSSH disables the environment option for public keys "
+#~ "by default, in order to avoid certain attacks (for example, LD_PRELOAD). "
+#~ "If you are using this option in an authorized_keys file, beware that the "
+#~ "keys in question will no longer work until the option is removed."
+#~ msgstr ""
+#~ "L'OpenSSH inhabilita, per defecte i per evitar diversos atacs (per "
+#~ "exemple LD_PRELOAD), les opcions d'entorn per les claus públiques. Si "
+#~ "utilitzeu aquesta opció al fitxer authorized_keys recordeu que les claus "
+#~ "de la qüestió no funcionaran fins que no se suprimeixi l'opció."
+
+#~ msgid ""
+#~ "To re-enable this option, set \"PermitUserEnvironment yes\" in /etc/ssh/"
+#~ "sshd_config after the upgrade is complete, taking note of the warning in "
+#~ "the sshd_config(5) manual page."
+#~ msgstr ""
+#~ "Per tornar a habilitar l'opció definiu \"PermitUserEnvironment yes\" al "
+#~ "fitxer /etc/ssh/sshd_config al finalitzar l'actualització (recordeu la "
+#~ "nota d'avís de la pàgina del manual sshd_config(5)). "

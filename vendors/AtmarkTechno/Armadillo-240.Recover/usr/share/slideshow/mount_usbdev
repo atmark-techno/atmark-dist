@@ -1,0 +1,48 @@
+#!/bin/sh
+. /etc/config/slideshow.conf
+
+log()
+{
+    logger -p user.$1 -t "slideshow[$$]" -- "$2"
+}
+
+in_list()
+{
+    for v in $2; do
+	test "$1" != "$v" || return 0
+    done
+
+    return 1
+}
+
+read_success=no
+for t in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19; do
+    if dd if=$DEVNAME of=/dev/null bs=512 count=1; then
+	read_success=yes
+	break
+    fi
+    log debug "attempt $t to read from $DEVNAME failed"
+    sleep 1
+done
+if [ "$read_success" != yes ]; then
+    log err "cannot read from $DEVNAME"
+    exit 1
+fi
+
+fstype=`/lib/udev/vol_id -t $DEVNAME`
+log debug "$DEVNAME contains filesystem type $fstype"
+
+if in_list "$fstype" "$FILESYSTEMS"; then
+    options="-o ro"
+    if [ $fstype = vfat ]; then
+	options="$options,$VFAT_MOUNTOPTION"
+    fi
+
+    log info "executing command: mount -t$fstype $options $DEVNAME $USBDIR"
+    mount -t $fstype $options $DEVNAME $USBDIR
+else
+    log debug "$DEVNAME does not contain a filesystem or disklabel"
+    exit 1
+fi
+
+exit 0

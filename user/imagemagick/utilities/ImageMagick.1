@@ -1,0 +1,63 @@
+.TH ImageMagick 1 "Date: 2005/03/01 01:00:00" "ImageMagick"
+.SH NAME
+ImageMagick \- is a free software suite for the creation, modification and display of bitmap images.
+\fBconvert\fP \fIinput-file\fP [\fIoptions\fP] \fIoutput-file\fP
+.SH OVERVIEW
+
+ImageMagickTM, version 6.2.0, is a free software suite for the creation, modification and display of bitmap images. It can read, convert and write images in a large variety of formats. Images can be cropped, colors can be changed, various effects can be applied, images can be rotated and combined, and text, lines, polygons, ellipses and Bézier curves can be added to images and stretched and rotated.
+
+ImageMagick is free software: it is delivered with full source code and can be freely used, copied, modified and distributed. Its license is compatible with the GPL. It runs on all major operating systems.
+
+Most of the functionality of ImageMagick can be used interactively from the command line; more often, however, the features are used from programs written in the programming languages Perl, C, C++, Python, PHP, Ruby, Tcl/Tk or Java, for which ready-made ImageMagick interfaces (PerlMagick, Magick++, PythonMagick, MagickWand for PHP, RMagick, TclMagick, and JMagick) are available. This makes it possible to modify or create images automatically and dynamically.
+
+ImageMagick supports many image formats (over 90 major formats) including popular formats like TIFF, JPEG, PNG, PDF, PhotoCD, and GIF.
+
+ImageMagick includes a number of command-line utilities for manipulating images. Most of you are probably accustom to editing images one at a time with a graphical user interface (GUI) with such programs as gimp or Photoshop. However, a GUI is not always convenient. Suppose you want to process an image dynamically from a web script or you want to apply the same operations to many images or repeat a specific operation at different times to the same or different image. For these types of operations, the command-line image processing utility is appropriate.
+
+In the paragraphs below, find a short description for each command-line tool.Click on the program name to get details on the program usage and a list of command-line options that alters how the program performs. If you are just getting acquianted with ImageMagick, start at the top of the list, the convert program, and work your way dowm. Also be sure to peruse Anthony Thyssen's tutorial on how to use ImageMagick utilities to convert, compose, or edit images from the command-line.
+.TP
+convert
+
+convert between image formats as well as resize an image, blur, crop, despeckle, dither, draw on, flip, join, re-sample, and much more.
+.TP
+identify
+
+describes the format and characteristics of one or more image files.
+mogrify
+
+resize an image, blur, crop, despeckle, dither, draw on, flip, join, re-sample, and much more. Mogrify overwrites the original image file, whereas, convert writes to a different image file.
+.TP
+composite
+
+overlaps one image over another.
+.TP
+montage
+
+create a composite image by combining several separate images. The images are tiled on the composite image optionall adorned with a border, frame, image name, and more.
+.TP
+compare
+
+mathematically and visually annotate the difference between an image and its reconstruction..
+.TP
+display
+
+displays an image or image sequence on any X server.
+.TP
+animate
+
+animates an image sequence on any X server.
+.TP
+import
+
+saves any visible window on an X server and outputs it as an image file. You can capture a single window, the entire screen, or any rectangular portion of the screen.
+.TP
+conjure
+
+interprets and executes scripts written in the Magick Scripting Language (MSL).
+
+For more information about the ImageMagick, point your browser to file:///usr/share/doc/ImageMagick-6.2.4/index.html or http://www.imagemagick.org/.
+.SH SEE-ALSO
+convert(1), identify(1), composite(1), montage(1), compare(1), display(1), animate(1), import(1), conjure(1), quantize(5), miff(4)
+
+.SH COPYRIGHT
+\fBCopyright (C) 1999-2005 ImageMagick Studio LLC. Additional copyrights and licenses apply to this software, see http://www.imagemagick.org/script/license.php\fP

@@ -1,0 +1,21 @@
+passwd abBqwxv.nBlS5
+wizard 1
+ipfwrules_override 0
+dnsmasq 1
+ipeth0 192.168.0.1
+snmeth0 255.255.255.0
+dhcpcd 0
+connection.bridge.br0 br0,,,eth0,eth1
+connection.bridge connection.bridge.br0
+masqeth1 0
+fw_rule 0
+fw_addr 0
+fw_serv 3
+fw_serv_0 DHCP Server
+fw_serv_0_udp 67
+fw_serv_1 DHCP Client
+fw_serv_1_udp 68
+fw_serv_2 Netbios
+fw_serv_2_tcp 137,139,138
+fw_serv_2_udp 137,138
+

@@ -1,0 +1,8 @@
+::sysinit:/etc/rc.sysinit
+
+#::respawn:/bin/sh
+::respawn:/sbin/getty -L 115200 ttyS0 vt102
+::respawn:/bin/flatfsd
+
+::shutdown:/etc/rc.reboot
+::ctrlaltdel:/sbin/reboot

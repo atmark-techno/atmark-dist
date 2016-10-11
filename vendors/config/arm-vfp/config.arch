@@ -1,0 +1,4 @@
+.EXPORT_ALL_VARIABLES:
+CROSS_COMPILE = arm-vfp-linux-gnu-
+
+include $(ROOTDIR)/vendors/config/arm/config.arch

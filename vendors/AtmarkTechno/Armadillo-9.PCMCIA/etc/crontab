@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+TZ=JST-9
+#59 *    * * *   root    msntp -r ntp1.jst.mfeed.ad.jp;hwclock --systohc -u

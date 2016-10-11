@@ -1,0 +1,23 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Starting Xfbdev: "
+
+for input_ev in $(find /sys/class/input/event*); do
+    case $(cat $input_ev/device/name) in
+	"imx_adc_ts") TS_DEV=$(echo $input_ev | sed -e 's|/sys/class|/dev|');;
+	"gpio-keys") KEY_DEV=$(echo $input_ev | sed -e 's|/sys/class|/dev|');;
+    esac
+done
+
+if [ -z "$TS_DEV" -o -z "$KEY_DEV" ]; then
+    false
+    check_status
+else
+    /usr/bin/Xfbdev -s 0 -mouse tslib,,device=$TS_DEV \
+	-keybd evdev,,device=$KEY_DEV >/dev/null 2>&1 &
+    check_status
+fi

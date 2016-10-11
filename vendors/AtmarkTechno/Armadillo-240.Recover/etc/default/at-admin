@@ -1,0 +1,6 @@
+VERSION="1.0"
+PRODUCT_NAME="Armadillo-240"
+PRIMARY_IF="eth0"
+FIRMWARE_URL="http://download.atmark-techno.com/armadillo-2x0/images"
+FIRMWARE_KERNEL_MATCH="linux-a240-, linux-a2x0-"
+FIRMWARE_USERLAND_MATCH="romfs-a240-, romfs-a2x0-"

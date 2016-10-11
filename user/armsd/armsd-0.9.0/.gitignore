@@ -1,0 +1,4 @@
+*.o
+armsd
+config.log
+config.status

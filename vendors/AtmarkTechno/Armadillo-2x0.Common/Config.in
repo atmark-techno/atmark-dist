@@ -1,0 +1,108 @@
+#
+# Vendor specific
+#
+
+define_bool CONFIG_VENDOR_AUTO_LIBINSTALLER y
+define_bool CONFIG_VENDOR_AUTO_STRIPPER y
+
+choice  'generate file-system option' 	"Auto CONFIG_VENDOR_GENFS_AUTO \
+					 Manual CONFIG_VENDOR_GENFS_MANUAL \
+					" Auto
+if [ "$CONFIG_VENDOR_GENFS_MANUAL" = "y" ]; then
+	int '    Size of the image in blocks' CONFIG_VENDOR_GENFS_BLOCKS 6592
+	int '    Maximum number of inodes' CONFIG_VENDOR_GENFS_INODES 1024
+fi
+
+if [ "$CONFIG_PRODUCT" = "Armadillo-210.Recover" ] || \
+   [ "$CONFIG_PRODUCT" = "Armadillo-210.Base" ]; then
+comment 'Armadillo-210 setup'
+
+choice  'Armadillo-210 type' "Base     CONFIG_VENDOR_A210_TYPE_BASE \
+                              Recover  CONFIG_VENDOR_A210_TYPE_RECOVER \
+                              Original CONFIG_VENDOR_A210_TYPE_ORIGINAL \
+                             " Base
+
+if [ "$CONFIG_VENDOR_A210_TYPE_BASE" = "y" ]; then
+	define_string CONFIG_VENDOR_A210_TYPE 'Base'
+fi
+if [ "$CONFIG_VENDOR_A210_TYPE_RECOVER" = "y" ]; then
+	define_string CONFIG_VENDOR_A210_TYPE 'Recover'
+fi
+if [ "$CONFIG_VENDOR_A210_TYPE_ORIGINAL" = "y" ]; then
+	string 'type name' CONFIG_VENDOR_A210_TYPE 'Original'
+fi
+
+string 'Armadillo-210 version' CONFIG_VENDOR_A210_VERSION '0.00'
+
+fi
+if [ "$CONFIG_PRODUCT" = "Armadillo-220.Recover" ] || \
+   [ "$CONFIG_PRODUCT" = "Armadillo-220.Base" ]; then
+comment 'Armadillo-220 setup'
+
+choice  'Armadillo-220 type' "Base     CONFIG_VENDOR_A220_TYPE_BASE \
+                              Recover  CONFIG_VENDOR_A220_TYPE_RECOVER \
+                              Original CONFIG_VENDOR_A220_TYPE_ORIGINAL \
+                             " Base
+
+if [ "$CONFIG_VENDOR_A220_TYPE_BASE" = "y" ]; then
+	define_string CONFIG_VENDOR_A220_TYPE 'Base'
+fi
+if [ "$CONFIG_VENDOR_A220_TYPE_RECOVER" = "y" ]; then
+	define_string CONFIG_VENDOR_A220_TYPE 'Recover'
+fi
+if [ "$CONFIG_VENDOR_A220_TYPE_ORIGINAL" = "y" ]; then
+	string 'type name' CONFIG_VENDOR_A220_TYPE 'Original'
+fi
+
+string 'Armadillo-220 version' CONFIG_VENDOR_A220_VERSION '0.00'
+
+fi
+if [ "$CONFIG_PRODUCT" = "Armadillo-230.Recover" ] || \
+   [ "$CONFIG_PRODUCT" = "Armadillo-230.Base" ]; then
+comment 'Armadillo-230 setup'
+
+choice  'Armadillo-230 type' "Base     CONFIG_VENDOR_A230_TYPE_BASE \
+                              Recover  CONFIG_VENDOR_A230_TYPE_RECOVER \
+                              Original CONFIG_VENDOR_A230_TYPE_ORIGINAL \
+                             " Base
+
+if [ "$CONFIG_VENDOR_A230_TYPE_BASE" = "y" ]; then
+        define_string CONFIG_VENDOR_A230_TYPE 'Base'
+fi
+if [ "$CONFIG_VENDOR_A230_TYPE_RECOVER" = "y" ]; then
+        define_string CONFIG_VENDOR_A230_TYPE 'Recover'
+fi
+if [ "$CONFIG_VENDOR_A230_TYPE_ORIGINAL" = "y" ]; then
+        string 'type name' CONFIG_VENDOR_A230_TYPE 'Original'
+fi
+
+string 'Armadillo-230 version' CONFIG_VENDOR_A230_VERSION '0.00'
+
+fi
+if [ "$CONFIG_PRODUCT" = "Armadillo-240.Recover" ] || \
+   [ "$CONFIG_PRODUCT" = "Armadillo-240.Base" ]; then
+comment 'Armadillo-240 setup'
+
+choice  'Armadillo-240 type' "Base     CONFIG_VENDOR_A240_TYPE_BASE \
+                              Recover  CONFIG_VENDOR_A240_TYPE_RECOVER \
+                              Original CONFIG_VENDOR_A240_TYPE_ORIGINAL \
+                             " Base
+
+if [ "$CONFIG_VENDOR_A240_TYPE_BASE" = "y" ]; then
+	define_string CONFIG_VENDOR_A240_TYPE 'Base'
+fi
+if [ "$CONFIG_VENDOR_A240_TYPE_RECOVER" = "y" ]; then
+	define_string CONFIG_VENDOR_A240_TYPE 'Recover'
+fi
+if [ "$CONFIG_VENDOR_A240_TYPE_ORIGINAL" = "y" ]; then
+	string 'type name' CONFIG_VENDOR_A240_TYPE 'Original'
+fi
+
+string 'Armadillo-240 version' CONFIG_VENDOR_A240_VERSION '0.00'
+fi
+
+comment 'Applications'
+
+bool 'gpioctrl' CONFIG_VENDOR_GPIOCTRL_GPIOCTRL
+bool 'ledctrl' CONFIG_VENDOR_LEDCTRL_LEDCTRL
+bool 'swmgr' CONFIG_VENDOR_SWMGR_SWMGR

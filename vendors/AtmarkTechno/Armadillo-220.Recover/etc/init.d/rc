@@ -1,0 +1,243 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+TZ=JST-9
+export PATH TZ
+
+# Ignore CTRL-C only in this shell, so we can interrupt subprocesses.
+trap ":" INT QUIT TSTP
+
+###############################################################################
+# leds
+###############################################################################
+ledctrl --green=on
+ledctrl --red=on
+
+###############################################################################
+# remount /
+###############################################################################
+#echo "Starting fsck for root filesystem."
+#mount -n -o remount,ro /
+
+###############################################################################
+# remount /
+###############################################################################
+echo "Remounting root rw: "
+mount -n -o remount,rw /
+
+###############################################################################
+# mount proc
+###############################################################################
+echo "Mounting proc: "
+mount -n /proc
+
+echo "Mounting usbfs: "
+mount usbfs
+
+echo "Mounting sysfs: "
+mount sysfs
+
+###############################################################################
+# cleaning up
+###############################################################################
+echo "Cleaning up system: "
+cleanup_dirs="/tmp /var/lock /var/run"
+rm -rf $cleanup_dirs
+mkdir $cleanup_dirs
+
+###############################################################################
+# udevd
+###############################################################################
+echo "Starting udevd: "
+
+# udevd is used only to get hotplug event from kernel.
+# no device node is intended to be created.
+udevd --daemon
+
+###############################################################################
+# setting keepalive
+###############################################################################
+echo 600 > /proc/sys/net/ipv4/tcp_keepalive_time
+echo 60 > /proc/sys/net/ipv4/tcp_keepalive_intvl
+echo 5 > /proc/sys/net/ipv4/tcp_keepalive_probes
+
+###############################################################################
+# flatfsd
+###############################################################################
+echo "Loading /etc/config: "
+flatfsd -r > /dev/null 2>&1
+
+mkdir -p /tmp/config >/dev/null 2>&1
+cp -a /etc/default/* /etc/default/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /etc/config/* /etc/config/.[A-z]* /tmp/config >/dev/null 2>&1
+cp -a /tmp/config/* /tmp/config/.[A-z]* /etc/config >/dev/null 2>&1
+rm -rf /tmp/config
+
+###############################################################################
+# sshd preparation (keys)
+###############################################################################
+FLAG=n
+
+if [ ! -f /etc/config/ssh_host_key ] ; then
+    echo "generating rsa1 key..."
+    ledctrl --red=blinkon
+    ssh-keygen -t rsa1 -f /etc/config/ssh_host_key -N '' >/dev/null
+    FLAG=y
+fi
+
+if [ ! -f /etc/config/ssh_host_dsa_key ] ; then
+    echo "generating dsa key..."
+    ledctrl --red=blinkon
+    ssh-keygen -t dsa -f /etc/config/ssh_host_dsa_key -N '' >/dev/null
+    FLAG=y
+fi
+
+if [ ! -f /etc/config/ssh_host_rsa_key ] ; then
+    echo "generating rsa key..."
+    ledctrl --red=blinkon
+    ssh-keygen -t rsa -f /etc/config/ssh_host_rsa_key -N '' >/dev/null
+    FLAG=y
+fi
+
+if [ "$FLAG" = "y" ]; then
+    flatfsd -s >/dev/null 2>&1
+    ledctrl --red=blinkoff
+fi
+
+adduser -DH sshd >/dev/null 2>&1
+mkdir -p /var/empty
+
+###############################################################################
+# source primary configuration
+###############################################################################
+. /etc/config/at-admin
+
+###############################################################################
+# hostname
+###############################################################################
+echo "Setting hostname: "
+hostname -F /etc/config/HOSTNAME
+
+###############################################################################
+# create issue
+###############################################################################
+echo "`cat /etc/DISTNAME`" > /etc/issue
+echo "`cat /etc/DISTNAME`" > /etc/issue.net
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue.net
+echo >> /etc/issue
+echo >> /etc/issue.net
+
+###############################################################################
+# change permissions
+###############################################################################
+echo "Changing file permissions: "
+/etc/init.d/checkftp
+chmod 640 /etc/shadow
+chmod 640 /etc/gshadow
+chmod 440 /etc/sudoers
+chmod 600 /etc/busybox.conf
+chmod 6775 /bin/busybox
+chown -R guest:guest /home/guest
+chown -R 33:33 /home/www-data
+mkdir -p /tmp/at-admin
+chown -R 33:33 /tmp/at-admin
+chmod 600 /etc/config/.htpasswd-at-admin
+
+###############################################################################
+# setting firewall
+###############################################################################
+echo "Starting basic firewall: "
+
+# set up spoofing protection
+for f in /proc/sys/net/ipv4/conf/*/rp_filter
+do
+  echo 1 > $f
+done
+
+# log impossible addresses
+for f in /proc/sys/net/ipv4/conf/*/log_martians
+do
+  echo 1 > $f
+done
+
+# ignore echo broadcasts
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+# default setting: deny everything
+iptables -F INPUT
+iptables -P INPUT DROP
+iptables -F OUTPUT
+iptables -P OUTPUT DROP
+
+# allow all non-external interfaces for everything
+iptables -A INPUT  -i ! $PRIMARY_IF -j ACCEPT
+iptables -A OUTPUT -o ! $PRIMARY_IF -j ACCEPT
+
+# external interface
+iptables -A INPUT -i $PRIMARY_IF -p icmp                          -j ACCEPT
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport http       -j ACCEPT
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport ftp        -j ACCEPT
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport ssh        -j ACCEPT
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport ftp-data   -j ACCEPT
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport auth       -j REJECT
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport 6000:6010  -j DROP
+iptables -A INPUT -i $PRIMARY_IF -p tcp -d 0/0 --dport 1024:65535 -j ACCEPT
+
+iptables -A INPUT -i $PRIMARY_IF -p udp -d 0/0 --dport ssh        -j ACCEPT
+iptables -A INPUT -i $PRIMARY_IF -p udp -d 0/0 --dport 1024:65535 -j ACCEPT
+
+# all protocols outgoing
+iptables -A OUTPUT -o $PRIMARY_IF -j ACCEPT
+
+###############################################################################
+# network
+###############################################################################
+echo "Configuring network interfaces: "
+ifup lo 1> /dev/null
+ifup $PRIMARY_IF 1> /dev/null
+
+###############################################################################
+# sshd
+###############################################################################
+echo "Starting sshd: "
+/sbin/sshd -f /etc/ssh/sshd_config
+
+###############################################################################
+# syslogd
+###############################################################################
+echo "Starting syslogd: "
+/sbin/syslogd -m 0 -L
+
+###############################################################################
+# thttpd
+###############################################################################
+echo "Starting thttpd: "
+thttpd -C /etc/thttpd.conf
+
+###############################################################################
+# avahi-services
+###############################################################################
+/etc/init.d/avahi-services $PRIMARY_IF
+
+###############################################################################
+# avahi-daemon
+###############################################################################
+/etc/init.d/avahi-daemon start
+
+###############################################################################
+# rc.local
+###############################################################################
+LOCAL_SCRIPT=/etc/config/rc.local
+
+if [ -x ${LOCAL_SCRIPT} ]; then
+    echo "Running local start script (${LOCAL_SCRIPT})."
+    ${LOCAL_SCRIPT}
+fi
+
+###############################################################################
+
+/bin/ledctrl --red=off
+
+###############################################################################
+

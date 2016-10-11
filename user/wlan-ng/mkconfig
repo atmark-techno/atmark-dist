@@ -1,0 +1,124 @@
+#!/bin/sh
+#
+#	mkconfig -- convert from uClinux/dist config to local config.opt
+#
+
+###############################################################################
+#
+
+CURRENT_DIR=`pwd`
+ROOT_DIR=${CURRENT_DIR%/user/wlan-ng}
+
+. $ROOT_DIR/.config
+
+KERNEL_DIR=$ROOT_DIR"/"$CONFIG_LINUXDIR
+
+VENDOR_CONFIG=$ROOT_DIR/config/.config
+LINUX_CONFIG=$ROOT_DIR/$CONFIG_LINUXDIR/.config
+
+KERNEL_SOURCE=$KERNEL_DIR make -Cscripts 2>&1 > /dev/null
+. scripts/make.opts
+
+###############################################################################
+#
+
+CONFIG_OPT=config.opt
+K_VERSION=`grep "^VERSION" $KERNEL_DIR"/Makefile" | \
+                        head -1 | sed -e "s/VERSION = //" `
+K_PATCHLEVEL=`grep "^PATCHLEVEL" $KERNEL_DIR"/Makefile" | \
+                        head -1 | sed -e "s/PATCHLEVEL = //" `
+K_SUBLEVEL=`grep "^SUBLEVEL" $KERNEL_DIR"/Makefile" | \
+                        head -1 | sed -e "s/SUBLEVEL = //" `
+K_EXTRAVERSION=`grep "^EXTRAVERSION" $KERNEL_DIR"/Makefile" | \
+                        head -1 | sed -e "s/EXTRAVERSION = //" `
+KERNEL_RELEASE=$K_VERSION"."$K_PATCHLEVEL"."$K_SUBLEVEL$K_EXTRAVERSION
+
+###############################################################################
+#
+
+rm -f $CONFIG_OPT
+
+###############################################################################
+# 
+
+set_config(){
+	echo $1 >> $CONFIG_OPT
+}
+
+###############################################################################
+# 
+
+grep CONFIG_USER_WLAN_NG_ $VENDOR_CONFIG |
+grep -v '^CONFIG_USER_WLAN_NG$' |
+grep -v WLAND | grep -v WLANCFG | grep -v WLANCTL |
+sed -e "s/CONFIG_USER_WLAN_NG_/PRISM2_/" |
+while read OPNAME
+do
+	set_config "$OPNAME"
+done
+
+set_config "`grep CONFIG_NETLINK $LINUX_CONFIG | head -1`"
+set_config "`grep CONFIG_PACKET $LINUX_CONFIG | head -1`"
+set_config "`grep CONFIG_HOTPLUG $LINUX_CONFIG | head -1`"
+
+grep "^CONFIG_PCMCIA=y" $LINUX_CONFIG > /dev/null
+if [ $? = 1 ] ;then
+	set_config "# WLAN_KERN_PCMCIA is not defined"
+else
+	set_config "WLAN_KERN_PCMCIA=y"
+fi
+
+###############################################################################
+# 
+
+set_config "LINUX_SRC=$KERNEL_DIR"
+set_config "KERNEL_CFLAGS=\"$KERNEL_CFLAGS\""
+set_config "KERNEL_MODFLAGS=$KERNEL_MODFLAGS"
+set_config "PCMCIA_SRC=$ROOT_DIR"/user/pcmcia-cs
+set_config "TARGET_ROOT_ON_HOST=$ROOT_DIR/romfs"
+set_config "PCMCIA_DIR=/etc/pcmcia"
+set_config "TARGET_PCMCIA_DIR=$ROOT_DIR/romfs/etc/pcmcia"
+set_config "MODDIR=/lib/modules/$KERNEL_RELEASE"
+set_config "TARGET_MODDIR=$ROOT_DIR/romfs/lib/modules/$KERNEL_RELEASE"
+set_config "INST_EXEDIR=/sbin"
+set_config "TARGET_INST_EXEDIR=$ROOT_DIR/romfs/sbin"
+set_config "RC_DIR=/etc"
+set_config "SYSV_INIT=y"
+set_config "# INSTALL_DEPMOD is not defined"
+set_config ""
+set_config "HOST_COMPILE=\"\""
+set_config "HOST_CFLAGS=\"$HOST_CFLAGS\""
+set_config "HOST_AS=as"
+set_config "HOST_LD=ld"
+set_config "HOST_CC=gcc"
+set_config "HOST_CPP=\"$HOST_CC -E\""
+set_config "HOST_AR=ar"
+set_config "HOST_NM=nm"
+set_config "HOST_STRIP=strip"
+set_config "HOST_OBJCOPY=objcopy"
+set_config "HOST_OBJDUMP=objdump"
+set_config "HOST_RANLIB=ranlib"
+set_config "HOST_MAKE=make"
+set_config ""
+set_config "CROSS_COMPILE=$CROSS_COMPILE"
+if [ -z $CROSS_COMPILE ] ;then
+	set_config "# CROSS_COMPILE_ENABLED is not defined"
+else
+	set_config "CROSS_COMPILE_ENABLED=y"
+fi
+set_config "AS="$CROSS_COMPILE"as"
+set_config "LD="$CROSS_COMPILE"ld"
+set_config "CC="$CROSS_COMPILE"gcc"
+set_config "CPP=\""$CROSS_COMPILE"gcc -E"\"
+set_config "AR="$CROSS_COMPILE"ar"
+set_config "NM="$CROSS_COMPILE"nm"
+set_config "STRIP="$CROSS_COMPILE"strip"
+set_config "OBJCOPY="$CROSS_COMPILE"objcopy"
+set_config "OBJDUMP="$CROSS_COMPILE"objdump"
+set_config "RANLIB="$CROSS_COMPILE"ranlib"
+set_config "MAKE=make"
+set_config ""
+set_config "# WLAN_DEBUG is not defined"
+set_config "FIRMWARE_DIR=/etc/wlan/"
+
+

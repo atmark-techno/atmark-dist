@@ -1,0 +1,6 @@
+#!/bin/sh
+
+old=$1
+new=$2
+
+echo state changed: $old => $new

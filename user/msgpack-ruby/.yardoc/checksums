@@ -1,0 +1,7 @@
+lib/msgpack/version.rb f742faa0f38d89fcf39e8737f211269afa9ae134
+doclib/msgpack.rb bcda90b993aa64cd42194da8f887fb4b22822725
+doclib/msgpack/error.rb 8a9d6b98cc583d177209c4e561bccfa59d3c8501
+doclib/msgpack/packer.rb b36ab356deb39ca7b2555b19daf2df8402c3e20d
+doclib/msgpack/buffer.rb 7136347c447bfa00163c1a2dbb4226502b853327
+doclib/msgpack/unpacker.rb 7d0db93dad616d1f161ea6925b0d31c827209224
+doclib/msgpack/core_ext.rb c4a9ccf8255ab516f8dc1beb05ff3c1c365485a3

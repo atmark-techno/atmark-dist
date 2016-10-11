@@ -1,0 +1,14 @@
+#! /bin/sh
+
+PRIMARY_IF=$1
+PRIMARY_IF_MAC=`ifconfig ${PRIMARY_IF}| awk -F ' ' "/${PRIMARY_IF} /"'{print $5}'`
+HTTP_SERVICE=/etc/avahi/services/http.service
+
+echo '<service-group>' > $HTTP_SERVICE
+echo "<name replace-wildcards=\"yes\">AT Admin on %h [${PRIMARY_IF_MAC}]</name>" >> $HTTP_SERVICE
+echo '<service>' >> $HTTP_SERVICE
+echo '	<type>_http._tcp</type>' >> $HTTP_SERVICE
+echo ' 	<port>80</port>' >> $HTTP_SERVICE
+echo '</service>' >> $HTTP_SERVICE
+echo '</service-group>' >> $HTTP_SERVICE
+

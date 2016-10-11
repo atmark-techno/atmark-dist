@@ -1,0 +1,47 @@
+#! /bin/sh
+
+DAEMON=/sbin/avahi-daemon
+NAME=avahi-daemon
+
+test -x $DAEMON || exit 0
+
+start()
+{
+  echo "Starting ${NAME}: "
+  $DAEMON -D
+}
+
+shutdown()
+{
+  echo "Stopping $NAME"
+  $DAEMON -k
+}
+
+reload()
+{
+  echo "Reloading $NAME config"
+  $DAEMON -r
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    shutdown
+  ;;
+  reload)
+    reload
+  ;;
+  restart)
+    shutdown
+    sleep 1
+    start
+  ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|reload|restart}" >&2
+    exit 1
+  ;;
+esac
+
+exit 0

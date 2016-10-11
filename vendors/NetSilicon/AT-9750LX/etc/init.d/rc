@@ -1,0 +1,62 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+TZ=JST-9
+
+. /etc/init.d/functions
+
+echo "Starting fsck for root filesystem."
+mount -n -o remount,ro /
+fsck -C -p /
+if [ "$?" -gt 1 ]; then
+  echo "WARNING: Error while checking root filesystem."
+  echo "You can login as root now, the system will reboot after logout."
+  sulogin
+  reboot
+else
+  echo -n "Checking root filesystem: "
+  check_status
+fi
+
+echo -n "Remounting root rw: "
+mount -n -o remount,rw /
+check_status
+
+echo -n "Mounting proc: "
+mount /proc
+check_status
+
+#echo -n "Enabling swap space: "
+#swapon -a
+#check_status
+
+echo -n "Setting hostname: "
+hostname -F /etc/HOSTNAME
+check_status
+
+echo -n "Cleaning up system: "
+> /var/run/utmp
+touch /var/log/wtmp
+touch /var/log/messages
+chmod 0664 /var/run/utmp
+chmod 0664 /var/log/wtmp
+chmod 0660 /var/log/messages
+rm -rf /var/tmp/*
+rm -rf /tmp/*
+check_status
+
+echo "`cat /etc/DISTNAME`" > /etc/issue
+echo "`cat /etc/DISTNAME`" > /etc/issue.net
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue
+echo "`uname -s` `uname -r` [`uname -m` arch]" >> /etc/issue.net
+echo >> /etc/issue
+echo >> /etc/issue.net
+
+echo "Running local start scripts."
+
+for i in /etc/rc.d/S*
+do
+  if [ -x $i ]; then
+    $i
+  fi
+done

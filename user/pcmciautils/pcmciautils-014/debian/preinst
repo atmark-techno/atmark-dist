@@ -1,0 +1,22 @@
+#! /bin/sh
+set -e
+
+case $1 in
+	install|upgrade)
+		if [ -z "$2" ] || \
+		   dpkg --compare-versions "$2" lt 010-0ubuntu5; then
+			if [ -f /etc/default/pcmcia ]; then
+				cp -a /etc/default/pcmcia \
+				      /etc/default/pcmciautils
+			fi
+		fi
+		# clean up old symlink mistake
+		if dpkg --compare-versions "$2" lt 012-1; then
+			rm -f /etc/udev/85-pcmcia.rules
+		fi
+		;;
+esac
+
+#DEBHELPER#
+
+exit 0

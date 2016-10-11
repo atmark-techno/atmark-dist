@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Mounting ramfs /home/ftp/pub: "
+mount -t ramfs ramfs /home/ftp/pub
+chmod 0777 /home/ftp/pub
+check_status
+
+

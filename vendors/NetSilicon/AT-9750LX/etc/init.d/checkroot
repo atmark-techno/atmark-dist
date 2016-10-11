@@ -1,0 +1,26 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Changing file permissions: "
+chmod 640 /etc/shadow &&
+chmod 640 /etc/gshadow &&
+chmod 600 /etc/busybox.conf &&
+chmod 6775 /bin/busybox &&
+ln /bin/busybox /home/ftp/bin/ls &&
+ln /lib/ld-2.3.2.so /home/ftp/lib/ld-linux.so.2 &&
+ln /lib/libc-2.3.2.so /home/ftp/lib/libc.so.6 &&
+ln /lib/libm-2.3.2.so /home/ftp/lib/libm.so.6 &&
+ln /lib/libcrypt-2.3.2.so /home/ftp/lib/libcrypt.so.1 &&
+ln /etc/group /home/ftp/etc/group &&
+ln /etc/passwd /home/ftp/etc/passwd &&
+#ln /etc/motd /home/ftp/etc/motd &&
+chmod 511 /home/ftp/bin &&
+chmod 511 /home/ftp/lib &&
+chmod 511 /home/ftp/etc &&
+chmod 777 /home/ftp/pub &&
+chown -R guest:guest /home/guest &&
+chown -R 33:33 /home/www-data
+check_status

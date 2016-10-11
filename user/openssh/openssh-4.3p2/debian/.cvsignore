@@ -1,0 +1,12 @@
+files
+tmp
+openssh-client
+openssh-server
+ssh
+openssh-client-udeb
+openssh-server-udeb
+ssh-askpass-gnome
+ssh-krb5
+*.debhelper
+*substvars
+*.templates

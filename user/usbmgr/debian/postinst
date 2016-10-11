@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /etc/usbmgr
+update_usbdb -f usbmgr.conf
+
+#DEBHELPER#
