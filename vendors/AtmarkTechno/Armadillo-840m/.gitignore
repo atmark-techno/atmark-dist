@@ -1,0 +1,6 @@
+config.linux-3.x
+!config.arch
+!etc/fonts/conf.d
+!etc/init.d
+!etc/profile.d
+!etc/udev/rules.d

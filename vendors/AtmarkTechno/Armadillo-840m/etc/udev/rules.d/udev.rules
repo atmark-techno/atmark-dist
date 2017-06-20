@@ -1,0 +1,29 @@
+
+# Permissions
+ACTION!="add", GOTO="permissions_end"
+KERNEL=="ttySC[0-9]*"		MODE="0660"
+KERNEL=="tty[0-9]*"		MODE="0660"
+KERNEL=="random",		MODE="0666"
+KERNEL=="urandom",		MODE="0666"
+KERNEL=="mem",			MODE="0640"
+KERNEL=="kmem",			MODE="0640"
+KERNEL=="full",			MODE="0666"
+KERNEL=="null",			MODE="0666"
+KERNEL=="zero",			MODE="0666"
+LABEL="permissions_end"
+
+# ALSA devices
+KERNEL=="controlC[0-9]*",	NAME="snd/%k"
+KERNEL=="hwC[D0-9]*",		NAME="snd/%k"
+KERNEL=="pcmC[D0-9cp]*",	NAME="snd/%k"
+KERNEL=="midiC[D0-9]*",		NAME="snd/%k"
+KERNEL=="timer",		NAME="snd/%k"
+KERNEL=="seq",			NAME="snd/%k"
+
+# input devices
+KERNEL=="mice",			NAME="input/%k"
+KERNEL=="mouse[0-9]*",		NAME="input/%k"
+KERNEL=="event[0-9]*",		NAME="input/%k"
+KERNEL=="js[0-9]*",		NAME="input/%k"
+KERNEL=="ts[0-9]*",		NAME="input/%k"
+KERNEL=="uinput",		NAME="input/%k"

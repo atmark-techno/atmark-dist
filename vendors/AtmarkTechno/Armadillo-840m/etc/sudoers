@@ -1,0 +1,22 @@
+# sudoers file.
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# See the sudoers man page for the details on how to write a sudoers file.
+#
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+Cmnd_Alias     CGIADMIN = /bin/cp, /sbin/ifdown, /sbin/ifup, /sbin/avahi-daemon,\
+			/etc/init.d/bridges, /bin/flatfsd, /sbin/ifconfig,\
+			/bin/rm, /bin/cat, /bin/htpasswd, /sbin/reboot,\
+			/bin/touch, /bin/hostname, /bin/netflash, /bin/cat
+
+# Defaults specification
+
+# User privilege specification
+root	ALL=(ALL) ALL
+www-data	ALL= NOPASSWD: CGIADMIN

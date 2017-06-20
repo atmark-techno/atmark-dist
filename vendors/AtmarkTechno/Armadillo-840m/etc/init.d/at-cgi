@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+echo -n "Setting at-cgi: "
+mkdir -p /tmp/at-admin &&
+chown www-data:www-data /tmp/at-admin
+check_status

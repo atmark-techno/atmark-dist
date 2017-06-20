@@ -1,0 +1,61 @@
+#!/bin/sh
+
+. /etc/init.d/functions
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+keygen() {
+    local SAVE=n
+
+    if [ ! -f /etc/config/ssh_host_key ] ; then
+	echo -n "generate rsa1 key ..."
+	ssh-keygen -t rsa1 -f /etc/config/ssh_host_key -N '' >/dev/null
+	SAVE=y
+	check_status
+    fi
+
+    if [ ! -f /etc/config/ssh_host_dsa_key ] ; then
+	echo -n "generate dsa key ..."
+	ssh-keygen -t dsa -f /etc/config/ssh_host_dsa_key -N '' >/dev/null
+	SAVE=y
+	check_status
+    fi
+
+    if [ ! -f /etc/config/ssh_host_rsa_key ] ; then
+	echo -n "generate rsa key ..."
+	ssh-keygen -t rsa -f /etc/config/ssh_host_rsa_key -N '' >/dev/null
+	SAVE=y
+	check_status
+    fi
+
+    if [ "${SAVE}" = "y" ]; then
+	flatfsd -s >/dev/null 2>&1
+    fi
+}
+
+start() {
+    adduser -DH sshd >/dev/null 2>&1
+    mkdir -p /var/empty
+
+    echo -n "Starting sshd: "
+    if [ -f /etc/config/ssh_host_key -a \
+	 -f /etc/config/ssh_host_dsa_key -a \
+	 -f /etc/config/ssh_host_rsa_key ]; then
+	/sbin/sshd -f /etc/ssh/sshd_config
+	check_status
+    else
+	false
+	check_status
+	echo "  (sshd: you will be available to use after run '/etc/init.d/sshd keygen')"
+    fi
+
+}
+
+case "$1" in
+    keygen)
+	keygen
+	;;
+    *)
+	start
+	;;
+esac
