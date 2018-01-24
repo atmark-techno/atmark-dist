@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
+#include <syslog.h>
 
 #include <linux/version.h>
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,8)
@@ -65,8 +66,20 @@ int flat_dev_open(const char *flatfs, const char *mode)
 	flatinfo.eraselen = mtd_info.erasesize;
 	flatinfo.flags = 0;
 
-	if (*mode == 'w')
+	if (*mode == 'w') {
+		erase_info_t erase_info;
+
 		flatinfo.flags |= FLAG_WRITING;
+
+		erase_info.start = 0;
+		erase_info.length = flatinfo.len;
+		if (ioctl(flatinfo.fd, MEMUNLOCK, &erase_info) < 0 &&
+		    errno != EOPNOTSUPP) {
+			close(flatinfo.fd);
+			flatinfo.fd = -1;
+			return ERROR_CODE();
+		}
+	}
 
 	return 0;
 }
@@ -102,10 +115,6 @@ int flat_dev_erase(off_t start, size_t len)
 		return ERROR_CODE();
 
 	flatinfo.flags |= FLAG_ERASED;
-
-	erase_info.start = start;
-	erase_info.length = len;
-	ioctl(flatinfo.fd, MEMUNLOCK, &erase_info);
 
 	erase_info.start = start;
 	erase_info.length = len;
@@ -175,6 +184,16 @@ int flat_dev_close(int abort, off_t written)
 	}
 #endif	
 
+	if (flatinfo.flags & FLAG_WRITING) {
+		erase_info_t erase_info;
+
+		erase_info.start = 0;
+		erase_info.length = flatinfo.len;
+		if (ioctl(flatinfo.fd, MEMLOCK, &erase_info) < 0 &&
+		    errno != EOPNOTSUPP) {
+			syslog(LOG_ERR, "failed to ioctl MEMLOCK (%m)\n");
+		}
+	}
 	close(flatinfo.fd);
 	flatinfo.fd = -1;
 
