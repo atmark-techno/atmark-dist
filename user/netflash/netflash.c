@@ -106,6 +106,14 @@
 
 #define CHECKSUM_LENGTH	4
 
+#if defined(CONFIG_MTD) || defined(CONFIG_MTD_MODULES)
+#define MTD_KEEP_LOCK (1) /* lock MTD during anytime except doing write operation */
+#endif
+
+#ifndef MTD_KEEP_LOCK
+#define MTD_KEEP_LOCK (0)
+#endif
+
 /****************************************************************************/
 
 char *version = "2.1.4";
@@ -1412,7 +1420,7 @@ static void program_mtd_segment(int rd, char *sgdata,
 	int pos;
 
 	/* Unlock the segment to be reprogrammed.  */
-	if (dounlock) {
+	if (MTD_KEEP_LOCK | dounlock) {
 		erase_info.start = sgpos;
 		erase_info.length = sgsize;
 		/* Don't bother checking for failure */
@@ -1499,10 +1507,11 @@ static void program_mtd_segment(int rd, char *sgdata,
 		}
 	}
 
-	if (dolock) {
+	if (MTD_KEEP_LOCK | dolock) {
 		erase_info.start = sgpos;
 		erase_info.length = sgsize;
-		if (ioctl(rd, MEMLOCK, &erase_info) < 0) {
+		if (ioctl(rd, MEMLOCK, &erase_info) < 0 &&
+		    errno != EOPNOTSUPP) {
 			error("ioctl(MEMLOCK) failed, "
 				"errno=%d", errno);
 			exitstatus = ERASE_FAIL;
@@ -1639,12 +1648,16 @@ int usage(int rc)
 	"\t\tafter downloading when root filesystem is inside flash)\n"
 	"\t-K\tonly kill unnecessary processes (or delays kill until\n"
 	"\t\tafter downloading when root filesystem is inside flash)\n"
+#if !MTD_KEEP_LOCK
 	"\t-l\tlock flash segments when done\n"
+#endif
   	"\t-n\tfile with no checksum at end (implies no version information)\n"
 	"\t-p\tpreserve portions of flash segments not actually written.\n"
   	"\t-s\tstop erasing/programming at end of input data\n"
 	"\t-t\tcheck the image and then throw it away \n"
+#if !MTD_KEEP_LOCK
 	"\t-u\tunlock flash segments before programming\n"
+#endif
   	"\t-v\tdisplay version number\n"
 #ifdef CONFIG_USER_NETFLASH_DECOMPRESS
 	"\t-z\tdecompress image before writing\n"
