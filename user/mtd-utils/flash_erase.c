@@ -3,6 +3,7 @@
  */
 
 #include <unistd.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -60,7 +61,7 @@ int region_erase(int Fd, int start, int count, int unlock, int regcount)
 
 		if(unlock != 0)
 		{ //Unlock the sector first.
-			if(ioctl(Fd, MEMUNLOCK, &erase) != 0)
+			if(ioctl(Fd, MEMUNLOCK, &erase) != 0 && errno != EOPNOTSUPP)
 			{
 				perror("\nMTD Unlock failure");
 				close(Fd);
@@ -112,7 +113,7 @@ int non_region_erase(int Fd, int start, int count, int unlock)
 			{
 				//Unlock the sector first.
 				printf("\rPerforming Flash unlock at offset 0x%x",erase.start);
-				if(ioctl(Fd, MEMUNLOCK, &erase) != 0)
+				if(ioctl(Fd, MEMUNLOCK, &erase) != 0 && errno != EOPNOTSUPP)
 				{
 					perror("\nMTD Unlock failure");
 					close(Fd);

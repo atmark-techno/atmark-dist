@@ -6,6 +6,7 @@
  */
 
 #include <unistd.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 
 	mtdLockInfo.start = ofs;
 	mtdLockInfo.length = num_sectors * mtdInfo.erasesize;
-	if(ioctl(fd, MEMLOCK, &mtdLockInfo))
+	if(ioctl(fd, MEMLOCK, &mtdLockInfo) && errno != EOPNOTSUPP)
 	{
 		fprintf(stderr, "Could not lock MTD device: %s\n", argv[1]);
 		close(fd);

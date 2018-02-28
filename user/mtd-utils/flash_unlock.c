@@ -6,6 +6,7 @@
  */
 
 #include <unistd.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 
 	mtdLockInfo.start = 0;
 	mtdLockInfo.length = mtdInfo.size;
-	if(ioctl(fd, MEMUNLOCK, &mtdLockInfo))
+	if (ioctl(fd, MEMUNLOCK, &mtdLockInfo) && errno != EOPNOTSUPP)
 	{
 		fprintf(stderr, "Could not unlock MTD device: %s\n", argv[1]);
 		close(fd);
